@@ -1,11 +1,12 @@
 import React from 'react';
-import './App.css';
 import PixiRenderer from './Engine/PixiRenderer/PixiRenderer.engine';
+import UIManager from './Interface/UIManager/UIManager.hoc';
 
 function App() {
   return (
     <React.Fragment>
       <PixiRenderer></PixiRenderer>
+      <UIManager></UIManager>
     </React.Fragment>
   );
 }
