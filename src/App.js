@@ -1,6 +1,6 @@
 import React from 'react';
 import PixiRenderer from './Engine/PixiRenderer/PixiRenderer.engine';
-import UIManager from './Interface/UIManager/UIManager.hoc';
+import UIManager from './Interface/UIManager/UIManager.component';
 
 function App() {
   return (
