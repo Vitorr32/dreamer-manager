@@ -4,9 +4,15 @@
     width: 100vw;
 
     background: transparent;
+    pointer-events: none;
 
     header {
+        pointer-events: all;
         background: orangered;
         height: 20px;
+
+        &:hover{
+            background: yellowgreen;
+        }
     }
 }
