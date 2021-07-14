@@ -1,13 +1,15 @@
-import React from 'react';
-import PixiRenderer from './Engine/PixiRenderer/PixiRenderer.engine';
-import UIManager from './Interface/UIManager/UIManager.component';
+import React from "react";
+import { HashRouter, Redirect, Route } from "react-router-dom";
+import { EditorScreen } from "./Interface/MainMenu/page/EditorScreen/EditorScreen.component";
+import { MainScreen } from "./Interface/MainMenu/page/MainScreen/MainScreen.component";
 
 function App() {
   return (
-    <React.Fragment>
-      <PixiRenderer></PixiRenderer>
-      <UIManager></UIManager>
-    </React.Fragment>
+    <HashRouter>
+      <Route exact path="/" render={() => <Redirect to="/menu" />} />
+      <Route exact path="/menu" component={MainScreen} />
+      <Route exact path="/menu/edit" component={EditorScreen} />
+    </HashRouter>
   );
 }
 

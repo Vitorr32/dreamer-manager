@@ -1,15 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Application } from "pixi.js";
+
+interface GameLoopState {
+    app?: Application
+}
+
+const initialState: GameLoopState = {
+    app: undefined
+}
 
 export const gameLoopSlice = createSlice({
     name: 'gameLoop',
-    initialState: {
-        app: null,
-        stage: null
-    },
+    initialState,
     reducers: {
         createApplication: (state, action) => {
             state.app = action.payload
-            state.stage = action.payload.stage
         }
     }
 })

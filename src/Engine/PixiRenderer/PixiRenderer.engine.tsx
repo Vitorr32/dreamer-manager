@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { useDispatch } from 'react-redux';
 import { createApplication } from '../../redux/game-loop/game-loop.reducer';
-import { InitalizeMainMenu } from '../GUI/MainMenuScreen.gui';
 
 export function PixiRenderer() {
    const dispatch = useDispatch()
@@ -18,8 +17,6 @@ export function PixiRenderer() {
     if (document.body.children.length === 5) {
         document.body.appendChild(dreamerManager.view);
         dispatch(createApplication(dreamerManager));
-
-        InitalizeMainMenu(dreamerManager);
     }
 
     return null
