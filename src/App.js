@@ -7,7 +7,7 @@ import { TraitEditor } from "./Interface/MainMenu/sub-pages/TraitEditor/TraitEdi
 function App() {
   return (
     <HashRouter>
-      <Route exact path="/" render={() => <Redirect to="/menu/edit/trait" />} />
+      <Route exact path="/" render={() => <Redirect to="/menu/edit/trait/new" />} />
       <Route exact path="/menu" component={MainScreen} />
       <Route exact path="/menu/edit" component={EditorScreen} />
       <Route path="/menu/edit/trait" component={TraitEditor} />

@@ -1,5 +1,6 @@
 import React from "react"
 import { Link, Route, Switch } from "react-router-dom"
+import { NewTrait } from "../NewTrait/NewTrait.component";
 import './TraitEditor.style.scss'
 
 const electron = window.require('electron');
@@ -18,7 +19,6 @@ export class TraitEditor extends React.Component<ITraitEditorProps> {
     }
 
     render() {
-        console.log(this.props);
         const { path, url } = this.props.match;
 
         return (
@@ -40,7 +40,7 @@ export class TraitEditor extends React.Component<ITraitEditorProps> {
                     </main>
                 </Route>
                 <Route path={`${path}/new`}>
-                    Yolooo
+                    <NewTrait />
                 </Route>
             </Switch>
 
