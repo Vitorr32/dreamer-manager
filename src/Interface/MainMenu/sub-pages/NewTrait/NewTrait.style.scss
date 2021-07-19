@@ -3,7 +3,7 @@
     height: 100vh;
     width: 100vw;
 
-    form {
+    .new-trait-wrapper {
         height: 100%;
         width: 90%;
         padding: 2.5%;
@@ -19,14 +19,6 @@
             h2 {
                 margin-left: 5%;
             }
-        }
-
-        .form-section-card {
-            margin-top: 20px;
-            padding: 20px;
-            position: relative;
-            border: 1px solid gray;
-            border-radius: 5px;
         }
     }
 }

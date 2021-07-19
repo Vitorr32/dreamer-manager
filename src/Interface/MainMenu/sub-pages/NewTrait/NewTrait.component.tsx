@@ -1,64 +1,93 @@
-import { Button, TextField, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core'
+import { Button, Stepper, Step, StepButton } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { TraitType } from '../../../../models/serializable/Trait.model';
+import React from 'react';
 import './NewTrait.style.scss';
+import { BasicInfoForm } from './components/BasicInfoForm/BasicInfoForm.component';
+import { Trait, TraitType } from '../../../../models/base/Trait.model';
 
-export function NewTrait() {
+interface IProps {
+}
 
-    console.log("Hello there");
+interface IState {
+    stepperIndex: number,
+    completed: { [k: number]: boolean },
+    currentTrait?: Trait
+}
 
-    function onNewTraitSubmit() {
+export class NewTrait extends React.Component<IProps, IState> {
 
+    constructor(props: IProps) {
+        super(props)
+        this.state = {
+            stepperIndex: 0,
+            completed: {
+                0: false,
+                1: false
+            },
+            currentTrait: new Trait()
+        }
     }
 
-    return (
-        <main id="new-trait-component">
-            <form onSubmit={onNewTraitSubmit}>
-                <header>
-                    <Button color="primary">
-                        <ArrowBackIcon />
-                    </Button>
-                    <h2>Trait Creation</h2>
-                </header>
-                <section id="basic-info" className="form-section-card">
-                    <div>
-                        <h2>Basic Information</h2>
-                    </div>
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Name"
-                        variant="outlined"
-                    />
+    onBasicInfoSubmit(name: string, description: string, traitType: TraitType): void {
+        const trait = {
+            ...this.state.currentTrait,
+            name,
+            description,
+            traitType
+        }
 
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Description"
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                    />
+        this.setState({ currentTrait: trait })
+    }
 
-                    <FormControl variant="outlined" >
-                        <InputLabel>Type</InputLabel>
-                        <Select
-                            label="Type" >
+    getStepperContent(index: number) {
+        switch (index) {
+            case 0:
+                return <BasicInfoForm onBasicInfoSubmit={this.onBasicInfoSubmit} />
+            default:
+                return null
+        }
+    }
 
-                            <MenuItem value=""> <em>Select Type</em> </MenuItem>
-                            <MenuItem value={TraitType.NORMAL}>{TraitType.NORMAL}</MenuItem>
-                            <MenuItem value={TraitType.PERSONALITY}>{TraitType.PERSONALITY}</MenuItem>
-                            <MenuItem value={TraitType.MENTAL}>{TraitType.MENTAL}</MenuItem>
-                            <MenuItem value={TraitType.PHYSICAL}>{TraitType.PHYSICAL}</MenuItem>
-                            <MenuItem value={TraitType.SPECIAL}>{TraitType.SPECIAL}</MenuItem>
-                        </Select>
-                    </FormControl>
+    render() {
+        const { stepperIndex, completed } = this.state
+
+        return (
+            <main id="new-trait-component">
+                <section className="new-trait-wrapper">
+                    <header>
+                        <Button color="primary">
+                            <ArrowBackIcon />
+                        </Button>
+                        <h2>Trait Creation</h2>
+                    </header>
+
+                    <Stepper nonLinear activeStep={this.state.stepperIndex}>
+                        <Step>
+                            <StepButton onClick={_ => this.setState({ stepperIndex: 0 })} completed={completed[0]}>
+                                Basic Information
+                            </StepButton>
+                        </Step>
+                        <Step>
+                            <StepButton onClick={_ => this.setState({ stepperIndex: 1 })} completed={completed[1]}>
+                                Effects and Conditions
+                            </StepButton>
+                        </Step>
+                        <Step>
+                            <StepButton onClick={_ => this.setState({ stepperIndex: 2 })} completed={completed[2]}>
+                                Icon and Visual Properties
+                            </StepButton>
+                        </Step>
+                        <Step>
+                            <StepButton onClick={_ => this.setState({ stepperIndex: 3 })} completed={completed[3]}>
+                                Review
+                            </StepButton>
+                        </Step>
+                    </Stepper>
+
+                    {this.getStepperContent(stepperIndex)}
+                    <button onClick={() => this.setState({ stepperIndex: this.state.stepperIndex + 1 })}>Next</button>
                 </section>
-
-                <section id="effect">
-
-                </section>
-            </form>
-        </main>
-    )
+            </main>
+        )
+    }
 }
