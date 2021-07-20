@@ -3,7 +3,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import React from 'react';
 import './NewTrait.style.scss';
 import { BasicInfoForm } from './components/BasicInfoForm/BasicInfoForm.component';
-import { Trait, TraitType } from '../../../../models/base/Trait.model';
+import { Trait, TraitType } from '../../../../shared/models/base/Trait.model';
 
 interface IProps {
 }
@@ -19,7 +19,7 @@ export class NewTrait extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
-            stepperIndex: 0,
+            stepperIndex: 1,
             completed: {
                 0: false,
                 1: false
@@ -39,10 +39,27 @@ export class NewTrait extends React.Component<IProps, IState> {
         this.setState({ currentTrait: trait })
     }
 
+    nextStep(): void {
+        if (this.state.stepperIndex === 3) {
+            return;
+        }
+
+        this.setState({ stepperIndex: this.state.stepperIndex + 1 })
+    }
+
+    previousStep(): void {
+        if (this.state.stepperIndex === 0) {
+            return;
+        }
+
+        this.setState({ stepperIndex: this.state.stepperIndex - 1 })
+    }
+
+
     getStepperContent(index: number) {
         switch (index) {
             case 0:
-                return <BasicInfoForm onBasicInfoSubmit={this.onBasicInfoSubmit} />
+                return <BasicInfoForm onBasicInfoSubmit={this.onBasicInfoSubmit.bind(this)} nextStep={this.nextStep.bind(this)} />
             default:
                 return null
         }
@@ -61,7 +78,7 @@ export class NewTrait extends React.Component<IProps, IState> {
                         <h2>Trait Creation</h2>
                     </header>
 
-                    <Stepper nonLinear activeStep={this.state.stepperIndex}>
+                    <Stepper nonLinear activeStep={this.state.stepperIndex} style={{ background: 'whitesmoke' }}>
                         <Step>
                             <StepButton onClick={_ => this.setState({ stepperIndex: 0 })} completed={completed[0]}>
                                 Basic Information
@@ -85,7 +102,6 @@ export class NewTrait extends React.Component<IProps, IState> {
                     </Stepper>
 
                     {this.getStepperContent(stepperIndex)}
-                    <button onClick={() => this.setState({ stepperIndex: this.state.stepperIndex + 1 })}>Next</button>
                 </section>
             </main>
         )

@@ -1,0 +1,30 @@
+#trait-basic-info-form {
+    display: grid;
+    grid-auto-rows: auto;
+    row-gap: 40px;
+
+    .field {
+        display: flex;
+
+        .MuiTextField-root,
+        .MuiInputBase-root,
+        .MuiFormControl-root,
+        .MuiFormControlLabel-root {
+            margin: 0px;
+            width: 300px;
+        }
+
+        .field-message {
+            margin-left: 40px;
+            font-size: 13px;
+            color: gray;
+            overflow-wrap: break-word;
+            width: 400px;
+        }
+    }
+
+    .buttons-wrapper {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

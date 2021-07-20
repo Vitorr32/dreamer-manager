@@ -14,6 +14,8 @@ export enum TraitType {
     PHYSICAL = 'Physical',
     MENTAL = 'Mental',
     PERSONALITY = 'Personality',
+    DEVELOPMENT = 'Development',
+    NATIONAL = 'National',
     SPECIAL = 'Special'
 }
 
