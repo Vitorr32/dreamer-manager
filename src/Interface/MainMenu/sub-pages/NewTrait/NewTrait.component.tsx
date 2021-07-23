@@ -4,6 +4,7 @@ import React from 'react';
 import './NewTrait.style.scss';
 import { BasicInfoForm } from './components/BasicInfoForm/BasicInfoForm.component';
 import { Trait, TraitType } from '../../../../shared/models/base/Trait.model';
+import { EffectsAndConditions } from './components/EffectsAndConditions/EffectsAndConditions.component';
 
 interface IProps {
 }
@@ -60,6 +61,8 @@ export class NewTrait extends React.Component<IProps, IState> {
         switch (index) {
             case 0:
                 return <BasicInfoForm onBasicInfoSubmit={this.onBasicInfoSubmit.bind(this)} nextStep={this.nextStep.bind(this)} />
+            case 1:
+                return <EffectsAndConditions previousStep={this.previousStep.bind(this)} nextStep={this.nextStep.bind(this)} />
             default:
                 return null
         }

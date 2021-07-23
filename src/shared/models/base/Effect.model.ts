@@ -1,58 +1,53 @@
-// public enum Trigger {
-//     UNDEFINED,
+import { ConditionTree } from "./ConditionTree";
+import { Modifier } from "./Modifier";
 
-//     ALWAYS_ACTIVE,
-//     ON_INTERACTION_START,
-//     INTERACTION_END,
-//     DURING_INTERACTION,
+export enum Trigger {
+    UNDEFINED,
 
-//     MAX_TRIGGERS
-// }
+    ALWAYS_ACTIVE,
+    ON_INTERACTION_START,
+    INTERACTION_END,
+    DURING_INTERACTION,
 
-// [Serializable]
-//     public struct Duration
-// {
-//     public enum Type {
-//         UNDEFINED,
+    MAX_TRIGGERS
+}
 
-//         PERMANENT,
-//         SPECIFIC_DURATION,
-//         SPECIFIC_DATE,
+export enum Duration {
+    UNDEFINED,
 
-//         MAX_DURATIONS
-//     }
+    PERMANENT,
+    SPECIFIC_DURATION,
+    SPECIFIC_DATE,
 
-//         public Type type;
-//         public int[] arguments;
-// }
+    MAX_DURATIONS
+}
 
-// public enum Source {
-//     UNDEFINED,
+export enum Source {
+    UNDEFINED,
 
-//     TRAIT,
-//     RACE,
-//     ITEM,
+    TRAIT,
+    RACE,
+    ITEM,
 
-//     MAX_SOURCES
-// }
+    MAX_SOURCES
+}
 
-// export interface Effect {
-//     //ID of the effect on the list of ids
-//     public id: string;
-//     //Whetever this effect affect the holder of the effect or the target, if applicable, of the trigger
-//     public bool targetSelf = true;
-//     //Source is with item/trait/race is the source of the effect, used to associate the effect to parent
-//     public Source sourceType;
-//     //Source ID, used to get the source of the effect
-//     public string sourceID;
-//     //What trigger the check for this effect
-//     public Trigger trigger = Trigger.UNDEFINED;
-//     //What is the condition for the activation of this effect when the trigger is triggered.
-//     public ConditionTree conditionTree;
-//     //After the effect was activatd, for how much time does it take effect?
-//     public Duration duration;
-//     //What is the modifier that this effect cause
-//     // public Modifier modifier = new Modifier();
-// }
-
-export {}
+export class Effect {
+    //ID of the effect on the list of ids
+    public id?: string
+    //Whetever this effect affect the holder of the effect or the target, if applicable, of the trigger
+    public targetSelf?: boolean = true
+    //Source is with item/trait/race is the source of the effect, used to associate the effect to parent
+    public sourceType?: Source
+    //Source ID, used to get the source of the effect
+    public sourceID?: string
+    //What trigger the check for this effect
+    public trigger?: Trigger
+    //What is the condition for the activation of this effect when the trigger is triggered.
+    public conditionTree?: ConditionTree
+    //After the effect was activatd, for how much time does it take effect?
+    public durationType?: Duration
+    public durationArgs?: number[]
+    //What is the modifier that this effect cause
+    public modifier?: Modifier = new Modifier();
+}
