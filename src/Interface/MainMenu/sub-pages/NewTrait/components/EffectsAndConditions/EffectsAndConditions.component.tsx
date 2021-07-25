@@ -1,10 +1,26 @@
-import { Button, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
+import {
+    Button,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemSecondaryAction,
+    ListItemText,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import EditIcon from '@material-ui/icons/Edit';
 import React from "react";
 import { Effect } from "../../../../../../shared/models/base/Effect.model";
+import { MAX_NUMBER_OF_TRAITS } from "../../../../../../shared/Constants";
 import './EffectsAndConditions.style.scss'
+import { EffectEditor } from "../EffectEditor/EffectEditor.component";
 
 interface IProps {
     previousStep: () => void,
@@ -13,7 +29,10 @@ interface IProps {
 
 interface IState {
     effects: Effect[],
-    selectedEffectIndex: number
+    selectedEffectIndex: number,
+    confirmDeleteOpen: boolean,
+    confirmDialogIndex: number,
+    editEffectIndex: number
 }
 
 export class EffectsAndConditions extends React.Component<IProps, IState>{
@@ -22,7 +41,10 @@ export class EffectsAndConditions extends React.Component<IProps, IState>{
 
         this.state = {
             effects: [],
-            selectedEffectIndex: -1
+            selectedEffectIndex: -1,
+            confirmDeleteOpen: false,
+            confirmDialogIndex: -1,
+            editEffectIndex: -1
         }
     }
 
@@ -30,55 +52,90 @@ export class EffectsAndConditions extends React.Component<IProps, IState>{
         this.setState({ effects: [...this.state.effects, new Effect()], selectedEffectIndex: this.state.effects.length })
     }
 
+    onDeleteEffectFromList(): void {
+        const modifiedEffects = this.state.effects.slice()
+        modifiedEffects.splice(this.state.confirmDialogIndex, 1)
+
+        this.setState({ effects: modifiedEffects, confirmDialogIndex: -1, confirmDeleteOpen: false })
+    }
+
     render() {
-        const { effects } = this.state
+        const { effects, confirmDeleteOpen, editEffectIndex } = this.state
         const { nextStep, previousStep } = this.props
 
         return (
             <main id="effect-and-condition-wrapper">
-                <List className="effects-list">
-                    {
-                        effects.map(effect => (
-                            <ListItem>
-                                <ListItemIcon>
-                                    <RemoveIcon />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary="Single-line item"
-                                    secondary={'Secondary text'}
-                                />
-                                <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="delete">
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        ))
-                    }
+                <span className="instruction">
+                    * Here you can create/edit the effects that the new trait will have, each effect can have it's own conditions and modifiers, a single trait can have up to 5 effects.
+                </span>
+
+                <section className="effect-list-wrapper">
+                    <List className="effects-list">
+                        {
+                            effects.map((effect, index) => (
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <RemoveIcon />
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        primary="Single-line item"
+                                        secondary={'Secondary text'}
+                                    />
+                                    <ListItemSecondaryAction>
+                                        <IconButton edge="end" onClick={() => this.setState({ confirmDeleteOpen: true, confirmDialogIndex: index })}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                        <IconButton onClick={() => this.setState({ editEffectIndex: index })}>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            ))
+                        }
+                    </List>
 
                     {
-                        effects.length < 10
+                        effects.length < MAX_NUMBER_OF_TRAITS
                             ?
-                            <ListItem>
-                                <ListItemText
-                                    primary="Add New Effect"
-                                    secondary={'A Trait can have up to 10 effects'}
-                                />
-                                <ListItemSecondaryAction>
-                                    <IconButton onClick={this.onNewEffectAddedToList.bind(this)}>
-                                        <AddIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>
+                            <Button onClick={this.onNewEffectAddedToList.bind(this)}>
+                                <div>
+                                    Add new Effect
+                                </div>
+                                <AddIcon />
+                            </Button>
                             :
                             null
                     }
-                </List>
+                </section>
+
+                <EffectEditor effect={effects[editEffectIndex]} />
 
                 <div className="buttons-wrapper">
                     <Button color="primary" onClick={previousStep}> PREVIOUS </Button>
                     <Button color="primary" onClick={nextStep}> NEXT </Button>
                 </div>
+
+                <Dialog
+                    open={confirmDeleteOpen}
+                    onClose={() => this.setState({ confirmDeleteOpen: false })}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">Delete effect confirmation</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to delete this effect? This operation cannot be reverted
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setState({ confirmDeleteOpen: false })} color="primary">
+                            CANCEL
+                        </Button>
+                        <Button onClick={this.onDeleteEffectFromList.bind(this)} color="primary" variant="contained" >
+                            DELETE
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </main>
         );
     }
