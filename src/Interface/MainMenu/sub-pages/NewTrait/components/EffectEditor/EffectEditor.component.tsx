@@ -1,5 +1,6 @@
 import React from "react";
 import { Effect } from "../../../../../../shared/models/base/Effect.model";
+import { ConditionTreeEditor } from "../../../../../Shared/ConditionTreeEditor.component";
 
 interface IProps {
     effect: Effect
@@ -12,9 +13,12 @@ export class EffectEditor extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <div>
-                Yolo
-            </div>
+            <React.Fragment>
+                <ConditionTreeEditor />
+                <div>
+                    Yolo
+                </div>
+            </React.Fragment>
         )
     }
 }

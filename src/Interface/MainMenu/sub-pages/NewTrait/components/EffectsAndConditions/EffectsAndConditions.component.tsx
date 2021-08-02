@@ -48,6 +48,12 @@ export class EffectsAndConditions extends React.Component<IProps, IState>{
         }
     }
 
+    componentDidMount() {
+        if (this.state.effects.length === 0) {
+            this.onNewEffectAddedToList()
+        }
+    }
+
     onNewEffectAddedToList(): void {
         this.setState({ effects: [...this.state.effects, new Effect()], selectedEffectIndex: this.state.effects.length })
     }
