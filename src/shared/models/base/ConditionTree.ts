@@ -1,4 +1,6 @@
 import { LogicOperator } from "../enums/LogicOperator.enum";
+import { NodeFeedback } from './ConditionFeedback';
+import { Condition } from "./Condition.model";
 
 export class Node {
     //The logic operator of this node, will define how the evaluation of the nodes conditions/children will be evaluated
@@ -8,20 +10,19 @@ export class Node {
     //The list of conditions of this specific node, together with the logic operator, will define the evaluation of this node
     public conditions: Condition[] = [];
 
-    public NodeFeedback CheckIfNodeIsValid() {
+    public CheckIfNodeIsValid(): NodeFeedback {
+        const nodeFeedback: NodeFeedback = new NodeFeedback();
 
-        NodeFeedback nodeFeedback = new NodeFeedback();
+        nodeFeedback.conditionFeedbacks = this.conditions.map(condition => condition.EvaluateConditionHealth());
+        nodeFeedback.childrenFeedback = this.children.map(childNode => childNode.CheckIfNodeIsValid());
 
-        nodeFeedback.conditionFeedbacks = this.conditions.Select(condition => condition.EvalueConditionHealth()).ToList();
-        nodeFeedback.childrenFeedback = this.children.Select(childNode => childNode.CheckIfNodeIsValid()).ToList();
-
-        int childrenSum = this.children.Count + this.conditions.Count;
+        const childrenSum = this.children.length + this.conditions.length;
         switch (this.logicOperator) {
             case LogicOperator.IF:
-                if (childrenSum == 1) {
+                if (childrenSum === 1) {
                     nodeFeedback.valid = true;
                 }
-                else if (childrenSum == 0) {
+                else if (childrenSum === 0) {
                     nodeFeedback.valid = false;
                     nodeFeedback.message = "The Node with logic operator IF need to have one condition/child node to be valid";
                 }
@@ -32,11 +33,11 @@ export class Node {
                 break;
             case LogicOperator.AND:
             case LogicOperator.OR:
-                if (childrenSum == 1) {
+                if (childrenSum === 1) {
                     nodeFeedback.valid = false;
                     nodeFeedback.message = "The node with logic operator AND/OR need to have at least two conditions/child nodes to be valid";
                 }
-                else if (childrenSum == 0) {
+                else if (childrenSum === 0) {
                     nodeFeedback.valid = false;
                     nodeFeedback.message = "The Node with logic operator AND/OR need to have at least two conditions/child nodes to be valid";
                 } else {

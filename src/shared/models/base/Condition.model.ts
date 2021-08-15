@@ -1,4 +1,6 @@
 import { LogicOperator } from "../enums/LogicOperator.enum";
+import { ConditionHealthCheckRepository } from "../metadata/ConditionHealth.metadata";
+import { Feedback } from "./ConditionFeedback";
 
 export enum ConditionInitiator {
     UNDEFINED,
@@ -94,7 +96,8 @@ export class Condition {
     public initiator: ConditionInitiator = ConditionInitiator.UNDEFINED
     public agent: ConditionAgent = ConditionAgent.UNDEFINED
 
-    public selector: NumericSelector | TraitSelector = 0
+    public traitSelector: TraitSelector = TraitSelector.UNDEFINED
+    public numericSelector: NumericSelector = NumericSelector.UNDEFINED
     /*
         Parameters will represent different values depending the type of initiator that the condition has
         Status: Up to 3 parameters [Status Enumerator, First Input, Second Input]
@@ -107,72 +110,19 @@ export class Condition {
     */
     public parameters: number[] = []
 
-
-
-    public EvaluateCondition(Character self, List <Character > targets, int ? world = null): boolean {
-    return true;
-}
-
-    public Feedback EvalueConditionHealth() {
-    Feedback conditionFeedback = new Feedback();
-
-    switch (this.initiator) {
-        case Initiator.ATTRIBUTE_RANGE:
-            if (this.agent == Agent.UNDEFINED) {
-                conditionFeedback.message = "The attribute range initiator demands the selection of a agent for comparation";
-                conditionFeedback.valid = false;
-                return conditionFeedback;
-            }
-
-            Feedback attrSelectorFeedback = CheckIfNumericSelectorIsValid(this.attrRange.attrRangeParameters, this.attrRange.selector);
-            if (attrSelectorFeedback != null) {
-                return (Feedback)attrSelectorFeedback;
-            }
-            else {
-                conditionFeedback.valid = true;
-                return conditionFeedback;
-            }
-        default:
-            conditionFeedback.valid = false;
-            conditionFeedback.message = "The condition needs to have an initiator";
-            Debug.Log("Unknown initiator" + this.initiator);
-            return conditionFeedback;
+    //Verify the health of the condition metadata, not if the condition actually evaluates to true or false with in-game attributes.
+    public EvaluateConditionHealth(): Feedback {
+        if (ConditionHealthCheckRepository.hasOwnProperty(this.initiator)) {
+            return ConditionHealthCheckRepository[this.initiator](this);
+        } else {
+            return new Feedback(false, "The condition needs to have an initiator");
+        }
     }
-}
 
-    public Feedback CheckIfNumericSelectorIsValid(int[] parameters, NumericSelector numericSelector) {
-    int parametersLenght = parameters != null ? parameters.Length : 0;
-
-    switch (numericSelector) {
-        case NumericSelector.BETWEEN:
-            //The first parameters is always an id, the second and third should be the range
-            if (parametersLenght > 3) {
-                return null;
-            }
-            else {
-                return new Feedback() {
-                    message = "The selector between needs to have the lower and upper range limit declared on the inputs",
-                        valid = false
-                };
-            }
-        case NumericSelector.BIGGER_THAN_SELF:
-        case NumericSelector.SMALLER_THAN:
-        case NumericSelector.EXACTLY:
-            if (parametersLenght > 1) {
-                return null;
-            }
-            else {
-                return new Feedback() {
-                    message = "The selector between needs to have the lower and upper range limit declared on the inputs",
-                        valid = false
-                };
-            }
-        default:
-            return new Feedback() {
-                message = "The numeric selector needs to be selected to allow the condition to be valid",
-                    valid = false
-            };
-
+    //Verify the condition evaluation in game
+    public EvaluateCondition(): boolean {
+        //TODO
+        return true;
     }
-}
+    
 }

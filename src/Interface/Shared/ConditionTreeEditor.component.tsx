@@ -1,4 +1,5 @@
 import React from "react";
+import { Condition } from "../../shared/models/base/Condition.model";
 
 interface IProps {
 }
