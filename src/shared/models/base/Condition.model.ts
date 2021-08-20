@@ -1,20 +1,6 @@
-import { LogicOperator } from "../enums/LogicOperator.enum";
+import { ConditionInitiator } from "../enums/ConditionInitiator.enum";
 import { ConditionHealthCheckRepository } from "../metadata/ConditionHealth.metadata";
 import { Feedback } from "./ConditionFeedback";
-
-export enum ConditionInitiator {
-    UNDEFINED,
-
-    STATUS_RANGE,
-    SKILL_RANGE,
-    TRAIT,
-    EVENT_FLAGGED,
-    LOCATION,
-    TIME,
-    RELATIONSHIP,
-
-    MAX_TYPES
-}
 
 export enum ConditionAgent {
     UNDEFINED,
@@ -92,12 +78,13 @@ export enum RelationshipSelector {
 
 export class Condition {
 
-    public logicOperator: LogicOperator = LogicOperator.IF
     public initiator: ConditionInitiator = ConditionInitiator.UNDEFINED
     public agent: ConditionAgent = ConditionAgent.UNDEFINED
 
     public traitSelector: TraitSelector = TraitSelector.UNDEFINED
     public numericSelector: NumericSelector = NumericSelector.UNDEFINED
+
+    public selector: number = 0;
     /*
         Parameters will represent different values depending the type of initiator that the condition has
         Status: Up to 3 parameters [Status Enumerator, First Input, Second Input]

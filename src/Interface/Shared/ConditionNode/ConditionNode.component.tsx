@@ -3,8 +3,9 @@ import React from "react";
 import { Node } from "../../../shared/models/base/ConditionTree";
 import { LogicOperator } from "../../../shared/models/enums/LogicOperator.enum";
 import AddIcon from '@material-ui/icons/Add';
-import './ConditionNode.style.scss'
 import { ConditionLine } from "../ConditionLine/ConditionLine.component";
+import { Condition } from "../../../shared/models/base/Condition.model";
+import './ConditionNode.style.scss'
 
 interface IProps {
     conditionNode: Node,
@@ -16,6 +17,14 @@ interface IState {
 }
 
 export class ConditionNode extends React.Component<IProps, IState> {
+
+    componentDidMount() {
+        const newNode: Node = Object.assign({}, this.props.conditionNode)
+
+        newNode.conditions = [new Condition()]
+
+        this.props.onChange(this.props.index, newNode)
+    }
 
     private onLogicOperatorChange(event: React.ChangeEvent<{ value: unknown }>) {
         const newNode: Node = Object.assign({}, this.props.conditionNode)
@@ -29,6 +38,14 @@ export class ConditionNode extends React.Component<IProps, IState> {
         const newNode: Node = Object.assign({}, this.props.conditionNode)
 
         newNode.children[index] = node;
+
+        this.props.onChange(this.props.index, newNode)
+    }
+
+    private onConditionChange(index: number, condition: Condition) {
+        const newNode: Node = Object.assign({}, this.props.conditionNode)
+
+        newNode.conditions[index] = condition
 
         this.props.onChange(this.props.index, newNode)
     }
@@ -73,8 +90,8 @@ export class ConditionNode extends React.Component<IProps, IState> {
 
                 <div className="node-children">
                     {
-                        conditionNode.conditions.map(conditionLine => {
-                            return <ConditionLine />
+                        conditionNode.conditions.map((conditionLine, index) => {
+                            return <ConditionLine index={index} conditionLine={conditionLine} onChange={this.onConditionChange.bind(this)} />
                         })
                     }
 

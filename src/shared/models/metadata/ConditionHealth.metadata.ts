@@ -1,8 +1,9 @@
-import { Condition, ConditionAgent, ConditionInitiator, NumericSelector } from "../base/Condition.model";
+import { Condition, ConditionAgent, NumericSelector } from "../base/Condition.model";
 import { Feedback } from "../base/ConditionFeedback";
+import { ConditionInitiator } from "../enums/ConditionInitiator.enum";
 
 export const ConditionHealthCheckRepository: { [conditionInitiator: number]: (condition: Condition) => Feedback } = {
-    [ConditionInitiator.SKILL_RANGE]: (condition: Condition) => {
+    [ConditionInitiator.SKILL_RANGE as number]: (condition: Condition) => {
         const conditionFeedback = new Feedback();
 
         if (condition.agent === ConditionAgent.UNDEFINED) {
