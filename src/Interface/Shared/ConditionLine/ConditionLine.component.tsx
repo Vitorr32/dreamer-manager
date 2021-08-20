@@ -11,7 +11,9 @@ export class ConditionLine extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <div></div>
+            <div>
+
+            </div>
         )
     }
 }

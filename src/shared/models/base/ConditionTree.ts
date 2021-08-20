@@ -55,5 +55,14 @@ export class Node {
 }
 
 export class ConditionTree {
-    //TODO: Import from Ruler Code
+    public root: Node = new Node();
+
+    public EvaluateConditionTree(): boolean {
+        return true;
+    }
+
+    public EvaluateConditionTreeHealth(): NodeFeedback {
+        return this.root.CheckIfNodeIsValid();
+    }
+
 }
