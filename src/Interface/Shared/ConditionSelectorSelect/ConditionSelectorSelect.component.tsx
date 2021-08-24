@@ -10,7 +10,7 @@ interface IProps {
     onChange: (condition: Condition) => void,
 }
 
-export function ConditionInitiatorSelect(props: IProps) {
+export function ConditionSelectorSelect(props: IProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { t } = useTranslation();
 

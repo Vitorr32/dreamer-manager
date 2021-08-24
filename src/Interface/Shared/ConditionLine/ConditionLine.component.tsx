@@ -1,10 +1,6 @@
-import { FormControl, Select, MenuItem, InputLabel, List, ListSubheader, ListItem, ListItemIcon, Button, Menu, ListItemText } from "@material-ui/core";
 import React from "react";
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import SendIcon from '@material-ui/icons/SendOutlined';
 import { Condition } from "../../../shared/models/base/Condition.model";
 import './ConditionLine.style.scss';
-import { ConditionInitiator } from "../../../shared/models/enums/ConditionInitiator.enum";
 import { ConditionInitiatorSelect } from "../ConditionInitiatorSelect/ConditionInitiatorSelect.component";
 
 interface IProps {
@@ -25,11 +21,19 @@ export class ConditionLine extends React.Component<IProps, IState> {
         }
     }
 
+    public componentDidUpdate() {
+        this.updateRenderedElements(this.props.conditionLine)
+    }
+
     public componentDidMount(): void {
 
     }
 
-    private onInitiatorChange(conditionInitiator: ConditionInitiator, selector: number): void {
+    private onInitiatorChange(condition: Condition): void {
+        this.props.onChange(this.props.index, condition)
+    }
+
+    private updateRenderedElements(condition: Condition): void {
 
     }
 

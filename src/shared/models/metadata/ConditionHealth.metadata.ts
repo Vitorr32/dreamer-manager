@@ -2,8 +2,8 @@ import { Condition, ConditionAgent, NumericSelector } from "../base/Condition.mo
 import { Feedback } from "../base/ConditionFeedback";
 import { ConditionInitiator } from "../enums/ConditionInitiator.enum";
 
-export const ConditionHealthCheckRepository: { [conditionInitiator: number]: (condition: Condition) => Feedback } = {
-    [ConditionInitiator.SKILL_RANGE as number]: (condition: Condition) => {
+export const ConditionHealthCheckRepository: { [conditionInitiator: string]: (condition: Condition) => Feedback } = {
+    [ConditionInitiator.SKILL_RANGE]: (condition: Condition) => {
         const conditionFeedback = new Feedback();
 
         if (condition.agent === ConditionAgent.UNDEFINED) {
@@ -12,7 +12,7 @@ export const ConditionHealthCheckRepository: { [conditionInitiator: number]: (co
             return conditionFeedback;
         }
 
-        const attrSelectorFeedback: Feedback | null = CheckIfNumericSelectorIsValid(condition.parameters, condition.numericSelector);
+        const attrSelectorFeedback: Feedback | null = CheckIfNumericSelectorIsValid(condition.parameters, condition.selector as NumericSelector);
         if (attrSelectorFeedback !== null) {
             return attrSelectorFeedback
         } else {

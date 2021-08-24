@@ -18,16 +18,14 @@ export enum ConditionAgent {
 }
 
 export enum NumericSelector {
-    UNDEFINED,
+    UNDEFINED = 'model.undefined',
 
-    BIGGER_THAN,
-    SMALLER_THAN,
-    BIGGER_THAN_SELF,
-    BIGGER_THAN_TARGET,
-    BETWEEN,
-    EXACTLY,
-
-    MAX_NUMERIC_SELECTORS
+    BIGGER_THAN = 'model.condition.initiator.selector.bigger_than',
+    SMALLER_THAN = 'model.condition.initiator.selector.smaller_than',
+    BIGGER_THAN_SELF = 'model.condition.initiator.selector.bigger_than_self',
+    BIGGER_THAN_TARGET = 'model.condition.initiator.selector.bigger_than_self',
+    BETWEEN = 'model.condition.initiator.selector.between',
+    EXACTLY = 'model.condition.initiator.selector.exactly'
 }
 
 export enum TraitSelector {
@@ -80,11 +78,8 @@ export class Condition {
 
     public initiator: ConditionInitiator = ConditionInitiator.UNDEFINED
     public agent: ConditionAgent = ConditionAgent.UNDEFINED
-
-    public traitSelector: TraitSelector = TraitSelector.UNDEFINED
-    public numericSelector: NumericSelector = NumericSelector.UNDEFINED
-
-    public selector: number = 0;
+    //A number representing any of the selectors of the individual Initiator
+    public selector: string | null = null;
     /*
         Parameters will represent different values depending the type of initiator that the condition has
         Status: Up to 3 parameters [Status Enumerator, First Input, Second Input]
@@ -111,5 +106,5 @@ export class Condition {
         //TODO
         return true;
     }
-    
+
 }
