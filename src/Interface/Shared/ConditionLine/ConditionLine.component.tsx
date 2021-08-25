@@ -2,6 +2,7 @@ import React from "react";
 import { Condition } from "../../../shared/models/base/Condition.model";
 import './ConditionLine.style.scss';
 import { ConditionInitiatorSelect } from "../ConditionInitiatorSelect/ConditionInitiatorSelect.component";
+import { ConditionSelectorSelect } from "../ConditionSelectorSelect/ConditionSelectorSelect.component";
 
 interface IProps {
     conditionLine: Condition,
@@ -29,7 +30,7 @@ export class ConditionLine extends React.Component<IProps, IState> {
 
     }
 
-    private onInitiatorChange(condition: Condition): void {
+    private onSubComponentChangeOfCondition(condition: Condition): void {
         this.props.onChange(this.props.index, condition)
     }
 
@@ -42,7 +43,9 @@ export class ConditionLine extends React.Component<IProps, IState> {
 
         return (
             <section className="condition-line-wrapper">
-                <ConditionInitiatorSelect condition={conditionLine} onChange={this.onInitiatorChange.bind(this)} />
+                <ConditionInitiatorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
+                <ConditionSelectorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
+
             </section>
         )
     }

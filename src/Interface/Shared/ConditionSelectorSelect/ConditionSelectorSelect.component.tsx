@@ -1,6 +1,6 @@
 import { Button, List, ListItem, ListItemText, Menu } from "@material-ui/core";
 import React from "react";
-import { Condition } from "../../../shared/models/base/Condition.model";
+import { Condition, EventFlagSelector, LocationSelector, NumericSelector, RelationshipSelector, TimeSelector, TraitSelector } from "../../../shared/models/base/Condition.model";
 import { ConditionInitiator } from "../../../shared/models/enums/ConditionInitiator.enum";
 import { ArrowDropDown } from "@material-ui/icons";
 import { useTranslation } from 'react-i18next';
@@ -14,24 +14,61 @@ export function ConditionSelectorSelect(props: IProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { t } = useTranslation();
 
-    const onItemSelected = (initiator: ConditionInitiator) => {
+    const onItemSelected = (selector: string) => {
         setAnchorEl(null)
 
         const newCondition = Object.assign({}, props.condition)
 
-        newCondition.initiator = initiator
+        newCondition.selector = selector
 
         props.onChange(newCondition)
     }
 
-    return (
+    const renderAppropriateSelector = (condition: Condition): React.ReactElement[] => {
+        let enumType: any;
+        switch (condition.initiator) {
+            case ConditionInitiator.STATUS_RANGE:
+            case ConditionInitiator.SKILL_RANGE:
+                enumType = NumericSelector
+                break
+            case ConditionInitiator.TRAIT:
+                enumType = TraitSelector
+                break
+            case ConditionInitiator.EVENT_FLAGGED:
+                enumType = EventFlagSelector
+                break
+            case ConditionInitiator.LOCATION:
+                enumType = LocationSelector
+                break
+            case ConditionInitiator.RELATIONSHIP:
+                enumType = RelationshipSelector
+                break
+            case ConditionInitiator.TIME:
+                enumType = TimeSelector
+                break
+            default:
+                console.error("Unknown initiator set " + condition.initiator)
+                return []
+
+        }
+
+        return Object.values(enumType).slice(1).map(selector => {
+            return (
+                <ListItem button onClick={_ => onItemSelected(selector as string)}>
+                    <ListItemText primary={t(selector as string)} secondary="Character static stats" />
+                </ListItem>
+            )
+        })
+    }
+
+    return props.condition.initiator !== ConditionInitiator.UNDEFINED ? (
         <React.Fragment>
             <Button
                 variant="contained"
                 endIcon={<ArrowDropDown />}
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}
             >
-                {props.condition.initiator === ConditionInitiator.UNDEFINED ? 'Condition Initiator' : t(props.condition.initiator)}
+                {t(props.condition.initiator)}
             </Button>
             <Menu
                 id="condition-initiator-menu"
@@ -44,17 +81,9 @@ export function ConditionSelectorSelect(props: IProps) {
                     component="nav"
                     aria-labelledby="nested-list-subheader"
                 >
-                    {
-                        Object.values(ConditionInitiator).slice(1).map(initiator => {
-                            return (
-                                <ListItem button onClick={_ => onItemSelected(initiator)}>
-                                    <ListItemText primary={t(initiator)} secondary="Character static stats" />
-                                </ListItem>
-                            )
-                        })
-                    }
+                    {renderAppropriateSelector(props.condition)}
                 </List>
             </Menu>
         </React.Fragment>
-    )
+    ) : null
 }

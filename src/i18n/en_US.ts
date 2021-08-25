@@ -27,6 +27,24 @@ export const en_US = {
                         bigger_than_target: 'bigger than target',
                         between: 'between',
                         exactly: 'exactly'
+                    },
+                    agent: {
+                        self: 'Self',
+                        target: 'Target',
+                        specific: 'Specific',
+                        self_target: 'Self and Target',
+                        self_specific: 'Self and Specific Character',
+                        specific_specific: 'Two specific characters',
+                        player: 'Player',
+                        global: 'Global'
+                    },
+                    trait: {
+                        has: 'Has',
+                        dont: 'Don\'t'
+                    },
+                    event: {
+                        triggered: 'Triggered',
+                        not_triggered: 'Not Triggered'
                     }
                 }
             }

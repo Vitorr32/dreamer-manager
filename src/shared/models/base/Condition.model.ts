@@ -3,56 +3,48 @@ import { ConditionHealthCheckRepository } from "../metadata/ConditionHealth.meta
 import { Feedback } from "./ConditionFeedback";
 
 export enum ConditionAgent {
-    UNDEFINED,
+    UNDEFINED = 'model.undefined',
 
-    SELF,
-    TARGET,
-    SPECIFIC,
-    SELF_TARGET,
-    SELF_SPECIFIC,
-    SPECIFIC_SPECIFIC,
-    PLAYER,
-    GLOBAL,
-
-    MAX_SPECIFICATORS
+    SELF = 'model.condition.selector.agent.self',
+    TARGET = 'model.condition.selector.agent.target',
+    SPECIFIC = 'model.condition.selector.agent.specific',
+    SELF_TARGET = 'model.condition.selector.agent.self_target',
+    SELF_SPECIFIC = 'model.condition.selector.agent.self_specific',
+    SPECIFIC_SPECIFIC = 'model.condition.selector.agent.specific_specific',
+    PLAYER = 'model.condition.selector.agent.player',
+    GLOBAL = 'model.condition.selector.agent.global'
 }
 
 export enum NumericSelector {
     UNDEFINED = 'model.undefined',
 
-    BIGGER_THAN = 'model.condition.initiator.selector.bigger_than',
-    SMALLER_THAN = 'model.condition.initiator.selector.smaller_than',
-    BIGGER_THAN_SELF = 'model.condition.initiator.selector.bigger_than_self',
-    BIGGER_THAN_TARGET = 'model.condition.initiator.selector.bigger_than_self',
-    BETWEEN = 'model.condition.initiator.selector.between',
-    EXACTLY = 'model.condition.initiator.selector.exactly'
+    BIGGER_THAN = 'model.condition.selector.numeric.bigger_than',
+    SMALLER_THAN = 'model.condition.selector.numeric.smaller_than',
+    BIGGER_THAN_SELF = 'model.condition.selector.numeric.bigger_than_self',
+    BIGGER_THAN_TARGET = 'model.condition.selector.numeric.bigger_than_self',
+    BETWEEN = 'model.condition.selector.numeric.between',
+    EXACTLY = 'model.condition.selector.numeric.exactly'
 }
 
 export enum TraitSelector {
-    UNDEFINED,
+    UNDEFINED = 'model.undefined',
 
-    HAS,
-    DONT,
-
-    MAX_SELECTORS
+    HAS = 'model.condition.selector.trait.has',
+    DONT = 'model.condition.selector.trait.dont'
 }
 
 export enum EventFlagSelector {
-    UNDEFINED,
+    UNDEFINED = 'model.undefined',
 
-    TRIGGERED,
-    NOT_TRIGGERED,
-
-    MAX_SELECTORS
+    TRIGGERED = 'model.condition.selector.event.triggered',
+    NOT_TRIGGERED = 'model.condition.selector.event.not_triggered'
 }
 
 export enum LocationSelector {
     UNDEFINED,
 
     IS_AT,
-    IS_NOT_AT,
-
-    MAX_SELECTORS
+    IS_NOT_AT
 }
 
 export enum TimeSelector {
@@ -60,18 +52,14 @@ export enum TimeSelector {
 
     EXACTLY,
     BEFORE,
-    AFTER,
-
-    MAX_SELECTORS
+    AFTER
 }
 
 export enum RelationshipSelector {
     UNDEFINED,
 
     STATUS,
-    KNOWLEDGE,
-
-    MAX_SELECTORS
+    KNOWLEDGE
 }
 
 export class Condition {
@@ -79,7 +67,7 @@ export class Condition {
     public initiator: ConditionInitiator = ConditionInitiator.UNDEFINED
     public agent: ConditionAgent = ConditionAgent.UNDEFINED
     //A number representing any of the selectors of the individual Initiator
-    public selector: string | null = null;
+    public selector: string | null = NumericSelector.UNDEFINED;
     /*
         Parameters will represent different values depending the type of initiator that the condition has
         Status: Up to 3 parameters [Status Enumerator, First Input, Second Input]
