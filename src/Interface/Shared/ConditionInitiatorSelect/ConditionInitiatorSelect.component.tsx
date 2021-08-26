@@ -17,8 +17,7 @@ export function ConditionInitiatorSelect(props: IProps) {
     const onItemSelected = (initiator: ConditionInitiator) => {
         setAnchorEl(null)
 
-        const newCondition = Object.assign({}, props.condition)
-
+        const newCondition = new Condition()
         newCondition.initiator = initiator
 
         props.onChange(newCondition)
@@ -31,7 +30,7 @@ export function ConditionInitiatorSelect(props: IProps) {
                 endIcon={<ArrowDropDown />}
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}
             >
-                {props.condition.initiator === ConditionInitiator.UNDEFINED ? 'Condition Initiator' : t(props.condition.initiator)}
+                {props.condition.initiator === ConditionInitiator.UNDEFINED ? t('interface.editor.condition.initiator') : t(props.condition.initiator)}
             </Button>
             <Menu
                 id="condition-initiator-menu"
@@ -47,7 +46,7 @@ export function ConditionInitiatorSelect(props: IProps) {
                     {
                         Object.values(ConditionInitiator).slice(1).map(initiator => {
                             return (
-                                <ListItem button onClick={_ => onItemSelected(initiator)}>
+                                <ListItem key={'condition_initiator_' + initiator} button onClick={_ => onItemSelected(initiator)}>
                                     <ListItemText primary={t(initiator)} secondary="Character static stats" />
                                 </ListItem>
                             )

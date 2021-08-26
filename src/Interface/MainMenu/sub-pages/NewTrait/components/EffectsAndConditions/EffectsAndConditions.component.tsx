@@ -79,7 +79,7 @@ export class EffectsAndConditions extends React.Component<IProps, IState>{
                     <List className="effects-list">
                         {
                             effects.map((effect, index) => (
-                                <ListItem>
+                                <ListItem key={`effect_${index}`}>
                                     <ListItemIcon>
                                         <RemoveIcon />
                                     </ListItemIcon>

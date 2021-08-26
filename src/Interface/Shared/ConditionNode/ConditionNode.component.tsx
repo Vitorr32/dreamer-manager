@@ -53,7 +53,6 @@ export class ConditionNode extends React.Component<IProps, IState> {
     render() {
         const { conditionNode, depth } = this.props;
 
-        console.log(conditionNode)
         return (
             <section className="condition-node-wrapper">
                 <FormControl variant="filled" style={{ width: '150px' }}>
@@ -91,13 +90,13 @@ export class ConditionNode extends React.Component<IProps, IState> {
                 <div className="node-children">
                     {
                         conditionNode.conditions.map((conditionLine, index) => {
-                            return <ConditionLine index={index} conditionLine={conditionLine} onChange={this.onConditionChange.bind(this)} />
+                            return <ConditionLine key={`condition_line_${depth}_${index}`} index={index} conditionLine={conditionLine} onChange={this.onConditionChange.bind(this)} />
                         })
                     }
 
                     {
                         conditionNode.children.map((childNode, index) => {
-                            return <ConditionNode depth={depth + 1} onChange={this.onChildNodeChange.bind(this)} index={index} conditionNode={childNode} />
+                            return <ConditionNode key={`condition_node_${depth}_${index}`} depth={depth + 1} onChange={this.onChildNodeChange.bind(this)} index={index} conditionNode={childNode} />
                         })
                     }
                 </div>

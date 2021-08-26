@@ -21,7 +21,7 @@ export enum NumericSelector {
     BIGGER_THAN = 'model.condition.selector.numeric.bigger_than',
     SMALLER_THAN = 'model.condition.selector.numeric.smaller_than',
     BIGGER_THAN_SELF = 'model.condition.selector.numeric.bigger_than_self',
-    BIGGER_THAN_TARGET = 'model.condition.selector.numeric.bigger_than_self',
+    BIGGER_THAN_TARGET = 'model.condition.selector.numeric.bigger_than_target',
     BETWEEN = 'model.condition.selector.numeric.between',
     EXACTLY = 'model.condition.selector.numeric.exactly'
 }
@@ -41,10 +41,10 @@ export enum EventFlagSelector {
 }
 
 export enum LocationSelector {
-    UNDEFINED,
+    UNDEFINED = 'model.undefined',
 
-    IS_AT,
-    IS_NOT_AT
+    IS_AT = 'model.condition.selector.location.at',
+    IS_NOT_AT = 'model.condition.selector.location.not_at',
 }
 
 export enum TimeSelector {

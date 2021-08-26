@@ -54,7 +54,7 @@ export function ConditionSelectorSelect(props: IProps) {
 
         return Object.values(enumType).slice(1).map(selector => {
             return (
-                <ListItem button onClick={_ => onItemSelected(selector as string)}>
+                <ListItem key={'condition_selector_' + selector} button onClick={_ => onItemSelected(selector as string)}>
                     <ListItemText primary={t(selector as string)} secondary="Character static stats" />
                 </ListItem>
             )
@@ -68,7 +68,7 @@ export function ConditionSelectorSelect(props: IProps) {
                 endIcon={<ArrowDropDown />}
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}
             >
-                {t(props.condition.initiator)}
+                {props.condition.selector !== NumericSelector.UNDEFINED ? t(props.condition.selector as string) : t('interface.editor.condition.selector')}
             </Button>
             <Menu
                 id="condition-initiator-menu"

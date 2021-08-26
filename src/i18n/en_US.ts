@@ -3,7 +3,8 @@ export const en_US = {
         interface: {
             editor: {
                 condition: {
-                    initiator: 'Condition Initiator Selector'
+                    initiator: 'Condition Initiator Selector',
+                    selector: 'Selector Specificator'
                 }
             }
         },
@@ -45,6 +46,10 @@ export const en_US = {
                     event: {
                         triggered: 'Triggered',
                         not_triggered: 'Not Triggered'
+                    },
+                    location: {
+                        at: 'Is At',
+                        not_at : 'Not At'
                     }
                 }
             }

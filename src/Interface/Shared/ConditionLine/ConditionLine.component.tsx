@@ -1,8 +1,10 @@
 import React from "react";
-import { Condition } from "../../../shared/models/base/Condition.model";
+import { Condition, NumericSelector } from "../../../shared/models/base/Condition.model";
 import './ConditionLine.style.scss';
 import { ConditionInitiatorSelect } from "../ConditionInitiatorSelect/ConditionInitiatorSelect.component";
 import { ConditionSelectorSelect } from "../ConditionSelectorSelect/ConditionSelectorSelect.component";
+import { TextField } from "@material-ui/core";
+import { NumericSelectorParameterInput } from "../NumericSelector/NumericSelector.component";
 
 interface IProps {
     conditionLine: Condition,
@@ -22,10 +24,6 @@ export class ConditionLine extends React.Component<IProps, IState> {
         }
     }
 
-    public componentDidUpdate() {
-        this.updateRenderedElements(this.props.conditionLine)
-    }
-
     public componentDidMount(): void {
 
     }
@@ -34,8 +32,25 @@ export class ConditionLine extends React.Component<IProps, IState> {
         this.props.onChange(this.props.index, condition)
     }
 
-    private updateRenderedElements(condition: Condition): void {
+    private onParameterChange(index: number, value: number) {
 
+    }
+
+    private renderSelectorParameters(condition: Condition): React.ReactElement | null {
+        switch (condition.selector) {
+            case NumericSelector.BETWEEN:
+            case NumericSelector.BIGGER_THAN:
+            case NumericSelector.BIGGER_THAN_SELF:
+            case NumericSelector.BIGGER_THAN_TARGET:
+            case NumericSelector.SMALLER_THAN:
+            case NumericSelector.EXACTLY:
+                return <NumericSelectorParameterInput condition={condition} onChange={this.onParameterChange.bind(this)} />
+            case NumericSelector.UNDEFINED:
+                return null
+            default:
+                console.error('Unknown selector for the parameter rendering: ' + condition.selector)
+                return null
+        }
     }
 
     render() {
@@ -46,6 +61,9 @@ export class ConditionLine extends React.Component<IProps, IState> {
                 <ConditionInitiatorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
                 <ConditionSelectorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
 
+                {
+                    this.renderSelectorParameters(conditionLine)
+                }
             </section>
         )
     }
