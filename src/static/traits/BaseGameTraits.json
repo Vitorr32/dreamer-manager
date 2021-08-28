@@ -1,0 +1,11 @@
+[
+    {
+        "id": 0,
+        "name": "Explorer",
+        "type": 4,
+        "description": "This character has a knack for exploring and discovering alternative routes when traveling",
+        "effects": [
+            0
+        ]
+    }
+]

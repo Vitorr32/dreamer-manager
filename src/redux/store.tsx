@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
+import databaseReducer from './database/database.reducer'
 
 import gameLoopReducer from './game-loop/game-loop.reducer'
 
 export const store = configureStore({
     reducer: {
-        gameLoop: gameLoopReducer
+        gameLoop: gameLoopReducer,
+        database: databaseReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 })

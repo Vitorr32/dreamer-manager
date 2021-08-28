@@ -6,24 +6,29 @@ import { ArrowDropDown } from "@material-ui/icons";
 import { useTranslation } from 'react-i18next';
 
 interface IProps {
+    range: boolean,
     condition: Condition
-    onChange: (index: number, value: number) => void,
+    onChange: (index: number, value: any) => void,
 }
 
 export function NumericSelectorParameterInput(props: IProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { t } = useTranslation();
 
-    const onParameterChange = (index: number, value: number) => {
-
-    }
-
     return (
         <React.Fragment>
             {/* TODO: SKILL SELECTOR */}
-            <TextField id="filled-basic" label="Filled" type="number" variant="filled" value={props.condition.parameters[1] ? props.condition.parameters[1] : 0} />
-            <span>AND</span>
-            <TextField id="filled-basic" label="Filled" type="number" variant="filled" value={props.condition.parameters[2] ? props.condition.parameters[2] : 0} />
+            <TextField id="filled-basic" label="Filled" type="number" variant="filled" onChange={event => props.onChange(1, event.target.value)} value={props.condition.parameters[1] ? props.condition.parameters[1] : 0} />
+            {
+                props.range
+                    ?
+                    <React.Fragment>
+                        <span>AND</span>
+                        <TextField id="filled-basic" label="Filled" type="number" variant="filled" onChange={event => props.onChange(2, event.target.value)} value={props.condition.parameters[2] ? props.condition.parameters[2] : 0} />
+                    </React.Fragment>
+                    :
+                    null
+            }
         </React.Fragment>
     )
 }

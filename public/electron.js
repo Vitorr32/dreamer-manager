@@ -27,5 +27,9 @@ function createWindow() {
     ipcMain.handle('get-file', async (event, path) => {
         return dialog.showOpenDialog({ properties: ['openFile', 'openDirectory', 'multiSelections'] })
     })
+
+    ipcMain.handle('packaged-check', async () => {
+        return app.isPackaged
+    })
 }
 app.on('ready', createWindow);
