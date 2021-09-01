@@ -29,7 +29,11 @@ function createWindow() {
     })
 
     ipcMain.handle('packaged-check', async () => {
-        return app.isPackaged
+        const RESOURCES_PATH = app.isPackaged
+            ? path.join(process.resourcesPath, 'assets')
+            : path.join(__dirname, '../../../../../assets');
+
+        return RESOURCES_PATH
     })
 }
 app.on('ready', createWindow);

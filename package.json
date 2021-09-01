@@ -41,8 +41,11 @@
       "node_modules/**/*"
     ],
     "directories": {
-      "buildResources": "assets"
-    }
+      "buildResources": "static"
+    },
+    "extraResources": [
+      "./static/**"
+    ]
   },
   "scripts": {
     "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
