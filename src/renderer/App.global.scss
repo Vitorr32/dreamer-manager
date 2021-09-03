@@ -1,0 +1,25 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+
+@import './Interface/MainMenu/sub-pages/NewTrait/NewTrait.style.scss';
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Roboto";
+  color: rgb(58, 58, 58);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
