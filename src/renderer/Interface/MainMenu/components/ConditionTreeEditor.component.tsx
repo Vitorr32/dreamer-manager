@@ -1,7 +1,6 @@
 import React from "react";
 import { ConditionTree, Node } from "../../../shared/models/base/ConditionTree";
-import { ConditionNode } from "../ConditionNode/ConditionNode.component";
-import './ConditionTreeEditor.style.scss'
+import { ConditionNode } from "./ConditionNode.component";
 
 interface IProps {
 }

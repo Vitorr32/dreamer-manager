@@ -1,8 +1,7 @@
 
 import React, { useState } from "react"
 import { FormControl, InputLabel, MenuItem, Select, TextField, FormControlLabel, Switch, Button } from "@material-ui/core"
-import { TraitType } from "../../../../../../shared/models/base/Trait.model";
-import './BasicInfoForm.style.scss';
+import { TraitType } from "renderer/shared/models/base/Trait.model"
 
 interface IProps {
     onBasicInfoSubmit: (name: string, description: string, traitType: TraitType) => void,

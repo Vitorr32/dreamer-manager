@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron';
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import { NewTrait } from '../NewTrait/NewTrait.component';
@@ -7,15 +8,16 @@ interface ITraitEditorProps {
 }
 
 export class TraitEditor extends React.Component<ITraitEditorProps> {
-  // public async openFilePathDialog(): Promise<void> {
-  // const data = await ipcRenderer.invoke('get-file', '/path/to/file');
-  // console.log(data);
-  // }
+  public async openFilePathDialog(): Promise<void> {
+    const data = await window.electron.ipcRenderer.invoke(
+      'get-file',
+      '/path/to/file'
+    );
+    console.log(data);
+  }
 
   render() {
     const { path, url } = this.props.match;
-
-    console.log(path);
 
     return (
       <Switch>
@@ -33,7 +35,7 @@ export class TraitEditor extends React.Component<ITraitEditorProps> {
                 <button>New Trait</button>
               </Link>
 
-              {/* <button onClick={this.openFilePathDialog}>Select File</button> */}
+              <button onClick={this.openFilePathDialog}>Select File</button>
             </div>
           </main>
         </Route>

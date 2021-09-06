@@ -3,9 +3,8 @@ import React from "react";
 import { Node } from "../../../shared/models/base/ConditionTree";
 import { LogicOperator } from "../../../shared/models/enums/LogicOperator.enum";
 import AddIcon from '@material-ui/icons/Add';
-import { ConditionLine } from "../ConditionLine/ConditionLine.component";
 import { Condition } from "../../../shared/models/base/Condition.model";
-import './ConditionNode.style.scss'
+import { ConditionLine } from "./ConditionLine.component";
 
 interface IProps {
     conditionNode: Node,

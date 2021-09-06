@@ -1,10 +1,9 @@
 import React from "react";
 import { Condition, NumericSelector } from "../../../shared/models/base/Condition.model";
-import './ConditionLine.style.scss';
-import { ConditionInitiatorSelect } from "../ConditionInitiatorSelect/ConditionInitiatorSelect.component";
-import { ConditionSelectorSelect } from "../ConditionSelectorSelect/ConditionSelectorSelect.component";
-import { NumericSelectorParameterInput } from "../NumericSelector/NumericSelector.component";
 import { ConditionInitiator } from "../../../shared/models/enums/ConditionInitiator.enum";
+import { ConditionInitiatorSelect } from "./ConditionInitiatorSelect.component";
+import { ConditionSelectorSelect } from "./ConditionSelectorSelect.component";
+import { NumericSelectorParameterInput } from "./NumericSelector.component";
 
 interface IProps {
     conditionLine: Condition,
