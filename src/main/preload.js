@@ -2,8 +2,8 @@ const { contextBridge, ipcRenderer, app } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
   fileSystem: {
-    getFilesFromResources(folderPath = ''){
-      return ipcRenderer.invoke('get-folder-files', folderPath);
+    getFilesFromResourcesDatabase(folderPath = ''){
+      return ipcRenderer.invoke('get-db-files', ['db', folderPath]);
     }
   },
   ipcRenderer: {

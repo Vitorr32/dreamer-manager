@@ -1,7 +1,7 @@
 export class Trait {
-    public traitType?: TraitType
     public id?: string
     public name?: string
+    public traitType?: TraitType
     public description?: string
     public effects?: string[]
     public spritePath?: string
