@@ -28,7 +28,7 @@ export function ConditionSelectorSelect(props: IProps) {
         let enumType: any;
         switch (condition.initiator) {
             case ConditionInitiator.STATUS_RANGE:
-            case ConditionInitiator.SKILL_RANGE:
+            case ConditionInitiator.ATTRIBUTE_RANGE:
                 enumType = NumericSelector
                 break
             case ConditionInitiator.TRAIT:

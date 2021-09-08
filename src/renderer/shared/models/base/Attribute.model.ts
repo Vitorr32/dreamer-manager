@@ -14,5 +14,4 @@ export class Attribute {
     public name?: string;
     //Identifier to find the attribute on search or serialization of JSON
     public id?: string;
-
 }

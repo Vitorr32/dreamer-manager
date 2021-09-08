@@ -1,6 +1,6 @@
 import React from "react";
+import { ConditionTreeEditor } from "renderer/shared/components/condition/ConditionTreeEditor.component";
 import { Effect } from "renderer/shared/models/base/Effect.model";
-import { ConditionTreeEditor } from "../../components/ConditionTreeEditor.component";
 
 interface IProps {
     effect: Effect

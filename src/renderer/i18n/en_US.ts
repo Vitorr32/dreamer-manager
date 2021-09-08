@@ -4,7 +4,9 @@ export const en_US = {
             editor: {
                 condition: {
                     initiator: 'Condition Initiator Selector',
-                    selector: 'Selector Specificator'
+                    selector: 'Selector Specificator',
+                    attr_selector_placeholder: 'Select Attribute',
+                    trait_selector_placeholder: 'Select Trait'
                 }
             }
         },
@@ -13,7 +15,7 @@ export const en_US = {
             condition: {
                 initiator: {
                     status_range: 'Status Range',
-                    skill_range: 'Skill Range',
+                    attr_range: 'Attribute Range',
                     trait: 'Trait',
                     event_flag: 'Event Flag',
                     location: 'Location',

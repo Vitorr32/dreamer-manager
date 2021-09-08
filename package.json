@@ -184,7 +184,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.1.0",
     "mini-css-extract-plugin": "^1.6.0",
-    "node-sass": "^6.0.1",
     "opencollective-postinstall": "^2.0.3",
     "prettier": "^2.2.1",
     "react-refresh": "^0.10.0",
@@ -234,18 +233,8 @@
   },
   "browserslist": [],
   "prettier": {
-    "overrides": [
-      {
-        "files": [
-          ".prettierrc",
-          ".babelrc",
-          ".eslintrc"
-        ],
-        "options": {
-          "parser": "json"
-        }
-      }
-    ],
+    "printWidth": 250,
+    "tabWidth": 4,
     "singleQuote": true
   }
 }

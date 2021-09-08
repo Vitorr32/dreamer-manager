@@ -3,7 +3,7 @@ import { Feedback } from "../base/ConditionFeedback";
 import { ConditionInitiator } from "../enums/ConditionInitiator.enum";
 
 export const ConditionHealthCheckRepository: { [conditionInitiator: string]: (condition: Condition) => Feedback } = {
-    [ConditionInitiator.SKILL_RANGE]: (condition: Condition) => {
+    [ConditionInitiator.ATTRIBUTE_RANGE]: (condition: Condition) => {
         const conditionFeedback = new Feedback();
 
         if (condition.agent === ConditionAgent.UNDEFINED) {

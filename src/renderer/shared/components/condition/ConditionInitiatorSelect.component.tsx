@@ -1,7 +1,7 @@
 import { Button, List, ListItem, ListItemText, Menu } from "@material-ui/core";
 import React from "react";
-import { Condition } from "../../../shared/models/base/Condition.model";
-import { ConditionInitiator } from "../../../shared/models/enums/ConditionInitiator.enum";
+import { Condition } from "../../models/base/Condition.model";
+import { ConditionInitiator } from "../../models/enums/ConditionInitiator.enum";
 import { ArrowDropDown } from "@material-ui/icons";
 import { useTranslation } from 'react-i18next';
 

@@ -1,0 +1,10 @@
+[
+    {
+        "id": "attr_0",
+        "name": "Intelligence",
+        "description": "The inate capacity of this character to learn and understand complex subjects",
+        "hidden": false,
+        "growth": 2,
+        "category": 1
+    }
+]
