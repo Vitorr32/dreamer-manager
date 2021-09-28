@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Box, Button, Modal } from '@material-ui/core';
 import React from 'react';
 import { Condition } from '../../models/base/Condition.model';
 import { ConditionInitiator } from '../../models/enums/ConditionInitiator.enum';
@@ -9,10 +9,19 @@ import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 
 interface IProps {
     onSelection: (attr: Attribute) => void;
+    showTool: boolean;
 }
 
 export function AttributePicker(props: IProps) {
     const { t } = useTranslation();
 
-    return <React.Fragment></React.Fragment>;
+    return props.showTool ? (
+        <React.Fragment>
+            <Modal open={props.showTool} onClose={props.onSelection}>
+                <Box>
+
+                </Box>
+            </Modal>
+        </React.Fragment>
+    ) : null;
 }

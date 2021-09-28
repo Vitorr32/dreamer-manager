@@ -1,6 +1,7 @@
 import React from 'react';
 import { Condition, NumericSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
+import { ConditionAttributeSelection } from './ConditionAttributeSelection.component';
 import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
 import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
 import { ConditionTraitSelection } from './ConditionTraitSelection.component';
@@ -41,7 +42,7 @@ export class ConditionLine extends React.Component<IProps, IState> {
     private renderAppropriateSelectorTool(condition: Condition): React.ReactElement | null {
         switch (condition.initiator) {
             case ConditionInitiator.ATTRIBUTE_RANGE:
-                return null;
+                return <ConditionAttributeSelection condition={condition} onChange={this.onParameterChange.bind(this)} />;
         }
 
         return null;

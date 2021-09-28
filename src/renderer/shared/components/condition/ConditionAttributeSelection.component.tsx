@@ -4,12 +4,12 @@ import { Condition } from '../../models/base/Condition.model';
 import { ConditionInitiator } from '../../models/enums/ConditionInitiator.enum';
 import { ArrowDropDown } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
-import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
+import { AttributePicker } from '../tools/AttributePicker.tool';
 
 interface IProps {
     condition: Condition;
-    onChange: (condition: Condition) => void;
+    onChange: (index: number, value: number) => void;
 }
 
 export function ConditionAttributeSelection(props: IProps) {
@@ -17,9 +17,9 @@ export function ConditionAttributeSelection(props: IProps) {
     const [showTool, setShowTool] = React.useState<boolean>(false);
     const [selectedAttribute, setAttribute] = React.useState<null | Attribute>(null);
 
-    const onAttributeSelected = (trait: Trait) => {
+    const onAttributeSelected = (attr: Attribute) => {
         const newCondition = new Condition();
-        newCondition.parameters[0] = trait.id;
+        newCondition.parameters[0] = attr.id;
 
         props.onChange(newCondition);
     };
@@ -30,7 +30,7 @@ export function ConditionAttributeSelection(props: IProps) {
                 {props.condition.initiator === ConditionInitiator.UNDEFINED ? t('interface.editor.condition.attr_selector_placeholder') : t(props.condition.parameters[0])}
             </Button>
 
-            {showTool ? null : null}
+            <AttributePicker showTool={showTool} onSelection={onAttributeSelected} />
         </React.Fragment>
     );
 }
