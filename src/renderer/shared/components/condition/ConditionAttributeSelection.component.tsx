@@ -9,7 +9,7 @@ import { AttributePicker } from '../tools/AttributePicker.tool';
 
 interface IProps {
     condition: Condition;
-    onChange: (index: number, value: number) => void;
+    onChange: (index: number, value: string) => void;
 }
 
 export function ConditionAttributeSelection(props: IProps) {
@@ -17,16 +17,21 @@ export function ConditionAttributeSelection(props: IProps) {
     const [showTool, setShowTool] = React.useState<boolean>(false);
     const [selectedAttribute, setAttribute] = React.useState<null | Attribute>(null);
 
-    const onAttributeSelected = (attr: Attribute) => {
+    const onAttributeSelected = (attr: Attribute | null = null) => {
+        if (attr === null) {
+            setShowTool(false);
+            return;
+        }
+
         const newCondition = new Condition();
         newCondition.parameters[0] = attr.id;
 
-        props.onChange(newCondition);
+        props.onChange(0, attr.id);
     };
 
     return (
         <React.Fragment>
-            <Button variant="contained" endIcon={<ArrowDropDown />}>
+            <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
                 {props.condition.initiator === ConditionInitiator.UNDEFINED ? t('interface.editor.condition.attr_selector_placeholder') : t(props.condition.parameters[0])}
             </Button>
 

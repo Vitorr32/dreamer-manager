@@ -8,23 +8,28 @@ import { store } from 'renderer/redux/store';
 
 import './App.global.scss';
 import { gameStartLoad } from './redux/database/database.reducer';
+import { createTheme, ThemeProvider } from '@material-ui/core';
 
 export default function App() {
-  useEffect(() => {
-    store.dispatch(gameStartLoad())
-    GameStartDabaseLoad()
-  }, []);
+    useEffect(() => {
+        store.dispatch(gameStartLoad());
+        GameStartDabaseLoad();
+    }, []);
 
-  return (
-    <HashRouter>
-      <Route
-        exact
-        path="/"
-        render={() => <Redirect to="/menu/edit/trait/new" />}
-      />
-      <Route exact path="/menu" component={MainScreen} />
-      <Route exact path="/menu/edit" component={EditorScreen} />
-      <Route path="/menu/edit/trait" component={TraitEditor} />
-    </HashRouter>
-  );
+    const theme = createTheme({
+        typography: {
+            fontSize: 16,
+        },
+    });
+
+    return (
+        <ThemeProvider theme={theme}>
+            <HashRouter>
+                <Route exact path="/" render={() => <Redirect to="/menu/edit/trait/new" />} />
+                <Route exact path="/menu" component={MainScreen} />
+                <Route exact path="/menu/edit" component={EditorScreen} />
+                <Route path="/menu/edit/trait" component={TraitEditor} />
+            </HashRouter>
+        </ThemeProvider>
+    );
 }

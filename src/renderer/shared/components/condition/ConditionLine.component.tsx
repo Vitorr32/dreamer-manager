@@ -31,7 +31,7 @@ export class ConditionLine extends React.Component<IProps, IState> {
         this.props.onChange(this.props.index, condition);
     }
 
-    private onParameterChange(index: number, value: number) {
+    private onParameterChange(index: number, value: string | number) {
         const newCondition = Object.assign({}, this.props.conditionLine);
 
         newCondition.parameters[index] = value;

@@ -1,0 +1,10 @@
+.modal {
+    &__wrapper {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: whitesmoke;
+        padding: 20px;
+    }
+}

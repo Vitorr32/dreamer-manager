@@ -6,9 +6,15 @@ export const en_US = {
                     initiator: 'Condition Initiator Selector',
                     selector: 'Selector Specificator',
                     attr_selector_placeholder: 'Select Attribute',
-                    trait_selector_placeholder: 'Select Trait'
-                }
-            }
+                    trait_selector_placeholder: 'Select Trait',
+                },
+            },
+            tools: {
+                attribute: {
+                    title: 'Attribute',
+                    search_placeholder: 'Search for attribute name, description or id',
+                },
+            },
         },
         model: {
             undefined: 'Undefined',
@@ -20,7 +26,7 @@ export const en_US = {
                     event_flag: 'Event Flag',
                     location: 'Location',
                     time: 'Time',
-                    relationship: 'Relationship'
+                    relationship: 'Relationship',
                 },
                 selector: {
                     numeric: {
@@ -29,7 +35,7 @@ export const en_US = {
                         bigger_than_self: 'bigger than self',
                         bigger_than_target: 'bigger than target',
                         between: 'between',
-                        exactly: 'exactly'
+                        exactly: 'exactly',
                     },
                     agent: {
                         self: 'Self',
@@ -39,22 +45,22 @@ export const en_US = {
                         self_specific: 'Self and Specific Character',
                         specific_specific: 'Two specific characters',
                         player: 'Player',
-                        global: 'Global'
+                        global: 'Global',
                     },
                     trait: {
                         has: 'Has',
-                        dont: 'Don\'t'
+                        dont: "Don't",
                     },
                     event: {
                         triggered: 'Triggered',
-                        not_triggered: 'Not Triggered'
+                        not_triggered: 'Not Triggered',
                     },
                     location: {
                         at: 'Is At',
-                        not_at : 'Not At'
-                    }
-                }
-            }
-        }
-    }
-}
+                        not_at: 'Not At',
+                    },
+                },
+            },
+        },
+    },
+};
