@@ -1,10 +1,8 @@
 export enum Category {
-    UNDEFINED,
+    UNDEFINED = 'model.undefined',
 
-    BASIC,
-    SUNLIGHT,
-    STARLIGHT,
-    MOONLIGHT,
-
-    MAX_CATEGORIES
+    BASIC = 'model.attribute.category.basic',
+    SUNLIGHT = 'model.attribute.category.sun',
+    STARLIGHT = 'model.attribute.category.star',
+    MOONLIGHT = 'model.attribute.category.moon',
 }

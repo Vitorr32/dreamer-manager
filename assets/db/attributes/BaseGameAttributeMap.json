@@ -4,7 +4,23 @@
         "name": "Intelligence",
         "description": "The inate capacity of this character to learn and understand complex subjects",
         "hidden": false,
-        "growth": 2,
-        "category": 1
+        "growth": "model.attribute.growth.mental",
+        "category": "model.attribute.category.basic"
+    },
+    {
+        "id": "attr_1",
+        "name": "Intelligence",
+        "description": "The inate capacity of this character to learn and understand complex subjects",
+        "hidden": false,
+        "growth": "model.attribute.growth.mental",
+        "category": "model.attribute.category.basic"
+    },
+    {
+        "id": "attr_2",
+        "name": "Intelligence",
+        "description": "The inate capacity of this character to learn and understand complex subjects",
+        "hidden": false,
+        "growth": "model.attribute.growth.mental",
+        "category": "model.attribute.category.basic"
     }
 ]

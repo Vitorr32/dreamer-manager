@@ -18,6 +18,19 @@ export const en_US = {
         },
         model: {
             undefined: 'Undefined',
+            attribute: {
+                category:{
+                    basic: 'Basic',
+                    sun: 'Sunlight',
+                    moon: 'Moonlight',
+                    star: 'Starlight'
+                },
+                growth: {
+                    technical: 'Technical',
+                    mental: 'Mental',
+                    physical: 'Physical'
+                }
+            },
             condition: {
                 initiator: {
                     status_range: 'Status Range',

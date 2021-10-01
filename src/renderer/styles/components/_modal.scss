@@ -23,7 +23,7 @@
     &__search {
         flex: 1;
         margin: 0 1rem;
-        max-width: 500px;
+        max-width: 50rem;
     }
 
     &__close {
@@ -32,6 +32,16 @@
 
         &:hover {
             color: black;
+        }
+    }
+
+    &__grid {
+        margin-top: 2rem;
+        display: grid;
+        grid-gap: 2rem;
+
+        &-columns {
+            grid-template-columns: repeat(auto-fit, minmax(20rem, 25rem));
         }
     }
 }
