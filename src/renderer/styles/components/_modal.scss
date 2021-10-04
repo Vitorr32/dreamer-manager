@@ -39,9 +39,18 @@
         margin-top: 2rem;
         display: grid;
         grid-gap: 2rem;
+        max-height: 60vh;
+        overflow: auto;
 
         &-columns {
-            grid-template-columns: repeat(auto-fit, minmax(20rem, 25rem));
+            grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
         }
     }
+
+    &__footer {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
 }

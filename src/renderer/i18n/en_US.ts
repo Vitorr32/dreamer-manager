@@ -13,23 +13,25 @@ export const en_US = {
                 attribute: {
                     title: 'Attribute',
                     search_placeholder: 'Search for attribute name, description or id',
+                    empty: 'Please select a attribute by clicking the respective container, you can search using the input on the top of the modal',
+                    selected: 'You selected the attribute {{attr.name}}',
                 },
             },
         },
         model: {
             undefined: 'Undefined',
             attribute: {
-                category:{
+                category: {
                     basic: 'Basic',
                     sun: 'Sunlight',
                     moon: 'Moonlight',
-                    star: 'Starlight'
+                    star: 'Starlight',
                 },
                 growth: {
                     technical: 'Technical',
                     mental: 'Mental',
-                    physical: 'Physical'
-                }
+                    physical: 'Physical',
+                },
             },
             condition: {
                 initiator: {

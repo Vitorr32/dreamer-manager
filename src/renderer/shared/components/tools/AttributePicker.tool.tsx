@@ -58,7 +58,7 @@ export function AttributePicker(props: IProps) {
                     <div className="modal__grid modal__grid-columns">
                         {filtered.map((attribute) => {
                             return (
-                                <div className={`cell cell-attribute ${selectedAttr === attribute ? 'cell-selected' : ''}`} key={attribute.id} onClick={() => setSelectedAttr(attribute)}>
+                                <div className={`cell cell-attribute ${selectedAttr === attribute ? 'cell-selected' : ''}`} key={attribute.id} onClick={() => setSelectedAttr(selectedAttr === attribute ? undefined : attribute)}>
                                     <div className="cell__header">
                                         <Typography className="cell__title" variant="h5">
                                             {attribute.name}
@@ -87,9 +87,24 @@ export function AttributePicker(props: IProps) {
                     </div>
 
                     <div className="modal__footer">
-                        <div className="modal__pagination"></div>
+                        <div className="modal__message">
+                            {selectedAttr ? (
+                                <Typography variant="body1" className="modal__message-info">
+                                    {t('interface.tools.attribute.selected', { attr: selectedAttr })}
+                                </Typography>
+                            ) : (
+                                <Typography variant="body1" className="modal__message-error">
+                                    {t('interface.tools.attribute.empty')}
+                                </Typography>
+                            )}
+                        </div>
                         <div className="modal__buttons">
-                            <Button className="modal__submit">YOLO</Button>
+                            <Button variant="contained" className="modal__cancel" color="error">
+                                Cancel
+                            </Button>
+                            <Button variant="contained" className="modal__submit" color="primary">
+                                Select
+                            </Button>
                         </div>
                     </div>
                 </div>
