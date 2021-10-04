@@ -10,6 +10,10 @@ export const en_US = {
                 },
             },
             tools: {
+                common: {
+                    select: 'Select',
+                    cancel: 'Cancel'
+                },
                 attribute: {
                     title: 'Attribute',
                     search_placeholder: 'Search for attribute name, description or id',

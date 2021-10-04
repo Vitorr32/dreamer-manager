@@ -32,7 +32,7 @@ export async function GameStartDabaseLoad(): Promise<void> {
     store.dispatch(gameLoadUpdate({ key: ATTRIBUTES_DATABASE, value: loadedAttributes, progress: 100 }));
 
     console.log(store.getState().database.traits);
-    console.log(store.getState().database.attributes);
+    console.log(store.getState().database.mappedDatabase);
 }
 
 export {};

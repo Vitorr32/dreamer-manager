@@ -22,7 +22,6 @@ export function AttributePicker(props: IProps) {
     const [filtered, setFiltered] = useState<Attribute[]>([]);
 
     useEffect(() => {
-        console.log('YOLO');
         setFiltered(filterAttributesByQuery(query));
     }, [query]);
 
@@ -31,8 +30,22 @@ export function AttributePicker(props: IProps) {
         return attributes.filter((attr) => attr.id?.includes(query) || attr.name?.includes(query) || attr.description?.includes(query)).sort((a: Attribute, b: Attribute) => a.name.localeCompare(b.name));
     };
 
+    const onOptionPicked = (): void => {
+        if (!selectedAttr) {
+            return;
+        }
+
+        props.onSelection(selectedAttr);
+        setQuery('');
+    };
+
+    const onClose = (): void => {
+        props.onSelection();
+        setQuery('');
+    };
+
     return props.showTool ? (
-        <Modal className="modal" open={props.showTool} onClose={() => props.onSelection()}>
+        <Modal className="modal" open={props.showTool} onClose={onClose}>
             <div className="modal__wrapper">
                 <div className="modal__content">
                     <div className="modal__header">
@@ -89,21 +102,21 @@ export function AttributePicker(props: IProps) {
                     <div className="modal__footer">
                         <div className="modal__message">
                             {selectedAttr ? (
-                                <Typography variant="body1" className="modal__message-info">
+                                <Typography variant="caption" className="modal__message-info">
                                     {t('interface.tools.attribute.selected', { attr: selectedAttr })}
                                 </Typography>
                             ) : (
-                                <Typography variant="body1" className="modal__message-error">
+                                <Typography variant="caption" className="modal__message-error">
                                     {t('interface.tools.attribute.empty')}
                                 </Typography>
                             )}
                         </div>
                         <div className="modal__buttons">
-                            <Button variant="contained" className="modal__cancel" color="error">
-                                Cancel
+                            <Button variant="contained" className="modal__buttons-cancel" color="error" onClick={onClose}>
+                                {t('interface.tools.common.cancel')}
                             </Button>
-                            <Button variant="contained" className="modal__submit" color="primary">
-                                Select
+                            <Button variant="contained" className="modal__buttons-submit" color="primary" onClick={() => onOptionPicked()}>
+                                {t('interface.tools.common.select')}
                             </Button>
                         </div>
                     </div>

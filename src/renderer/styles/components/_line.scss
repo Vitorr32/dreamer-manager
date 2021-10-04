@@ -1,0 +1,22 @@
+.condition-line {
+    background: rgb(224, 224, 224);
+    border: 1px solid gray;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    &__icon {
+        margin-right: 20px;
+    }
+
+    &__remove {
+        margin-left: auto;
+        color: gray;
+        cursor: pointer;
+
+        &:hover {
+            color: black;
+        }
+    }
+}

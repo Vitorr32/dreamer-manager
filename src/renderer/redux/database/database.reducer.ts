@@ -9,6 +9,10 @@ interface GameLoopState {
     loadProguess: number;
     traits: Trait[];
     attributes: Attribute[];
+    mappedDatabase: {
+        attributes: { [id: string]: Attribute };
+        traits: { [id: string]: Trait };
+    };
 }
 
 const initialState: GameLoopState = {
@@ -16,6 +20,10 @@ const initialState: GameLoopState = {
     loadProguess: 0,
     traits: [],
     attributes: [],
+    mappedDatabase: {
+        attributes: {},
+        traits: {},
+    },
 };
 
 export const databaseSlice = createSlice({
@@ -35,6 +43,7 @@ export const databaseSlice = createSlice({
                     break;
                 case ATTRIBUTES_DATABASE:
                     state.attributes = action.payload.value;
+                    state.attributes.forEach((attr) => (state.mappedDatabase.attributes[attr.id] = attr));
                     break;
                 default:
                     console.error('Unknown load update: ' + action.payload.key);

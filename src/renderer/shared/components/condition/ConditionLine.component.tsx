@@ -6,6 +6,8 @@ import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
 import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
 import { ConditionTraitSelection } from './ConditionTraitSelection.component';
 import { NumericSelectorParameterInput } from './NumericSelector.component';
+import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRightSharp';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface IProps {
     conditionLine: Condition;
@@ -72,12 +74,18 @@ export class ConditionLine extends React.Component<IProps, IState> {
         const { conditionLine } = this.props;
 
         return (
-            <section className="condition-line-wrapper">
+            <section className="condition-line">
+                <SubdirectoryArrowRightIcon fontSize="large" className="condition-line__icon" />
+
                 <ConditionInitiatorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
-                <ConditionSelectorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
 
                 {this.renderAppropriateSelectorTool(conditionLine)}
+
+                <ConditionSelectorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
+
                 {this.renderSelectorParameters(conditionLine)}
+
+                {this.props.index !== 0 ? <CloseIcon className="condition-line__remove" fontSize="large" onClick={() => /*Something*/ {}} /> : null}
             </section>
         );
     }
