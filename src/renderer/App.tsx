@@ -5,10 +5,14 @@ import { MainScreen } from './Interface/MainMenu/page/MainScreen/MainScreen.comp
 import { TraitEditor } from './Interface/MainMenu/sub-pages/TraitEditor/TraitEditor.component';
 import { GameStartDabaseLoad } from './shared/scripts/DatabaseLoader.script';
 import { store } from 'renderer/redux/store';
-
-import './App.global.scss';
 import { gameStartLoad } from './redux/database/database.reducer';
-import { createTheme, ThemeProvider } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@mui/material';
+
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import './App.global.scss';
 
 export default function App() {
     useEffect(() => {

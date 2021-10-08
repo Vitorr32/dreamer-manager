@@ -1,5 +1,5 @@
-import { Button, Stepper, Step, StepButton } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Button, Stepper, Step, StepButton } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react';
 import { BasicInfoForm } from './BasicInfoForm.component';
 import { Trait, TraitType } from '../../../../shared/models/base/Trait.model';
@@ -22,7 +22,7 @@ export class NewTrait extends React.Component<IProps, IState> {
                 0: false,
                 1: false,
             },
-            currentTrait: new Trait(),
+            currentTrait: undefined,
         };
     }
 
@@ -34,7 +34,9 @@ export class NewTrait extends React.Component<IProps, IState> {
             traitType,
         };
 
-        this.setState({ currentTrait: trait });
+        console.log(trait)
+
+        // this.setState({ currentTrait: trait });
     }
 
     nextStep(): void {

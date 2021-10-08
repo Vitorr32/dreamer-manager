@@ -14,6 +14,7 @@ export class EffectEditor extends React.Component<IProps, IState> {
     render() {
         return (
             <React.Fragment>
+
                 <ConditionTreeEditor />
             </React.Fragment>
         )

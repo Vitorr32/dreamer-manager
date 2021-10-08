@@ -1,13 +1,12 @@
 import React from 'react';
 import { Condition, NumericSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
-import { ConditionAttributeSelection } from './ConditionAttributeSelection.component';
+import { ConditionSelectionAttribute } from './ConditionSelectionAttribute.component';
 import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
 import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
-import { ConditionTraitSelection } from './ConditionTraitSelection.component';
 import { NumericSelectorParameterInput } from './NumericSelector.component';
-import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRightSharp';
-import CloseIcon from '@material-ui/icons/Close';
+import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRightSharp';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface IProps {
     conditionLine: Condition;
@@ -43,8 +42,9 @@ export class ConditionLine extends React.Component<IProps, IState> {
 
     private renderAppropriateSelectorTool(condition: Condition): React.ReactElement | null {
         switch (condition.initiator) {
+            case ConditionInitiator.TRAIT:
             case ConditionInitiator.ATTRIBUTE_RANGE:
-                return <ConditionAttributeSelection condition={condition} onChange={this.onParameterChange.bind(this)} />;
+                return <ConditionSelectionAttribute condition={condition} onChange={this.onParameterChange.bind(this)} />;
         }
 
         return null;

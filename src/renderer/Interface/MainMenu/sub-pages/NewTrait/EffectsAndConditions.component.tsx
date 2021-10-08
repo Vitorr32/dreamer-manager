@@ -12,11 +12,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import EditIcon from '@material-ui/icons/Edit';
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import EditIcon from '@mui/icons-material/Edit';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { MAX_NUMBER_OF_TRAITS } from 'renderer/shared/Constants';
 import { EffectEditor } from './EffectEditor.component';
@@ -85,7 +85,7 @@ export class EffectsAndConditions extends React.Component<IProps, IState> {
 
         <section className="effect-list-wrapper">
           <List className="effect-list">
-            {effects.map((effect, index) => (
+            {effects.map((_, index) => (
               <ListItem key={`effect_${index}`}>
                 <ListItemIcon>
                   <RemoveIcon />

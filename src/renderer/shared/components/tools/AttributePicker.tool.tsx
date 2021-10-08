@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, InputAdornment, Modal, OutlinedInput, Typography } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from '@material-ui/icons/Close';
-import Placeholder from '@material-ui/icons/VerifiedUser';
+import { Button, InputAdornment, Modal, OutlinedInput, Typography } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
+import Placeholder from '@mui/icons-material/VerifiedUser';
 import { useTranslation } from 'react-i18next';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { useSelector } from 'react-redux';

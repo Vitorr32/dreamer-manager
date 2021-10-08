@@ -1,8 +1,7 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import React from 'react';
 import { Condition } from '../../models/base/Condition.model';
-import { ConditionInitiator } from '../../models/enums/ConditionInitiator.enum';
-import { ArrowDropDown } from '@material-ui/icons';
+import { ArrowDropDown } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { AttributePicker } from '../tools/AttributePicker.tool';
@@ -14,7 +13,7 @@ interface IProps {
     onChange: (index: number, value: string) => void;
 }
 
-export function ConditionAttributeSelection(props: IProps) {
+export function ConditionSelectionAttribute(props: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const { t } = useTranslation();
@@ -27,9 +26,6 @@ export function ConditionAttributeSelection(props: IProps) {
             setAttribute(undefined);
             return;
         }
-
-        const newCondition = new Condition();
-        newCondition.parameters[0] = attr.id;
 
         props.onChange(0, attr.id);
         setAttribute(attr);

@@ -1,4 +1,3 @@
-import { ipcRenderer } from 'electron';
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import { NewTrait } from '../NewTrait/NewTrait.component';

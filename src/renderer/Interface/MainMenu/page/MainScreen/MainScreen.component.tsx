@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export function MainScreen(props: any) {
+export function MainScreen(_: any) {
 
 
     console.log('Main Screen!');

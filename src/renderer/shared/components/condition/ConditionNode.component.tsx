@@ -1,9 +1,9 @@
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import React from 'react';
 import { Node } from '../../../shared/models/base/ConditionTree';
 import { LogicOperator } from '../../../shared/models/enums/LogicOperator.enum';
-import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import AddIcon from '@mui/icons-material/Add';
 import { Condition } from '../../../shared/models/base/Condition.model';
 import { ConditionLine } from './ConditionLine.component';
 
@@ -24,7 +24,7 @@ export class ConditionNode extends React.Component<IProps, IState> {
         this.props.onChange(this.props.index, newNode);
     }
 
-    private onLogicOperatorChange(event: React.ChangeEvent<{ value: unknown }>) {
+    private onLogicOperatorChange(event: any) {
         const newNode: Node = Object.assign({}, this.props.conditionNode);
 
         newNode.logicOperator = event.target.value as LogicOperator;

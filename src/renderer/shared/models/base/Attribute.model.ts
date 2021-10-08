@@ -18,5 +18,8 @@ export class Attribute {
         this.id = '';
         this.name = name;
         this.description = description;
+        this.hidden = hidden;
+        this.category = category;
+        this.growth = growth;
     }
 }

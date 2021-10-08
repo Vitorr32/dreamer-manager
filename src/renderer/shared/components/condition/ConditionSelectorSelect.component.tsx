@@ -1,8 +1,8 @@
-import { Button, List, ListItem, ListItemText, Menu } from "@material-ui/core";
+import { Button, List, ListItem, ListItemText, Menu } from "@mui/material";
 import React from "react";
 import { Condition, EventFlagSelector, LocationSelector, NumericSelector, RelationshipSelector, TimeSelector, TraitSelector } from "../../../shared/models/base/Condition.model";
 import { ConditionInitiator } from "../../../shared/models/enums/ConditionInitiator.enum";
-import { ArrowDropDown } from "@material-ui/icons";
+import { ArrowDropDown } from "@mui/icons-material";
 import { useTranslation } from 'react-i18next';
 
 interface IProps {

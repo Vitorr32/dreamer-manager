@@ -1,6 +1,6 @@
 
 import React, { useState } from "react"
-import { FormControl, InputLabel, MenuItem, Select, TextField, FormControlLabel, Switch, Button } from "@material-ui/core"
+import { FormControl, InputLabel, MenuItem, Select, TextField, FormControlLabel, Switch, Button } from "@mui/material"
 import { TraitType } from "renderer/shared/models/base/Trait.model"
 
 interface IProps {
@@ -17,7 +17,7 @@ export function BasicInfoForm({ onBasicInfoSubmit, nextStep }: IProps) {
     function onSubmit(): void {
         console.log(traitType);
         if (name && description && traitType) {
-            // onBasicInfoSubmit(name, description, traitType)
+            onBasicInfoSubmit(name, description, traitType)
         }
     }
 

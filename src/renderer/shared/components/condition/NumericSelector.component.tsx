@@ -1,9 +1,6 @@
-import { Button, List, ListItem, ListItemText, Menu, TextField } from "@material-ui/core";
+import { TextField } from "@mui/material";
 import React from "react";
 import { Condition } from "../../../shared/models/base/Condition.model";
-import { ConditionInitiator } from "../../../shared/models/enums/ConditionInitiator.enum";
-import { ArrowDropDown } from "@material-ui/icons";
-import { useTranslation } from 'react-i18next';
 
 interface IProps {
     range: boolean,
@@ -12,8 +9,8 @@ interface IProps {
 }
 
 export function NumericSelectorParameterInput(props: IProps) {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const { t } = useTranslation();
+    // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    // const { t } = useTranslation();
 
     return (
         <React.Fragment>
