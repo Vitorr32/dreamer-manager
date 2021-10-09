@@ -17,19 +17,19 @@ export function ConditionSelectionTrait(props: IProps) {
 
     const { t } = useTranslation();
     const [showTool, setShowTool] = React.useState<boolean>(false);
-    const [selectedValue, _] = React.useState<Trait>();
+    const [selectedValue, setValue] = React.useState<Trait>();
 
-    // const onValueSelected = (value: Trait | undefined = undefined) => {
-    //     if (value === undefined) {
-    //         setShowTool(false);
-    //         setValue(undefined);
-    //         return;
-    //     }
+    const onValueSelected = (value: Trait | undefined = undefined) => {
+        if (value === undefined) {
+            setShowTool(false);
+            setValue(undefined);
+            return;
+        }
 
-    //     props.onChange(0, value.id);
-    //     setValue(value);
-    //     setShowTool(false);
-    // };
+        props.onChange(0, value.id);
+        setValue(value);
+        setShowTool(false);
+    };
 
     return (
         <React.Fragment>

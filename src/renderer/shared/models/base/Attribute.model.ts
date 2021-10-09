@@ -1,6 +1,6 @@
 import { Category } from '../enums/Category.enum';
 import { Growth } from '../enums/Growth.enum';
-
+import { v4 as uuidv4 } from 'uuid';
 export class Attribute {
     public category: Category = Category.UNDEFINED;
     public growth: Growth = Growth.UNDEFINED;
@@ -15,7 +15,7 @@ export class Attribute {
     public id: string;
 
     constructor(name: string, description: string, hidden: boolean = false, category: Category, growth: Growth) {
-        this.id = '';
+        this.id = 'attr_' + uuidv4();
         this.name = name;
         this.description = description;
         this.hidden = hidden;

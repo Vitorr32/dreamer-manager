@@ -1,4 +1,5 @@
 import { Effect } from './Effect.model';
+import { v4 as uuidv4 } from 'uuid';
 
 export enum TraitType {
     UNDEFINED = 'Undefined',
@@ -20,7 +21,7 @@ export class Trait {
     public spritePath: string[];
 
     constructor(name: string, type: TraitType, description: string, sprite: string[]) {
-        this.id = '';
+        this.id = 'trait_' + uuidv4();
         this.name = name;
         this.type = type;
         this.description = description;
