@@ -20,6 +20,12 @@ export const en_US = {
                     empty: 'Please select a attribute by clicking the respective container, you can search using the input on the top of the modal',
                     selected: 'You selected the attribute {{attr.name}}',
                 },
+                trait: {
+                    title: 'Trait',
+                    search_placeholder: 'Search for trait name, description or id',
+                    empty: 'Please select a trait by clicking the respective container, you can search using the input on the top of the modal',
+                    selected: 'You selected the trait {{value.name}}',
+                },
             },
         },
         model: {
@@ -80,6 +86,9 @@ export const en_US = {
                     },
                 },
             },
+            modifier:{
+
+            }
         },
     },
 };
