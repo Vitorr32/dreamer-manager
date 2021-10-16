@@ -205,7 +205,7 @@
     },
     "browserslist": [],
     "prettier": {
-        "printWidth": 250,
+        "printWidth": 225,
         "tabWidth": 4,
         "singleQuote": true,
         "overrides": [

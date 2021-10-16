@@ -21,6 +21,11 @@ export default function App() {
     }, []);
 
     const theme = createTheme({
+        palette:{
+            background:{
+                default: 'whitesmoke'
+            }
+        },
         typography: {
             fontSize: 16,
         },

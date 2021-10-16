@@ -7,6 +7,7 @@ import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
 import { NumericSelectorParameterInput } from './NumericSelector.component';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRightSharp';
 import CloseIcon from '@mui/icons-material/Close';
+import { ConditionSelectionTrait } from './ConditionSelectionTrait.component';
 
 interface IProps {
     conditionLine: Condition;
@@ -43,6 +44,7 @@ export class ConditionLine extends React.Component<IProps, IState> {
     private renderAppropriateSelectorTool(condition: Condition): React.ReactElement | null {
         switch (condition.initiator) {
             case ConditionInitiator.TRAIT:
+                return <ConditionSelectionTrait condition={condition} onChange={this.onParameterChange.bind(this)} />;
             case ConditionInitiator.ATTRIBUTE_RANGE:
                 return <ConditionSelectionAttribute condition={condition} onChange={this.onParameterChange.bind(this)} />;
         }

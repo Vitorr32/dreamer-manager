@@ -25,17 +25,23 @@ export enum ModifierType {
 
     //STATIC MODIFIERS
     MODIFY_MOOD_VALUE = 'model.modifier.mood',
+    MODIFY_LEARNING_RATE = 'model.modifier.learning',
     MODIFY_ENERGY_VALUE = 'model.modifier.energy_value',
     MODIFY_ENERGY_MAXIMUM = 'model.modifier.energy_max',
     MODIFY_STRESS_VALUE = 'model.modifier.stress_value',
     MODIFY_STRESS_MAXIMUM = 'model.modifier.stress_max',
 }
 export class Modifier {
-    public type: ModifierType = ModifierType.UNDEFINED;
+    public type: ModifierType;
 
-    public modifierTargets: string[] = [];
-    public effectiveChange: number = 0;
-    public targetSelf: boolean = true;
+    public modifierTargets: string[];
+    public effectiveChange: number;
+    public targetSelf: boolean;
 
-    constructor() {}
+    constructor() {
+        this.type = ModifierType.UNDEFINED;
+        this.modifierTargets = [];
+        this.effectiveChange = 0;
+        this.targetSelf = true;
+    }
 }

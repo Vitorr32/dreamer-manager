@@ -45,9 +45,13 @@ export class Effect {
     public trigger?: Trigger
     //What is the condition for the activation of this effect when the trigger is triggered.
     public conditionTree?: ConditionTree
-    //After the effect was activatd, for how much time does it take effect?
+    //After the effect was activated, for how much time does it take effect?
     public durationType?: Duration
     public durationArgs?: number[]
     //What is the modifier that this effect cause
-    public modifier?: Modifier = new Modifier();
+    public modifier: Modifier = new Modifier();
+
+    constructor(){
+        
+    }
 }

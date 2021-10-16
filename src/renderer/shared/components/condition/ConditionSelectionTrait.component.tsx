@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
+import { TraitPicker } from '../tools/TraitPicker';
 
 interface IProps {
     condition: Condition;
@@ -37,7 +38,7 @@ export function ConditionSelectionTrait(props: IProps) {
                 {selectedValue === undefined ? t('interface.editor.condition.trait_selector_placeholder') : mappedDatabase.traits[props.condition.parameters[0]].name}
             </Button>
 
-            {/* <AttributePicker showTool={showTool} onSelection={onAttributeSelected} /> */}
+            <TraitPicker showTool={showTool} onSelection={onValueSelected} />
         </React.Fragment>
     );
 }

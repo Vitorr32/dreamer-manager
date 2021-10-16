@@ -1,0 +1,17 @@
+.selection-modal {
+    &__wrapper {
+        background: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 800px;
+        height: 500px;
+        border: 2px solid #000;
+        padding: 2rem;
+    }
+
+    &__selection{
+
+    }
+}

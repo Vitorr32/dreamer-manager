@@ -8,6 +8,13 @@ export const en_US = {
                     attr_selector_placeholder: 'Select Attribute',
                     trait_selector_placeholder: 'Select Trait',
                 },
+                modifier:{
+                    title: 'Modifier Editor',
+                    subtitle: 'What this effect modify on the game character?',
+                    select_type: 'Modifier Type',
+                    select_type_caption: 'Select the type of modifier that this effect will have',
+                    select_type_attr: 'Attribute Modifiers'
+                }
             },
             tools: {
                 common: {

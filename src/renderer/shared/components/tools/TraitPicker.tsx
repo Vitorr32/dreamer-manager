@@ -26,6 +26,7 @@ export function TraitPicker(props: IProps) {
     }, [query]);
 
     const filterListByQuery = (query: string): Trait[] => {
+        console.log(valueList);
         return valueList.filter((value) => value.id?.includes(query) || value.name?.includes(query) || value.description?.includes(query)).sort((a: Trait, b: Trait) => a.name.localeCompare(b.name));
     };
 
@@ -82,11 +83,11 @@ export function TraitPicker(props: IProps) {
                                     <div className="cell__content">
                                         <div className="cell__content-sibling">
                                             <Placeholder />
-                                            <Typography variant="body1">{t(value.category)}</Typography>
+                                            <Typography variant="body1">{t(value.name)}</Typography>
                                         </div>
                                         <div className="cell__content-sibling">
                                             <Placeholder />
-                                            <Typography variant="body1">{t(value.growth)}</Typography>
+                                            <Typography variant="body1">{t(value.name)}</Typography>
                                         </div>
 
                                         <div className="cell__content-full">
