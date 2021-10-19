@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { HashRouter, Route, Redirect } from 'react-router-dom';
 import { EditorScreen } from './Interface/MainMenu/page/EditorScreen/EditorScreen.component';
 import { MainScreen } from './Interface/MainMenu/page/MainScreen/MainScreen.component';
@@ -21,10 +21,10 @@ export default function App() {
     }, []);
 
     const theme = createTheme({
-        palette:{
-            background:{
-                default: 'whitesmoke'
-            }
+        palette: {
+            background: {
+                default: 'whitesmoke',
+            },
         },
         typography: {
             fontSize: 18,
