@@ -8,18 +8,17 @@ export const en_US = {
                     attr_selector_placeholder: 'Select Attribute',
                     trait_selector_placeholder: 'Select Trait',
                 },
-                modifier:{
+                modifier: {
                     title: 'Modifier Editor',
                     subtitle: 'What this effect modify on the game character?',
                     select_type: 'Modifier Type',
                     select_type_caption: 'Select the type of modifier that this effect will have',
-                    select_type_attr: 'Attribute Modifiers'
-                }
+                },
             },
             tools: {
                 common: {
                     select: 'Select',
-                    cancel: 'Cancel'
+                    cancel: 'Cancel',
                 },
                 attribute: {
                     title: 'Attribute',
@@ -93,9 +92,15 @@ export const en_US = {
                     },
                 },
             },
-            modifier:{
-
-            }
+            modifier: {
+                section: {
+                    attr: 'Attribute modifiers',
+                    relationship: 'Relationship modifiers',
+                    trait: 'Traits modifiers',
+                    event: 'Event modifiers',
+                    static: 'Character values modifier',
+                },
+            },
         },
     },
 };

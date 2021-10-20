@@ -31,6 +31,15 @@ export enum ModifierType {
     MODIFY_STRESS_VALUE = 'model.modifier.stress_value',
     MODIFY_STRESS_MAXIMUM = 'model.modifier.stress_max',
 }
+
+export enum ModifierTypeSection {
+    ATTR_SECTION = 'model.modifier.section.attr',
+    RELATIONSHIP_SECTION = 'model.modifier.section.relationship',
+    TRAIT_SECTION = 'model.modifier.section.trait',
+    EVENT_SECTION = 'model.modifier.section.event',
+    STATIC_SECTION = 'model.modifier.section.static'
+}
+
 export class Modifier {
     public type: ModifierType;
 

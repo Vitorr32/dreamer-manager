@@ -2,7 +2,7 @@ import { Button, Divider, FormControl, InputLabel, List, ListItem, ListItemButto
 import { Box, useTheme } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modifier, ModifierType } from 'renderer/shared/models/base/Modifier';
+import { Modifier, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 
 interface IProps {
     modifier: Modifier;
@@ -12,9 +12,19 @@ export function ModifierEditor(props: IProps) {
     const theme = useTheme();
     const { t } = useTranslation();
 
-    console.log(theme);
-    const handleChange = (event: SelectChangeEvent) => {
-        console.log(event);
+    const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
+    const [showTypeSelection, setShowTypeSelection] = React.useState<boolean>(false);
+    const [modifierSection, setModifierSection] = React.useState<ModifierTypeSection>();
+    const [modifierType, setModifierType] = React.useState<ModifierType>();
+
+    const onSectionSelected = (section: ModifierTypeSection) => {
+        setModifierType(ModifierType.UNDEFINED);
+        setModifierSection(section);
+        setShowTypeSelection(true);
+    };
+
+    const onTypeSelected = (type: ModifierType) => {
+        console.log(type);
     };
 
     return (
@@ -25,21 +35,42 @@ export function ModifierEditor(props: IProps) {
             </div>
 
             <div className="modifier-editor__specification">
-                <Button onClick={() => {}}>Open modal</Button>
-                <Modal className="selection-modal" open={true} onClose={() => {}}>
+                <Button onClick={() => setShowTypeModal(true)}>Open modal</Button>
+                <Modal className="selection-modal" open={showTypeModal} onClose={() => setShowTypeModal(true)}>
                     <Box className="selection-modal__wrapper" sx={{ bgcolor: 'background.default' }}>
-                        <List className="selection-modal__selection selection-modal__selection-primary" component="nav" aria-label="mailbox folders">
+                        <List className="selection-modal__selection selection-modal__selection-primary">
                             <ListItem disablePadding>
                                 <ListItemText primary={t('interface.editor.modifier.select_type')} secondary={t('interface.editor.modifier.select_type_caption')} />
                             </ListItem>
+
                             <Divider />
-                            <ListItemButton>
-                                <ListItemText primary={t('interface.editor.modifier.select_type_attr')} />
-                            </ListItemButton>
-                            <ListItemButton>
-                                <ListItemText primary="Inbox" />
-                            </ListItemButton>
+
+                            {Object.values(ModifierTypeSection).map((value) => {
+                                return (
+                                    <ListItemButton key={`section_${value}`} selected={value === modifierSection} onClick={() => onSectionSelected(value)}>
+                                        <ListItemText primary={t(value)} />
+                                    </ListItemButton>
+                                );
+                            })}
                         </List>
+
+                        {showTypeSelection && (
+                            <List className="selection-modal__selection selection-modal__selection-secondary">
+                                <ListItem disablePadding>
+                                    <ListItemText primary={t('interface.editor.modifier.select_type')} secondary={t('interface.editor.modifier.select_type_caption')} />
+                                </ListItem>
+
+                                <Divider />
+
+                                {Object.values(ModifierType).map((value) => {
+                                    return (
+                                        <ListItemButton key={`type_${value}`} onClick={() => onTypeSelected(value)}>
+                                            <ListItemText primary={t(value)} />
+                                        </ListItemButton>
+                                    );
+                                })}
+                            </List>
+                        )}
                     </Box>
                 </Modal>
 
