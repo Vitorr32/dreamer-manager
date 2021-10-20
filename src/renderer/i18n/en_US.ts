@@ -13,6 +13,9 @@ export const en_US = {
                     subtitle: 'What this effect modify on the game character?',
                     select_type: 'Modifier Type',
                     select_type_caption: 'Select the type of modifier that this effect will have',
+                    select_type_submit: 'Submit',
+                    select_type_empty: 'Please select the type of modification that this effect will have on characters, events or the game world.',
+                    input_numeric: 'Value change'
                 },
             },
             tools: {
@@ -93,6 +96,36 @@ export const en_US = {
                 },
             },
             modifier: {
+                type: {
+                    attr_value: 'Current attribute value',
+                    attr_multiplier: 'Attribute value gain multiplier',
+                    attr_potential: 'Potential attribute value',
+
+                    relationship_respect: 'Relationship respect metric',
+                    relationship_favor: 'Relationship favorability metric',
+                    relationship_attraction: 'Relationship attraction metric',
+                    relationship_love: 'Relationship love metric',
+                    relationship_power: 'Relationship power dynamic metric',
+                    relationship_familiarity: 'Relationship familiarity metric',
+
+                    trait_gain: 'Receive new trait',
+                    trait_remove: 'Remove existing trait',
+
+                    event_flag_remove: 'Remove event flag',
+                    event_flag_add: 'Add event flag',
+                    event_trigger: 'Set event trigger',
+
+                    static_mood: 'Character mood metric',
+                    static_learning_rate: 'Character learning rate',
+                    static_energy: 'Character energy value',
+                    static_energy_gain: 'Character energy gain multiplier',
+                    static_energy_fall: 'Character energy fall multiplier',
+                    static_energy_max: 'Maximum character energy value',
+                    static_stress: 'Character stress value',
+                    static_stress_gain: 'Character stress gain multiplier',
+                    static_stress_fall: 'Character stress fall multiplier',
+                    static_stress_max: 'Maximum character stress value',
+                },
                 section: {
                     attr: 'Attribute modifiers',
                     relationship: 'Relationship modifiers',

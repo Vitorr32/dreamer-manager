@@ -26,9 +26,15 @@ export enum ModifierType {
     //STATIC MODIFIERS
     MODIFY_MOOD_VALUE = 'model.modifier.mood',
     MODIFY_LEARNING_RATE = 'model.modifier.learning',
+
     MODIFY_ENERGY_VALUE = 'model.modifier.energy_value',
+    MODIFY_ENERGY_GAIN_MULTIPLIER = 'model.modifier.energy_gain_multiplier',
+    MODIFY_ENERGY_FALL_MULTIPLIER = 'model.modifier.energy_fall_multiplier',
     MODIFY_ENERGY_MAXIMUM = 'model.modifier.energy_max',
+
     MODIFY_STRESS_VALUE = 'model.modifier.stress_value',
+    MODIFY_STRESS_GAIN_MULTIPLIER = 'model.modifier.stress_gain_multiplier',
+    MODIFY_STRESS_FALL_MULTIPLIER = 'model.modifier.stress_fall_multiplier',
     MODIFY_STRESS_MAXIMUM = 'model.modifier.stress_max',
 }
 
@@ -37,7 +43,7 @@ export enum ModifierTypeSection {
     RELATIONSHIP_SECTION = 'model.modifier.section.relationship',
     TRAIT_SECTION = 'model.modifier.section.trait',
     EVENT_SECTION = 'model.modifier.section.event',
-    STATIC_SECTION = 'model.modifier.section.static'
+    STATIC_SECTION = 'model.modifier.section.static',
 }
 
 export class Modifier {
