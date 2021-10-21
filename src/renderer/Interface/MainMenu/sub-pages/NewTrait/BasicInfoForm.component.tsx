@@ -1,11 +1,13 @@
 
 import React, { useState } from "react"
 import { FormControl, InputLabel, MenuItem, Select, TextField, FormControlLabel, Switch, Button } from "@mui/material"
-import { TraitType } from "renderer/shared/models/base/Trait.model"
+import { Trait, TraitType } from "renderer/shared/models/base/Trait.model"
 
 interface IProps {
     onBasicInfoSubmit: (name: string, description: string, traitType: TraitType) => void,
-    nextStep: () => void
+    nextStep: () => void,
+    trait: Trait
+    onChange: (trait: Trait) => void;
 }
 
 export function BasicInfoForm({ onBasicInfoSubmit, nextStep }: IProps) {

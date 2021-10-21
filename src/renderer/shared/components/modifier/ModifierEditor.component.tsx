@@ -11,10 +11,9 @@ interface IProps {
     onChange: (modifier: Modifier) => void;
 }
 
-export function ModifierEditor(props: IProps) {
+export function ModifierEditor({ modifier, onChange }: IProps) {
     const { t } = useTranslation();
 
-    const [modifier, setModifier] = React.useState<Modifier>(new Modifier());
     const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
     const [selectableTypes, setSelectableTypes] = React.useState<ModifierType[]>([]);
     const [modifierSection, setModifierSection] = React.useState<ModifierTypeSection>();
@@ -31,7 +30,15 @@ export function ModifierEditor(props: IProps) {
         const newModifier = Object.assign({}, modifier);
         newModifier.type = type;
 
-        setModifier(newModifier);
+        onChange(newModifier);
+    };
+
+    const onEffectiveValueChange = (event: any, isPercentage: boolean) => {
+        const value = event.target.value;
+        const newModifier = Object.assign({}, modifier);
+        newModifier.effectiveChange = isPercentage ? value / 100 : value;
+
+        onChange(newModifier);
     };
 
     const onSubmitType = () => {
@@ -42,8 +49,46 @@ export function ModifierEditor(props: IProps) {
         setShowInput(true);
     };
 
-    const onEffectiveValueChange = (event: any) => {
-        console.log(event);
+    const renderModifierValueInput = (): React.ReactElement | null => {
+        switch (modifier.type) {
+            case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
+            case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_LOVE_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
+            case ModifierType.MODIFY_MOOD_VALUE:
+            case ModifierType.MODIFY_LEARNING_RATE:
+            case ModifierType.MODIFY_ENERGY_MAXIMUM:
+            case ModifierType.MODIFY_ENERGY_VALUE:
+                return (
+                    <TextField
+                        label={t('interface.editor.modifier.input_numeric')}
+                        variant="outlined"
+                        helperText={t('interface.editor.modifier.input_numeric_helper')}
+                        type="number"
+                        onChange={(e) => onEffectiveValueChange(e, false)}
+                    />
+                );
+            case ModifierType.MODIFY_ENERGY_GAIN_MULTIPLIER:
+            case ModifierType.MODIFY_ENERGY_FALL_MULTIPLIER:
+            case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
+            case ModifierType.MODIFY_STRESS_FALL_MULTIPLIER:
+            case ModifierType.MODIFY_STRESS_GAIN_MULTIPLIER:
+                return (
+                    <TextField
+                        label={t('interface.editor.modifier.input_percent')}
+                        variant="outlined"
+                        helperText={t('interface.editor.modifier.input_percent_helper')}
+                        type="number"
+                        onChange={(e) => onEffectiveValueChange(e, true)}
+                    />
+                );
+            default:
+                return null;
+        }
     };
 
     return (
@@ -54,11 +99,11 @@ export function ModifierEditor(props: IProps) {
             </div>
 
             <Box className="modifier-editor__content">
-                <Button variant="contained" endIcon={<ArrowForward />} onClick={() => setShowTypeModal(true)}>
+                <Button className="modifier-editor__select-type" variant="contained" endIcon={<ArrowForward />} onClick={() => setShowTypeModal(true)}>
                     {modifier.type === ModifierType.UNDEFINED ? t('interface.editor.modifier.select_type') : t(modifier.type)}
                 </Button>
 
-                <TextField label={t('interface.editor.modifier.input_numeric')} variant="filled" type="number" onChange={onEffectiveValueChange} />
+                {renderModifierValueInput()}
             </Box>
 
             <Modal className="selection-modal" open={showTypeModal} onClose={() => setShowTypeModal(false)}>

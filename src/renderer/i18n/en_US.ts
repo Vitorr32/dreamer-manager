@@ -15,7 +15,10 @@ export const en_US = {
                     select_type_caption: 'Select the type of modifier that this effect will have',
                     select_type_submit: 'Submit',
                     select_type_empty: 'Please select the type of modification that this effect will have on characters, events or the game world.',
-                    input_numeric: 'Value change'
+                    input_numeric: 'Value change',
+                    input_numeric_helper: 'The value that the modifier will apply (can be negative)',
+                    input_percent: 'Percentage change',
+                    input_percent_helper: 'Percentage to be applied (can be negative)',
                 },
             },
             tools: {

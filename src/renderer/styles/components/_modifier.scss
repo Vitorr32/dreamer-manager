@@ -5,6 +5,10 @@
 
     &__content {
         display: flex;
-        justify-self: stretch;
+        align-items: flex-start;
+    }
+
+    &__select-type {
+        height: 4rem;
     }
 }

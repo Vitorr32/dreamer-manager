@@ -10,7 +10,7 @@ interface IProps {}
 interface IState {
     stepperIndex: number;
     completed: { [k: number]: boolean };
-    currentTrait?: Trait;
+    currentTrait: Trait;
 }
 
 export class NewTrait extends React.Component<IProps, IState> {
@@ -22,7 +22,7 @@ export class NewTrait extends React.Component<IProps, IState> {
                 0: false,
                 1: false,
             },
-            currentTrait: undefined,
+            currentTrait: new Trait(),
         };
     }
 
@@ -34,7 +34,7 @@ export class NewTrait extends React.Component<IProps, IState> {
             traitType,
         };
 
-        console.log(trait)
+        console.log(trait);
 
         // this.setState({ currentTrait: trait });
     }
@@ -55,12 +55,18 @@ export class NewTrait extends React.Component<IProps, IState> {
         this.setState({ stepperIndex: this.state.stepperIndex - 1 });
     }
 
+    onTraitChange(trait: Trait): void {
+        console.log(this);
+        console.log(trait);
+        this.setState({ currentTrait: trait });
+    }
+
     getStepperContent(index: number) {
         switch (index) {
             case 0:
-                return <BasicInfoForm onBasicInfoSubmit={this.onBasicInfoSubmit.bind(this)} nextStep={this.nextStep.bind(this)} />;
+                return <BasicInfoForm trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} onBasicInfoSubmit={this.onBasicInfoSubmit.bind(this)} nextStep={this.nextStep.bind(this)} />;
             case 1:
-                return <EffectsAndConditions previousStep={this.previousStep.bind(this)} nextStep={this.nextStep.bind(this)} />;
+                return <EffectsAndConditions trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} previousStep={this.previousStep.bind(this)} nextStep={this.nextStep.bind(this)} />;
             default:
                 return null;
         }

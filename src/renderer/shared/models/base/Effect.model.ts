@@ -1,5 +1,5 @@
-import { ConditionTree } from "./ConditionTree";
-import { Modifier } from "./Modifier";
+import { ConditionTree } from './ConditionTree';
+import { Modifier } from './Modifier';
 
 export enum Trigger {
     UNDEFINED,
@@ -9,7 +9,7 @@ export enum Trigger {
     INTERACTION_END,
     DURING_INTERACTION,
 
-    MAX_TRIGGERS
+    MAX_TRIGGERS,
 }
 
 export enum Duration {
@@ -19,7 +19,7 @@ export enum Duration {
     SPECIFIC_DURATION,
     SPECIFIC_DATE,
 
-    MAX_DURATIONS
+    MAX_DURATIONS,
 }
 
 export enum Source {
@@ -29,29 +29,34 @@ export enum Source {
     RACE,
     ITEM,
 
-    MAX_SOURCES
+    MAX_SOURCES,
 }
 
 export class Effect {
-    //ID of the effect on the list of ids
-    public id?: string
     //Whetever this effect affect the holder of the effect or the target, if applicable, of the trigger
-    public targetSelf?: boolean = true
+    public targetSelf: boolean;
     //Source is with item/trait/race is the source of the effect, used to associate the effect to parent
-    public sourceType?: Source
+    public sourceType: Source;
     //Source ID, used to get the source of the effect
-    public sourceID?: string
+    public sourceID: string;
     //What trigger the check for this effect
-    public trigger?: Trigger
-    //What is the condition for the activation of this effect when the trigger is triggered.
-    public conditionTree?: ConditionTree
+    public trigger: Trigger;
+    //What is the condition for the activation of this effect when the trigger is triggered, it also may always happen.
+    public conditionTree: ConditionTree | undefined;
     //After the effect was activated, for how much time does it take effect?
-    public durationType?: Duration
-    public durationArgs?: number[]
+    public durationType: Duration;
+    public durationArgs: number[] | undefined;
     //What is the modifier that this effect cause
     public modifier: Modifier = new Modifier();
 
-    constructor(){
-        
+    constructor() {
+        this.targetSelf = true;
+        this.sourceType = Source.UNDEFINED;
+        this.sourceID = '';
+        this.trigger = Trigger.UNDEFINED;
+        this.conditionTree = undefined;
+        this.durationType = Duration.UNDEFINED;
+        this.durationArgs = undefined;
+        this.modifier = new Modifier();
     }
 }

@@ -17,14 +17,15 @@ export class Trait {
     public name: string;
     public type: TraitType;
     public description: string;
-    public effects: Effect[] = [];
+    public effects: Effect[];
     public spritePath: string[];
 
-    constructor(name: string, type: TraitType, description: string, sprite: string[]) {
+    constructor() {
         this.id = 'trait_' + uuidv4();
-        this.name = name;
-        this.type = type;
-        this.description = description;
-        this.spritePath = sprite;
+        this.name = '';
+        this.type = TraitType.UNDEFINED;
+        this.description = '';
+        this.spritePath = [];
+        this.effects = [new Effect()];
     }
 }

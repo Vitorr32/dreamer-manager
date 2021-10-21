@@ -27,7 +27,7 @@ export default function App() {
             }
         },
         typography: {
-            fontSize: 16,
+            fontSize: 18,
         },
     });
 

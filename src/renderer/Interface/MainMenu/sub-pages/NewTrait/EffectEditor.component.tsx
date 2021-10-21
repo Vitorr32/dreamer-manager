@@ -2,6 +2,7 @@ import React from 'react';
 import { ConditionTreeEditor } from 'renderer/shared/components/condition/ConditionTreeEditor.component';
 import { ModifierEditor } from 'renderer/shared/components/modifier/ModifierEditor.component';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
+import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
 
 interface IProps {
@@ -12,6 +13,8 @@ interface IProps {
 
 export function EffectEditor(props: IProps) {
     const onEffectChanged = (modifier: Modifier) => {
+        console.log(modifier);
+        
         const newEffect = Object.assign({}, props.effect);
 
         newEffect.modifier = modifier;
@@ -19,10 +22,18 @@ export function EffectEditor(props: IProps) {
         props.onChange(props.index, newEffect);
     };
 
+    const onConditionChanged = (conditionTree: ConditionTree) => {
+        const newEffect = Object.assign({}, props.effect);
+
+        newEffect.conditionTree = conditionTree;
+
+        props.onChange(props.index, newEffect);
+    };
+
     return (
         <React.Fragment>
-            <ConditionTreeEditor />
             <ModifierEditor modifier={props.effect.modifier} onChange={onEffectChanged} />
+            <ConditionTreeEditor conditionTree={props.effect.conditionTree} onChange={onConditionChanged} />
         </React.Fragment>
     );
 }
