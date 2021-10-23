@@ -1,7 +1,28 @@
 export const en_US = {
     translation: {
         interface: {
+            commons: {
+                next: 'Next',
+                previous: 'Previous',
+                cancel: 'Cancel',
+                delete: 'Delete',
+                submit: 'Submit'
+            },
             editor: {
+                trait: {
+                    next_step: 'Next',
+                    previous_step: 'Previous'
+                },
+                effect: {
+                    unset_modifier: 'New Modifier',
+                    unset_value: 'Unknown value',
+                    effect_instruction: "* Here you can create/edit the effects that the new trait will have, each effect can have it's own conditions and modifiers, a single trait can have up to {{max}} effects.",
+                    add_effect: 'Add new effect',
+                    edit_effect: 'Edit effect',
+                    remove_effect: 'Remove effect',
+                    remove_effect_title: 'Delete effect confirmation',
+                    remove_effect_confirmation: 'Are you sure you want to delete this effect? This operation cannot be reverted'
+                },
                 condition: {
                     initiator: 'Condition Initiator Selector',
                     selector: 'Selector Specificator',
@@ -106,7 +127,7 @@ export const en_US = {
 
                     relationship_respect: 'Relationship respect metric',
                     relationship_favor: 'Relationship favorability metric',
-                    relationship_attraction: 'Relationship attraction metric',
+                    relationship_attract: 'Relationship attraction metric',
                     relationship_love: 'Relationship love metric',
                     relationship_power: 'Relationship power dynamic metric',
                     relationship_familiarity: 'Relationship familiarity metric',

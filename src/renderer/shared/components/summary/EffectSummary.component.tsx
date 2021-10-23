@@ -3,27 +3,21 @@ import { Button, Divider, FilledInput, FormControl, FormHelperText, InputAdornme
 import { Box } from '@mui/system';
 import React, { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { Modifier, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
+import { ConditionTreeSummary } from './ConditionTreeSummary.component';
 
 interface IProps {
-    modifier: Modifier;
+    effect: Effect;
 }
 
-export function EffectSummary(props: IProps) {
+export function EffectSummary({ effect }: IProps) {
     const { t } = useTranslation();
 
-    const [modifier, setModifier] = React.useState<Modifier>(new Modifier());
-    const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
-    const [selectableTypes, setSelectableTypes] = React.useState<ModifierType[]>([]);
-    const [modifierSection, setModifierSection] = React.useState<ModifierTypeSection>();
     const [showInput, setShowInput] = React.useState<boolean>(false);
 
-    const onSectionSelected = (section: ModifierTypeSection) => {
-    };
+    const onSectionSelected = (section: ModifierTypeSection) => {};
 
-    return (
-        <Box className="effect-summary" sx={{ bgcolor: 'background.default' }}>
-        </Box>
-    );
+    return <Box className="effect-summary">{effect.conditionTree && <ConditionTreeSummary conditionTree={effect.conditionTree} />}</Box>;
 }

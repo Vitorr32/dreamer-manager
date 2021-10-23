@@ -13,8 +13,6 @@ interface IProps {
 
 export function EffectEditor(props: IProps) {
     const onEffectChanged = (modifier: Modifier) => {
-        console.log(modifier);
-        
         const newEffect = Object.assign({}, props.effect);
 
         newEffect.modifier = modifier;

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Button, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, IconButton, List, ListItem, ListItemText, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, ListItemIcon, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import EditIcon from '@mui/icons-material/Edit';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
-import { MAX_NUMBER_OF_TRAITS } from 'renderer/shared/Constants';
+import { MAX_NUMBER_OF_EFFECTS } from 'renderer/shared/Constants';
 import { EffectEditor } from './EffectEditor.component';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
+import { useTranslation } from 'react-i18next';
+import { ModifierType } from 'renderer/shared/models/base/Modifier';
+import { Box } from '@mui/system';
 
 interface IProps {
     previousStep: () => void;
@@ -17,11 +19,18 @@ interface IProps {
 }
 
 export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }: IProps) {
+    const { t } = useTranslation();
+
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState<boolean>(false);
     const [confirmDialogIndex, setConfirmDialogIndex] = useState<number>(-1);
     const [editEffectIndex, setEditEffectIndex] = useState<number>(-1);
 
-    const onNewEffectAddedToList = (): void => {};
+    const onNewEffectAddedToList = (): void => {
+        const newTrait = Object.assign({}, trait);
+        newTrait.effects.push(new Effect());
+
+        onChange(newTrait);
+    };
 
     const onEditEffect = (index: number, effect: Effect): void => {
         const newTrait = Object.assign({}, trait);
@@ -32,77 +41,82 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
 
     const onDeleteEffectFromList = (): void => {
         const newTrait = Object.assign({}, trait);
-        newTrait.effects = newTrait.effects.splice(confirmDialogIndex, 1);
+        newTrait.effects.splice(confirmDialogIndex, 1);
 
         setConfirmDialogIndex(-1);
         setConfirmDeleteOpen(false);
         onChange(newTrait);
     };
 
-    console.log(trait);
-
     return (
-        <div id="effect-and-condition-wrapper">
-            <span className="instruction">* Here you can create/edit the effects that the new trait will have, each effect can have it's own conditions and modifiers, a single trait can have up to 5 effects.</span>
+        <Box className="effect-editor">
+            <Typography variant="caption">{t('interface.editor.effect.effect_instruction', { max: MAX_NUMBER_OF_EFFECTS })}</Typography>
 
-            <section className="effect-list-wrapper">
-                <List className="effect-list">
+            <Box className="effect-editor__list-wrapper">
+                <List className="effect-editor__list">
                     {trait.effects.map((effect, index) => (
-                        <ListItem key={`effect_${index}`}>
-                            <ListItemIcon>
-                                <RemoveIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Single-line item" secondary={'Secondary text'} />
-                            <ListItemSecondaryAction>
-                                <IconButton
-                                    edge="end"
-                                    onClick={() => {
-                                        setConfirmDeleteOpen(true), setConfirmDialogIndex(index);
-                                    }}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                                <IconButton onClick={() => setEditEffectIndex(index)}>
-                                    <EditIcon />
-                                </IconButton>
-                            </ListItemSecondaryAction>
+                        <ListItem
+                            className="effect-editor__list-item"
+                            key={`effect_${index}`}
+                            secondaryAction={
+                                <Tooltip title={t('interface.editor.effect.remove_effect') as string}>
+                                    <IconButton
+                                        onClick={() => {
+                                            setConfirmDeleteOpen(true), setConfirmDialogIndex(index);
+                                        }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            }
+                        >
+                            <Tooltip title={t('interface.editor.effect.edit_effect') as string}>
+                                <ListItemIcon>
+                                    <IconButton onClick={() => setEditEffectIndex(index)}>
+                                        <EditIcon />
+                                    </IconButton>
+                                </ListItemIcon>
+                            </Tooltip>
+                            <ListItemText
+                                primary={t(effect.modifier && effect.modifier.type && effect.modifier.type !== ModifierType.UNDEFINED ? effect.modifier.type : 'interface.editor.effect.unset_modifier')}
+                                secondary={effect.modifier && effect.modifier.effectiveChange !== 0 ? effect.modifier.effectiveChange : t('interface.editor.effect.unset_value')}
+                            />
                         </ListItem>
                     ))}
                 </List>
 
-                {trait.effects.length < MAX_NUMBER_OF_TRAITS ? (
-                    <Button onClick={onNewEffectAddedToList}>
-                        <div>Add new Effect</div>
-                        <AddIcon />
+                {trait.effects.length < MAX_NUMBER_OF_EFFECTS ? (
+                    <Button variant="outlined" startIcon={<AddIcon />} onClick={onNewEffectAddedToList}>
+                        {t('interface.editor.effect.add_effect')}
                     </Button>
                 ) : null}
-            </section>
+            </Box>
 
             {editEffectIndex !== -1 ? <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={trait.effects[editEffectIndex]} /> : null}
 
             <div className="buttons-wrapper">
                 <Button color="primary" onClick={previousStep}>
-                    PREVIOUS
+                    {t('interface.commons.previous')}
                 </Button>
                 <Button color="primary" onClick={nextStep}>
-                    NEXT
+                    {t('interface.commons.next')}
                 </Button>
             </div>
 
-            <Dialog open={confirmDeleteOpen} onClose={() => setConfirmDeleteOpen(false)} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-                <DialogTitle id="alert-dialog-title">Delete effect confirmation</DialogTitle>
+            <Dialog open={confirmDeleteOpen} onClose={() => setConfirmDeleteOpen(false)}>
+                <DialogTitle>{t('interface.editor.effect.remove_effect_title')}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">Are you sure you want to delete this effect? This operation cannot be reverted</DialogContentText>
+                    <DialogContentText>{t('interface.editor.effect.remove_effect_confirmation')}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setConfirmDeleteOpen(false)} color="primary">
-                        CANCEL
+                        {t('interface.commons.cancel')}
                     </Button>
                     <Button onClick={onDeleteEffectFromList} color="primary" variant="contained">
-                        DELETE
+                        {t('interface.commons.delete')}
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </Box>
     );
 }

@@ -56,8 +56,6 @@ export class NewTrait extends React.Component<IProps, IState> {
     }
 
     onTraitChange(trait: Trait): void {
-        console.log(this);
-        console.log(trait);
         this.setState({ currentTrait: trait });
     }
 

@@ -17,7 +17,7 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
     const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
     const [selectableTypes, setSelectableTypes] = React.useState<ModifierType[]>([]);
     const [modifierSection, setModifierSection] = React.useState<ModifierTypeSection>();
-    const [showInput, setShowInput] = React.useState<boolean>(false);
+    const [tempType, setTempType] = React.useState<ModifierType>(ModifierType.UNDEFINED);
 
     const onSectionSelected = (section: ModifierTypeSection) => {
         onTypeSelected(ModifierType.UNDEFINED);
@@ -27,10 +27,7 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
     };
 
     const onTypeSelected = (type: ModifierType) => {
-        const newModifier = Object.assign({}, modifier);
-        newModifier.type = type;
-
-        onChange(newModifier);
+        setTempType(type);
     };
 
     const onEffectiveValueChange = (event: any, isPercentage: boolean) => {
@@ -42,11 +39,15 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
     };
 
     const onSubmitType = () => {
+        const newModifier = Object.assign({}, modifier);
+        newModifier.type = tempType;
+
+        onChange(newModifier);
+
         setShowTypeModal(false);
         setSelectableTypes([]);
         setModifierSection(undefined);
-
-        setShowInput(true);
+        setTempType(ModifierType.UNDEFINED);
     };
 
     const renderModifierValueInput = (): React.ReactElement | null => {
@@ -129,7 +130,7 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
                             <List className="selection-modal__selection selection-modal__selection-secondary">
                                 {selectableTypes.map((value) => {
                                     return (
-                                        <ListItemButton key={`type_${value}`} selected={value === modifier.type} onClick={() => onTypeSelected(value)}>
+                                        <ListItemButton key={`type_${value}`} selected={value === tempType} onClick={() => onTypeSelected(value)}>
                                             <ListItemText primary={t(value)} />
                                         </ListItemButton>
                                     );
@@ -144,7 +145,7 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
                                 {t('interface.editor.modifier.select_type_empty')}
                             </Typography>
                         )}
-                        <Button className="selection-modal__footer-submit" disabled={modifier.type === ModifierType.UNDEFINED} variant="contained" onClick={onSubmitType}>
+                        <Button className="selection-modal__footer-submit" disabled={tempType === ModifierType.UNDEFINED} variant="contained" onClick={onSubmitType}>
                             {t('interface.editor.modifier.select_type_submit')}
                         </Button>
                     </Box>
