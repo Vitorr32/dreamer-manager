@@ -26,7 +26,6 @@ export function AttributePicker(props: IProps) {
     }, [query]);
 
     const filterAttributesByQuery = (query: string): Attribute[] => {
-        console.log(attributes.filter((attr) => attr.id?.includes(query) || attr.name?.includes(query) || attr.description?.includes(query)).sort((a: Attribute, b: Attribute) => a.name.localeCompare(b.name)));
         return attributes.filter((attr) => attr.id?.includes(query) || attr.name?.includes(query) || attr.description?.includes(query)).sort((a: Attribute, b: Attribute) => a.name.localeCompare(b.name));
     };
 
@@ -71,7 +70,11 @@ export function AttributePicker(props: IProps) {
                     <div className="modal__grid modal__grid-columns">
                         {filtered.map((attribute) => {
                             return (
-                                <div className={`cell cell-attribute ${selectedAttr === attribute ? 'cell-selected' : ''}`} key={attribute.id} onClick={() => setSelectedAttr(selectedAttr === attribute ? undefined : attribute)}>
+                                <div
+                                    className={`cell cell-attribute ${selectedAttr === attribute ? 'cell-selected' : ''}`}
+                                    key={attribute.id}
+                                    onClick={() => setSelectedAttr(selectedAttr === attribute ? undefined : attribute)}
+                                >
                                     <div className="cell__header">
                                         <Typography className="cell__title" variant="h5">
                                             {attribute.name}

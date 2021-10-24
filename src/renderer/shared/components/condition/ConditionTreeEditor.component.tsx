@@ -1,3 +1,5 @@
+import { Button } from '@mui/material';
+import { Box } from '@mui/system';
 import React from 'react';
 import { ConditionTree, Node } from '../../../shared/models/base/ConditionTree';
 import { ConditionNode } from './ConditionNode.component';
@@ -17,5 +19,20 @@ export function ConditionTreeEditor({ conditionTree, onChange }: IProps) {
         onChange(updatedTreeRoot);
     };
 
-    return <section className="condition-tree-editor">{conditionTree && <ConditionNode index={-1} depth={0} onChange={onRootChange} conditionNode={conditionTree.root} />}</section>;
+    const onAddConditionTree = () => {
+        if (conditionTree !== undefined) {
+            console.log('Tree already is there');
+        }
+
+        onChange(new ConditionTree());
+    };
+
+    return (
+        <Box>
+            <Button variant="contained" onClick={onAddConditionTree}>
+                Add Condition for Effect
+            </Button>
+            {conditionTree && <ConditionNode index={-1} depth={0} onChange={onRootChange} conditionNode={conditionTree.root} />}
+        </Box>
+    );
 }

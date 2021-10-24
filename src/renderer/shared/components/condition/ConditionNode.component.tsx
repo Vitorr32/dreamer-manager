@@ -48,6 +48,14 @@ export class ConditionNode extends React.Component<IProps, IState> {
         this.props.onChange(this.props.index, newNode);
     }
 
+    private onConditionLineRemoval(index: number) {
+        const newNode: Node = Object.assign({}, this.props.conditionNode);
+
+        newNode.conditions.splice(index, 1);
+
+        this.props.onChange(this.props.index, newNode);
+    }
+
     render() {
         const { conditionNode, depth } = this.props;
 
@@ -80,7 +88,9 @@ export class ConditionNode extends React.Component<IProps, IState> {
 
                 <div className="node-children">
                     {conditionNode.conditions.map((conditionLine, index) => {
-                        return <ConditionLine key={`condition_line_${depth}_${index}`} index={index} conditionLine={conditionLine} onChange={this.onConditionChange.bind(this)} />;
+                        return (
+                            <ConditionLine key={`condition_line_${depth}_${index}`} index={index} conditionLine={conditionLine} onChange={this.onConditionChange.bind(this)} onRemove={this.onConditionLineRemoval.bind(this)} />
+                        );
                     })}
 
                     {conditionNode.children.map((childNode, index) => {

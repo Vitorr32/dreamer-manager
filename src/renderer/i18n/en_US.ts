@@ -6,12 +6,12 @@ export const en_US = {
                 previous: 'Previous',
                 cancel: 'Cancel',
                 delete: 'Delete',
-                submit: 'Submit'
+                submit: 'Submit',
             },
             editor: {
                 trait: {
                     next_step: 'Next',
-                    previous_step: 'Previous'
+                    previous_step: 'Previous',
                 },
                 effect: {
                     unset_modifier: 'New Modifier',
@@ -21,13 +21,15 @@ export const en_US = {
                     edit_effect: 'Edit effect',
                     remove_effect: 'Remove effect',
                     remove_effect_title: 'Delete effect confirmation',
-                    remove_effect_confirmation: 'Are you sure you want to delete this effect? This operation cannot be reverted'
+                    remove_effect_confirmation: 'Are you sure you want to delete this effect? This operation cannot be reverted',
                 },
                 condition: {
                     initiator: 'Condition Initiator Selector',
                     selector: 'Selector Specificator',
                     attr_selector_placeholder: 'Select Attribute',
                     trait_selector_placeholder: 'Select Trait',
+                    numeric_selector_input_from: 'From',
+                    numeric_selector_input_to: 'To',
                 },
                 modifier: {
                     title: 'Modifier Editor',

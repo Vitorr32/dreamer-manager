@@ -1,18 +1,19 @@
 import React from 'react';
 import { Condition, NumericSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
-import { ConditionSelectionAttribute } from './ConditionSelectionAttribute.component';
+import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
 import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
 import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
 import { NumericSelectorParameterInput } from './NumericSelector.component';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRightSharp';
 import CloseIcon from '@mui/icons-material/Close';
-import { ConditionSelectionTrait } from './ConditionSelectionTrait.component';
+import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
 
 interface IProps {
     conditionLine: Condition;
     index: number;
     onChange: (index: number, condition: Condition) => void;
+    onRemove: (index: number) => void;
 }
 interface IState {
     conditionInitiatorAnchorEl: null | HTMLElement;
@@ -33,10 +34,10 @@ export class ConditionLine extends React.Component<IProps, IState> {
         this.props.onChange(this.props.index, condition);
     }
 
-    private onParameterChange(index: number, value: string | number) {
+    private onParameterChange(value: string | number, returnData: { index: number }) {
         const newCondition = Object.assign({}, this.props.conditionLine);
 
-        newCondition.parameters[index] = value;
+        newCondition.parameters[returnData.index] = value;
 
         this.props.onChange(this.props.index, newCondition);
     }
@@ -44,9 +45,9 @@ export class ConditionLine extends React.Component<IProps, IState> {
     private renderAppropriateSelectorTool(condition: Condition): React.ReactElement | null {
         switch (condition.initiator) {
             case ConditionInitiator.TRAIT:
-                return <ConditionSelectionTrait condition={condition} onChange={this.onParameterChange.bind(this)} />;
+                return <TraitSelectionButton displayID={condition?.parameters[0]} onChange={this.onParameterChange.bind(this)} returnData={{ index: 0 }} />;
             case ConditionInitiator.ATTRIBUTE_RANGE:
-                return <ConditionSelectionAttribute condition={condition} onChange={this.onParameterChange.bind(this)} />;
+                return <AttributeSelectionButton displayID={condition?.parameters[0]} onChange={this.onParameterChange.bind(this)} returnData={{ index: 0 }} />;
         }
 
         return null;
@@ -73,7 +74,7 @@ export class ConditionLine extends React.Component<IProps, IState> {
     }
 
     render() {
-        const { conditionLine } = this.props;
+        const { conditionLine, index, onRemove } = this.props;
 
         return (
             <section className="condition-line">
@@ -87,7 +88,7 @@ export class ConditionLine extends React.Component<IProps, IState> {
 
                 {this.renderSelectorParameters(conditionLine)}
 
-                {this.props.index !== 0 ? <CloseIcon className="condition-line__remove" fontSize="large" onClick={() => /*Something*/ {}} /> : null}
+                {this.props.index !== 0 ? <CloseIcon className="condition-line__remove" fontSize="large" onClick={() => onRemove(index)} /> : null}
             </section>
         );
     }

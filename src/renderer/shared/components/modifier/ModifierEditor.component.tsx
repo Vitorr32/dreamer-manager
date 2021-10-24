@@ -3,8 +3,11 @@ import { Button, Divider, List, ListItem, ListItemButton, ListItemText, Modal, T
 import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { Modifier, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
+import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
+import { AttributePicker } from '../tools/AttributePicker.tool';
 
 interface IProps {
     modifier: Modifier;
@@ -48,6 +51,28 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
         setSelectableTypes([]);
         setModifierSection(undefined);
         setTempType(ModifierType.UNDEFINED);
+    };
+
+    const onToolPickerSelection = (selection: string | undefined) => {
+        if (!selection) {
+            throw new Error('The selection is not empty but has no Identifier variable');
+        }
+
+        const newModifier = Object.assign({}, modifier);
+        newModifier.modifierTargets = [selection];
+
+        onChange(newModifier);
+    };
+
+    const renderModifierSelectionInput = (): React.ReactElement | null => {
+        switch (modifier.type) {
+            case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
+            case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
+            case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
+                return <AttributeSelectionButton displayID={modifier.modifierTargets[0]} onChange={onToolPickerSelection} />;
+            default:
+                return null;
+        }
     };
 
     const renderModifierValueInput = (): React.ReactElement | null => {
@@ -103,6 +128,8 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
                 <Button className="modifier-editor__select-type" variant="contained" endIcon={<ArrowForward />} onClick={() => setShowTypeModal(true)}>
                     {modifier.type === ModifierType.UNDEFINED ? t('interface.editor.modifier.select_type') : t(modifier.type)}
                 </Button>
+
+                {renderModifierSelectionInput()}
 
                 {renderModifierValueInput()}
             </Box>
