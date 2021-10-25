@@ -12,6 +12,7 @@ interface IProps {
     index: number;
     depth: number;
     onChange: (index: number, node: Node) => void;
+    onRemoveSelf?: (index: number) => void;
 }
 interface IState {}
 
@@ -56,8 +57,44 @@ export class ConditionNode extends React.Component<IProps, IState> {
         this.props.onChange(this.props.index, newNode);
     }
 
+    private onSubNodeRemoval(index: number) {
+        const newNode: Node = Object.assign({}, this.props.conditionNode);
+
+        newNode.children.splice(index, 1);
+
+        this.props.onChange(this.props.index, newNode);
+    }
+
+    private onAddConditionLine() {
+        const { conditionNode, index, onChange } = this.props;
+
+        if (conditionNode.logicOperator === LogicOperator.IF && conditionNode.conditions.length !== 0) {
+            console.error("Can't have multiple lines for a if node");
+            return;
+        }
+
+        const newNode: Node = Object.assign({}, conditionNode);
+
+        newNode.conditions.push(new Condition());
+        onChange(index, newNode);
+    }
+
+    private onAddConditionSubNode() {
+        const { conditionNode, index, onChange } = this.props;
+
+        if (conditionNode.logicOperator === LogicOperator.IF && conditionNode.conditions.length !== 0) {
+            console.error("Can't have multiple lines for a if node");
+            return;
+        }
+
+        const newNode: Node = Object.assign({}, conditionNode);
+
+        newNode.children.push(new Node());
+        onChange(index, newNode);
+    }
+
     render() {
-        const { conditionNode, depth } = this.props;
+        const { conditionNode, depth, index, onRemoveSelf } = this.props;
 
         return (
             <section className="condition-node">
@@ -71,19 +108,19 @@ export class ConditionNode extends React.Component<IProps, IState> {
                         </Select>
                     </FormControl>
 
-                    <Button className="condition-node__add" variant="contained" startIcon={<AddIcon />}>
+                    <Button className="condition-node__add" variant="contained" startIcon={<AddIcon />} onClick={this.onAddConditionSubNode.bind(this)}>
                         Add Sub Node
                     </Button>
 
-                    <Button className="condition-node__add" variant="contained" startIcon={<AddIcon />}>
+                    <Button className="condition-node__add" variant="contained" startIcon={<AddIcon />} onClick={this.onAddConditionLine.bind(this)}>
                         Add Condition Line
                     </Button>
 
-                    {this.props.index !== -1 ? (
-                        <Button className="condition-node__remove" variant="contained" startIcon={<CloseIcon />}>
+                    {index !== -1 && (
+                        <Button className="condition-node__remove" variant="contained" startIcon={<CloseIcon />} onClick={() => onRemoveSelf && onRemoveSelf(index)}>
                             Remove Node
                         </Button>
-                    ) : null}
+                    )}
                 </div>
 
                 <div className="node-children">
@@ -94,7 +131,16 @@ export class ConditionNode extends React.Component<IProps, IState> {
                     })}
 
                     {conditionNode.children.map((childNode, index) => {
-                        return <ConditionNode key={`condition_node_${depth}_${index}`} depth={depth + 1} onChange={this.onChildNodeChange.bind(this)} index={index} conditionNode={childNode} />;
+                        return (
+                            <ConditionNode
+                                key={`condition_node_${depth}_${index}`}
+                                depth={depth + 1}
+                                onChange={this.onChildNodeChange.bind(this)}
+                                onRemoveSelf={this.onSubNodeRemoval.bind(this)}
+                                index={index}
+                                conditionNode={childNode}
+                            />
+                        );
                     })}
                 </div>
             </section>

@@ -119,10 +119,10 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
 
     return (
         <Box className="modifier-editor" sx={{ bgcolor: 'background.default' }}>
-            <div className="modifier-editor__header">
+            <Box className="modifier-editor__header">
                 <Typography variant="h4">{t('interface.editor.modifier.title')}</Typography>
                 <Typography variant="subtitle1">{t('interface.editor.modifier.subtitle')}</Typography>
-            </div>
+            </Box>
 
             <Box className="modifier-editor__content">
                 <Button className="modifier-editor__select-type" variant="contained" endIcon={<ArrowForward />} onClick={() => setShowTypeModal(true)}>
