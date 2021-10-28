@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { Condition } from '../../../shared/models/base/Condition.model';
 import { ConditionLine } from './ConditionLine.component';
+import { Box } from '@mui/system';
 
 interface IProps {
     conditionNode: Node;
@@ -97,8 +98,8 @@ export class ConditionNode extends React.Component<IProps, IState> {
         const { conditionNode, depth, index, onRemoveSelf } = this.props;
 
         return (
-            <section className="condition-node">
-                <div className="condition-node__config">
+            <Box className="condition-node">
+                <Box className="condition-node__config">
                     <FormControl variant="standard" style={{ width: '150px' }}>
                         <InputLabel id="logic-operator-label">Logic Operator</InputLabel>
                         <Select labelId="logic-operator-label" id="logic-operator" value={conditionNode.logicOperator} onChange={this.onLogicOperatorChange.bind(this)}>
@@ -121,9 +122,9 @@ export class ConditionNode extends React.Component<IProps, IState> {
                             Remove Node
                         </Button>
                     )}
-                </div>
+                </Box>
 
-                <div className="node-children">
+                <Box className="node-children">
                     {conditionNode.conditions.map((conditionLine, index) => {
                         return (
                             <ConditionLine key={`condition_line_${depth}_${index}`} index={index} conditionLine={conditionLine} onChange={this.onConditionChange.bind(this)} onRemove={this.onConditionLineRemoval.bind(this)} />
@@ -142,8 +143,8 @@ export class ConditionNode extends React.Component<IProps, IState> {
                             />
                         );
                     })}
-                </div>
-            </section>
+                </Box>
+            </Box>
         );
     }
 }

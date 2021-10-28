@@ -37,7 +37,7 @@ export function AttributeSelectionButton({ displayID, onChange, returnData }: IP
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedAttribute === undefined ? t('interface.editor.condition.attr_selector_placeholder') : mappedDatabase.attributes[displayID].name}
+                {selectedAttribute === undefined || !displayID ? t('interface.editor.condition.attr_selector_placeholder') : mappedDatabase.attributes[displayID].name}
             </Button>
 
             <AttributePicker showTool={showTool} onSelection={onAttributeSelected} />

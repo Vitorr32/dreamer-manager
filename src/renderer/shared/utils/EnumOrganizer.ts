@@ -1,6 +1,10 @@
 import { ModifierType, ModifierTypeSection } from '../models/base/Modifier';
 
-export function GetModifierTypesOfSection(section: ModifierTypeSection): ModifierType[] {
+export function GetModifierTypesOfSection(section: ModifierTypeSection, filteredSections: ModifierTypeSection[] = []): ModifierType[] {
+    if (filteredSections.includes(section)) {
+        return [];
+    }
+    
     switch (section) {
         case ModifierTypeSection.ATTR_SECTION:
             return [ModifierType.MODIFY_SKILL_POTENTIAL_VALUE, ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE, ModifierType.MODIFY_SKILL_CURRENT_VALUE];

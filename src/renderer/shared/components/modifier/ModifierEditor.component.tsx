@@ -3,18 +3,18 @@ import { Button, Divider, List, ListItem, ListItemButton, ListItemText, Modal, T
 import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { Modifier, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
-import { AttributePicker } from '../tools/AttributePicker.tool';
+import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
 
 interface IProps {
     modifier: Modifier;
     onChange: (modifier: Modifier) => void;
+    filteredTypes?: ModifierTypeSection[];
 }
 
-export function ModifierEditor({ modifier, onChange }: IProps) {
+export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
     const { t } = useTranslation();
 
     const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
@@ -43,14 +43,22 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
 
     const onSubmitType = () => {
         const newModifier = Object.assign({}, modifier);
-        newModifier.type = tempType;
+        //Reset layout of inputs on change of type
+        if (modifier.type !== tempType) {
+            console.log('Yolo');
 
-        onChange(newModifier);
+            newModifier.effectiveChange = 0;
+            newModifier.modifierTargets = [];
+        }
+
+        newModifier.type = tempType;
 
         setShowTypeModal(false);
         setSelectableTypes([]);
         setModifierSection(undefined);
         setTempType(ModifierType.UNDEFINED);
+
+        onChange(newModifier);
     };
 
     const onToolPickerSelection = (selection: string | undefined) => {
@@ -65,11 +73,15 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
     };
 
     const renderModifierSelectionInput = (): React.ReactElement | null => {
+        console.log(modifier);
         switch (modifier.type) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
             case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
             case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
                 return <AttributeSelectionButton displayID={modifier.modifierTargets[0]} onChange={onToolPickerSelection} />;
+            case ModifierType.MODIFY_TRAIT_GAIN:
+            case ModifierType.MODIFY_TRAIT_REMOVE:
+                return <TraitSelectionButton displayID={modifier.modifierTargets[0]} onChange={onToolPickerSelection} />;
             default:
                 return null;
         }
@@ -91,6 +103,7 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
             case ModifierType.MODIFY_ENERGY_VALUE:
                 return (
                     <TextField
+                        value={modifier.effectiveChange}
                         label={t('interface.editor.modifier.input_numeric')}
                         variant="outlined"
                         helperText={t('interface.editor.modifier.input_numeric_helper')}
@@ -105,6 +118,7 @@ export function ModifierEditor({ modifier, onChange }: IProps) {
             case ModifierType.MODIFY_STRESS_GAIN_MULTIPLIER:
                 return (
                     <TextField
+                        value={modifier.effectiveChange}
                         label={t('interface.editor.modifier.input_percent')}
                         variant="outlined"
                         helperText={t('interface.editor.modifier.input_percent_helper')}

@@ -21,7 +21,8 @@ export function ConditionTreeEditor({ conditionTree, onChange }: IProps) {
 
     const onAddConditionTree = () => {
         if (conditionTree !== undefined) {
-            console.log('Tree already is there');
+            console.error('Tree already is there');
+            return;
         }
 
         onChange(new ConditionTree());

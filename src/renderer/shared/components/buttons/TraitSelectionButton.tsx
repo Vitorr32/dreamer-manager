@@ -36,7 +36,7 @@ export function TraitSelectionButton({ displayID, onChange, returnData }: IProps
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedValue === undefined ? t('interface.editor.condition.trait_selector_placeholder') : mappedDatabase.traits[displayID].name}
+                {selectedValue === undefined || !displayID ? t('interface.editor.condition.trait_selector_placeholder') : mappedDatabase.traits[displayID].name}
             </Button>
 
             <TraitPicker showTool={showTool} onSelection={onValueSelected} />
