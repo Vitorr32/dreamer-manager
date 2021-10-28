@@ -12,6 +12,13 @@ export const en_US = {
                 trait: {
                     next_step: 'Next',
                     previous_step: 'Previous',
+                    select_type: 'Select a Trait Type',
+                    name_label: 'Trait name',
+                    name_helper: `The name of the trait to be displayed. Examples: 'Leader', 'Charismatic', 'Shy'`,
+                    description_label: 'Description of effects/personality',
+                    description_helper: `The description of the trait to give better context of it's effects on gameplay and character personality. Example: " 'Leader' defines the capacity of this character to inspire, command and support his peers in his job and daily life"`,
+                    type_label: 'Type category of the Trait',
+                    type_helper: 'The type of the trait, it defines the category that the trait will be presented and in what type of situation it can be obtainable'
                 },
                 effect: {
                     unset_modifier: 'New Modifier',
@@ -119,6 +126,17 @@ export const en_US = {
                         at: 'Is At',
                         not_at: 'Not At',
                     },
+                },
+            },
+            trait: {
+                type: {
+                    normal: 'Normal',
+                    physical: 'Physical',
+                    mental: 'Mental',
+                    personality: 'Personality',
+                    development: 'Development',
+                    national: 'National',
+                    special: 'Special',
                 },
             },
             modifier: {

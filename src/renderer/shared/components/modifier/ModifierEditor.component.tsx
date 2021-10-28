@@ -25,7 +25,7 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
     const onSectionSelected = (section: ModifierTypeSection) => {
         onTypeSelected(ModifierType.UNDEFINED);
 
-        setSelectableTypes(GetModifierTypesOfSection(section));
+        setSelectableTypes(GetModifierTypesOfSection(section, filteredTypes));
         setModifierSection(section);
     };
 
@@ -73,7 +73,6 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
     };
 
     const renderModifierSelectionInput = (): React.ReactElement | null => {
-        console.log(modifier);
         switch (modifier.type) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
             case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
@@ -150,6 +149,10 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
 
             <Modal className="selection-modal" open={showTypeModal} onClose={() => setShowTypeModal(false)}>
                 <Box className="selection-modal__wrapper" sx={{ bgcolor: 'background.default' }}>
+                    <Box className="selection-modal__header">
+                        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+                    </Box>
+                    
                     <Box className="selection-modal__selection-wrapper">
                         <List className="selection-modal__selection selection-modal__selection-primary">
                             <ListItem disablePadding>
@@ -159,6 +162,10 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
                             <Divider />
 
                             {Object.values(ModifierTypeSection).map((value) => {
+                                if (filteredTypes?.includes(value)) {
+                                    return null;
+                                }
+
                                 return (
                                     <ListItemButton key={`section_${value}`} selected={value === modifierSection} onClick={() => onSectionSelected(value)}>
                                         <ListItemText primary={t(value)} />

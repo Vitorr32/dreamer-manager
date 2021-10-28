@@ -2,21 +2,23 @@ import { Effect } from './Effect.model';
 import { v4 as uuidv4 } from 'uuid';
 
 export enum TraitType {
-    UNDEFINED = 'Undefined',
+    UNDEFINED = 'model.undefined',
 
-    NORMAL = 'Normal',
-    PHYSICAL = 'Physical',
-    MENTAL = 'Mental',
-    PERSONALITY = 'Personality',
-    DEVELOPMENT = 'Development',
-    NATIONAL = 'National',
-    SPECIAL = 'Special',
+    NORMAL = 'model.trait.type.normal',
+    PHYSICAL = 'model.trait.type.physical',
+    MENTAL = 'model.trait.type.mental',
+    PERSONALITY = 'model.trait.type.personality',
+    DEVELOPMENT = 'model.trait.type.development',
+    NATIONAL = 'model.trait.type.national',
+    SPECIAL = 'model.trait.type.special',
 }
+
 export class Trait {
     public id: string;
     public name: string;
     public type: TraitType;
     public description: string;
+    public spawnable: boolean;
     public effects: Effect[];
     public spritePath: string[];
 
@@ -26,6 +28,7 @@ export class Trait {
         this.type = TraitType.UNDEFINED;
         this.description = '';
         this.spritePath = [];
+        this.spawnable = false;
         this.effects = [new Effect()];
     }
 }

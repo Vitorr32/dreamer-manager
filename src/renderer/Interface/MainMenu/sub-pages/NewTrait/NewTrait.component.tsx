@@ -26,19 +26,6 @@ export class NewTrait extends React.Component<IProps, IState> {
         };
     }
 
-    onBasicInfoSubmit(name: string, description: string, traitType: TraitType): void {
-        const trait = {
-            ...this.state.currentTrait,
-            name,
-            description,
-            traitType,
-        };
-
-        console.log(trait);
-
-        // this.setState({ currentTrait: trait });
-    }
-
     nextStep(): void {
         if (this.state.stepperIndex === 3) {
             return;
@@ -62,7 +49,7 @@ export class NewTrait extends React.Component<IProps, IState> {
     getStepperContent(index: number) {
         switch (index) {
             case 0:
-                return <BasicInfoForm trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} onBasicInfoSubmit={this.onBasicInfoSubmit.bind(this)} nextStep={this.nextStep.bind(this)} />;
+                return <BasicInfoForm trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} nextStep={this.nextStep.bind(this)} />;
             case 1:
                 return <EffectsAndConditions trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} previousStep={this.previousStep.bind(this)} nextStep={this.nextStep.bind(this)} />;
             default:
