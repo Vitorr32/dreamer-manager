@@ -45,9 +45,9 @@ export class ConditionLine extends React.Component<IProps, IState> {
     private renderAppropriateSelectorTool(condition: Condition): React.ReactElement | null {
         switch (condition.initiator) {
             case ConditionInitiator.TRAIT:
-                return <TraitSelectionButton displayID={condition?.parameters[0]} onChange={this.onParameterChange.bind(this)} returnData={{ index: 0 }} />;
+                return <TraitSelectionButton displayIDs={condition?.parameters[0]} onChange={this.onParameterChange.bind(this)} returnData={{ index: 0 }} />;
             case ConditionInitiator.ATTRIBUTE_RANGE:
-                return <AttributeSelectionButton displayID={condition?.parameters[0]} onChange={this.onParameterChange.bind(this)} returnData={{ index: 0 }} />;
+                return <AttributeSelectionButton displayIDs={condition?.parameters[0]} onChange={this.onParameterChange.bind(this)} returnData={{ index: 0 }} />;
         }
 
         return null;

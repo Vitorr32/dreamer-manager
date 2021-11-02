@@ -9,12 +9,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 
 interface IProps {
-    displayID: string;
+    displayIDs: string[];
     onChange: (value: string, returnData?: any) => void;
     returnData?: any;
 }
 
-export function AttributeSelectionButton({ displayID, onChange, returnData }: IProps) {
+export function AttributeSelectionButton({ displayIDs, onChange, returnData }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const { t } = useTranslation();
@@ -37,7 +37,7 @@ export function AttributeSelectionButton({ displayID, onChange, returnData }: IP
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedAttribute === undefined || !displayID ? t('interface.editor.condition.attr_selector_placeholder') : mappedDatabase.attributes[displayID].name}
+                {selectedAttribute === undefined || displayIDs.length === 0 ? t('interface.editor.condition.attr_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].name)}
             </Button>
 
             <AttributePicker showTool={showTool} onSelection={onAttributeSelected} />

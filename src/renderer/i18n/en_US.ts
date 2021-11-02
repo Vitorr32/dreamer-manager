@@ -7,6 +7,9 @@ export const en_US = {
                 cancel: 'Cancel',
                 delete: 'Delete',
                 submit: 'Submit',
+                by: 'by',
+                increase: 'increase',
+                decrease: 'decrease',
             },
             editor: {
                 trait: {
@@ -18,7 +21,10 @@ export const en_US = {
                     description_label: 'Description of effects/personality',
                     description_helper: `The description of the trait to give better context of it's effects on gameplay and character personality. Example: " 'Leader' defines the capacity of this character to inspire, command and support his peers in his job and daily life"`,
                     type_label: 'Type category of the Trait',
-                    type_helper: 'The type of the trait, it defines the category that the trait will be presented and in what type of situation it can be obtainable'
+                    type_helper: 'The type of the trait, it defines the category that the trait will be presented and in what type of situation it can be obtainable',
+                    spawn_label: 'Spawnable',
+                    spawn_helper: `Whetever this trait can be found on generated Dreamers, otherwise it can be obtainable only by events (Do note that traits of type 'National' will always be spawned), generated dreamers will have up to {{max}}
+                    traits on generation.`,
                 },
                 effect: {
                     unset_modifier: 'New Modifier',
@@ -84,6 +90,10 @@ export const en_US = {
                     mental: 'Mental',
                     physical: 'Physical',
                 },
+            },
+            character: {
+                energy: 'Energy',
+                stress: 'Stress'
             },
             condition: {
                 initiator: {
@@ -177,6 +187,19 @@ export const en_US = {
                     event: 'Event modifiers',
                     static: 'Character values modifier',
                 },
+            },
+        },
+        summary: {
+            node: {
+                logic: {
+                    if: 'If the following is true',
+                    and: 'If all of the following is true',
+                    or: 'If any of the following is true',
+                },
+            },
+            effect: {
+                increase: 'Increase the {{values}} {{model}} by {{change}}',
+                decrease: 'Decrease the {{values}} {{model}} by {{change}}',
             },
         },
     },

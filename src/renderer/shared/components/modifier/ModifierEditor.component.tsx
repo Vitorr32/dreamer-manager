@@ -36,7 +36,9 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
     const onEffectiveValueChange = (event: any, isPercentage: boolean) => {
         const value = event.target.value;
         const newModifier = Object.assign({}, modifier);
-        newModifier.effectiveChange = isPercentage ? value / 100 : value;
+
+        newModifier.effectiveChange = value;
+        newModifier.percentage = isPercentage;
 
         onChange(newModifier);
     };
@@ -45,8 +47,6 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
         const newModifier = Object.assign({}, modifier);
         //Reset layout of inputs on change of type
         if (modifier.type !== tempType) {
-            console.log('Yolo');
-
             newModifier.effectiveChange = 0;
             newModifier.modifierTargets = [];
         }
@@ -77,10 +77,10 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
             case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
             case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
-                return <AttributeSelectionButton displayID={modifier.modifierTargets[0]} onChange={onToolPickerSelection} />;
+                return <AttributeSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} />;
             case ModifierType.MODIFY_TRAIT_GAIN:
             case ModifierType.MODIFY_TRAIT_REMOVE:
-                return <TraitSelectionButton displayID={modifier.modifierTargets[0]} onChange={onToolPickerSelection} />;
+                return <TraitSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} />;
             default:
                 return null;
         }
@@ -149,10 +149,6 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
 
             <Modal className="selection-modal" open={showTypeModal} onClose={() => setShowTypeModal(false)}>
                 <Box className="selection-modal__wrapper" sx={{ bgcolor: 'background.default' }}>
-                    <Box className="selection-modal__header">
-                        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-                    </Box>
-                    
                     <Box className="selection-modal__selection-wrapper">
                         <List className="selection-modal__selection selection-modal__selection-primary">
                             <ListItem disablePadding>

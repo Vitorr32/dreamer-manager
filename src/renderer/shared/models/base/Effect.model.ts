@@ -47,7 +47,7 @@ export class Effect {
     public durationType: Duration;
     public durationArgs: number[] | undefined;
     //What is the modifier that this effect cause
-    public modifier: Modifier = new Modifier();
+    public modifier: Modifier;
 
     constructor() {
         this.targetSelf = true;

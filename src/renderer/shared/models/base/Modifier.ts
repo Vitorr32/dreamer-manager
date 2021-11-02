@@ -52,11 +52,13 @@ export class Modifier {
     public modifierTargets: string[];
     public effectiveChange: number;
     public targetSelf: boolean;
+    public percentage: boolean;
 
     constructor() {
         this.type = ModifierType.UNDEFINED;
         this.modifierTargets = [];
         this.effectiveChange = 0;
         this.targetSelf = true;
+        this.percentage = false;
     }
 }

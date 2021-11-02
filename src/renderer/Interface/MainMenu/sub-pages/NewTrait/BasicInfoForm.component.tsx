@@ -3,6 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select, TextField, FormControlLabel,
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
+import { MAX_NUMBER_OF_TRAITS_GENERATED } from 'renderer/shared/Constants';
 
 interface IProps {
     nextStep: () => void;
@@ -73,19 +74,15 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
                 })}
             </TextField>
 
-            <div className="field">
+            <Box className="basic-info__field">
                 <FormControlLabel
                     value="start"
                     control={<Switch disabled={traitType === TraitType.NATIONAL} value={spawnable} onChange={(event) => setSpawnable(event.target.checked)} color="primary" />}
-                    label="Spawnable"
+                    label={t('interface.editor.trait.spawn_label')}
                     labelPlacement="start"
                 />
-
-                <span className="field-message">
-                    * Whetever this trait can be found on generated Dreamers, otherwise it can be obtainable only by events (Do note that traits of type 'National' will always be spawned), the spawn rate is determined by
-                    trait Tier ( Tier 0 is 40%, Tier 1 is 30%, Tier 2 is 15%, Tier 3 is 5% and Tier 4 is 1%)
-                </span>
-            </div>
+                <Typography variant="caption">{t('interface.editor.trait.spawn_helper', { max: MAX_NUMBER_OF_TRAITS_GENERATED })}</Typography>
+            </Box>
 
             <Box className="basic-info__footer">
                 <Button type="submit">{t('interface.commons.next')}</Button>

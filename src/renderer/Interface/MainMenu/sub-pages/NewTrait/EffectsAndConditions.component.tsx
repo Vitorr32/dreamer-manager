@@ -10,6 +10,7 @@ import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { ModifierType } from 'renderer/shared/models/base/Modifier';
 import { Box } from '@mui/system';
+import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 
 interface IProps {
     previousStep: () => void;
@@ -59,15 +60,17 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                             className="effect-editor__list-item"
                             key={`effect_${index}`}
                             secondaryAction={
-                                <Tooltip title={t('interface.editor.effect.remove_effect') as string}>
-                                    <IconButton
-                                        onClick={() => {
-                                            setConfirmDeleteOpen(true), setConfirmDialogIndex(index);
-                                        }}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                trait.effects.length !== 1 && (
+                                    <Tooltip title={t('interface.editor.effect.remove_effect') as string}>
+                                        <IconButton
+                                            onClick={() => {
+                                                setConfirmDeleteOpen(true), setConfirmDialogIndex(index);
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                )
                             }
                         >
                             <Tooltip title={t('interface.editor.effect.edit_effect') as string}>
@@ -93,6 +96,10 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
             </Box>
 
             {editEffectIndex !== -1 ? <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={trait.effects[editEffectIndex]} /> : null}
+
+            {trait.effects.map((effect, index) => (
+                <EffectSummary key={'effect_' + index} effect={effect} />
+            ))}
 
             <div className="buttons-wrapper">
                 <Button color="primary" onClick={previousStep}>

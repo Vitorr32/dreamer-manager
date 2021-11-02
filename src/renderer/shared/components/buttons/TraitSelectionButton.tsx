@@ -9,12 +9,12 @@ import { RootState } from 'renderer/redux/store';
 import { TraitPicker } from '../tools/TraitPicker';
 
 interface IProps {
-    displayID: string;
+    displayIDs: string[];
     onChange: (value: string, returnData?: any) => void;
     returnData?: any;
 }
 
-export function TraitSelectionButton({ displayID, onChange, returnData }: IProps) {
+export function TraitSelectionButton({ displayIDs, onChange, returnData }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const { t } = useTranslation();
@@ -36,7 +36,7 @@ export function TraitSelectionButton({ displayID, onChange, returnData }: IProps
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedValue === undefined || !displayID ? t('interface.editor.condition.trait_selector_placeholder') : mappedDatabase.traits[displayID].name}
+                {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.trait_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.traits[displayID].name)}
             </Button>
 
             <TraitPicker showTool={showTool} onSelection={onValueSelected} />

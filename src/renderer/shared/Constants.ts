@@ -1,3 +1,4 @@
+export const MAX_NUMBER_OF_TRAITS_GENERATED = 5;
 export const MAX_NUMBER_OF_TRAITS = 20;
 export const MAX_NUMBER_OF_EFFECTS = 5;
 

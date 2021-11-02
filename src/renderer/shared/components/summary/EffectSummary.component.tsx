@@ -17,7 +17,37 @@ export function EffectSummary({ effect }: IProps) {
 
     const [showInput, setShowInput] = React.useState<boolean>(false);
 
-    const onSectionSelected = (section: ModifierTypeSection) => {};
+    const renderModifierLine = (modifier: Modifier): React.ReactElement | null => {
+        const valueSet = modifier.effectiveChange !== 0 ? true : false;
+        const isPositive = modifier.effectiveChange > 0 ? true : false;
 
-    return <Box className="effect-summary">{effect.conditionTree && <ConditionTreeSummary conditionTree={effect.conditionTree} />}</Box>;
+        switch (modifier.type) {
+            case ModifierType.MODIFY_ENERGY_FALL_MULTIPLIER:
+            case ModifierType.MODIFY_ENERGY_GAIN_MULTIPLIER:
+            case ModifierType.MODIFY_ENERGY_MAXIMUM:
+            case ModifierType.MODIFY_ENERGY_VALUE:
+            case ModifierType.MODIFY_STRESS_FALL_MULTIPLIER:
+            case ModifierType.MODIFY_STRESS_GAIN_MULTIPLIER:
+            case ModifierType.MODIFY_STRESS_MAXIMUM:
+            case ModifierType.MODIFY_STRESS_VALUE:
+                return (
+                    <Typography>
+                        {t(isPositive ? 'summary.effect.increase' : 'summary.effect.decrease', {
+                            values: t(modifier.type),
+                            model: '',
+                            change: valueSet ? (modifier.percentage ? modifier.effectiveChange + '%' : modifier.effectiveChange) : 'X',
+                        })}
+                    </Typography>
+                );
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <Box className="effect-summary">
+            {effect.conditionTree && <ConditionTreeSummary conditionTree={effect.conditionTree} />}
+            <Box className="effect-summary__modifier">{renderModifierLine(effect.modifier)}</Box>
+        </Box>
+    );
 }
