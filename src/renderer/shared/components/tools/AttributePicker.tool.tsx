@@ -9,16 +9,17 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 
 interface IProps {
-    onSelection: (attr?: Attribute) => void;
+    onSelection: (attr?: Attribute[]) => void;
     showTool: boolean;
+    multi?: boolean;
 }
 
-export function AttributePicker(props: IProps) {
+export function AttributePicker({ onSelection, multi, showTool }: IProps) {
     const attributes = useSelector((state: RootState) => state.database.attributes);
 
     const { t } = useTranslation();
     const [query, setQuery] = useState<string>('');
-    const [selectedAttr, setSelectedAttr] = useState<Attribute>();
+    const [selected, setSelected] = useState<Attribute[]>([]);
     const [filtered, setFiltered] = useState<Attribute[]>([]);
 
     useEffect(() => {
@@ -29,22 +30,40 @@ export function AttributePicker(props: IProps) {
         return attributes.filter((attr) => attr.id?.includes(query) || attr.name?.includes(query) || attr.description?.includes(query)).sort((a: Attribute, b: Attribute) => a.name.localeCompare(b.name));
     };
 
-    const onOptionPicked = (): void => {
-        if (!selectedAttr) {
+    const onToggleSelection = (toogled: Attribute): void => {
+        if (!multi) {
+            setSelected([toogled]);
             return;
         }
 
-        props.onSelection(selectedAttr);
+        const newSelection = selected.slice();
+        if (selected.includes(toogled)) {
+            newSelection.splice(
+                selected.findIndex((value) => value.id === toogled.id),
+                1
+            );
+        } else {
+            newSelection.push(toogled);
+        }
+        setSelected(newSelection);
+    };
+
+    const onSubmitPickedOptions = (): void => {
+        if (selected.length === 0) {
+            return;
+        }
+
+        onSelection(selected);
         setQuery('');
     };
 
     const onClose = (): void => {
-        props.onSelection();
+        onSelection();
         setQuery('');
     };
 
-    return props.showTool ? (
-        <Modal className="modal" open={props.showTool} onClose={onClose}>
+    return showTool ? (
+        <Modal className="modal" open={showTool} onClose={onClose}>
             <div className="modal__wrapper">
                 <div className="modal__content">
                     <div className="modal__header">
@@ -64,37 +83,33 @@ export function AttributePicker(props: IProps) {
                             }
                         />
 
-                        <CloseIcon className="modal__close" fontSize="large" onClick={() => props.onSelection()} />
+                        <CloseIcon className="modal__close" fontSize="large" onClick={onClose} />
                     </div>
 
                     <div className="modal__grid modal__grid-columns">
-                        {filtered.map((attribute) => {
+                        {filtered.map((value) => {
                             return (
-                                <div
-                                    className={`cell cell-attribute ${selectedAttr === attribute ? 'cell-selected' : ''}`}
-                                    key={attribute.id}
-                                    onClick={() => setSelectedAttr(selectedAttr === attribute ? undefined : attribute)}
-                                >
+                                <div className={`cell cell-attribute ${selected.includes(value) ? 'cell-selected' : ''}`} key={value.id} onClick={() => onToggleSelection(value)}>
                                     <div className="cell__header">
                                         <Typography className="cell__title" variant="h5">
-                                            {attribute.name}
+                                            {value.name}
                                         </Typography>
                                         <Typography className="cell__sub-title" variant="caption">
-                                            ID: <b>{attribute.id}</b>
+                                            ID: <b>{value.id}</b>
                                         </Typography>
                                     </div>
                                     <div className="cell__content">
                                         <div className="cell__content-sibling">
                                             <Placeholder />
-                                            <Typography variant="body1">{t(attribute.category)}</Typography>
+                                            <Typography variant="body1">{t(value.category)}</Typography>
                                         </div>
                                         <div className="cell__content-sibling">
                                             <Placeholder />
-                                            <Typography variant="body1">{t(attribute.growth)}</Typography>
+                                            <Typography variant="body1">{t(value.growth)}</Typography>
                                         </div>
 
                                         <div className="cell__content-full">
-                                            <Typography variant="body2">{attribute.description}</Typography>
+                                            <Typography variant="body2">{value.description}</Typography>
                                         </div>
                                     </div>
                                 </div>
@@ -104,9 +119,9 @@ export function AttributePicker(props: IProps) {
 
                     <div className="modal__footer">
                         <div className="modal__message">
-                            {selectedAttr ? (
+                            {selected ? (
                                 <Typography variant="caption" className="modal__message-info">
-                                    {t('interface.tools.attribute.selected', { attr: selectedAttr })}
+                                    {t('interface.tools.attribute.selected', { attr: selected })}
                                 </Typography>
                             ) : (
                                 <Typography variant="caption" className="modal__message-error">
@@ -118,7 +133,7 @@ export function AttributePicker(props: IProps) {
                             <Button variant="contained" className="modal__buttons-cancel" color="error" onClick={onClose}>
                                 {t('interface.tools.common.cancel')}
                             </Button>
-                            <Button variant="contained" className="modal__buttons-submit" color="primary" onClick={() => onOptionPicked()}>
+                            <Button variant="contained" className="modal__buttons-submit" color="primary" onClick={onSubmitPickedOptions}>
                                 {t('interface.tools.common.select')}
                             </Button>
                         </div>

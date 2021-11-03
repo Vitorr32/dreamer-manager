@@ -61,13 +61,13 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
         onChange(newModifier);
     };
 
-    const onToolPickerSelection = (selection: string | undefined) => {
+    const onToolPickerSelection = (selection: string[] | undefined) => {
         if (!selection) {
             throw new Error('The selection is not empty but has no Identifier variable');
         }
 
         const newModifier = Object.assign({}, modifier);
-        newModifier.modifierTargets = [selection];
+        newModifier.modifierTargets = selection;
 
         onChange(newModifier);
     };
@@ -77,7 +77,7 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
             case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
             case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
-                return <AttributeSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} />;
+                return <AttributeSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} multi/>;
             case ModifierType.MODIFY_TRAIT_GAIN:
             case ModifierType.MODIFY_TRAIT_REMOVE:
                 return <TraitSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} />;

@@ -67,7 +67,7 @@ export class Condition {
     public initiator: ConditionInitiator = ConditionInitiator.UNDEFINED
     public agent: ConditionAgent = ConditionAgent.UNDEFINED
     //A number representing any of the selectors of the individual Initiator
-    public selector: string | null = NumericSelector.UNDEFINED;
+    public selector: string = NumericSelector.UNDEFINED;
     /*
         Parameters will represent different values depending the type of initiator that the condition has
         Status: Up to 3 parameters [Status Enumerator, First Input, Second Input]
@@ -78,7 +78,8 @@ export class Condition {
         Time: Only one parameter [Timestamp in seconds]
         Relationship: Up to 4 parameters [Character ID, Relationship Attribute, First Input, Second Input]
     */
-    public parameters: any[] = []
+    public parameters: number[] = []
+    public targets: string[] = [];
 
     //Verify the health of the condition metadata, not if the condition actually evaluates to true or false with in-game attributes.
     public EvaluateConditionHealth(): Feedback {

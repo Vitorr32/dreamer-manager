@@ -1,6 +1,5 @@
 import { Button } from '@mui/material';
 import React from 'react';
-import { Condition } from '../../models/base/Condition.model';
 import { ArrowDropDown } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
@@ -10,27 +9,33 @@ import { RootState } from 'renderer/redux/store';
 
 interface IProps {
     displayIDs: string[];
-    onChange: (value: string, returnData?: any) => void;
+    onChange: (value: string[], returnData?: any) => void;
     returnData?: any;
+    multi?: boolean;
 }
 
-export function AttributeSelectionButton({ displayIDs, onChange, returnData }: IProps) {
+export function AttributeSelectionButton({ displayIDs, onChange, returnData, multi }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const { t } = useTranslation();
     const [showTool, setShowTool] = React.useState<boolean>(false);
-    const [selectedAttribute, setAttribute] = React.useState<Attribute>();
+    const [selectedAttribute, setAttribute] = React.useState<Attribute[]>();
 
-    const onAttributeSelected = (attr: Attribute | undefined = undefined) => {
-        if (attr === undefined) {
+    const onAttributeSelected = (values: Attribute[] | undefined = undefined) => {
+        console.log('values', values);
+
+        if (values === undefined) {
             setShowTool(false);
             setAttribute(undefined);
             return;
         }
 
-        onChange(attr.id, returnData);
+        onChange(
+            values.map((value) => value.id),
+            returnData
+        );
 
-        setAttribute(attr);
+        setAttribute(values);
         setShowTool(false);
     };
 
@@ -40,7 +45,7 @@ export function AttributeSelectionButton({ displayIDs, onChange, returnData }: I
                 {selectedAttribute === undefined || displayIDs.length === 0 ? t('interface.editor.condition.attr_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].name)}
             </Button>
 
-            <AttributePicker showTool={showTool} onSelection={onAttributeSelected} />
+            <AttributePicker showTool={showTool} onSelection={onAttributeSelected} multi/>
         </React.Fragment>
     );
 }

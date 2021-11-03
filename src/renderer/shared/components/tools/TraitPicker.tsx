@@ -9,16 +9,17 @@ import { RootState } from 'renderer/redux/store';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 
 interface IProps {
-    onSelection: (value?: Trait) => void;
+    onSelection: (values?: Trait[]) => void;
     showTool: boolean;
+    multi?: boolean;
 }
 
-export function TraitPicker(props: IProps) {
+export function TraitPicker({ multi, onSelection, showTool }: IProps) {
     const valueList = useSelector((state: RootState) => state.database.traits);
 
     const { t } = useTranslation();
     const [query, setQuery] = useState<string>('');
-    const [selected, setSelected] = useState<Trait>();
+    const [selected, setSelected] = useState<Trait[]>([]);
     const [filtered, setFiltered] = useState<Trait[]>([]);
 
     useEffect(() => {
@@ -26,26 +27,43 @@ export function TraitPicker(props: IProps) {
     }, [query]);
 
     const filterListByQuery = (query: string): Trait[] => {
-        console.log(valueList);
         return valueList.filter((value) => value.id?.includes(query) || value.name?.includes(query) || value.description?.includes(query)).sort((a: Trait, b: Trait) => a.name.localeCompare(b.name));
     };
 
-    const onOptionPicked = (): void => {
-        if (!selected) {
+    const onToggleSelection = (toogled: Trait): void => {
+        if (!multi) {
+            setSelected([toogled]);
             return;
         }
 
-        props.onSelection(selected);
+        const newSelection = selected.slice();
+        if (selected.includes(toogled)) {
+            newSelection.splice(
+                selected.findIndex((value) => value.id === toogled.id),
+                1
+            );
+        } else {
+            newSelection.push(toogled);
+        }
+        setSelected(newSelection);
+    };
+
+    const onSubmitPickedOptions = (): void => {
+        if (selected.length === 0) {
+            return;
+        }
+
+        onSelection(selected);
         setQuery('');
     };
 
     const onClose = (): void => {
-        props.onSelection();
+        onSelection();
         setQuery('');
     };
 
-    return props.showTool ? (
-        <Modal className="modal" open={props.showTool} onClose={onClose}>
+    return showTool ? (
+        <Modal className="modal" open={showTool} onClose={onClose}>
             <div className="modal__wrapper">
                 <div className="modal__content">
                     <div className="modal__header">
@@ -65,13 +83,13 @@ export function TraitPicker(props: IProps) {
                             }
                         />
 
-                        <CloseIcon className="modal__close" fontSize="large" onClick={() => props.onSelection()} />
+                        <CloseIcon className="modal__close" fontSize="large" onClick={onClose} />
                     </div>
 
                     <div className="modal__grid modal__grid-columns">
                         {filtered.map((value) => {
                             return (
-                                <div className={`cell cell-trait ${selected === value ? 'cell-selected' : ''}`} key={value.id} onClick={() => setSelected(selected === value ? undefined : value)}>
+                                <div className={`cell cell-trait ${selected.includes(value) ? 'cell-selected' : ''}`} key={value.id} onClick={() => onToggleSelection(value)}>
                                     <div className="cell__header">
                                         <Typography className="cell__title" variant="h5">
                                             {value.name}
@@ -115,7 +133,7 @@ export function TraitPicker(props: IProps) {
                             <Button variant="contained" className="modal__buttons-cancel" color="error" onClick={onClose}>
                                 {t('interface.tools.common.cancel')}
                             </Button>
-                            <Button variant="contained" className="modal__buttons-submit" color="primary" onClick={() => onOptionPicked()}>
+                            <Button variant="contained" className="modal__buttons-submit" color="primary" onClick={onSubmitPickedOptions}>
                                 {t('interface.tools.common.select')}
                             </Button>
                         </div>

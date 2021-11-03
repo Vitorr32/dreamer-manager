@@ -34,7 +34,15 @@ export class ConditionLine extends React.Component<IProps, IState> {
         this.props.onChange(this.props.index, condition);
     }
 
-    private onParameterChange(value: string | number, returnData: { index: number }) {
+    private onTargetChange(values: string[]) {
+        const newCondition = Object.assign({}, this.props.conditionLine);
+
+        newCondition.targets = values;
+
+        this.props.onChange(this.props.index, newCondition);
+    }
+
+    private onParameterChange(value: number, returnData: { index: number }) {
         const newCondition = Object.assign({}, this.props.conditionLine);
 
         newCondition.parameters[returnData.index] = value;
@@ -45,9 +53,9 @@ export class ConditionLine extends React.Component<IProps, IState> {
     private renderAppropriateSelectorTool(condition: Condition): React.ReactElement | null {
         switch (condition.initiator) {
             case ConditionInitiator.TRAIT:
-                return <TraitSelectionButton displayIDs={condition?.parameters[0]} onChange={this.onParameterChange.bind(this)} returnData={{ index: 0 }} />;
+                return <TraitSelectionButton displayIDs={condition.targets} onChange={this.onTargetChange.bind(this)} />;
             case ConditionInitiator.ATTRIBUTE_RANGE:
-                return <AttributeSelectionButton displayIDs={condition?.parameters[0]} onChange={this.onParameterChange.bind(this)} returnData={{ index: 0 }} />;
+                return <AttributeSelectionButton displayIDs={condition.targets} onChange={this.onTargetChange.bind(this)} />;
         }
 
         return null;
