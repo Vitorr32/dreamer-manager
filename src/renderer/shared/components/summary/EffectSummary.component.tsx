@@ -1,13 +1,12 @@
-import { ArrowForward } from '@mui/icons-material';
-import { Button, Divider, FilledInput, FormControl, FormHelperText, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemText, Modal, OutlinedInput, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { ChangeEvent } from 'react';
+import { Typography } from '@mui/material';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
-import { Modifier, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
-import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
+import { Modifier, ModifierType } from 'renderer/shared/models/base/Modifier';
 import { ConditionTreeSummary } from './ConditionTreeSummary.component';
-
+import { useSelector } from 'react-redux';
+import { RootState } from 'renderer/redux/store';
 interface IProps {
     effect: Effect;
 }
@@ -15,13 +14,29 @@ interface IProps {
 export function EffectSummary({ effect }: IProps) {
     const { t } = useTranslation();
 
-    const [showInput, setShowInput] = React.useState<boolean>(false);
+    const database = useSelector((state: RootState) => state.database);
 
     const renderModifierLine = (modifier: Modifier): React.ReactElement | null => {
         const valueSet = modifier.effectiveChange !== 0 ? true : false;
         const isPositive = modifier.effectiveChange > 0 ? true : false;
 
+        console.log(modifier.type);
+
         switch (modifier.type) {
+            case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
+            case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
+            case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
+                return (
+                    <Typography>
+                        {t(isPositive ? 'summary.effect.increase_with_targets' : 'summary.effect.decrease_with_targets', {
+                            value: t(modifier.type),
+                            targets: modifier.modifierTargets.map((attrID) => database.mappedDatabase.attributes[attrID].name).join(', '),
+                            change: valueSet ? (modifier.percentage ? modifier.effectiveChange + '%' : modifier.effectiveChange) : 'X',
+                        })}
+                    </Typography>
+                );
+            case ModifierType.MODIFY_MOOD_VALUE:
+            case ModifierType.MODIFY_LEARNING_RATE:
             case ModifierType.MODIFY_ENERGY_FALL_MULTIPLIER:
             case ModifierType.MODIFY_ENERGY_GAIN_MULTIPLIER:
             case ModifierType.MODIFY_ENERGY_MAXIMUM:
@@ -33,8 +48,7 @@ export function EffectSummary({ effect }: IProps) {
                 return (
                     <Typography>
                         {t(isPositive ? 'summary.effect.increase' : 'summary.effect.decrease', {
-                            values: t(modifier.type),
-                            model: '',
+                            value: t(modifier.type),
                             change: valueSet ? (modifier.percentage ? modifier.effectiveChange + '%' : modifier.effectiveChange) : 'X',
                         })}
                     </Typography>

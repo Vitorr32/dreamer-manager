@@ -93,7 +93,7 @@ export const en_US = {
             },
             character: {
                 energy: 'Energy',
-                stress: 'Stress'
+                stress: 'Stress',
             },
             condition: {
                 initiator: {
@@ -196,10 +196,21 @@ export const en_US = {
                     and: 'If all of the following is true',
                     or: 'If any of the following is true',
                 },
+                initiator: {
+                    attr_range: '{{attr}} '
+                },
+                numeric_selector: {
+                    between: '{{main}} is between {{value1}} and {{value2}}',
+                    higher: '{{main}} is higher than {{value}}',
+                    lesser: '{{main}}less than {{value}}',
+                    exactly: 'is exactly {{value}}',
+                },
             },
             effect: {
-                increase: 'Increase the {{values}} {{model}} by {{change}}',
-                decrease: 'Decrease the {{values}} {{model}} by {{change}}',
+                increase: 'Increase the {{value}} by {{change}}',
+                decrease: 'Decrease the {{value}} by {{change}}',
+                increase_with_targets: 'Increase the {{value}} of {{targets}} by {{change}}',
+                decrease_with_targets: 'Decrease the {{value}} of {{targets}} by {{change}}',
             },
         },
     },

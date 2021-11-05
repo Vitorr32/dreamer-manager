@@ -42,7 +42,7 @@ export function AttributeSelectionButton({ displayIDs, onChange, returnData, mul
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedAttribute === undefined || displayIDs.length === 0 ? t('interface.editor.condition.attr_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].name)}
+                {selectedAttribute === undefined || displayIDs.length === 0 ? t('interface.editor.condition.attr_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].name).join(', ')}
             </Button>
 
             <AttributePicker showTool={showTool} onSelection={onAttributeSelected} multi/>
