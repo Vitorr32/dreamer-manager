@@ -1,14 +1,16 @@
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { ConditionTree, Node } from '../../../shared/models/base/ConditionTree';
 import { ConditionNode } from './ConditionNode.component';
 interface IProps {
     onChange: (conditionTree: ConditionTree) => void;
     conditionTree: ConditionTree | undefined;
+    options?: EffectEditorOptions;
 }
 
-export function ConditionTreeEditor({ conditionTree, onChange }: IProps) {
+export function ConditionTreeEditor({ conditionTree, onChange, options }: IProps) {
     const onRootChange = (index: number, condition: Node) => {
         if (index !== -1) {
             console.error('ON ROOT CHANGE CALLED FOR WRONG NODE');
@@ -33,7 +35,7 @@ export function ConditionTreeEditor({ conditionTree, onChange }: IProps) {
             <Button variant="contained" onClick={onAddConditionTree}>
                 Add Condition for Effect
             </Button>
-            {conditionTree && <ConditionNode index={-1} depth={0} onChange={onRootChange} conditionNode={conditionTree.root} />}
+            {conditionTree && <ConditionNode index={-1} depth={0} onChange={onRootChange} conditionNode={conditionTree.root} options={options} />}
         </Box>
     );
 }

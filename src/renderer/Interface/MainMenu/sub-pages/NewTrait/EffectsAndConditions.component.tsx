@@ -49,7 +49,6 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
         onChange(newTrait);
     };
 
-    console.log("traits", trait);
     return (
         <Box className="effect-editor">
             <Typography variant="caption">{t('interface.editor.effect.effect_instruction', { max: MAX_NUMBER_OF_EFFECTS })}</Typography>
@@ -96,7 +95,7 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                 ) : null}
             </Box>
 
-            {editEffectIndex !== -1 ? <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={trait.effects[editEffectIndex]} /> : null}
+            {editEffectIndex !== -1 && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={trait.effects[editEffectIndex]} options={{ impliedActingAgent: true }} />}
 
             {trait.effects.map((effect, index) => (
                 <EffectSummary key={'effect_' + index} effect={effect} />

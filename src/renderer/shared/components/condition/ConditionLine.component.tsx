@@ -8,96 +8,90 @@ import { NumericSelectorParameterInput } from './NumericSelector.component';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRightSharp';
 import CloseIcon from '@mui/icons-material/Close';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
+import { Box } from '@mui/system';
+import { Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 
 interface IProps {
     conditionLine: Condition;
     index: number;
     onChange: (index: number, condition: Condition) => void;
     onRemove: (index: number) => void;
+    options?: EffectEditorOptions;
 }
-interface IState {
-    conditionInitiatorAnchorEl: null | HTMLElement;
-}
+export function ConditionLine({ conditionLine, index, onChange, onRemove, options }: IProps) {
+    const { t } = useTranslation();
 
-export class ConditionLine extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
-        super(props);
+    const onSubComponentChangeOfCondition = (condition: Condition): void => {
+        onChange(index, condition);
+    };
 
-        this.state = {
-            conditionInitiatorAnchorEl: null,
-        };
-    }
-
-    public componentDidMount(): void {}
-
-    private onSubComponentChangeOfCondition(condition: Condition): void {
-        this.props.onChange(this.props.index, condition);
-    }
-
-    private onTargetChange(values: string[]) {
-        const newCondition = Object.assign({}, this.props.conditionLine);
+    const onTargetChange = (values: string[]): void => {
+        const newCondition = Object.assign({}, conditionLine);
 
         newCondition.targets = values;
 
-        this.props.onChange(this.props.index, newCondition);
-    }
+        onChange(index, newCondition);
+    };
 
-    private onParameterChange(value: number, returnData: { index: number }) {
-        const newCondition = Object.assign({}, this.props.conditionLine);
+    const onParameterChange = (value: number, returnData: { index: number }): void => {
+        const newCondition = Object.assign({}, conditionLine);
 
         newCondition.parameters[returnData.index] = value;
 
-        this.props.onChange(this.props.index, newCondition);
-    }
+        onChange(index, newCondition);
+    };
 
-    private renderAppropriateSelectorTool(condition: Condition): React.ReactElement | null {
+    const renderInitiatorTool = (condition: Condition): React.ReactElement | null => {
         switch (condition.initiator) {
             case ConditionInitiator.TRAIT:
-                return <TraitSelectionButton displayIDs={condition.targets} onChange={this.onTargetChange.bind(this)} />;
+                return <TraitSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
             case ConditionInitiator.ATTRIBUTE_RANGE:
-                return <AttributeSelectionButton displayIDs={condition.targets} onChange={this.onTargetChange.bind(this)} />;
+                return <AttributeSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
         }
 
         return null;
-    }
+    };
 
-    private renderSelectorParameters(condition: Condition): React.ReactElement | null {
+    const renderSelectorTools = (condition: Condition): React.ReactElement | null => {
         switch (condition.selector) {
+            //TODO: Should differentiate by what the agent can have
             case NumericSelector.BIGGER_THAN:
             case NumericSelector.BIGGER_THAN_SELF:
             case NumericSelector.BIGGER_THAN_TARGET:
             case NumericSelector.SMALLER_THAN:
             case NumericSelector.EXACTLY:
-                return <NumericSelectorParameterInput range={false} condition={condition} onChange={this.onParameterChange.bind(this)} />;
+                return <NumericSelectorParameterInput range={false} condition={condition} onChange={onParameterChange} />;
             case NumericSelector.BETWEEN:
-                return <NumericSelectorParameterInput range={true} condition={condition} onChange={this.onParameterChange.bind(this)} />;
+                return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
             case TraitSelector.HAS:
-                return <NumericSelectorParameterInput range={true} condition={condition} onChange={this.onParameterChange.bind(this)} />;
+                return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
             case NumericSelector.UNDEFINED:
                 return null;
             default:
                 console.error('Unknown selector for the parameter rendering: ' + condition.selector);
                 return null;
         }
-    }
+    };
 
-    render() {
-        const { conditionLine, index, onRemove } = this.props;
+    console.log('line', conditionLine);
 
-        return (
-            <section className="condition-line">
-                <SubdirectoryArrowRightIcon fontSize="large" className="condition-line__icon" />
+    return (
+        <Box className="condition-line">
+            <SubdirectoryArrowRightIcon fontSize="large" className="condition-line__icon" />
 
-                <ConditionInitiatorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
+            <Box className="condition-line__wrapper">
+                {conditionLine.initiator === ConditionInitiator.UNDEFINED ? <ConditionInitiatorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} /> : <Button>{t(conditionLine.initiator)}</Button>}
 
-                {this.renderAppropriateSelectorTool(conditionLine)}
+                {renderInitiatorTool(conditionLine)}
 
-                <ConditionSelectorSelect condition={conditionLine} onChange={this.onSubComponentChangeOfCondition.bind(this)} />
+                <ConditionSelectorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
 
-                {this.renderSelectorParameters(conditionLine)}
+                {renderSelectorTools(conditionLine)}
+            </Box>
 
-                {this.props.index !== 0 ? <CloseIcon className="condition-line__remove" fontSize="large" onClick={() => onRemove(index)} /> : null}
-            </section>
-        );
-    }
+            {index !== 0 ? <CloseIcon className="condition-line__remove" fontSize="large" onClick={() => onRemove(index)} /> : null}
+        </Box>
+    );
 }

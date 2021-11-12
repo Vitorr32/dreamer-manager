@@ -105,6 +105,14 @@ export const en_US = {
                     time: 'Time',
                     relationship: 'Relationship',
                 },
+                agent: {
+                    self: 'Self',
+                    producer: 'Producer',
+                    tutor: 'Tutor',
+                    specific_character: 'Specific Character',
+                    tagged_character: 'Tagged Character',
+                    global: 'Global variable'
+                },
                 selector: {
                     numeric: {
                         bigger_than: 'bigger than',
@@ -113,16 +121,6 @@ export const en_US = {
                         bigger_than_target: 'bigger than target',
                         between: 'between',
                         exactly: 'exactly',
-                    },
-                    agent: {
-                        self: 'Self',
-                        target: 'Target',
-                        specific: 'Specific',
-                        self_target: 'Self and Target',
-                        self_specific: 'Self and Specific Character',
-                        specific_specific: 'Two specific characters',
-                        player: 'Player',
-                        global: 'Global',
                     },
                     trait: {
                         has: 'Has',
@@ -197,7 +195,7 @@ export const en_US = {
                     or: 'If any of the following is true',
                 },
                 initiator: {
-                    attr_range: '{{attr}} '
+                    attr_range: '{{attr}} ',
                 },
                 numeric_selector: {
                     between: '{{main}} is between {{value1}} and {{value2}}',

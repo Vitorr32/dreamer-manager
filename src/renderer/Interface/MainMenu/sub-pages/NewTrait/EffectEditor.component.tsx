@@ -4,11 +4,12 @@ import { ModifierEditor } from 'renderer/shared/components/modifier/ModifierEdit
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Modifier, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
-
+import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 interface IProps {
     effect: Effect;
     index: number;
     onChange: (index: number, effect: Effect) => void;
+    options?: EffectEditorOptions;
 }
 
 export function EffectEditor(props: IProps) {
@@ -31,7 +32,7 @@ export function EffectEditor(props: IProps) {
     return (
         <React.Fragment>
             <ModifierEditor modifier={props.effect.modifier} onChange={onEffectChanged} filteredTypes={[ModifierTypeSection.EVENT_SECTION, ModifierTypeSection.TRAIT_SECTION]} />
-            <ConditionTreeEditor conditionTree={props.effect.conditionTree} onChange={onConditionChanged} />
+            <ConditionTreeEditor conditionTree={props.effect.conditionTree} onChange={onConditionChanged} options={props.options} />
         </React.Fragment>
     );
 }

@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Condition } from '../../../shared/models/base/Condition.model';
 import { ConditionLine } from './ConditionLine.component';
 import { Box } from '@mui/system';
+import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 
 interface IProps {
     conditionNode: Node;
@@ -14,6 +15,7 @@ interface IProps {
     depth: number;
     onChange: (index: number, node: Node) => void;
     onRemoveSelf?: (index: number) => void;
+    options?: EffectEditorOptions;
 }
 interface IState {}
 
@@ -21,7 +23,7 @@ export class ConditionNode extends React.Component<IProps, IState> {
     componentDidMount() {
         const newNode: Node = Object.assign({}, this.props.conditionNode);
 
-        newNode.conditions = [new Condition()];
+        newNode.conditions = [new Condition(this.props.options?.impliedActingAgent)];
 
         this.props.onChange(this.props.index, newNode);
     }
@@ -76,7 +78,7 @@ export class ConditionNode extends React.Component<IProps, IState> {
 
         const newNode: Node = Object.assign({}, conditionNode);
 
-        newNode.conditions.push(new Condition());
+        newNode.conditions.push(new Condition(this.props.options?.impliedActingAgent));
         onChange(index, newNode);
     }
 
@@ -127,7 +129,14 @@ export class ConditionNode extends React.Component<IProps, IState> {
                 <Box className="node-children">
                     {conditionNode.conditions.map((conditionLine, index) => {
                         return (
-                            <ConditionLine key={`condition_line_${depth}_${index}`} index={index} conditionLine={conditionLine} onChange={this.onConditionChange.bind(this)} onRemove={this.onConditionLineRemoval.bind(this)} />
+                            <ConditionLine
+                                key={`condition_line_${depth}_${index}`}
+                                index={index}
+                                conditionLine={conditionLine}
+                                onChange={this.onConditionChange.bind(this)}
+                                onRemove={this.onConditionLineRemoval.bind(this)}
+                                options={this.props.options}
+                            />
                         );
                     })}
 
