@@ -38,6 +38,8 @@ export const en_US = {
                 },
                 condition: {
                     initiator: 'Condition Initiator Selector',
+                    activeAgent: 'Condition active agent',
+                    passiveAgent: 'Condition passive agent',
                     selector: 'Selector Specificator',
                     attr_selector_placeholder: 'Select Attribute',
                     trait_selector_placeholder: 'Select Trait',

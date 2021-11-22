@@ -6,7 +6,7 @@ export const ConditionHealthCheckRepository: { [conditionInitiator: string]: (co
     [ConditionInitiator.ATTRIBUTE_RANGE]: (condition: Condition) => {
         const conditionFeedback = new Feedback();
 
-        if (condition.actingAgent === Agent.UNDEFINED || condition.recipientAgent === Agent.UNDEFINED) {
+        if (condition.activeAgent === Agent.UNDEFINED || condition.passiveAgent === Agent.UNDEFINED) {
             conditionFeedback.message = 'The attribute range initiator demands the selection of a agent for comparation';
             conditionFeedback.valid = false;
             return conditionFeedback;

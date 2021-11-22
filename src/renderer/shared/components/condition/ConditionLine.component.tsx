@@ -1,5 +1,5 @@
 import React from 'react';
-import { Condition, NumericSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
+import { Agent, Condition, NumericSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
 import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
@@ -9,9 +9,10 @@ import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRig
 import CloseIcon from '@mui/icons-material/Close';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
 import { Box } from '@mui/system';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { ConditionAgentSelect } from './ConditionAgentSelect.component';
 
 interface IProps {
     conditionLine: Condition;
@@ -56,7 +57,6 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
 
     const renderSelectorTools = (condition: Condition): React.ReactElement | null => {
         switch (condition.selector) {
-            //TODO: Should differentiate by what the agent can have
             case NumericSelector.BIGGER_THAN:
             case NumericSelector.BIGGER_THAN_SELF:
             case NumericSelector.BIGGER_THAN_TARGET:
@@ -75,16 +75,24 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
         }
     };
 
-    console.log('line', conditionLine);
+    const renderActiveAgent = (condition: Condition): React.ReactElement | null => {
+        if (options?.impliedActingAgent) {
+            return <Typography variant="body1">{t(Agent.SELF)}</Typography>;
+        }
+
+        return <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
+    };
 
     return (
         <Box className="condition-line">
             <SubdirectoryArrowRightIcon fontSize="large" className="condition-line__icon" />
 
             <Box className="condition-line__wrapper">
-                {conditionLine.initiator === ConditionInitiator.UNDEFINED ? <ConditionInitiatorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} /> : <Button>{t(conditionLine.initiator)}</Button>}
+                <ConditionInitiatorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
 
                 {renderInitiatorTool(conditionLine)}
+
+                {renderActiveAgent(conditionLine)}
 
                 <ConditionSelectorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
 

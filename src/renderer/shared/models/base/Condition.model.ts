@@ -2,18 +2,18 @@ import { ConditionInitiator } from '../enums/ConditionInitiator.enum';
 import { ConditionHealthCheckRepository } from '../metadata/ConditionHealth.metadata';
 import { Feedback } from './ConditionFeedback';
 
-export enum ConditionAgent {
-    UNDEFINED = 'model.undefined',
+// export enum ConditionAgent {
+//     UNDEFINED = 'model.undefined',
 
-    SELF = 'model.condition.selector.agent.self',
-    TARGET = 'model.condition.selector.agent.target',
-    SPECIFIC = 'model.condition.selector.agent.specific',
-    SELF_TARGET = 'model.condition.selector.agent.self_target',
-    SELF_SPECIFIC = 'model.condition.selector.agent.self_specific',
-    SPECIFIC_SPECIFIC = 'model.condition.selector.agent.specific_specific',
-    PLAYER = 'model.condition.selector.agent.player',
-    GLOBAL = 'model.condition.selector.agent.global',
-}
+//     SELF = 'model.condition.selector.agent.self',
+//     TARGET = 'model.condition.selector.agent.target',
+//     SPECIFIC = 'model.condition.selector.agent.specific',
+//     SELF_TARGET = 'model.condition.selector.agent.self_target',
+//     SELF_SPECIFIC = 'model.condition.selector.agent.self_specific',
+//     SPECIFIC_SPECIFIC = 'model.condition.selector.agent.specific_specific',
+//     PLAYER = 'model.condition.selector.agent.player',
+//     GLOBAL = 'model.condition.selector.agent.global',
+// }
 
 export enum Agent {
     UNDEFINED = 'model.undefined',
@@ -75,8 +75,8 @@ export enum RelationshipSelector {
 
 export class Condition {
     public initiator: ConditionInitiator;
-    public actingAgent: Agent;
-    public recipientAgent: Agent;
+    public activeAgent: Agent;
+    public passiveAgent: Agent;
     //A number representing any of the selectors of the individual Initiator
     public selector: string;
     /*
@@ -109,8 +109,8 @@ export class Condition {
 
     constructor(impliedActingAgent: boolean = false) {
         this.initiator = ConditionInitiator.UNDEFINED;
-        this.actingAgent = impliedActingAgent ? Agent.SELF : Agent.UNDEFINED;
-        this.recipientAgent = Agent.UNDEFINED;
+        this.activeAgent = impliedActingAgent ? Agent.SELF : Agent.UNDEFINED;
+        this.passiveAgent = Agent.UNDEFINED;
         this.selector = NumericSelector.UNDEFINED;
         this.parameters = [];
         this.targets = [];

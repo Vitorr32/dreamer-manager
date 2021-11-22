@@ -25,8 +25,6 @@ export function ConditionInitiatorSelect(props: IProps) {
         props.onChange(newCondition);
     };
 
-    console.log("YOLO")
-
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}>
