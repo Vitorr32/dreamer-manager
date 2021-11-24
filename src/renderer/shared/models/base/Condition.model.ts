@@ -30,9 +30,9 @@ export enum NumericSelector {
     UNDEFINED = 'model.undefined',
 
     BIGGER_THAN = 'model.condition.selector.numeric.bigger_than',
-    SMALLER_THAN = 'model.condition.selector.numeric.smaller_than',
-    BIGGER_THAN_SELF = 'model.condition.selector.numeric.bigger_than_self',
     BIGGER_THAN_TARGET = 'model.condition.selector.numeric.bigger_than_target',
+    SMALLER_THAN = 'model.condition.selector.numeric.smaller_than',
+    SMALLER_THAN_TARGET = 'model.condition.selector.numeric.smaller_than_target',
     BETWEEN = 'model.condition.selector.numeric.between',
     EXACTLY = 'model.condition.selector.numeric.exactly',
 }
@@ -107,9 +107,9 @@ export class Condition {
         return true;
     }
 
-    constructor(impliedActingAgent: boolean = false) {
+    constructor() {
         this.initiator = ConditionInitiator.UNDEFINED;
-        this.activeAgent = impliedActingAgent ? Agent.SELF : Agent.UNDEFINED;
+        this.activeAgent = Agent.UNDEFINED;
         this.passiveAgent = Agent.UNDEFINED;
         this.selector = NumericSelector.UNDEFINED;
         this.parameters = [];

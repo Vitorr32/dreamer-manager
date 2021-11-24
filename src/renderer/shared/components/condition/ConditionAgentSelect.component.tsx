@@ -7,10 +7,10 @@ import { useState } from 'react';
 interface IProps {
     condition: Condition;
     onChange: (condition: Condition) => void;
-    actingAgent?: boolean;
+    activeAgent?: boolean;
 }
 
-export function ConditionAgentSelect({ condition, onChange, actingAgent = true }: IProps) {
+export function ConditionAgentSelect({ condition, onChange, activeAgent = false }: IProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { t } = useTranslation();
 
@@ -19,7 +19,7 @@ export function ConditionAgentSelect({ condition, onChange, actingAgent = true }
 
         const newCondition = Object.assign({}, condition);
 
-        if (actingAgent) {
+        if (activeAgent) {
             newCondition.activeAgent = agent;
         } else {
             newCondition.passiveAgent = agent;
@@ -28,12 +28,12 @@ export function ConditionAgentSelect({ condition, onChange, actingAgent = true }
         onChange(newCondition);
     };
 
-    const currentAgent = actingAgent ? condition.activeAgent : condition.passiveAgent;
+    const currentAgent = activeAgent ? condition.activeAgent : condition.passiveAgent;
 
     return (
         <>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}>
-                {currentAgent === Agent.UNDEFINED ? t('interface.editor.condition.' + actingAgent ? 'activeAgent' : 'passiveAgent') : t(condition.initiator)}
+                {currentAgent === Agent.UNDEFINED ? t('interface.editor.condition.' + (activeAgent ? 'activeAgent' : 'passiveAgent')) : t(currentAgent)}
             </Button>
             <Menu id="condition-initiator-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
                 <List component="nav" aria-labelledby="nested-list-subheader">

@@ -110,6 +110,7 @@ export const en_US = {
                 agent: {
                     self: 'Self',
                     producer: 'Producer',
+                    interacted: 'Interacted',
                     tutor: 'Tutor',
                     specific_character: 'Specific Character',
                     tagged_character: 'Tagged Character',
@@ -119,8 +120,8 @@ export const en_US = {
                     numeric: {
                         bigger_than: 'bigger than',
                         smaller_than: 'smaller than',
-                        bigger_than_self: 'bigger than self',
                         bigger_than_target: 'bigger than target',
+                        smaller_than_target: 'smaller than target',
                         between: 'between',
                         exactly: 'exactly',
                     },
@@ -212,6 +213,9 @@ export const en_US = {
                 increase_with_targets: 'Increase the {{value}} of {{targets}} by {{change}}',
                 decrease_with_targets: 'Decrease the {{value}} of {{targets}} by {{change}}',
             },
+            condition: {
+                
+            }
         },
     },
 };

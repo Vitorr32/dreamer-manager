@@ -9,7 +9,6 @@ import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditor
 interface IProps {
     condition: Condition;
     onChange: (condition: Condition) => void;
-    options?: EffectEditorOptions;
 }
 
 export function ConditionInitiatorSelect(props: IProps) {
@@ -19,7 +18,7 @@ export function ConditionInitiatorSelect(props: IProps) {
     const onItemSelected = (initiator: ConditionInitiator) => {
         setAnchorEl(null);
 
-        const newCondition = new Condition(props.options?.impliedActingAgent);
+        const newCondition = new Condition();
         newCondition.initiator = initiator;
 
         props.onChange(newCondition);

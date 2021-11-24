@@ -32,7 +32,7 @@ export function EffectEditor(props: IProps) {
     return (
         <React.Fragment>
             <ModifierEditor modifier={props.effect.modifier} onChange={onEffectChanged} filteredTypes={[ModifierTypeSection.EVENT_SECTION, ModifierTypeSection.TRAIT_SECTION]} />
-            <ConditionTreeEditor conditionTree={props.effect.conditionTree} onChange={onConditionChanged} options={props.options} />
+            <ConditionTreeEditor conditionTree={props.effect.conditionTree} onChange={onConditionChanged} />
         </React.Fragment>
     );
 }

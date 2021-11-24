@@ -9,10 +9,10 @@ import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRig
 import CloseIcon from '@mui/icons-material/Close';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
 import { Box } from '@mui/system';
-import { Button, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { ConditionAgentSelect } from './ConditionAgentSelect.component';
+import { ConditionLineSummary } from '../summary/ConditionLineSummary.component';
 
 interface IProps {
     conditionLine: Condition;
@@ -55,16 +55,27 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
         return null;
     };
 
+    const renderActiveAgent = (condition: Condition): React.ReactElement | null => {
+        return <ConditionAgentSelect condition={condition} activeAgent onChange={onSubComponentChangeOfCondition} />;
+    };
+
     const renderSelectorTools = (condition: Condition): React.ReactElement | null => {
         switch (condition.selector) {
             case NumericSelector.BIGGER_THAN:
-            case NumericSelector.BIGGER_THAN_SELF:
-            case NumericSelector.BIGGER_THAN_TARGET:
             case NumericSelector.SMALLER_THAN:
             case NumericSelector.EXACTLY:
                 return <NumericSelectorParameterInput range={false} condition={condition} onChange={onParameterChange} />;
             case NumericSelector.BETWEEN:
                 return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
+
+            case NumericSelector.BIGGER_THAN_TARGET:
+            case NumericSelector.SMALLER_THAN_TARGET:
+                return (
+                    <>
+                        <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />
+                        <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />
+                    </>
+                );
             case TraitSelector.HAS:
                 return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
             case NumericSelector.UNDEFINED:
@@ -75,28 +86,24 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
         }
     };
 
-    const renderActiveAgent = (condition: Condition): React.ReactElement | null => {
-        if (options?.impliedActingAgent) {
-            return <Typography variant="body1">{t(Agent.SELF)}</Typography>;
-        }
-
-        return <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
-    };
-
     return (
         <Box className="condition-line">
             <SubdirectoryArrowRightIcon fontSize="large" className="condition-line__icon" />
 
             <Box className="condition-line__wrapper">
-                <ConditionInitiatorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
+                <Box className="condition-line__input-wrapper">
+                    <ConditionInitiatorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
 
-                {renderInitiatorTool(conditionLine)}
+                    {renderInitiatorTool(conditionLine)}
 
-                {renderActiveAgent(conditionLine)}
+                    {renderActiveAgent(conditionLine)}
 
-                <ConditionSelectorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
+                    <ConditionSelectorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
 
-                {renderSelectorTools(conditionLine)}
+                    {renderSelectorTools(conditionLine)}
+                </Box>
+                
+                <ConditionLineSummary condition={conditionLine} />
             </Box>
 
             {index !== 0 ? <CloseIcon className="condition-line__remove" fontSize="large" onClick={() => onRemove(index)} /> : null}

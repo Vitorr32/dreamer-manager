@@ -29,7 +29,6 @@ export function CheckIfNumericSelectorIsValid(parameters: number[], numericSelec
         case NumericSelector.BETWEEN:
             //The first parameters is always an id, the second and third should be the range
             return parametersLenght > 2 ? null : new Feedback(false, 'The selector between needs to have the lower and upper range limit declared on the inputs');
-        case NumericSelector.BIGGER_THAN_SELF:
         case NumericSelector.SMALLER_THAN:
         case NumericSelector.EXACTLY:
             return parametersLenght > 1 ? null : new Feedback(false, 'The selector needs to have a number input declared');
