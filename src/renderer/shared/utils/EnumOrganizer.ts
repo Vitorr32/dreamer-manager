@@ -4,10 +4,10 @@ export function GetModifierTypesOfSection(section: ModifierTypeSection, filtered
     if (filteredSections.includes(section)) {
         return [];
     }
-    
+
     switch (section) {
         case ModifierTypeSection.ATTR_SECTION:
-            return [ModifierType.MODIFY_SKILL_POTENTIAL_VALUE, ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE, ModifierType.MODIFY_SKILL_CURRENT_VALUE];
+            return [ModifierType.MODIFY_POTENTIAL_VALUE, ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE, ModifierType.MODIFY_SKILL_CURRENT_VALUE];
         case ModifierTypeSection.EVENT_SECTION:
             return [ModifierType.MODIFY_EVENT_FLAG_ADD, ModifierType.MODIFY_EVENT_FLAG_REMOVE, ModifierType.MODIFY_EVENT_TRIGGER];
         case ModifierTypeSection.RELATIONSHIP_SECTION:

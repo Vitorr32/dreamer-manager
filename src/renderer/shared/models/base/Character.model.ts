@@ -1,6 +1,6 @@
-import { Attribute } from "./Attribute.model";
-import { Flag } from "./Event.model";
-import { Trait } from "./Trait.model";
+import { Attribute } from './Attribute.model';
+import { Flag } from './Event.model';
+import { Trait } from './Trait.model';
 
 export enum Kinship {
     UNDEFINED,
@@ -9,7 +9,7 @@ export enum Kinship {
     SIBLING,
     CHILD,
 
-    MAX_KINSHIP
+    MAX_KINSHIP,
 }
 
 export enum Gender {
@@ -18,7 +18,7 @@ export enum Gender {
     MALE,
     FEMALE,
 
-    MAX_GENDERS
+    MAX_GENDERS,
 }
 
 export enum Ethnicity {
@@ -29,17 +29,15 @@ export enum Ethnicity {
     ASIAN,
     AFRICAN,
 
-    MAX_ETHINICITIES
+    MAX_ETHINICITIES,
 }
 
 export enum Status {
-    UNDEFINED,
+    UNDEFINED = 'model.undefined',
 
-    MOOD,
-    STRESS,
-    ENERGY,
-
-    MAX_STATUS
+    MOOD = 'model.character.status.mood',
+    STRESS = 'model.character.status.stress',
+    ENERGY = 'model.character.status.energy',
 }
 
 export interface KinshipObject {
@@ -48,7 +46,6 @@ export interface KinshipObject {
 }
 
 export class Character {
-
     //Absolute Basic values of the character, these will never change
     // ID Pattern : CHAR_*NUMBER*
     public id?: string;
@@ -69,10 +66,7 @@ export class Character {
     public traits: Trait[] = [];
     public flags: Flag[] = [];
     public attributes: Attribute[] = [];
-    public spriteNames: string[] = ["default_child", "default_teen", "default_adult"];
+    public spriteNames: string[] = ['default_child', 'default_teen', 'default_adult'];
 
-    constructor() {
-
-    }
-
+    constructor() {}
 }

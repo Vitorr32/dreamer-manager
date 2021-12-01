@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { ConditionAgentSelect } from './ConditionAgentSelect.component';
 import { ConditionLineSummary } from '../summary/ConditionLineSummary.component';
+import { StaticStatusSelectionButton } from './StaticStatusSelect.component';
+import { RelationshipSelect } from './RelationshipSelect';
 
 interface IProps {
     conditionLine: Condition;
@@ -50,6 +52,10 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
                 return <TraitSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
             case ConditionInitiator.ATTRIBUTE_RANGE:
                 return <AttributeSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
+            case ConditionInitiator.STATUS_RANGE:
+                return <StaticStatusSelectionButton condition={condition} onChange={onTargetChange} />;
+            case ConditionInitiator.RELATIONSHIP:
+                return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
         }
 
         return null;
@@ -102,7 +108,7 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
 
                     {renderSelectorTools(conditionLine)}
                 </Box>
-                
+
                 <ConditionLineSummary condition={conditionLine} />
             </Box>
 

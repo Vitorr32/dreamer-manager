@@ -1,10 +1,10 @@
 export enum ModifierType {
     UNDEFINED = 'model.undefined',
 
-    //SKILLS MODIFIERS
+    //ATTRIBUTE MODIFIERS
     MODIFY_SKILL_CURRENT_VALUE = 'model.modifier.type.attr_value',
     MODIFY_SKILL_GAIN_MULTIPLIER_VALUE = 'model.modifier.type.attr_multiplier',
-    MODIFY_SKILL_POTENTIAL_VALUE = 'model.modifier.type.attr_potential',
+    MODIFY_POTENTIAL_VALUE = 'model.modifier.type.attr_potential',
 
     //RELATIONSHIP MODIFIERS
     MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE = 'model.modifier.type.relationship_respect',

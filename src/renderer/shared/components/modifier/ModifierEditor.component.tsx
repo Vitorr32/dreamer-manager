@@ -76,7 +76,7 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
         switch (modifier.type) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
             case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
-            case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
+            case ModifierType.MODIFY_POTENTIAL_VALUE:
                 return <AttributeSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} multi/>;
             case ModifierType.MODIFY_TRAIT_GAIN:
             case ModifierType.MODIFY_TRAIT_REMOVE:
@@ -89,7 +89,7 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
     const renderModifierValueInput = (): React.ReactElement | null => {
         switch (modifier.type) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
-            case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
+            case ModifierType.MODIFY_POTENTIAL_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:

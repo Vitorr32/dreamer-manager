@@ -20,11 +20,9 @@ export function EffectSummary({ effect }: IProps) {
         const valueSet = modifier.effectiveChange !== 0 ? true : false;
         const isPositive = modifier.effectiveChange > 0 ? true : false;
 
-        console.log(modifier.type);
-
         switch (modifier.type) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
-            case ModifierType.MODIFY_SKILL_POTENTIAL_VALUE:
+            case ModifierType.MODIFY_POTENTIAL_VALUE:
             case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
                 return (
                     <Typography>

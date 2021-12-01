@@ -43,6 +43,7 @@ export const en_US = {
                     selector: 'Selector Specificator',
                     attr_selector_placeholder: 'Select Attribute',
                     trait_selector_placeholder: 'Select Trait',
+                    status_selector_placeholder: 'Select Status',
                     numeric_selector_input_from: 'From',
                     numeric_selector_input_to: 'To',
                 },
@@ -94,8 +95,11 @@ export const en_US = {
                 },
             },
             character: {
-                energy: 'Energy',
-                stress: 'Stress',
+                status: {
+                    energy: 'Energy',
+                    stress: 'Stress',
+                    mood: 'Mood',
+                },
             },
             condition: {
                 initiator: {
@@ -114,7 +118,7 @@ export const en_US = {
                     tutor: 'Tutor',
                     specific_character: 'Specific Character',
                     tagged_character: 'Tagged Character',
-                    global: 'Global variable'
+                    global: 'Global variable',
                 },
                 selector: {
                     numeric: {
@@ -213,9 +217,7 @@ export const en_US = {
                 increase_with_targets: 'Increase the {{value}} of {{targets}} by {{change}}',
                 decrease_with_targets: 'Decrease the {{value}} of {{targets}} by {{change}}',
             },
-            condition: {
-                
-            }
+            condition: {},
         },
     },
 };

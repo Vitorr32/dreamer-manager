@@ -18,7 +18,6 @@ export function MainMenuButton(x, y) {
     wrapper.interactive = true
     wrapper.hitArea = new PIXI.Rectangle(x, y, 200, 50)
     wrapper.mouseover = function (mouseData) {
-        console.log("YOLO");
         this.alpha = 1;
     }
 
