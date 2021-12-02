@@ -54,6 +54,7 @@ export class Character {
     public surname?: string;
     public age?: number;
     public birthday?: Date;
+    public relationships?: string[];
 
     //Current state of the character attributes that should be serialized in case of save
     public baseMood: number = 50;

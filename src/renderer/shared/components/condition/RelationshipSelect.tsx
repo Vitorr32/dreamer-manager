@@ -7,6 +7,7 @@ import { RootState } from 'renderer/redux/store';
 import { Status } from 'renderer/shared/models/base/Character.model';
 import { Condition } from 'renderer/shared/models/base/Condition.model';
 import { JoinArrayOfString } from 'renderer/shared/utils/StringOperations';
+import { RelationshipAttribute } from 'renderer/shared/models/base/Relationship.model';
 
 interface IProps {
     condition: Condition;
@@ -19,8 +20,8 @@ export function RelationshipSelect({ condition, onChange }: IProps) {
     const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const onValueSelected = (value: Status = Status.UNDEFINED) => {
-        if (value === Status.UNDEFINED) {
+    const onValueSelected = (value: RelationshipAttribute = RelationshipAttribute.UNDEFINED) => {
+        if (value === RelationshipAttribute.UNDEFINED) {
             onChange([]);
             return;
         }
@@ -32,16 +33,16 @@ export function RelationshipSelect({ condition, onChange }: IProps) {
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}>
-                {condition.targets.length === 0 ? t('interface.editor.condition.status_selector_placeholder') : JoinArrayOfString(condition.targets.map((target) => t(target)))}
+                {condition.targets.length === 0 ? t('interface.editor.condition.relationship_selector_placeholder') : JoinArrayOfString(condition.targets.map((target) => t(target)))}
             </Button>
             <Menu id="condition-initiator-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
                 <List component="nav" aria-labelledby="nested-list-subheader">
-                    {Object.values(Status)
+                    {Object.values(RelationshipAttribute)
                         .slice(1)
-                        .map((status) => {
+                        .map((attribute) => {
                             return (
-                                <ListItem key={'condition_status_' + status} button onClick={(_) => onValueSelected(status)}>
-                                    <ListItemText primary={t(status)} secondary="Character static stats" />
+                                <ListItem key={'condition_status_' + attribute} button onClick={(_) => onValueSelected(attribute)}>
+                                    <ListItemText primary={t(attribute)} />
                                 </ListItem>
                             );
                         })}

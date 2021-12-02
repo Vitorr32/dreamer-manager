@@ -44,6 +44,7 @@ export const en_US = {
                     attr_selector_placeholder: 'Select Attribute',
                     trait_selector_placeholder: 'Select Trait',
                     status_selector_placeholder: 'Select Status',
+                    relationship_selector_placeholder: 'Select Relationship Attribute',
                     numeric_selector_input_from: 'From',
                     numeric_selector_input_to: 'To',
                 },
@@ -99,6 +100,15 @@ export const en_US = {
                     energy: 'Energy',
                     stress: 'Stress',
                     mood: 'Mood',
+                },
+            },
+            relationship: {
+                variable: {
+                    favor: 'Favorability',
+                    love: 'Romantic',
+                    power: 'Power Dynamic',
+                    attraction: 'Attractiviness',
+                    respect: 'Respect',
                 },
             },
             condition: {
