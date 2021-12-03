@@ -73,12 +73,11 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
                 return <NumericSelectorParameterInput range={false} condition={condition} onChange={onParameterChange} />;
             case NumericSelector.BETWEEN:
                 return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
-
             case NumericSelector.BIGGER_THAN_TARGET:
             case NumericSelector.SMALLER_THAN_TARGET:
                 return (
                     <>
-                        <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />
+                        <NumericSelectorParameterInput range={false} condition={condition} onChange={onParameterChange} />
                         <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />
                     </>
                 );

@@ -227,7 +227,21 @@ export const en_US = {
                 increase_with_targets: 'Increase the {{value}} of {{targets}} by {{change}}',
                 decrease_with_targets: 'Decrease the {{value}} of {{targets}} by {{change}}',
             },
-            condition: {},
+            agent: {
+                unknown_self: `This character own`,
+                unknown_interacted: `The interacted character`,
+                unknown_producer: `The character's producer`,
+                unknown_tutor: `The character's tutor`,
+            },
+            attribute: {
+                singular: '{{name}} attribute is',
+                plural: '{{name}} attributes are',
+            },
+            condition: {
+                between: '{{agent}} {{variable}} between {{lowerValue}} and {{higherValue}}',
+                bigger_than: 'The {{value_name}} of {{actor}} is bigger than {{parameter}}',
+                bigger_than_target: `The {{value_name}}'s of {{actor}} is bigger than {{parameter}}`,
+            },
         },
     },
 };

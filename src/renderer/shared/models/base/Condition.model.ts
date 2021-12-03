@@ -66,13 +66,6 @@ export enum TimeSelector {
     AFTER,
 }
 
-export enum RelationshipSelector {
-    UNDEFINED,
-
-    STATUS,
-    KNOWLEDGE,
-}
-
 export class Condition {
     public initiator: ConditionInitiator;
     public activeAgent: Agent;
