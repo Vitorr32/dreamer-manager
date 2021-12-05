@@ -45,8 +45,10 @@ export const en_US = {
                     trait_selector_placeholder: 'Select Trait',
                     status_selector_placeholder: 'Select Status',
                     relationship_selector_placeholder: 'Select Relationship Attribute',
+                    time_selector_placeholder: 'Select time logic',
                     numeric_selector_input_from: 'From',
                     numeric_selector_input_to: 'To',
+                    time_datepicker_label: 'Pick the date',
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -151,6 +153,16 @@ export const en_US = {
                         at: 'Is At',
                         not_at: 'Not At',
                     },
+                    time: {
+                        weekday: 'Is/During Weekday',
+                        weekend: 'Is/During Weekend',
+                        holiday: 'Is/During Holiday',
+                        night: 'Is/During Nighttime',
+                        day: 'Is/During Daytime',
+                        isDate: 'At Specific Date',
+                        afterDate: 'After specific date',
+                        beforeDate: 'Before specific date',
+                    },
                 },
             },
             trait: {
@@ -205,6 +217,11 @@ export const en_US = {
             },
         },
         summary: {
+            common: {
+                defaultValue: '*Unset*',
+                defaultAgent: '*Unset Character*',
+                defaultSelector: 'Select the selector to get the summary of the condition.',
+            },
             node: {
                 logic: {
                     if: 'If the following is true',
@@ -228,19 +245,32 @@ export const en_US = {
                 decrease_with_targets: 'Decrease the {{value}} of {{targets}} by {{change}}',
             },
             agent: {
-                unknown_self: `This character own`,
-                unknown_interacted: `The interacted character`,
-                unknown_producer: `The character's producer`,
-                unknown_tutor: `The character's tutor`,
+                unknown_self: `this character`,
+                unknown_interacted: `interacted character`,
+                unknown_producer: `character's producer`,
+                unknown_tutor: `character's tutor`,
             },
             attribute: {
-                singular: '{{name}} attribute is',
-                plural: '{{name}} attributes are',
+                singular: '{{name}} attribute',
+                plural: '{{name}} attributes',
+            },
+            trait: {
+                singular: 'trait {{name}}',
+                plural: 'traits {{name}}',
+            },
+            status: {
+                pattern: '{{name}} status',
+            },
+            relationship: {
+                pattern: 'relationship attribute {{name}}',
             },
             condition: {
-                between: '{{agent}} {{variable}} between {{lowerValue}} and {{higherValue}}',
-                bigger_than: 'The {{value_name}} of {{actor}} is bigger than {{parameter}}',
-                bigger_than_target: `The {{value_name}}'s of {{actor}} is bigger than {{parameter}}`,
+                between: '{{activeAgent}} {{variable}} is between {{lowerValue}} and {{higherValue}}',
+                bigger_than: 'The {{variable}} of the {{activeAgent}} is bigger than {{parameter}}',
+                bigger_than_target: `The {{variable}} of {{activeAgent}} is bigger than the {{passiveAgent}}`,
+                exactly: `The {{activeAgent}} {{variable}} is exactly than {{parameter}}`,
+                smaller_than: 'The {{variable}} of the {{activeAgent}} is smaller than {{parameter}}',
+                smaller_than_target: `The {{variable}} of {{activeAgent}} is smaller than the {{passiveAgent}}`,
             },
         },
     },

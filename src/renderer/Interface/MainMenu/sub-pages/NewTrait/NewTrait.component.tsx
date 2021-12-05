@@ -4,6 +4,7 @@ import React from 'react';
 import { BasicInfoForm } from './BasicInfoForm.component';
 import { Trait, TraitType } from '../../../../shared/models/base/Trait.model';
 import { EffectsAndConditions } from './EffectsAndConditions.component';
+import { NewTraitReview } from './NewTraitReview.component';
 
 interface IProps {}
 
@@ -52,6 +53,8 @@ export class NewTrait extends React.Component<IProps, IState> {
                 return <BasicInfoForm trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} nextStep={this.nextStep.bind(this)} />;
             case 1:
                 return <EffectsAndConditions trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} previousStep={this.previousStep.bind(this)} nextStep={this.nextStep.bind(this)} />;
+            case 3:
+                return <NewTraitReview trait={this.state.currentTrait} />;
             default:
                 return null;
         }

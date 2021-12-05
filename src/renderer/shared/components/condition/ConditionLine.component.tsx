@@ -1,5 +1,5 @@
 import React from 'react';
-import { Agent, Condition, NumericSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
+import { Condition, NumericSelector, TimeSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
 import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
@@ -15,6 +15,7 @@ import { ConditionAgentSelect } from './ConditionAgentSelect.component';
 import { ConditionLineSummary } from '../summary/ConditionLineSummary.component';
 import { StaticStatusSelectionButton } from './StaticStatusSelect.component';
 import { RelationshipSelect } from './RelationshipSelect';
+import { TimeSelect } from './TimeSelect.component';
 
 interface IProps {
     conditionLine: Condition;
@@ -56,12 +57,19 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
                 return <StaticStatusSelectionButton condition={condition} onChange={onTargetChange} />;
             case ConditionInitiator.RELATIONSHIP:
                 return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
+            //Following initiators does not need selection tools
+            case ConditionInitiator.TIME:
+            default:
+                return null;
         }
-
-        return null;
     };
 
     const renderActiveAgent = (condition: Condition): React.ReactElement | null => {
+        //Not nescessary to set the actor in case of time initiator since it's the world date
+        if (condition.initiator === ConditionInitiator.TIME) {
+            return null;
+        }
+
         return <ConditionAgentSelect condition={condition} activeAgent onChange={onSubComponentChangeOfCondition} />;
     };
 
@@ -75,16 +83,14 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
                 return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
             case NumericSelector.BIGGER_THAN_TARGET:
             case NumericSelector.SMALLER_THAN_TARGET:
-                return (
-                    <>
-                        <NumericSelectorParameterInput range={false} condition={condition} onChange={onParameterChange} />
-                        <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />
-                    </>
-                );
+                return <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
             case TraitSelector.HAS:
+            case TraitSelector.DONT:
                 return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
-            case NumericSelector.UNDEFINED:
-                return null;
+            case TimeSelector.IS_AFTER_DATE:
+            case TimeSelector.IS_AT_DATE:
+            case TimeSelector.IS_BEFORE_DATE:
+                return <TimeSelect condition={condition} onChange={onParameterChange} />;
             default:
                 console.error('Unknown selector for the parameter rendering: ' + condition.selector);
                 return null;

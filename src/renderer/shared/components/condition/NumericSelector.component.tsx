@@ -19,8 +19,8 @@ export function NumericSelectorParameterInput(props: IProps) {
                 label={t('interface.editor.condition.numeric_selector_input_from')}
                 type="number"
                 variant="outlined"
-                onChange={(event) => props.onChange(Number.parseInt(event.target.value), { index: 1 })}
-                value={props.condition.parameters[1] ? props.condition.parameters[1] : 0}
+                onChange={(event) => props.onChange(Number.parseInt(event.target.value), { index: 0 })}
+                value={props.condition.parameters[0] ? props.condition.parameters[0] : 0}
             />
 
             {props.range && (
@@ -30,8 +30,8 @@ export function NumericSelectorParameterInput(props: IProps) {
                         label={t('interface.editor.condition.numeric_selector_input_to')}
                         type="number"
                         variant="outlined"
-                        onChange={(event) => props.onChange(Number.parseInt(event.target.value), { index: 2 })}
-                        value={props.condition.parameters[2] ? props.condition.parameters[2] : 0}
+                        onChange={(event) => props.onChange(Number.parseInt(event.target.value), { index: 1 })}
+                        value={props.condition.parameters[1] ? props.condition.parameters[1] : 0}
                     />
                 </React.Fragment>
             )}

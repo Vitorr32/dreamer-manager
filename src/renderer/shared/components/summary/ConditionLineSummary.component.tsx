@@ -32,7 +32,6 @@ export function ConditionLineSummary({ condition, context }: IProps) {
             case Agent.TUTOR:
                 return t('summary.agent.unknown_tutor');
             default:
-                console.error('Unknown agent! ' + agent);
                 return '';
         }
     };
@@ -41,30 +40,51 @@ export function ConditionLineSummary({ condition, context }: IProps) {
         switch (line.initiator) {
             case ConditionInitiator.ATTRIBUTE_RANGE:
                 return t(line.targets.length > 1 ? 'summary.attribute.plural' : 'summary.attribute.singular', { name: JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.attributes[target].name)) });
+            case ConditionInitiator.TRAIT:
+                return t(line.targets.length > 1 ? 'summary.trait.plural' : 'summary.trait.singular', { name: JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.traits[target].name)) });
+            case ConditionInitiator.STATUS_RANGE:
+                return t('summary.status.pattern', { name: JoinArrayOfString(line.targets.map((target) => t(target))) });
+            case ConditionInitiator.RELATIONSHIP:
+                return t('summary.relationship.pattern', { name: JoinArrayOfString(line.targets.map((target) => t(target))) });
             default:
-                return '';
+                return t('summary.common.defaultAgent');
         }
     };
 
-    const renderConditionLineSentence = (line: Condition): string => {
+    const getSummaryForSelector = (line: Condition): string => {
         switch (line.selector) {
             case NumericSelector.BETWEEN:
-                return t('summary.condition.between', { agent: getAgentString(line.activeAgent, context), variable: getNameFromDatabase(line) });
-            //Use of Numeric Selector
-            case ConditionInitiator.ATTRIBUTE_RANGE:
-                return JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.attributes[target].name));
-            case ConditionInitiator.TRAIT:
-                return JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.traits[target].name));
-            case ConditionInitiator.STATUS_RANGE:
+                return 'summary.condition.between';
+            case NumericSelector.BIGGER_THAN:
+                return 'summary.condition.bigger_than';
+            case NumericSelector.BIGGER_THAN_TARGET:
+                return 'summary.condition.bigger_than_target';
+            case NumericSelector.EXACTLY:
+                return 'summary.condition.exactly';
+            case NumericSelector.SMALLER_THAN:
+                return 'summary.condition.smaller_than';
+            case NumericSelector.SMALLER_THAN_TARGET:
+                return 'summary.condition.smaller_than_target';
             default:
-                return '';
+                return 'summary.common.defaultSelector';
         }
+    };
+
+    const renderConditionLineSentence = (line: Condition, context: any): string => {
+        return t(getSummaryForSelector(line), {
+            activeAgent: getAgentString(line.activeAgent, context),
+            passiveAgent: getAgentString(line.passiveAgent, context),
+            variable: getNameFromDatabase(line),
+            parameter: line.parameters?.[0] || t('summary.common.defaultValue'),
+            lowerValue: line.parameters?.[0] || t('summary.common.defaultValue'),
+            higherValue: line.parameters?.[1] || t('summary.common.defaultValue'),
+        });
     };
 
     return (
         <Box className="condition-line-summary">
             <Box className="condition-line-summary__wrapper">
-                <Typography variant="body1">Yolo</Typography>
+                <Typography variant="body1">{renderConditionLineSentence(condition, context)}</Typography>
             </Box>
         </Box>
     );
