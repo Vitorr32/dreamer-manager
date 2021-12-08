@@ -1,0 +1,14 @@
+.modifier-editor {
+    margin-top: 10px;
+    border: 1px solid black;
+    padding: 10px;
+
+    &__content {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    &__select-type {
+        height: 4rem;
+    }
+}

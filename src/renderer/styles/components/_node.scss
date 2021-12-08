@@ -1,0 +1,16 @@
+.condition-node {
+    border: 1px solid black;
+    padding: 10px;
+
+    &__config {
+        display: flex;
+    }
+
+    &__add {
+        margin-left: 20px !important;
+    }
+
+    &__remove {
+        margin-left: auto !important;
+    }
+}

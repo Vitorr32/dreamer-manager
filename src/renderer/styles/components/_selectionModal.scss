@@ -1,0 +1,47 @@
+.selection-modal {
+    &__wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        padding: 2rem;
+    }
+
+    &__selection-wrapper {
+        width: 100%;
+        display: flex;
+        align-items: stretch;
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    &__selection {
+        overflow: auto;
+        height: 40vh;
+
+        &-primary {
+            width: 40%;
+            border-right: 1px solid gray;
+        }
+
+        &-secondary {
+            width: 60%;
+        }
+    }
+
+    &__footer {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &-message {
+            width: 50%;
+        }
+
+        &-submit {
+            margin-left: auto !important;
+        }
+    }
+}

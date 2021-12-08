@@ -1,0 +1,15 @@
+{
+    "name": "dreamer-manager",
+    "productName": "dreamer-manager",
+    "version": "0.1.0",
+    "description": "An HTML5/Pixi.js game using Electron about management of Idols",
+    "main": "./dist/main/main.js",
+    "author": {
+        "name": "Vitorr32"
+    },
+    "scripts": {
+        "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+        "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.js",
+        "postinstall": "npm run electron-rebuild && npm run link-modules"
+    }
+}
