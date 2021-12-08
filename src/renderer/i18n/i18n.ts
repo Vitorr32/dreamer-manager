@@ -1,17 +1,41 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import { en_US } from './en_US';
+import { format as formatDate, isDate } from 'date-fns';
+import { dateLocales } from 'renderer/shared/utils/Localization';
 
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import { en_US } from "./en_US";
+i18n.use(initReactI18next).init({
+    resources: {
+        en_US,
+    },
+    lng: 'en_US',
+    fallbackLng: 'en_US',
+    interpolation: {
+        escapeValue: false,
+        format: (value, format, lng) => {
+            if (isDate(value) && format && lng) {
+                const locale = dateLocales[lng];
 
-i18n
-    .use(initReactI18next) // passes i18n down to react-i18next
-    .init({
-        resources: {
-            en_US
+                switch (format) {
+                    case 'short':
+                        return formatDate(value, 'P', { locale });
+                    case 'long':
+                        return formatDate(value, 'PPPP', { locale });
+                    case 'time':
+                        return formatDate(value, 'Pp', { locale });
+                    // case 'relative':
+                    //     return formatRelative(value, new Date(), { locale });
+                    // case 'ago':
+                    //     return formatDistance(value, new Date(), {
+                    //         locale,
+                    //         addSuffix: true,
+                    //     });
+                    default:
+                        return formatDate(value, format, { locale });
+                }
+            }
+
+            return value;
         },
-        lng: "en_US",
-        fallbackLng: "en_US",
-        interpolation: {
-            escapeValue: false
-        }
-    });
+    },
+});

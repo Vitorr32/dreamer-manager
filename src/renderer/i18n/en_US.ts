@@ -220,7 +220,7 @@ export const en_US = {
             common: {
                 defaultValue: '*Unset*',
                 defaultAgent: '*Unset Character*',
-                defaultSelector: 'Select the selector to get the summary of the condition.',
+                defaultSelector: 'Select the selector to get the summary of the condition.'
             },
             node: {
                 logic: {

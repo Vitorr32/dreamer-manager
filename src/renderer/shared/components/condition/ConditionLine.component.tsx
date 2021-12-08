@@ -39,7 +39,7 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
         onChange(index, newCondition);
     };
 
-    const onParameterChange = (value: number, returnData: { index: number }): void => {
+    const onParameterChange = (value: number, returnData: { index: number } = { index: 0 }): void => {
         const newCondition = Object.assign({}, conditionLine);
 
         newCondition.parameters[returnData.index] = value;
