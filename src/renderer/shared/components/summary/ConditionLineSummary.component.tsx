@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Agent, Condition, NumericSelector } from 'renderer/shared/models/base/Condition.model';
+import { Agent, Condition, NumericSelector, TimeSelector } from 'renderer/shared/models/base/Condition.model';
 import { ConditionInitiator } from 'renderer/shared/models/enums/ConditionInitiator.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { RootState } from 'renderer/redux/store';
@@ -65,6 +65,22 @@ export function ConditionLineSummary({ condition, context }: IProps) {
                 return 'summary.condition.smaller_than';
             case NumericSelector.SMALLER_THAN_TARGET:
                 return 'summary.condition.smaller_than_target';
+            case TimeSelector.IS_DAY:
+                return 'summary.condition.is_day';
+            case TimeSelector.IS_NIGHT:
+                return 'summary.condition.is_night';
+            case TimeSelector.IS_HOLIDAY:
+                return 'summary.condition.is_holiday';
+            case TimeSelector.IS_WEEKDAY:
+                return 'summary.condition.is_weekday';
+            case TimeSelector.IS_WEEKEND:
+                return 'summary.condition.is_weekend';
+            case TimeSelector.IS_AFTER_DATE:
+                return 'summary.condition.after_date';
+            case TimeSelector.IS_AT_DATE:
+                return 'summary.condition.is_date';
+            case TimeSelector.IS_BEFORE_DATE:
+                return 'summary.condition.before_date';
             default:
                 return 'summary.common.defaultSelector';
         }
@@ -75,7 +91,7 @@ export function ConditionLineSummary({ condition, context }: IProps) {
             activeAgent: getAgentString(line.activeAgent, context),
             passiveAgent: getAgentString(line.passiveAgent, context),
             variable: getNameFromDatabase(line),
-            parameter: line.parameters?.[0] || t('summary.common.defaultValue'),
+            parameter: line.initiator === ConditionInitiator.TIME ? new Date(line.parameters?.[0]) : line.parameters?.[0] || t('summary.common.defaultValue'),
             lowerValue: line.parameters?.[0] || t('summary.common.defaultValue'),
             higherValue: line.parameters?.[1] || t('summary.common.defaultValue'),
         });

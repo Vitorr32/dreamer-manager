@@ -220,7 +220,7 @@ export const en_US = {
             common: {
                 defaultValue: '*Unset*',
                 defaultAgent: '*Unset Character*',
-                defaultSelector: 'Select the selector to get the summary of the condition.'
+                defaultSelector: 'Select the selector to get the summary of the condition.',
             },
             node: {
                 logic: {
@@ -271,6 +271,14 @@ export const en_US = {
                 exactly: `The {{activeAgent}} {{variable}} is exactly than {{parameter}}`,
                 smaller_than: 'The {{variable}} of the {{activeAgent}} is smaller than {{parameter}}',
                 smaller_than_target: `The {{variable}} of {{activeAgent}} is smaller than the {{passiveAgent}}`,
+                is_date: `Today is {{parameter, short}}`,
+                after_date: `The current date is after {{parameter, short}}`,
+                before_date: `The current date is before {{parameter, short}}`,
+                is_weekday: `Today is a weekday`,
+                is_weekend: `Today is a weekend`,
+                is_holiday: `Today is a holiday`,
+                is_night: `Is currently nighttime (06:00 PM to 5:00 AM)`,
+                is_day: `Is currently daytime (06:00 AM to 05:00 PM)`,
             },
         },
     },

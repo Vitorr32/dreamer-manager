@@ -92,7 +92,6 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
             case TimeSelector.IS_BEFORE_DATE:
                 return <TimeSelect condition={condition} onChange={onParameterChange} />;
             default:
-                console.error('Unknown selector for the parameter rendering: ' + condition.selector);
                 return null;
         }
     };

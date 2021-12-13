@@ -8,11 +8,8 @@ import { store } from 'renderer/redux/store';
 import { gameStartLoad } from './redux/database/database.reducer';
 import { createTheme, ThemeProvider } from '@mui/material';
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import './App.global.scss';
+import '@fontsource/roboto';
+import './App.scss';
 
 export default function App() {
     useEffect(() => {

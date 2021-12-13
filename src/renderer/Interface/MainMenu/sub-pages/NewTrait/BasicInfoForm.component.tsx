@@ -78,7 +78,7 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
                 <FormControlLabel
                     value="start"
                     control={<Switch disabled={traitType === TraitType.NATIONAL} value={spawnable} onChange={(event) => setSpawnable(event.target.checked)} color="primary" />}
-                    label={t('interface.editor.trait.spawn_label')}
+                    label={t('interface.editor.trait.spawn_label') as string}
                     labelPlacement="start"
                 />
                 <Typography variant="caption">{t('interface.editor.trait.spawn_helper', { max: MAX_NUMBER_OF_TRAITS_GENERATED })}</Typography>
