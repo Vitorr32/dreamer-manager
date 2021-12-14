@@ -59,6 +59,7 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
                 return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
             //Following initiators does not need selection tools
             case ConditionInitiator.TIME:
+            case ConditionInitiator.LOCATION:
             default:
                 return null;
         }

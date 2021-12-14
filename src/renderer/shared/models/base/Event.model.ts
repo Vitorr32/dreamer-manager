@@ -4,7 +4,7 @@ import { Scene } from "./Scene.model";
 export interface Trigger {
     //Check if the event should activate
     condition: Condition;
-    //Get all the actors to participate in the event
+    //Get all the actors to participate in the event, the number of conditions determine the number of actors
     queryActorsConditions: Condition[];
 }
 
@@ -18,11 +18,11 @@ export interface Flag {
     // Datetime of the moment this flag was applied on the actor
     appliedTime: Date;
 
-    //Whetever the flag has a time to expire or will never expire/ experie manually by another event
+    //Whetever the flag has a time to expire or will never expire/ expire manually by another event
     permanent: boolean;
 
     //How many minutes after the trigger the flag will last
-    minutesToExpire: number | undefined;
+    hoursToExpire: number | undefined;
 }
 
 export class Event {

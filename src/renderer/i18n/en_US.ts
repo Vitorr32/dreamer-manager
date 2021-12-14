@@ -150,8 +150,9 @@ export const en_US = {
                         not_triggered: 'Not Triggered',
                     },
                     location: {
-                        at: 'Is At',
-                        not_at: 'Not At',
+                        of_type: 'The location type',
+                        to_of_type: 'Moving to a location of type',
+                        of_type_with: 'With target at location of type',
                     },
                     time: {
                         weekday: 'Is/During Weekday',

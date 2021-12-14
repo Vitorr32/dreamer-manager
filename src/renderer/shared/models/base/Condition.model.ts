@@ -54,8 +54,9 @@ export enum EventFlagSelector {
 export enum LocationSelector {
     UNDEFINED = 'model.undefined',
 
-    IS_AT = 'model.condition.selector.location.at',
-    IS_NOT_AT = 'model.condition.selector.location.not_at',
+    IS_AT_LOCATION_OF_TYPE = 'model.condition.selector.location.of_type',
+    IS_MOVING_TO_LOCATION_OF_TYPE = 'model.condition.selector.location.to_of_type',
+    IS_AT_LOCATION_OF_TYPE_WITH_TARGET = 'model.condition.selector.location.of_type_with',
 }
 
 export enum TimeSelector {
