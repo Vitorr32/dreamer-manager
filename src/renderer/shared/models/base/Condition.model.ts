@@ -88,7 +88,7 @@ export class Condition {
         Time: Only one parameter [Timestamp in seconds]
         Relationship: Up to 4 parameters [Character ID, Relationship Attribute, First Input, Second Input]
     */
-    public parameters: number[];
+    public parameters: number[] | string[];
     public targets: string[];
 
     //Verify the health of the condition metadata, not if the condition actually evaluates to true or false with in-game attributes.

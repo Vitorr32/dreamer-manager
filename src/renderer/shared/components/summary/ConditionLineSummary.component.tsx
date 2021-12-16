@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Agent, Condition, NumericSelector, TimeSelector } from 'renderer/shared/models/base/Condition.model';
+import { Agent, Condition, LocationSelector, NumericSelector, TimeSelector } from 'renderer/shared/models/base/Condition.model';
 import { ConditionInitiator } from 'renderer/shared/models/enums/ConditionInitiator.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { RootState } from 'renderer/redux/store';
@@ -81,9 +81,27 @@ export function ConditionLineSummary({ condition, context }: IProps) {
                 return 'summary.condition.is_date';
             case TimeSelector.IS_BEFORE_DATE:
                 return 'summary.condition.before_date';
+            case LocationSelector.IS_AT_LOCATION_OF_TYPE:
+                return 'summary.condition.is_at';
             default:
                 return 'summary.common.defaultSelector';
         }
+    };
+
+    const getTreatedParameterValue = (parameter: number | string | undefined, line: Condition): any => {
+        if (!parameter) {
+            return t('summary.common.defaultValue');
+        }
+
+        if (typeof parameter === 'string') {
+            return t(parameter);
+        }
+
+        if (line.initiator === ConditionInitiator.TIME) {
+            return new Date(parameter);
+        }
+
+        return parameter;
     };
 
     const renderConditionLineSentence = (line: Condition, context: any): string => {
@@ -91,7 +109,7 @@ export function ConditionLineSummary({ condition, context }: IProps) {
             activeAgent: getAgentString(line.activeAgent, context),
             passiveAgent: getAgentString(line.passiveAgent, context),
             variable: getNameFromDatabase(line),
-            parameter: line.initiator === ConditionInitiator.TIME ? new Date(line.parameters?.[0]) : line.parameters?.[0] || t('summary.common.defaultValue'),
+            parameter: getTreatedParameterValue(line.parameters?.[0], line),
             lowerValue: line.parameters?.[0] || t('summary.common.defaultValue'),
             higherValue: line.parameters?.[1] || t('summary.common.defaultValue'),
         });

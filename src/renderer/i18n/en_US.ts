@@ -19,11 +19,11 @@ export const en_US = {
                     name_label: 'Trait name',
                     name_helper: `The name of the trait to be displayed. Examples: 'Leader', 'Charismatic', 'Shy'`,
                     description_label: 'Description of effects/personality',
-                    description_helper: `The description of the trait to give better context of it's effects on gameplay and character personality. Example: " 'Leader' defines the capacity of this character to inspire, command and support his peers in his job and daily life"`,
+                    description_helper: `The description of the trait to give better context of it's effects on game play and character personality. Example: " 'Leader' defines the capacity of this character to inspire, command and support his peers in his job and daily life"`,
                     type_label: 'Type category of the Trait',
                     type_helper: 'The type of the trait, it defines the category that the trait will be presented and in what type of situation it can be obtainable',
                     spawn_label: 'Spawnable',
-                    spawn_helper: `Whetever this trait can be found on generated Dreamers, otherwise it can be obtainable only by events (Do note that traits of type 'National' will always be spawned), generated dreamers will have up to {{max}}
+                    spawn_helper: `Whatever this trait can be found on generated Dreamers, otherwise it can be obtainable only by events (Do note that traits of type 'National' will always be spawned), generated dreamers will have up to {{max}}
                     traits on generation.`,
                 },
                 effect: {
@@ -46,6 +46,7 @@ export const en_US = {
                     status_selector_placeholder: 'Select Status',
                     relationship_selector_placeholder: 'Select Relationship Attribute',
                     time_selector_placeholder: 'Select time logic',
+                    location_type_selector_placeholder: 'Select the type of Location',
                     numeric_selector_input_from: 'From',
                     numeric_selector_input_to: 'To',
                     time_datepicker_label: 'Pick the date',
@@ -104,15 +105,7 @@ export const en_US = {
                     mood: 'Mood',
                 },
             },
-            relationship: {
-                variable: {
-                    favor: 'Favorability',
-                    love: 'Romantic',
-                    power: 'Power Dynamic',
-                    attraction: 'Attractiviness',
-                    respect: 'Respect',
-                },
-            },
+
             condition: {
                 initiator: {
                     status_range: 'Status Range',
@@ -166,6 +159,30 @@ export const en_US = {
                     },
                 },
             },
+            location: {
+                type: {
+                    canteen: 'Canteen',
+                    audio_studio: 'Audio Studio',
+                    dance_hall: 'Dance Hall',
+                    modeling_studio: 'Modeling Studio',
+                    photo_studio: 'Photo Studio',
+                    stadium: 'Stadium',
+                    television_studio: 'Television Studio',
+                    theater: 'Theater',
+                    park: 'Natural Park',
+                    restaurant: 'Restaurant',
+                    zoo: 'Zoo',
+                },
+            },
+            relationship: {
+                variable: {
+                    favor: 'Favorable',
+                    love: 'Romantic',
+                    power: 'Power Dynamic',
+                    attraction: 'Attractiveness',
+                    respect: 'Respect',
+                },
+            },
             trait: {
                 type: {
                     normal: 'Normal',
@@ -184,7 +201,7 @@ export const en_US = {
                     attr_potential: 'Potential attribute value',
 
                     relationship_respect: 'Relationship respect metric',
-                    relationship_favor: 'Relationship favorability metric',
+                    relationship_favor: 'Relationship favorable metric',
                     relationship_attract: 'Relationship attraction metric',
                     relationship_love: 'Relationship love metric',
                     relationship_power: 'Relationship power dynamic metric',
@@ -280,6 +297,7 @@ export const en_US = {
                 is_holiday: `Today is a holiday`,
                 is_night: `Is currently nighttime (06:00 PM to 5:00 AM)`,
                 is_day: `Is currently daytime (06:00 AM to 05:00 PM)`,
+                is_at: '{{activeAgent}} is in a {{parameter}}',
             },
         },
     },

@@ -22,7 +22,7 @@ export const ConditionHealthCheckRepository: { [conditionInitiator: string]: (co
     },
 };
 
-export function CheckIfNumericSelectorIsValid(parameters: number[], numericSelector: NumericSelector): Feedback | null {
+export function CheckIfNumericSelectorIsValid(parameters: number[] | string[], numericSelector: NumericSelector): Feedback | null {
     const parametersLenght: number = parameters != null ? parameters.length : 0;
 
     switch (numericSelector) {

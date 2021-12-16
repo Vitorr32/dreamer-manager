@@ -1,24 +1,19 @@
 import { v4 as uuidv4 } from 'uuid';
 
 export enum LocationType {
-    UNDEFINED,
+    UNDEFINED = 'model.undefined',
 
-    //Location types are divided by the Producer company building and outside buildings
-
-    //INTERNAL
-    CANTEEN,
-    AUDIO_STUDIO,
-    DANCE_HALL,
-
-    //OUTSIDE
-    MODELING_STUDIO,
-    PHOTO_STUDIO,
-    STADIUM,
-    TELEVISION_STUDIO,
-    THEATER,
-    NATURAL_PARK,
-    RESTAURANT,
-    ZOO,
+    CANTEEN = 'model.location.type.canteen',
+    AUDIO_STUDIO = 'model.location.type.audio_studio',
+    DANCE_HALL = 'model.location.type.dance_hall',
+    MODELING_STUDIO = 'model.location.type.modeling_studio',
+    PHOTO_STUDIO = 'model.location.type.photo_studio',
+    STADIUM = 'model.location.type.stadium',
+    TELEVISION_STUDIO = 'model.location.type.television_studio',
+    THEATER = 'model.location.type.theater',
+    NATURAL_PARK = 'model.location.type.park',
+    RESTAURANT = 'model.location.type.restaurant',
+    ZOO = 'model.location.type.zoo',
 }
 
 export interface Position {
