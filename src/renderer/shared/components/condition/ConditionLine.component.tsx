@@ -59,9 +59,10 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
                 return <StaticStatusSelectionButton condition={condition} onChange={onTargetChange} />;
             case ConditionInitiator.RELATIONSHIP:
                 return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
-            //Following initiators does not need selection tools
+            //Following initiators does not need selection tools, or they are specific to one selector
             case ConditionInitiator.TIME:
             case ConditionInitiator.LOCATION:
+            case ConditionInitiator.EVENT_FLAGGED:
             default:
                 return null;
         }

@@ -141,6 +141,8 @@ export const en_US = {
                     event: {
                         triggered: 'Triggered',
                         not_triggered: 'Not Triggered',
+                        flagged: 'Flagged',
+                        not_flagged: 'Not Flagged',
                     },
                     location: {
                         of_type: 'The location type',
@@ -298,6 +300,8 @@ export const en_US = {
                 is_night: `Is currently nighttime (06:00 PM to 5:00 AM)`,
                 is_day: `Is currently daytime (06:00 AM to 05:00 PM)`,
                 is_at: '{{activeAgent}} is in a {{parameter}}',
+                is_at_with: '{{activeAgent}} is in a {{parameter}} with {{passiveAgent}}',
+                is_going_to: '{{activeAgent}} is going to a {{parameter}}',
             },
         },
     },

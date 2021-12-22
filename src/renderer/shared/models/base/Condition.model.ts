@@ -47,8 +47,12 @@ export enum TraitSelector {
 export enum EventFlagSelector {
     UNDEFINED = 'model.undefined',
 
+    //Trigger refers to world events specifically
     TRIGGERED = 'model.condition.selector.event.triggered',
     NOT_TRIGGERED = 'model.condition.selector.event.not_triggered',
+    //Flagged means character flags specifically
+    FLAGGED = 'model.condition.selector.event.flagged',
+    NOT_FLAGGED = 'model.condition.selector.event.not_flagged'
 }
 
 export enum LocationSelector {

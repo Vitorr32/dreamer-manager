@@ -1,11 +1,12 @@
-import { Condition } from "./Condition.model";
-import { Scene } from "./Scene.model";
+import { ConditionTree } from './ConditionTree';
+import { v4 as uuidv4 } from 'uuid';
+import { VisualNovel } from './VisualNovel.model';
 
 export interface Trigger {
-    //Check if the event should activate
-    condition: Condition;
+    //In what circumstances should this event happen.
+    condition: ConditionTree;
     //Get all the actors to participate in the event, the number of conditions determine the number of actors
-    queryActorsConditions: Condition[];
+    queryActorsConditions: ConditionTree[];
 }
 
 export interface Flag {
@@ -15,30 +16,27 @@ export interface Flag {
     //The ID of the event this flag is associated with
     eventID: string;
 
-    // Datetime of the moment this flag was applied on the actor
+    // Date time of the moment this flag was applied on the actor
     appliedTime: Date;
 
-    //Whetever the flag has a time to expire or will never expire/ expire manually by another event
+    //Whatever the flag has a time to expire or will never expire / expire manually by another event
     permanent: boolean;
 
-    //How many minutes after the trigger the flag will last
+    //How many hours after the applied time this flag will expire, only necessary if the flag is not permanent.
     hoursToExpire: number | undefined;
 }
 
 export class Event {
-    public id?: string;
-    public eventName?: string;
+    public id: string;
+    public eventName: string;
 
-    public trigger?: Trigger;
+    public trigger: Trigger;
     public flags: Flag[] = [];
-    //Flag that determine if event has visual scenes or should be an background event that modifies global variables only
-    public isVisualNovelEvent: boolean = false;
-    //Time in minutes that takes to an event wich trigger is positive to happen, if 0 the event triggers immediately
-    public meanTimeToHappen: number = 0;
-    public scenes?: Scene;
-    public conditions: Condition[] = [];
+    public visualNovel: VisualNovel | undefined;
 
-    constructor() {
-
+    constructor(id: string | undefined = undefined, name: string, trigger: Trigger) {
+        this.id = id || 'event_' + uuidv4();
+        this.eventName = name;
+        this.trigger = trigger;
     }
 }

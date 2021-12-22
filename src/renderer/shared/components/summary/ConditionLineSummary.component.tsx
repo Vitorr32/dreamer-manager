@@ -83,6 +83,10 @@ export function ConditionLineSummary({ condition, context }: IProps) {
                 return 'summary.condition.before_date';
             case LocationSelector.IS_AT_LOCATION_OF_TYPE:
                 return 'summary.condition.is_at';
+            case LocationSelector.IS_AT_LOCATION_OF_TYPE_WITH_TARGET:
+                return 'summary.condition.is_at_with';
+            case LocationSelector.IS_MOVING_TO_LOCATION_OF_TYPE:
+                return 'summary.condition.is_at_with';
             default:
                 return 'summary.common.defaultSelector';
         }
