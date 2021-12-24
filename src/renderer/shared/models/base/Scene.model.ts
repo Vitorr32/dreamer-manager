@@ -46,9 +46,8 @@ export interface SceneResult {
     choiceLabel: string;
     choiceCondition: ConditionTree | undefined;
     resultingScene: Scene;
+    applyFlagToActor: { flagID: string; actor: number };
 }
-
-//TODO: Think of best method to create a scene that actors move around independetly
 
 export class Scene {
     public id: string;
@@ -69,5 +68,5 @@ export class Scene {
         this.id = id || 'scene_' + uuidv4();
     }
 
-    public runScene(actors: Character[]) {}
+    public runScene(actors: Character[], event: Event) {}
 }

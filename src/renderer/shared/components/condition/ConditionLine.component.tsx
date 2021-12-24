@@ -2,6 +2,7 @@ import React from 'react';
 import { Condition, NumericSelector, TimeSelector, TraitSelector, LocationSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
+import { FlagSelectionButton } from '../buttons/FlagSelectionButton';
 import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
 import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
 import { NumericSelectorParameterInput } from './NumericSelector.component';
@@ -59,10 +60,11 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
                 return <StaticStatusSelectionButton condition={condition} onChange={onTargetChange} />;
             case ConditionInitiator.RELATIONSHIP:
                 return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
+            case ConditionInitiator.EVENT_FLAGGED:
+                // return <FlagSelectionButton condition={condition} onChange={onTargetChange} />;
             //Following initiators does not need selection tools, or they are specific to one selector
             case ConditionInitiator.TIME:
             case ConditionInitiator.LOCATION:
-            case ConditionInitiator.EVENT_FLAGGED:
             default:
                 return null;
         }

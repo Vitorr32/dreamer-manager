@@ -42,7 +42,7 @@ export function TraitSelectionButton({ displayIDs, onChange, returnData, multi }
                 {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.trait_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.traits[displayID].name)}
             </Button>
 
-            <TraitPicker showTool={showTool} onSelection={onValueSelected} multi />
+            <TraitPicker showTool={showTool} onSelection={onValueSelected} multi={multi} />
         </React.Fragment>
     );
 }

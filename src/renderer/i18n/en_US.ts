@@ -46,6 +46,7 @@ export const en_US = {
                     status_selector_placeholder: 'Select Status',
                     relationship_selector_placeholder: 'Select Relationship Attribute',
                     time_selector_placeholder: 'Select time logic',
+                    flag_selector_placeholder: 'Select the event tag',
                     location_type_selector_placeholder: 'Select the type of Location',
                     numeric_selector_input_from: 'From',
                     numeric_selector_input_to: 'To',

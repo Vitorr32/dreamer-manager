@@ -14,3 +14,4 @@ export const END_DATE = new Date(1072, 1, 1, 0, 0, 0, 0);
 //RESOURCES FOLDER NAME
 export const TRAIT_DATABASE = 'traits';
 export const ATTRIBUTES_DATABASE = 'attributes';
+export const EVENT_DATABASE = 'events';

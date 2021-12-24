@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ATTRIBUTES_DATABASE, TRAIT_DATABASE } from 'renderer/shared/Constants';
+import { ATTRIBUTES_DATABASE, EVENT_DATABASE, TRAIT_DATABASE } from 'renderer/shared/Constants';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
+import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { Trait } from '../../shared/models/base/Trait.model';
 
 interface GameLoopState {
@@ -8,9 +9,13 @@ interface GameLoopState {
     loadProguess: number;
     traits: Trait[];
     attributes: Attribute[];
+    events: Event[];
+    flags: Flag[];
     mappedDatabase: {
         attributes: { [id: string]: Attribute };
         traits: { [id: string]: Trait };
+        events: { [id: string]: Event };
+        flags: { [id: string]: Flag };
     };
 }
 
@@ -19,9 +24,13 @@ const initialState: GameLoopState = {
     loadProguess: 0,
     traits: [],
     attributes: [],
+    events: [],
+    flags: [],
     mappedDatabase: {
         attributes: {},
         traits: {},
+        events: {},
+        flags: {},
     },
 };
 
@@ -55,6 +64,24 @@ export const databaseSlice = createSlice({
                         return (state.mappedDatabase.attributes[attr.id] = attr);
                     });
                     break;
+                case EVENT_DATABASE:
+                    state.events = action.payload.value;
+                    state.events.forEach((event) => {
+                        if (state.mappedDatabase.events[event.id]) {
+                            throw new Error('A Event with id ' + event.id + ' is duplicated');
+                        }
+
+                        state.flags.push(...event.flags);
+                        state.flags.forEach((flag) => {
+                            if (state.mappedDatabase.flags[flag.id]) {
+                                throw new Error('A Flag with id ' + event.id + ' is duplicated');
+                            }
+
+                            state.mappedDatabase.flags[flag.id] = flag;
+                        });
+
+                        return (state.mappedDatabase.events[event.id] = event);
+                    });
                 default:
                     console.error('Unknown load update: ' + action.payload.key);
             }

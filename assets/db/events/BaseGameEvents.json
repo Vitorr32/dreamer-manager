@@ -1,5 +1,24 @@
 [
     {
-
+        "id": "main_0",
+        "displayName": "The first encounter",
+        "trigger": {},
+        "flags": [
+            {
+                "id": "main_char",
+                "displayName": "Main Character Motivation",
+                "eventID": "main_0",
+                "appliedTime": 0,
+                "permanent": true
+            },
+            {
+                "id": "dancing_girl",
+                "displayName": "Dancing Girl",
+                "eventID": "main_0",
+                "appliedTime": 0,
+                "permanent": true
+            }
+        ],
+        "unique": true
     }
 ]

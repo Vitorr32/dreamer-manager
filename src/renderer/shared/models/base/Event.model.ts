@@ -10,9 +10,10 @@ export interface Trigger {
 }
 
 export interface Flag {
-    // Flag Name pattern : Context_Name_#FlagNumber
+    // Flag ID, if not set the default will be event
     id: string;
-    name: string;
+    //If not informed, the name will be the ID + Flag index in array
+    displayName: string;
     //The ID of the event this flag is associated with
     eventID: string;
 
@@ -28,15 +29,18 @@ export interface Flag {
 
 export class Event {
     public id: string;
-    public eventName: string;
+    public displayName: string;
 
     public trigger: Trigger;
     public flags: Flag[] = [];
     public visualNovel: VisualNovel | undefined;
+    //If this event can happens more than one time, if true the event will not enter the "Already triggered events list" in the World state
+    public unique: boolean;
 
     constructor(id: string | undefined = undefined, name: string, trigger: Trigger) {
         this.id = id || 'event_' + uuidv4();
-        this.eventName = name;
+        this.displayName = name;
         this.trigger = trigger;
+        this.unique = false;
     }
 }

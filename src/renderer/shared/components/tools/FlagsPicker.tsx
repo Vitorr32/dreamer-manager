@@ -14,7 +14,7 @@ interface IProps {
     multi?: boolean;
 }
 
-export function AttributePicker({ onSelection, multi, showTool }: IProps) {
+export function FlagsPicker({ onSelection, multi, showTool }: IProps) {
     const attributes = useSelector((state: RootState) => state.database.attributes);
 
     const { t } = useTranslation();

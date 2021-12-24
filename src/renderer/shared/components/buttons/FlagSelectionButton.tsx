@@ -2,31 +2,31 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { Attribute } from 'renderer/shared/models/base/Attribute.model';
-import { AttributePicker } from '../tools/AttributePicker.tool';
+import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
+import { TraitPicker } from '../tools/TraitPicker';
+import { Flag } from 'renderer/shared/models/base/Event.model';
+import { FlagsPicker } from '../tools/FlagsPicker';
 
 interface IProps {
     displayIDs: string[];
-    onChange: (value: string[], returnData?: any) => void;
+    onChange: (values: string[], returnData?: any) => void;
     returnData?: any;
     multi?: boolean;
 }
 
-export function AttributeSelectionButton({ displayIDs, onChange, returnData, multi }: IProps) {
+export function FlagSelectionButton({ displayIDs, onChange, returnData, multi }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const { t } = useTranslation();
     const [showTool, setShowTool] = React.useState<boolean>(false);
-    const [selectedAttribute, setAttribute] = React.useState<Attribute[]>();
+    const [selectedValue, setValue] = React.useState<Flag[]>();
 
-    const onAttributeSelected = (values: Attribute[] | undefined = undefined) => {
-        console.log('values', values);
-
+    const onValueSelected = (values: Flag[] | undefined = undefined) => {
         if (values === undefined) {
             setShowTool(false);
-            setAttribute(undefined);
+            setValue(undefined);
             return;
         }
 
@@ -34,18 +34,17 @@ export function AttributeSelectionButton({ displayIDs, onChange, returnData, mul
             values.map((value) => value.id),
             returnData
         );
-
-        setAttribute(values);
+        setValue(values);
         setShowTool(false);
     };
 
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedAttribute === undefined || displayIDs.length === 0 ? t('interface.editor.condition.attr_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].name).join(', ')}
+                {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.flag_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.traits[displayID].name)}
             </Button>
 
-            <AttributePicker showTool={showTool} onSelection={onAttributeSelected} multi={multi} />
+            {/* <FlagsPicker showTool={showTool} onSelection={onValueSelected} multi={multi} /> */}
         </React.Fragment>
     );
 }
