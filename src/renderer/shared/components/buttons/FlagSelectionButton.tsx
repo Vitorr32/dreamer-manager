@@ -41,10 +41,10 @@ export function FlagSelectionButton({ displayIDs, onChange, returnData, multi }:
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.flag_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.traits[displayID].name)}
+                {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.flag_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.flags[displayID].displayName)}
             </Button>
 
-            {/* <FlagsPicker showTool={showTool} onSelection={onValueSelected} multi={multi} /> */}
+            <FlagsPicker showTool={showTool} onSelection={onValueSelected} multi={multi} />
         </React.Fragment>
     );
 }

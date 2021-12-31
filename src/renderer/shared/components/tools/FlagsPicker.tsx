@@ -7,45 +7,51 @@ import { useTranslation } from 'react-i18next';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
+import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 
 interface IProps {
-    onSelection: (attr?: Attribute[]) => void;
+    onSelection: (selected?: Flag[]) => void;
     showTool: boolean;
     multi?: boolean;
 }
 
 export function FlagsPicker({ onSelection, multi, showTool }: IProps) {
-    const attributes = useSelector((state: RootState) => state.database.attributes);
+    const secondaryValueList = useSelector((state: RootState) => state.database.events);
+    const secondaryValueDB = useSelector((state: RootState) => state.database.mappedDatabase.events);
+    const valueList = useSelector((state: RootState) => state.database.flags);
 
     const { t } = useTranslation();
     const [query, setQuery] = useState<string>('');
-    const [selected, setSelected] = useState<Attribute[]>([]);
-    const [filtered, setFiltered] = useState<Attribute[]>([]);
+    const [selected, setSelected] = useState<Flag[]>([]);
+    const [associatedEvent, setAssociatedEvent] = useState<Event>();
+    const [filtered, setFiltered] = useState<Event[]>([]);
 
     useEffect(() => {
-        setFiltered(filterAttributesByQuery(query));
+        setFiltered(filterListByQuery(query));
     }, [query]);
 
-    const filterAttributesByQuery = (query: string): Attribute[] => {
-        return attributes.filter((attr) => attr.id?.includes(query) || attr.name?.includes(query) || attr.description?.includes(query)).sort((a: Attribute, b: Attribute) => a.name.localeCompare(b.name));
+    const filterListByQuery = (query: string): Event[] => {
+        return secondaryValueList.filter((value) => value.id?.includes(query) || value.displayName?.includes(query)).sort((a: Event, b: Event) => a.displayName.localeCompare(b.displayName));
     };
 
-    const onToggleSelection = (toogled: Attribute): void => {
-        if (!multi) {
-            setSelected([toogled]);
-            return;
-        }
+    const onToggleSelection = (toggled: Event): void => {
+        //TODO: Set the event and open the flag sub-selection
+        // if (!multi) {
+        //     setAssociatedEvent(secondaryValueDB[toggled.eventID]);
+        //     setSelected([toggled]);
+        //     return;
+        // }
 
-        const newSelection = selected.slice();
-        if (selected.includes(toogled)) {
-            newSelection.splice(
-                selected.findIndex((value) => value.id === toogled.id),
-                1
-            );
-        } else {
-            newSelection.push(toogled);
-        }
-        setSelected(newSelection);
+        // const newSelection = selected.slice();
+        // if (selected.includes(toggled)) {
+        //     newSelection.splice(
+        //         selected.findIndex((value) => value.id === toggled.id),
+        //         1
+        //     );
+        // } else {
+        //     newSelection.push(toggled);
+        // }
+        // setSelected(newSelection);
     };
 
     const onSubmitPickedOptions = (): void => {
@@ -89,10 +95,10 @@ export function FlagsPicker({ onSelection, multi, showTool }: IProps) {
                     <div className="modal__grid modal__grid-columns">
                         {filtered.map((value) => {
                             return (
-                                <div className={`cell cell-attribute ${selected.includes(value) ? 'cell-selected' : ''}`} key={value.id} onClick={() => onToggleSelection(value)}>
+                                <div className={`cell cell-attribute ${value.flags.some(flag => flag.eventID === associatedEvent?.id) ? 'cell-selected' : ''}`} key={value.id} onClick={() => onToggleSelection(value)}>
                                     <div className="cell__header">
                                         <Typography className="cell__title" variant="h5">
-                                            {value.name}
+                                            {value.displayName}
                                         </Typography>
                                         <Typography className="cell__sub-title" variant="caption">
                                             ID: <b>{value.id}</b>
@@ -101,15 +107,15 @@ export function FlagsPicker({ onSelection, multi, showTool }: IProps) {
                                     <div className="cell__content">
                                         <div className="cell__content-sibling">
                                             <Placeholder />
-                                            <Typography variant="body1">{t(value.category)}</Typography>
+                                            <Typography variant="body1">{value.trigger}</Typography>
                                         </div>
                                         <div className="cell__content-sibling">
                                             <Placeholder />
-                                            <Typography variant="body1">{t(value.growth)}</Typography>
+                                            <Typography variant="body1">{value.unique}</Typography>
                                         </div>
 
                                         <div className="cell__content-full">
-                                            <Typography variant="body2">{value.description}</Typography>
+                                            <Typography variant="body2">{value.visualNovel}</Typography>
                                         </div>
                                     </div>
                                 </div>

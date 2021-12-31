@@ -61,7 +61,7 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
             case ConditionInitiator.RELATIONSHIP:
                 return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
             case ConditionInitiator.EVENT_FLAGGED:
-                // return <FlagSelectionButton condition={condition} onChange={onTargetChange} />;
+                return <FlagSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
             //Following initiators does not need selection tools, or they are specific to one selector
             case ConditionInitiator.TIME:
             case ConditionInitiator.LOCATION:

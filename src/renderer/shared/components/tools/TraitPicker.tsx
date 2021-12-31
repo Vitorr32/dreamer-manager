@@ -30,20 +30,20 @@ export function TraitPicker({ multi, onSelection, showTool }: IProps) {
         return valueList.filter((value) => value.id?.includes(query) || value.name?.includes(query) || value.description?.includes(query)).sort((a: Trait, b: Trait) => a.name.localeCompare(b.name));
     };
 
-    const onToggleSelection = (toogled: Trait): void => {
+    const onToggleSelection = (toggled: Trait): void => {
         if (!multi) {
-            setSelected([toogled]);
+            setSelected([toggled]);
             return;
         }
 
         const newSelection = selected.slice();
-        if (selected.includes(toogled)) {
+        if (selected.includes(toggled)) {
             newSelection.splice(
-                selected.findIndex((value) => value.id === toogled.id),
+                selected.findIndex((value) => value.id === toggled.id),
                 1
             );
         } else {
-            newSelection.push(toogled);
+            newSelection.push(toggled);
         }
         setSelected(newSelection);
     };
