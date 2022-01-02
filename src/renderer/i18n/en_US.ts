@@ -82,6 +82,12 @@ export const en_US = {
                     empty: 'Please select a trait by clicking the respective container, you can search using the input on the top of the modal',
                     selected: 'You selected the trait {{value.name}}',
                 },
+                flag: {
+                    title: 'Event Flag',
+                    search_placeholder: 'Search for event name or id',
+                    empty: 'Please select a flag by clicking the respective container and selecting the flag, you can search using the input on the top of the modal',
+                    selected: 'You selected the flag {{value.flag}} of the event {{value.event}}',
+                },
             },
         },
         model: {

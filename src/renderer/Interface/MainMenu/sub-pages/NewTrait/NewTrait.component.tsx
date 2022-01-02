@@ -72,7 +72,7 @@ export class NewTrait extends React.Component<IProps, IState> {
                     <h2>Trait Creation</h2>
                 </header>
                 <main className="newtrait__form">
-                    <Stepper nonLinear activeStep={this.state.stepperIndex} style={{ background: 'whitesmoke' }}>
+                    <Stepper nonLinear activeStep={this.state.stepperIndex}>
                         <Step completed={completed[0]}>
                             <StepButton onClick={(_) => this.setState({ stepperIndex: 0 })}>Basic Information</StepButton>
                         </Step>

@@ -101,7 +101,7 @@ export class ConditionNode extends React.Component<IProps, IState> {
         return (
             <Box className="condition-node">
                 <Box className="condition-node__config">
-                    <FormControl variant="standard" style={{ width: '150px' }}>
+                    <FormControl variant="standard">
                         <InputLabel id="logic-operator-label">Logic Operator</InputLabel>
                         <Select labelId="logic-operator-label" id="logic-operator" value={conditionNode.logicOperator} onChange={this.onLogicOperatorChange.bind(this)}>
                             <MenuItem value={LogicOperator.IF}>IF</MenuItem>
