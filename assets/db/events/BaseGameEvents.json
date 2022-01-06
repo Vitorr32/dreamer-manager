@@ -9,14 +9,24 @@
                 "displayName": "Main Character Motivation",
                 "eventID": "main_0",
                 "appliedTime": 0,
-                "permanent": true
+                "permanent": true,
+                "global": false
             },
             {
                 "id": "dancing_girl",
                 "displayName": "Dancing Girl",
                 "eventID": "main_0",
                 "appliedTime": 0,
-                "permanent": true
+                "permanent": true,
+                "global": false
+            },
+            {
+                "id": "new_start",
+                "displayName": "A new Start",
+                "eventID": "main_0",
+                "appliedTime": 0,
+                "permanent": true,
+                "global": true
             }
         ],
         "unique": true

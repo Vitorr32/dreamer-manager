@@ -13,12 +13,12 @@ interface IProps {
     onSelection: (selected?: Flag[]) => void;
     showTool: boolean;
     multi?: boolean;
+    global?: boolean;
 }
 
-export function FlagsPicker({ onSelection, multi, showTool }: IProps) {
+export function FlagsPicker({ onSelection, multi, showTool, global }: IProps) {
     const secondaryValueList = useSelector((state: RootState) => state.database.events);
     const secondaryValueDB = useSelector((state: RootState) => state.database.mappedDatabase.events);
-    const valueList = useSelector((state: RootState) => state.database.flags);
 
     const { t } = useTranslation();
     const [query, setQuery] = useState<string>('');
@@ -37,7 +37,7 @@ export function FlagsPicker({ onSelection, multi, showTool }: IProps) {
 
     const onToggleSelection = (toggled: Flag): void => {
         if (!multi) {
-            setCurrentEvent(secondaryValueDB[toggled.eventID]);
+            setSelectedEvent([secondaryValueDB[toggled.eventID]]);
             setSelected([toggled]);
             return;
         }
@@ -75,6 +75,8 @@ export function FlagsPicker({ onSelection, multi, showTool }: IProps) {
     const onClose = (): void => {
         onSelection();
         setQuery('');
+        setSelected([]);
+        setSelectedEvent([]);
     };
 
     return showTool ? (
@@ -133,18 +135,16 @@ export function FlagsPicker({ onSelection, multi, showTool }: IProps) {
 
                         {currentEvent && (
                             <div className="modal__grid-subselection">
-                                <Typography variant="body2">
-                                    Select the flag from event <Typography variant="h4">{currentEvent.displayName}</Typography>
-                                </Typography>
+                                <Typography variant="body2">{t('interface.tools.flag.flag_select', { value: currentEvent })}</Typography>
                                 <List>
-                                    {currentEvent.flags.map((flag) => (
-                                        <ListItemButton selected={selected.includes(flag)} onClick={() => onToggleSelection(flag)}>
-                                            <ListItemText primary={flag.displayName} secondary={`ID: flag.id`} />
+                                    {currentEvent.flags.filter(flag => Boolean(global) === Boolean(flag.global) ).map((flag) => (
+                                        <ListItemButton key={`flag_${flag.id}`} selected={selected.includes(flag)} onClick={() => onToggleSelection(flag)}>
+                                            <ListItemText primary={flag.displayName} secondary={`ID: ${flag.id}`} />
                                         </ListItemButton>
                                     ))}
                                 </List>
-                                <Button variant="contained" className="modal__grid-subselection-back" color="error" onClick={() => setCurrentEvent(undefined)}>
-                                    {t('interface.tools.common.cancel')}
+                                <Button variant="contained" className="modal__grid-subselection-back" onClick={() => setCurrentEvent(undefined)}>
+                                    {t('interface.tools.common.close')}
                                 </Button>
                             </div>
                         )}

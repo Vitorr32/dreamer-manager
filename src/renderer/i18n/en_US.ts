@@ -6,6 +6,7 @@ export const en_US = {
                 previous: 'Previous',
                 cancel: 'Cancel',
                 delete: 'Delete',
+                close: 'Close',
                 submit: 'Submit',
                 by: 'by',
                 increase: 'increase',
@@ -85,6 +86,7 @@ export const en_US = {
                 flag: {
                     title: 'Event Flag',
                     search_placeholder: 'Search for event name or id',
+                    flag_select: 'Select the flag from the event {{value.displayName}}',
                     empty: 'Please select a flag by clicking the respective container and selecting the flag, you can search using the input on the top of the modal',
                     selected: 'You selected the flag {{value.flag}} of the event {{value.event}}',
                 },

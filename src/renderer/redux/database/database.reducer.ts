@@ -72,7 +72,7 @@ export const databaseSlice = createSlice({
                         }
 
                         state.flags.push(...event.flags);
-                        state.flags.forEach((flag) => {
+                        event.flags.forEach((flag) => {
                             if (state.mappedDatabase.flags[flag.id]) {
                                 throw new Error('A Flag with id ' + event.id + ' is duplicated');
                             }

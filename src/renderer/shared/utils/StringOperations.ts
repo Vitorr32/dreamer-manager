@@ -1,4 +1,4 @@
-export function JoinArrayOfString(array: string[], emptyMessage: string = 'None'): string {
+export function JoinArrayOfString(array: string[], emptyMessage: string = 'None', removeDuplicate: boolean = true): string {
     if (array.length === 0) {
         return emptyMessage;
     }
@@ -7,5 +7,9 @@ export function JoinArrayOfString(array: string[], emptyMessage: string = 'None'
         return array[0];
     }
 
-    return array.reduce((a, b, i, array) => a + (i < array.length - 1 ? ', ' : ' and ') + b);
+    if (!removeDuplicate) {
+        return array.reduce((a, b, i, array) => a + (i < array.length - 1 ? ', ' : ' and ') + b);
+    }
+
+    return [...new Set(array)].reduce((a, b, i, array) => a + (i < array.length - 1 ? ', ' : ' and ') + b);
 }

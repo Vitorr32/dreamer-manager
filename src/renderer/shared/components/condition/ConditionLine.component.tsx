@@ -1,5 +1,5 @@
 import React from 'react';
-import { Condition, NumericSelector, TimeSelector, TraitSelector, LocationSelector } from '../../../shared/models/base/Condition.model';
+import { Condition, NumericSelector, TimeSelector, TraitSelector, LocationSelector, EventFlagSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
 import { FlagSelectionButton } from '../buttons/FlagSelectionButton';
@@ -72,7 +72,7 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
 
     const renderActiveAgent = (condition: Condition): React.ReactElement | null => {
         //Not nescessary to set the actor in case of time initiator since it's the world date
-        if (condition.initiator === ConditionInitiator.TIME) {
+        if (condition.initiator === ConditionInitiator.TIME || condition.initiator === ConditionInitiator.EVENT_FLAGGED) {
             return null;
         }
 
@@ -89,6 +89,8 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
                 return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
             case NumericSelector.BIGGER_THAN_TARGET:
             case NumericSelector.SMALLER_THAN_TARGET:
+            case EventFlagSelector.FLAGGED:
+            case EventFlagSelector.NOT_FLAGGED:
                 return <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
             case TraitSelector.HAS:
             case TraitSelector.DONT:
