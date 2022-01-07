@@ -61,7 +61,7 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
             case ConditionInitiator.RELATIONSHIP:
                 return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
             case ConditionInitiator.EVENT_FLAGGED:
-                return <FlagSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
+                return <FlagSelectionButton displayIDs={condition.targets} onChange={onTargetChange} global={condition.selector === EventFlagSelector.TRIGGERED || condition.selector === EventFlagSelector.NOT_TRIGGERED} />;
             //Following initiators does not need selection tools, or they are specific to one selector
             case ConditionInitiator.TIME:
             case ConditionInitiator.LOCATION:
@@ -72,7 +72,7 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
 
     const renderActiveAgent = (condition: Condition): React.ReactElement | null => {
         //Not nescessary to set the actor in case of time initiator since it's the world date
-        if (condition.initiator === ConditionInitiator.TIME || condition.initiator === ConditionInitiator.EVENT_FLAGGED) {
+        if (condition.initiator === ConditionInitiator.TIME || condition.initiator === ConditionInitiator.EVENT_FLAGGED || condition.initiator === ConditionInitiator.TRAIT) {
             return null;
         }
 
@@ -91,10 +91,9 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
             case NumericSelector.SMALLER_THAN_TARGET:
             case EventFlagSelector.FLAGGED:
             case EventFlagSelector.NOT_FLAGGED:
-                return <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
             case TraitSelector.HAS:
             case TraitSelector.DONT:
-                return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
+                return <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
             case TimeSelector.IS_AFTER_DATE:
             case TimeSelector.IS_AT_DATE:
             case TimeSelector.IS_BEFORE_DATE:

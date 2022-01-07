@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Agent, Condition, LocationSelector, NumericSelector, TimeSelector } from 'renderer/shared/models/base/Condition.model';
+import { Agent, Condition, EventFlagSelector, LocationSelector, NumericSelector, TimeSelector, TraitSelector } from 'renderer/shared/models/base/Condition.model';
 import { ConditionInitiator } from 'renderer/shared/models/enums/ConditionInitiator.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { RootState } from 'renderer/redux/store';
@@ -39,19 +39,23 @@ export function ConditionLineSummary({ condition, context }: IProps) {
     const getNameFromDatabase = (line: Condition) => {
         switch (line.initiator) {
             case ConditionInitiator.ATTRIBUTE_RANGE:
-                return t(line.targets.length > 1 ? 'summary.attribute.plural' : 'summary.attribute.singular', { name: JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.attributes[target].name)) });
+                return JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.attributes[target].name));
             case ConditionInitiator.TRAIT:
-                return t(line.targets.length > 1 ? 'summary.trait.plural' : 'summary.trait.singular', { name: JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.traits[target].name)) });
+                return JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.traits[target].name));
             case ConditionInitiator.STATUS_RANGE:
                 return t('summary.status.pattern', { name: JoinArrayOfString(line.targets.map((target) => t(target))) });
             case ConditionInitiator.RELATIONSHIP:
                 return t('summary.relationship.pattern', { name: JoinArrayOfString(line.targets.map((target) => t(target))) });
+            case ConditionInitiator.EVENT_FLAGGED:
+                return t('summary.relationship.pattern', { name: JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.flags[target].displayName)) });
             default:
                 return t('summary.common.defaultAgent');
         }
     };
 
     const getSummaryForSelector = (line: Condition): string => {
+        const isMultipleTargets = line.targets.length > 1;
+
         switch (line.selector) {
             case NumericSelector.BETWEEN:
                 return 'summary.condition.between';
@@ -87,6 +91,18 @@ export function ConditionLineSummary({ condition, context }: IProps) {
                 return 'summary.condition.is_at_with';
             case LocationSelector.IS_MOVING_TO_LOCATION_OF_TYPE:
                 return 'summary.condition.is_at_with';
+            case TraitSelector.HAS:
+                return isMultipleTargets ? 'summary.condition.has_trait_plural' : 'summary.condition.has_trait';
+            case TraitSelector.DONT:
+                return isMultipleTargets ? 'summary.condition.no_trait_plural' : 'summary.condition.no_trait';
+            case EventFlagSelector.FLAGGED:
+                return 'summary.condition.is_flagged';
+            case EventFlagSelector.NOT_FLAGGED:
+                return 'summary.condition.is_not_flagged';
+            case EventFlagSelector.TRIGGERED:
+                return 'summary.condition.is_triggered';
+            case EventFlagSelector.NOT_TRIGGERED:
+                return 'summary.condition.is_not_triggered';
             default:
                 return 'summary.common.defaultSelector';
         }

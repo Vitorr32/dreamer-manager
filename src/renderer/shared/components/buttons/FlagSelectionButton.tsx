@@ -14,9 +14,10 @@ interface IProps {
     onChange: (values: string[], returnData?: any) => void;
     returnData?: any;
     multi?: boolean;
+    global?: boolean;
 }
 
-export function FlagSelectionButton({ displayIDs, onChange, returnData, multi }: IProps) {
+export function FlagSelectionButton({ displayIDs, onChange, returnData, multi, global }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const { t } = useTranslation();
@@ -44,7 +45,7 @@ export function FlagSelectionButton({ displayIDs, onChange, returnData, multi }:
                 {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.flag_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.flags[displayID].displayName)}
             </Button>
 
-            <FlagsPicker showTool={showTool} onSelection={onValueSelected} multi={multi} />
+            <FlagsPicker showTool={showTool} onSelection={onValueSelected} multi={multi} global={global} />
         </React.Fragment>
     );
 }

@@ -137,11 +137,13 @@ export function FlagsPicker({ onSelection, multi, showTool, global }: IProps) {
                             <div className="modal__grid-subselection">
                                 <Typography variant="body2">{t('interface.tools.flag.flag_select', { value: currentEvent })}</Typography>
                                 <List>
-                                    {currentEvent.flags.filter(flag => Boolean(global) === Boolean(flag.global) ).map((flag) => (
-                                        <ListItemButton key={`flag_${flag.id}`} selected={selected.includes(flag)} onClick={() => onToggleSelection(flag)}>
-                                            <ListItemText primary={flag.displayName} secondary={`ID: ${flag.id}`} />
-                                        </ListItemButton>
-                                    ))}
+                                    {currentEvent.flags
+                                        .filter((flag) => Boolean(global) === Boolean(flag.global))
+                                        .map((flag) => (
+                                            <ListItemButton key={`flag_${flag.id}`} selected={selected.includes(flag)} onClick={() => onToggleSelection(flag)}>
+                                                <ListItemText primary={flag.displayName} secondary={`ID: ${flag.id}`} />
+                                            </ListItemButton>
+                                        ))}
                                 </List>
                                 <Button variant="contained" className="modal__grid-subselection-back" onClick={() => setCurrentEvent(undefined)}>
                                     {t('interface.tools.common.close')}
