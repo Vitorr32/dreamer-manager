@@ -29,7 +29,9 @@ export function SelectionPicker(props: IProps) {
 
     const filterListByQuery = (query: string): any[] => {
         console.log(valueList);
-        return valueList.filter((value) => value.id?.includes(query) || value.name?.includes(query) || value.description?.includes(query)).sort((a: Trait, b: Trait) => a.name.localeCompare(b.name));
+        return valueList
+            .filter((value) => value.id?.includes(query) || value.name?.toLowerCase().includes(query) || value.description?.toLowerCase().includes(query))
+            .sort((a: Trait, b: Trait) => a.name.localeCompare(b.name));
     };
 
     const onOptionPicked = (): void => {

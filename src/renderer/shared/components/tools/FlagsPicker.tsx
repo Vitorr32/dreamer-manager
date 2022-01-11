@@ -32,7 +32,7 @@ export function FlagsPicker({ onSelection, multi, showTool, global }: IProps) {
     }, [query]);
 
     const filterListByQuery = (query: string): Event[] => {
-        return secondaryValueList.filter((value) => value.id?.includes(query) || value.displayName?.includes(query)).sort((a: Event, b: Event) => a.displayName.localeCompare(b.displayName));
+        return secondaryValueList.filter((value) => value.id?.includes(query) || value.displayName?.toLowerCase().includes(query)).sort((a: Event, b: Event) => a.displayName.localeCompare(b.displayName));
     };
 
     const onToggleSelection = (toggled: Flag): void => {

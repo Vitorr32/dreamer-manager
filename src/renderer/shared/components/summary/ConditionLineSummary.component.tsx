@@ -4,24 +4,24 @@ import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Agent, Condition, EventFlagSelector, LocationSelector, NumericSelector, TimeSelector, TraitSelector } from 'renderer/shared/models/base/Condition.model';
 import { ConditionInitiator } from 'renderer/shared/models/enums/ConditionInitiator.enum';
-import { v4 as uuidv4 } from 'uuid';
 import { RootState } from 'renderer/redux/store';
 import { useSelector } from 'react-redux';
 import { JoinArrayOfString } from 'renderer/shared/utils/StringOperations';
+import { WorldSnapshot } from 'renderer/shared/models/engine/WorldSnapshot';
 
 interface IProps {
     condition: Condition;
-    //Context should have all worlds, event and character information. If not present use placeholders.
-    context?: any;
+    //worldSnapshot should have all worlds, event and character information. If not present use placeholders.
+    worldSnapshot?: WorldSnapshot;
 }
 
-export function ConditionLineSummary({ condition, context }: IProps) {
+export function ConditionLineSummary({ condition, worldSnapshot }: IProps) {
     const { t } = useTranslation();
 
     const database = useSelector((state: RootState) => state.database);
 
-    const getAgentString = (agent: Agent, context: any): string => {
-        //TODO: Get the agent name from the context when actualy in-game summary
+    const getAgentString = (agent: Agent, worldSnapshot: any): string => {
+        //TODO: Get the agent name from the worldSnapshot when actualy in-game summary
         switch (agent) {
             case Agent.SELF:
                 return t('summary.agent.unknown_self');
@@ -124,10 +124,10 @@ export function ConditionLineSummary({ condition, context }: IProps) {
         return parameter;
     };
 
-    const renderConditionLineSentence = (line: Condition, context: any): string => {
+    const renderConditionLineSentence = (line: Condition, worldSnapshot: any): string => {
         return t(getSummaryForSelector(line), {
-            activeAgent: getAgentString(line.activeAgent, context),
-            passiveAgent: getAgentString(line.passiveAgent, context),
+            activeAgent: getAgentString(line.activeAgent, worldSnapshot),
+            passiveAgent: getAgentString(line.passiveAgent, worldSnapshot),
             variable: getNameFromDatabase(line),
             parameter: getTreatedParameterValue(line.parameters?.[0], line),
             lowerValue: line.parameters?.[0] || t('summary.common.defaultValue'),
@@ -138,7 +138,7 @@ export function ConditionLineSummary({ condition, context }: IProps) {
     return (
         <Box className="condition-line-summary">
             <Box className="condition-line-summary__wrapper">
-                <Typography variant="body1">{renderConditionLineSentence(condition, context)}</Typography>
+                <Typography variant="body1">{renderConditionLineSentence(condition, worldSnapshot)}</Typography>
             </Box>
         </Box>
     );

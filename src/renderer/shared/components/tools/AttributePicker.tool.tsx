@@ -27,7 +27,9 @@ export function AttributePicker({ onSelection, multi, showTool }: IProps) {
     }, [query]);
 
     const filterAttributesByQuery = (query: string): Attribute[] => {
-        return attributes.filter((attr) => attr.id?.includes(query) || attr.name?.includes(query) || attr.description?.includes(query)).sort((a: Attribute, b: Attribute) => a.name.localeCompare(b.name));
+        return attributes
+            .filter((attr) => attr.id?.includes(query) || attr.name?.toLowerCase().includes(query) || attr.description?.toLowerCase().includes(query))
+            .sort((a: Attribute, b: Attribute) => a.name.localeCompare(b.name));
     };
 
     const onToggleSelection = (toogled: Attribute): void => {
