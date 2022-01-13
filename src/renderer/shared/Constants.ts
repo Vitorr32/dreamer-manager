@@ -15,3 +15,8 @@ export const END_DATE = new Date(1072, 1, 1, 0, 0, 0, 0);
 export const TRAIT_DATABASE = 'traits';
 export const ATTRIBUTES_DATABASE = 'attributes';
 export const EVENT_DATABASE = 'events';
+
+////////////////////////////////
+//RESOURCES FULL QUALIFIED PATH
+export const ICONS = 'icons'
+export const TRAITS = 'traits'

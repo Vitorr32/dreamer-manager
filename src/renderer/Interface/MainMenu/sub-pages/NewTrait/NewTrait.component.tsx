@@ -2,7 +2,7 @@ import { Button, Stepper, Step, StepButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React from 'react';
 import { BasicInfoForm } from './BasicInfoForm.component';
-import { Trait, TraitType } from '../../../../shared/models/base/Trait.model';
+import { Trait } from '../../../../shared/models/base/Trait.model';
 import { EffectsAndConditions } from './EffectsAndConditions.component';
 import { NewTraitReview } from './NewTraitReview.component';
 
@@ -53,7 +53,7 @@ export class NewTrait extends React.Component<IProps, IState> {
                 return <BasicInfoForm trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} nextStep={this.nextStep.bind(this)} />;
             case 1:
                 return <EffectsAndConditions trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} previousStep={this.previousStep.bind(this)} nextStep={this.nextStep.bind(this)} />;
-            case 3:
+            case 2:
                 return <NewTraitReview trait={this.state.currentTrait} />;
             default:
                 return null;
@@ -80,9 +80,6 @@ export class NewTrait extends React.Component<IProps, IState> {
                             <StepButton onClick={(_) => this.setState({ stepperIndex: 1 })}>Effects and Conditions</StepButton>
                         </Step>
                         <Step completed={completed[2]}>
-                            <StepButton onClick={(_) => this.setState({ stepperIndex: 2 })}>Icon and Visual Properties</StepButton>
-                        </Step>
-                        <Step completed={completed[3]}>
                             <StepButton onClick={(_) => this.setState({ stepperIndex: 3 })}>Review</StepButton>
                         </Step>
                     </Stepper>

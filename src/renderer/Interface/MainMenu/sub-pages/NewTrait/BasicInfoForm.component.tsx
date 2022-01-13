@@ -3,7 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select, TextField, FormControlLabel,
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
-import { MAX_NUMBER_OF_TRAITS_GENERATED } from 'renderer/shared/Constants';
+import { ICONS, MAX_NUMBER_OF_TRAITS_GENERATED, TRAITS} from 'renderer/shared/Constants';
 
 interface IProps {
     nextStep: () => void;
@@ -29,6 +29,11 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
         onChange(newTrait);
         nextStep();
     }
+
+    const onFileSelected = async (event: React.ChangeEvent<HTMLInputElement>): Promise<any> => {
+        const savedFile: any = await window.electron.fileSystem.saveFilesToResources([ICONS, TRAITS], event.target.files);
+        console.log(savedFile);
+    };
 
     return (
         <Box component="form" onSubmit={onSubmit} className="basic-info">
@@ -82,6 +87,13 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
                     labelPlacement="start"
                 />
                 <Typography variant="caption">{t('interface.editor.trait.spawn_helper', { max: MAX_NUMBER_OF_TRAITS_GENERATED })}</Typography>
+            </Box>
+
+            <Box className="basic-info__image-input">
+                <Button variant="contained" component="label">
+                    Upload File
+                    <input type="file" hidden onChange={onFileSelected} />
+                </Button>
             </Box>
 
             <Box className="basic-info__footer">
