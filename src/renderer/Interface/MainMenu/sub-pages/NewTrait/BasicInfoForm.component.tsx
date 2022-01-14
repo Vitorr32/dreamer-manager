@@ -14,15 +14,18 @@ interface IProps {
 export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
     const { t } = useTranslation();
 
+    const [id, setID] = useState(trait.id);
     const [name, setName] = useState(trait.name);
     const [description, setDescription] = useState(trait.description);
     const [traitType, setTraitType] = useState(trait.type);
     const [spawnable, setSpawnable] = useState(trait.spawnable);
+    const [spritePath, setSpritePath] = useState(trait.spritePath);
 
     function onSubmit(): void {
         const newTrait = Object.assign({}, trait);
 
-        (newTrait.name = name), (newTrait.description = description);
+        newTrait.name = name;
+        newTrait.description = description;
         newTrait.type = traitType;
         newTrait.spawnable = spawnable;
 
@@ -46,11 +49,21 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
         console.log(savedFile);
     };
 
+    const onImageSelected = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        if (event.target.files === null) {
+            return;
+        }
+
+        setSpritePath(event.target.files[0].path);
+    };
+
     return (
         <Box component="form" onSubmit={onSubmit} className="basic-info">
             <Box className="basic-info__header">
                 <Typography variant="h5">Basic Information</Typography>
             </Box>
+
+            <TextField required label={t('interface.editor.trait.id_label')} helperText={t('interface.editor.trait.id_helper')} variant="outlined" value={id} onChange={(event) => setID(event.target.value)} />
 
             <TextField required label={t('interface.editor.trait.name_label')} helperText={t('interface.editor.trait.name_helper')} variant="outlined" value={name} onChange={(event) => setName(event.target.value)} />
 
@@ -101,10 +114,17 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
             </Box>
 
             <Box className="basic-info__image-input">
+                <Typography variant="overline"> {t('interface.editor.trait.icon_label')}</Typography>
+
+                <Box className="basic-info__image-current">
+                    <img src={spritePath} alt={`${trait.id}_icon`} />
+                </Box>
+
                 <Button variant="contained" component="label">
-                    Upload File
-                    <input type="file" hidden onChange={onFileSelected} />
+                    Choose Image File
+                    <input name="avatar" type="file" hidden onChange={onImageSelected} />
                 </Button>
+                <Typography variant="caption">{t('interface.editor.trait.icon_helper')}</Typography>
             </Box>
 
             <Box className="basic-info__footer">

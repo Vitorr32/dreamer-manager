@@ -17,6 +17,8 @@ export const en_US = {
                     next_step: 'Next',
                     previous_step: 'Previous',
                     select_type: 'Select a Trait Type',
+                    id_label: 'ID code',
+                    id_helper: 'The unique identifier that this trait will have, it is used for quick search and saving into the static files',
                     name_label: 'Trait name',
                     name_helper: `The name of the trait to be displayed. Examples: 'Leader', 'Charismatic', 'Shy'`,
                     description_label: 'Description of effects/personality',
@@ -26,6 +28,8 @@ export const en_US = {
                     spawn_label: 'Spawnable',
                     spawn_helper: `Whatever this trait can be found on generated Dreamers, otherwise it can be obtainable only by events (Do note that traits of type 'National' will always be spawned), generated dreamers will have up to {{max}}
                     traits on generation.`,
+                    icon_label: 'Avatar Icon',
+                    icon_helper: 'The image used as icon for the trait, it should have a square (Optimally 100x100) proportion with transparent background when nescessary.',
                 },
                 effect: {
                     unset_modifier: 'New Modifier',
