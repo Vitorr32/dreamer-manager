@@ -16,13 +16,14 @@ ipcMain.handle('get-db-files', async (_, args: string[]) => {
     });
 });
 
-ipcMain.handle('save-assets-files', async (_, args: { path: string[]; files: FileList }) => {
+ipcMain.handle('save-assets-files', async (_, args: { path: string[]; files: { name: string; path: string }[] }) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.path);
 
-    for (let i = 0; i < args.files.length; i++) {
-        const file = args.files[i];
-        const finalPath = path.join(ASSET_PATH, file.name);
-        fs.createWriteStream(finalPath).write(file.arrayBuffer());
-    }
+    args.files.forEach((file) => {
+        fs.copyFile(file.path, path.join(ASSET_PATH, file.name), (err) => {
+            if (err) throw err;
+            console.log('source.txt was copied to destination.txt');
+        });
+    });
 });

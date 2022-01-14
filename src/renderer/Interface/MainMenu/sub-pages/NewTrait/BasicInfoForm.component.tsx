@@ -3,7 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select, TextField, FormControlLabel,
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
-import { ICONS, MAX_NUMBER_OF_TRAITS_GENERATED, TRAITS} from 'renderer/shared/Constants';
+import { ICONS, MAX_NUMBER_OF_TRAITS_GENERATED, TRAITS } from 'renderer/shared/Constants';
 
 interface IProps {
     nextStep: () => void;
@@ -31,7 +31,18 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
     }
 
     const onFileSelected = async (event: React.ChangeEvent<HTMLInputElement>): Promise<any> => {
-        const savedFile: any = await window.electron.fileSystem.saveFilesToResources([ICONS, TRAITS], event.target.files);
+        if (event.target.files === null) {
+            return;
+        }
+
+        const files = [];
+
+        for (let i = 0; i < event.target.files.length; i++) {
+            const file = event.target.files[i];
+            files.push({ path: file.path, name: file.name });
+        }
+
+        const savedFile: any = await window.electron.fileSystem.saveFilesToResources([ICONS, TRAITS], files);
         console.log(savedFile);
     };
 
