@@ -1,92 +1,88 @@
-import { Button, Stepper, Step, StepButton } from '@mui/material';
+import { Button, Stepper, Step, StepButton, TextField, MenuItem } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import React from 'react';
+import React, { useState } from 'react';
 import { BasicInfoForm } from './BasicInfoForm.component';
 import { Trait } from '../../../../shared/models/base/Trait.model';
 import { EffectsAndConditions } from './EffectsAndConditions.component';
 import { NewTraitReview } from './NewTraitReview.component';
+import { useTranslation } from 'react-i18next';
+import { getLocaleLabel } from 'renderer/shared/utils/Localization';
 
 interface IProps {}
 
-interface IState {
-    stepperIndex: number;
-    completed: { [k: number]: boolean };
-    currentTrait: Trait;
-}
+export function NewTrait(props: IProps) {
+    const { t, i18n } = useTranslation();
 
-export class NewTrait extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            stepperIndex: 1,
-            completed: {
-                0: false,
-                1: false,
-            },
-            currentTrait: new Trait(),
-        };
-    }
+    const [stepperIndex, setStepperIndex] = useState(1);
+    const [stepsCompleted, setStepsCompleted] = useState([false, false, false]);
+    const [newTrait, setNewTrait] = useState(new Trait());
 
-    nextStep(): void {
-        if (this.state.stepperIndex === 3) {
+    const nextStep = (): void => {
+        if (stepperIndex === 3) {
             return;
         }
 
-        this.setState({ stepperIndex: this.state.stepperIndex + 1 });
-    }
+        setStepperIndex(stepperIndex + 1);
+    };
 
-    previousStep(): void {
-        if (this.state.stepperIndex === 0) {
+    const previousStep = (): void => {
+        if (stepperIndex === 0) {
             return;
         }
 
-        this.setState({ stepperIndex: this.state.stepperIndex - 1 });
-    }
+        setStepperIndex(stepperIndex - 1);
+    };
 
-    onTraitChange(trait: Trait): void {
-        this.setState({ currentTrait: trait });
-    }
+    const onTraitChange = (trait: Trait): void => {
+        setNewTrait(trait);
+    };
 
-    getStepperContent(index: number) {
+    const getStepperContent = (index: number): JSX.Element | null => {
         switch (index) {
             case 0:
-                return <BasicInfoForm trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} nextStep={this.nextStep.bind(this)} />;
+                return <BasicInfoForm trait={newTrait} onChange={onTraitChange} nextStep={nextStep} />;
             case 1:
-                return <EffectsAndConditions trait={this.state.currentTrait} onChange={this.onTraitChange.bind(this)} previousStep={this.previousStep.bind(this)} nextStep={this.nextStep.bind(this)} />;
+                return <EffectsAndConditions trait={newTrait} onChange={onTraitChange} previousStep={previousStep} nextStep={nextStep} />;
             case 2:
-                return <NewTraitReview trait={this.state.currentTrait} />;
+                return <NewTraitReview trait={newTrait} />;
             default:
                 return null;
         }
-    }
+    };
 
-    render() {
-        const { stepperIndex, completed } = this.state;
+    return (
+        <div className="newtrait">
+            <header className="newtrait__header">
+                <Button color="primary">
+                    <ArrowBackIcon />
+                </Button>
+                <h2>Trait Creation</h2>
 
-        return (
-            <div className="newtrait">
-                <header className="newtrait__header">
-                    <Button color="primary">
-                        <ArrowBackIcon />
-                    </Button>
-                    <h2>Trait Creation</h2>
-                </header>
-                <main className="newtrait__form">
-                    <Stepper nonLinear activeStep={this.state.stepperIndex}>
-                        <Step completed={completed[0]}>
-                            <StepButton onClick={(_) => this.setState({ stepperIndex: 0 })}>Basic Information</StepButton>
-                        </Step>
-                        <Step completed={completed[1]}>
-                            <StepButton onClick={(_) => this.setState({ stepperIndex: 1 })}>Effects and Conditions</StepButton>
-                        </Step>
-                        <Step completed={completed[2]}>
-                            <StepButton onClick={(_) => this.setState({ stepperIndex: 3 })}>Review</StepButton>
-                        </Step>
-                    </Stepper>
+                <TextField required label={t('interface.commons.language')} value={i18n.language} variant="outlined" select onChange={(event) => i18n.changeLanguage(event.target.value)}>
+                    {i18n.languages.map((value) => {
+                        return (
+                            <MenuItem key={`language_${value}`} value={value}>
+                                {getLocaleLabel(value)}
+                            </MenuItem>
+                        );
+                    })}
+                </TextField>
+            </header>
+            <main className="newtrait__form">
+                <Stepper nonLinear activeStep={stepperIndex}>
+                    <Step completed={stepsCompleted[0]}>
+                        <StepButton onClick={(_) => setStepperIndex(0)}>Basic Information</StepButton>
+                    </Step>
+                    <Step completed={stepsCompleted[1]}>
+                        <StepButton onClick={(_) => setStepperIndex(1)}>Effects and Conditions</StepButton>
+                    </Step>
+                    <Step completed={stepsCompleted[2]}>
+                        <StepButton onClick={(_) => setStepperIndex(2)}>Review</StepButton>
+                    </Step>
+                </Stepper>
 
-                    {this.getStepperContent(stepperIndex)}
-                </main>
-            </div>
-        );
-    }
+                {getStepperContent(stepperIndex)}
+            </main>
+        </div>
+    );
 }

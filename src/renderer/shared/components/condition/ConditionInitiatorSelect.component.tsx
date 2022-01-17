@@ -11,7 +11,7 @@ interface IProps {
     onChange: (condition: Condition) => void;
 }
 
-export function ConditionInitiatorSelect(props: IProps) {
+export function ConditionInitiatorSelect({ condition, onChange }: IProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { t } = useTranslation();
 
@@ -21,13 +21,13 @@ export function ConditionInitiatorSelect(props: IProps) {
         const newCondition = new Condition();
         newCondition.initiator = initiator;
 
-        props.onChange(newCondition);
+        onChange(newCondition);
     };
 
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}>
-                {props.condition.initiator === ConditionInitiator.UNDEFINED ? t('interface.editor.condition.initiator') : t(props.condition.initiator)}
+                {condition.initiator === ConditionInitiator.UNDEFINED ? t('interface.editor.condition.initiator') : t(condition.initiator)}
             </Button>
             <Menu id="condition-initiator-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
                 <List component="nav" aria-labelledby="nested-list-subheader">

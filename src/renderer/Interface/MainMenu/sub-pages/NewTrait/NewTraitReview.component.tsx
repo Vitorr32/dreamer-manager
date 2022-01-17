@@ -14,5 +14,9 @@ export function NewTraitReview({ trait }: IProps) {
 
     const database = useSelector((state: RootState) => state.database);
 
-    return <Box className="trait-review">New Trait Review</Box>;
+    return <Box className="trait-review">
+        <Box></Box>
+
+
+    </Box>;
 }

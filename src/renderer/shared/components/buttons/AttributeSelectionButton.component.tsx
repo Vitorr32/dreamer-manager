@@ -22,8 +22,6 @@ export function AttributeSelectionButton({ displayIDs, onChange, returnData, mul
     const [selectedAttribute, setAttribute] = React.useState<Attribute[]>();
 
     const onAttributeSelected = (values: Attribute[] | undefined = undefined) => {
-        console.log('values', values);
-
         if (values === undefined) {
             setShowTool(false);
             setAttribute(undefined);

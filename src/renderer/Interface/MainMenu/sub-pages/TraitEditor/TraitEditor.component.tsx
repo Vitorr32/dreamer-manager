@@ -12,7 +12,6 @@ export class TraitEditor extends React.Component<ITraitEditorProps> {
       'get-file',
       '/path/to/file'
     );
-    console.log(data);
   }
 
   render() {

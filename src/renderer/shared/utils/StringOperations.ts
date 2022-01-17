@@ -13,3 +13,7 @@ export function JoinArrayOfString(array: string[], emptyMessage: string = 'None'
 
     return [...new Set(array)].reduce((a, b, i, array) => a + (i < array.length - 1 ? ', ' : ' and ') + b);
 }
+
+export function ApplyFileProtocol(path: string): string {
+    return `local-file-protocol://${path}`;
+}

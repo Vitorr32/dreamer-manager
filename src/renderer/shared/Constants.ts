@@ -10,6 +10,10 @@ export const MIN_DATE = new Date(872, 1, 1, 0, 0, 0, 0);
 export const START_DATE = new Date(972, 3, 15, 0, 0, 0, 0);
 export const END_DATE = new Date(1072, 1, 1, 0, 0, 0, 0);
 
+export const LANGUAGES: { [key: string]: string } = {
+    en_US: 'American English',
+};
+
 ///////////////////////////////
 //RESOURCES FOLDER NAME
 export const TRAIT_DATABASE = 'traits';
@@ -18,5 +22,9 @@ export const EVENT_DATABASE = 'events';
 
 ////////////////////////////////
 //RESOURCES FULL QUALIFIED PATH
-export const ICONS = 'icons'
-export const TRAITS = 'traits'
+export const ICONS = 'icons';
+export const TRAITS = 'traits';
+
+////////////////////////////////
+//PLACEHOLDER RESOURCES.
+export const PLACEHOLDER_TRAIT_ICON = 'trait_placeholder.png';

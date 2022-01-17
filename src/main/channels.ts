@@ -28,12 +28,28 @@ ipcMain.handle('save-assets-files', async (_, args: { path: string[]; files: { n
     });
 });
 
-ipcMain.handle('get-files', async (_, args: string[]) => {
+ipcMain.handle('save-temp-files', async (_, args: { name: string; path: string }[]) => {
+    const filesInDestination: any[] = [];
+
+    args.forEach((file) => {
+        const destinationPath = path.join(app.getPath('temp'), file.name);
+        try {
+            fs.copyFileSync(file.path, destinationPath);
+            filesInDestination.push(destinationPath);
+        } catch (e) {
+            console.log(e);
+        }
+    });
+
+    return filesInDestination;
+});
+
+ipcMain.handle('get-file', async (_, args: string[]) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args);
 
     try {
-        return fs.readFileSync(ASSET_PATH);
+        return { path: ASSET_PATH, buffer: fs.readFileSync(ASSET_PATH) };
     } catch (e) {
         return e;
     }

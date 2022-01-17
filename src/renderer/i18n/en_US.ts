@@ -11,6 +11,7 @@ export const en_US = {
                 by: 'by',
                 increase: 'increase',
                 decrease: 'decrease',
+                language: 'Language'
             },
             editor: {
                 trait: {

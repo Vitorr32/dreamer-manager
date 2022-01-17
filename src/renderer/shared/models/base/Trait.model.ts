@@ -20,14 +20,13 @@ export class Trait {
     public description: string;
     public spawnable: boolean;
     public effects: Effect[];
-    public spritePath: string;
+    public spritePath: string | undefined;
 
     constructor() {
         this.id = 'trait_' + uuidv4();
         this.name = '';
         this.type = TraitType.UNDEFINED;
         this.description = '';
-        this.spritePath = 'placeholder.png';
         this.spawnable = false;
         this.effects = [new Effect()];
     }

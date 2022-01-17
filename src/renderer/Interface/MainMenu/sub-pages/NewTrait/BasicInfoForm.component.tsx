@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { FormControl, InputLabel, MenuItem, Select, TextField, FormControlLabel, Switch, Button, OutlinedInput, FormHelperText, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { MenuItem, TextField, FormControlLabel, Switch, Button, Typography } from '@mui/material';
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
-import { ICONS, MAX_NUMBER_OF_TRAITS_GENERATED, TRAITS } from 'renderer/shared/Constants';
+import { ICONS, MAX_NUMBER_OF_TRAITS_GENERATED, PLACEHOLDER_TRAIT_ICON, TRAITS } from 'renderer/shared/Constants';
+import { ApplyFileProtocol } from 'renderer/shared/utils/StringOperations';
 
 interface IProps {
     nextStep: () => void;
@@ -19,42 +20,52 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
     const [description, setDescription] = useState(trait.description);
     const [traitType, setTraitType] = useState(trait.type);
     const [spawnable, setSpawnable] = useState(trait.spawnable);
+    const [trueSpritePath, setTrueSpritePath] = useState(trait.spritePath);
     const [spritePath, setSpritePath] = useState(trait.spritePath);
+
+    useEffect(() => {
+        async function getTraitFilePath() {
+            if (trait.spritePath) {
+                setSpritePath(trait.spritePath);
+            } else {
+                const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([ICONS, TRAITS, PLACEHOLDER_TRAIT_ICON]);
+                setTrueSpritePath(file.path);
+                setSpritePath(ApplyFileProtocol(file.path));
+            }
+        }
+
+        getTraitFilePath();
+    }, []);
 
     function onSubmit(): void {
         const newTrait = Object.assign({}, trait);
 
+        newTrait.id = id;
         newTrait.name = name;
         newTrait.description = description;
         newTrait.type = traitType;
         newTrait.spawnable = spawnable;
+        newTrait.spritePath = trueSpritePath;
 
         onChange(newTrait);
         nextStep();
     }
 
-    const onFileSelected = async (event: React.ChangeEvent<HTMLInputElement>): Promise<any> => {
+    const onImageSelected = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
         if (event.target.files === null) {
             return;
         }
 
         const files = [];
-
         for (let i = 0; i < event.target.files.length; i++) {
             const file = event.target.files[i];
             files.push({ path: file.path, name: file.name });
         }
 
-        const savedFile: any = await window.electron.fileSystem.saveFilesToResources([ICONS, TRAITS], files);
-        console.log(savedFile);
-    };
+        const savedFile: any = await window.electron.fileSystem.saveFilesToTempFolder(files);
 
-    const onImageSelected = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        if (event.target.files === null) {
-            return;
-        }
-
-        setSpritePath(event.target.files[0].path);
+        setTrueSpritePath(savedFile[0]);
+        setSpritePath(ApplyFileProtocol(savedFile[0]));
     };
 
     return (
@@ -122,7 +133,7 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
 
                 <Button variant="contained" component="label">
                     Choose Image File
-                    <input name="avatar" type="file" hidden onChange={onImageSelected} />
+                    <input name="avatar" type="file" hidden onChange={onImageSelected} accept="image/*" />
                 </Button>
                 <Typography variant="caption">{t('interface.editor.trait.icon_helper')}</Typography>
             </Box>

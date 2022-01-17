@@ -16,8 +16,6 @@ export function LocationTypeSelect({ condition, onChange }: IProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const onValueSelected = (value: LocationType = LocationType.UNDEFINED) => {
-        console.log(value);
-
         if (value === LocationType.UNDEFINED) {
             return;
         }

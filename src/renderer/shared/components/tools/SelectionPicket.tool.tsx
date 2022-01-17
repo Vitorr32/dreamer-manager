@@ -28,7 +28,6 @@ export function SelectionPicker(props: IProps) {
     }, [query]);
 
     const filterListByQuery = (query: string): any[] => {
-        console.log(valueList);
         return valueList
             .filter((value) => value.id?.includes(query) || value.name?.toLowerCase().includes(query) || value.description?.toLowerCase().includes(query))
             .sort((a: Trait, b: Trait) => a.name.localeCompare(b.name));

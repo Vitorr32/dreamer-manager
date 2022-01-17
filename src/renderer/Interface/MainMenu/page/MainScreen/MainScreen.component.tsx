@@ -2,10 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export function MainScreen(_: any) {
-
-
-    console.log('Main Screen!');
-
     return (
         <menu>
             <Link to="/" >

@@ -8,8 +8,11 @@ contextBridge.exposeInMainWorld('electron', {
         saveFilesToResources(path = [], files) {
             return ipcRenderer.invoke('save-assets-files', { path: path, files: files });
         },
+        saveFilesToTempFolder(files) {
+            return ipcRenderer.invoke('save-temp-files', files);
+        },
         getFileFromResources(path = []) {
-            return ipcRenderer.invoke('get-files', path);
+            return ipcRenderer.invoke('get-file', path);
         },
     },
     ipcRenderer: {

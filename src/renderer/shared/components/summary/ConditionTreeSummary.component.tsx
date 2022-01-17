@@ -19,12 +19,8 @@ export function ConditionTreeSummary({ conditionTree, worldSnapshot }: IProps) {
 
     const root = conditionTree.root;
 
-    console.log(root);
-
     const renderConditionNodeSummary = (node: Node): React.ReactElement | null => {
-        console.log('node', node);
         if (!node) {
-            console.log('returning Null', node);
             return null;
         }
 

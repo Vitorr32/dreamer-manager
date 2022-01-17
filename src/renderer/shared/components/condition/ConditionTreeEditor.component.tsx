@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
+import { Condition } from 'renderer/shared/models/base/Condition.model';
 import { ConditionTree, Node } from '../../../shared/models/base/ConditionTree';
 import { ConditionNode } from './ConditionNode.component';
 interface IProps {
@@ -13,6 +14,7 @@ export function ConditionTreeEditor({ conditionTree, onChange }: IProps) {
             console.error('ON ROOT CHANGE CALLED FOR WRONG NODE');
             return;
         }
+
         const updatedTreeRoot = Object.assign({}, conditionTree);
         updatedTreeRoot.root = condition;
         onChange(updatedTreeRoot);
@@ -24,7 +26,10 @@ export function ConditionTreeEditor({ conditionTree, onChange }: IProps) {
             return;
         }
 
-        onChange(new ConditionTree());
+        const newConditionTree = new ConditionTree();
+        newConditionTree.root.conditions = [new Condition()];
+
+        onChange(newConditionTree);
     };
 
     return (
