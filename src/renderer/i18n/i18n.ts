@@ -1,12 +1,14 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { en_US } from './en_US';
+import { en_US } from './resources/en_US';
+import { pt_BR } from './resources/pt_BR';
 import { format as formatDate, isDate, isValid } from 'date-fns';
 import { dateLocales } from 'renderer/shared/utils/Localization';
 
 i18n.use(initReactI18next).init({
     resources: {
         en_US,
+        pt_BR,
     },
     lng: 'en_US',
     fallbackLng: 'en_US',

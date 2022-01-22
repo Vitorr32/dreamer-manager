@@ -1,10 +1,12 @@
 [
     {
         "id": "trait_0",
-        "name": "Explorer",
-        "traitType": "Normal",
-        "description": "This character has a knack for exploring and discovering alternative routes when traveling",
         "effects": [],
-        "spritePath": ""
+        "traitType": "Normal",
+        "spritePath": "",
+        "en_US": {
+            "name": "Explorer",
+            "description": "This character has a knack for exploring and discovering alternative routes when traveling"
+        }
     }
 ]

@@ -1,5 +1,6 @@
 import { Effect } from './Effect.model';
 import { v4 as uuidv4 } from 'uuid';
+import { LANGUAGE_CODES, LANGUAGE_CODE_DEFAULT } from 'renderer/shared/Constants';
 
 export enum TraitType {
     UNDEFINED = 'model.undefined',
@@ -15,19 +16,49 @@ export enum TraitType {
 
 export class Trait {
     public id: string;
-    public name: string;
     public type: TraitType;
-    public description: string;
     public spawnable: boolean;
     public effects: Effect[];
     public spritePath: string | undefined;
 
+    public localization: {
+        [key: string]: {
+            name: string;
+            description: string;
+        };
+    };
+
     constructor() {
         this.id = 'trait_' + uuidv4();
-        this.name = '';
+
+        this.localization = {};
+        LANGUAGE_CODES.forEach((languageCode) => {
+            this.localization[languageCode] = {
+                name: '',
+                description: '',
+            };
+        });
+
         this.type = TraitType.UNDEFINED;
-        this.description = '';
         this.spawnable = false;
         this.effects = [new Effect()];
+    }
+
+    public getName(languageCode: string): string {
+        return this.localization[languageCode]?.name || this.localization[LANGUAGE_CODE_DEFAULT]?.name || '';
+    }
+
+    public setName(name: string, languageCode: string): string {
+        this.localization[languageCode].name = name;
+        return this.localization[languageCode].name;
+    }
+
+    public getDescription(languageCode: string): string {
+        return this.localization[languageCode]?.description || this.localization[LANGUAGE_CODE_DEFAULT]?.description || '';
+    }
+
+    public setDescription(description: string, languageCode: string): string {
+        this.localization[languageCode].description = description;
+        return this.localization[languageCode].description;
     }
 }

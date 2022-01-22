@@ -13,11 +13,11 @@ interface IProps {
 }
 
 export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [id, setID] = useState(trait.id);
-    const [name, setName] = useState(trait.name);
-    const [description, setDescription] = useState(trait.description);
+    const [name, setName] = useState(trait.getName(i18n.language));
+    const [description, setDescription] = useState(trait.getDescription(i18n.language));
     const [traitType, setTraitType] = useState(trait.type);
     const [spawnable, setSpawnable] = useState(trait.spawnable);
     const [trueSpritePath, setTrueSpritePath] = useState(trait.spritePath);
@@ -41,8 +41,8 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
         const newTrait = Object.assign({}, trait);
 
         newTrait.id = id;
-        newTrait.name = name;
-        newTrait.description = description;
+        newTrait.setName(name, i18n.language);
+        newTrait.setDescription(description, i18n.language);
         newTrait.type = traitType;
         newTrait.spawnable = spawnable;
         newTrait.spritePath = trueSpritePath;

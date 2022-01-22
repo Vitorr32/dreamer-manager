@@ -18,7 +18,7 @@ interface IProps {
 export function SelectionPicker(props: IProps) {
     const valueList = useSelector((state: RootState) => state.database.traits);
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [query, setQuery] = useState<string>('');
     const [selected, setSelected] = useState<any>();
     const [filtered, setFiltered] = useState<any[]>([]);
@@ -29,8 +29,8 @@ export function SelectionPicker(props: IProps) {
 
     const filterListByQuery = (query: string): any[] => {
         return valueList
-            .filter((value) => value.id?.includes(query) || value.name?.toLowerCase().includes(query) || value.description?.toLowerCase().includes(query))
-            .sort((a: Trait, b: Trait) => a.name.localeCompare(b.name));
+            .filter((value) => value.id?.includes(query) || value.getName(i18n.language)?.toLowerCase().includes(query) || value.getDescription(i18n.language)?.toLowerCase().includes(query))
+            .sort((a: Trait, b: Trait) => a.getName(i18n.language).localeCompare(b.getName(i18n.language)));
     };
 
     const onOptionPicked = (): void => {

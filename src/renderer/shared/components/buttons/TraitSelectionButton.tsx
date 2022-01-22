@@ -17,7 +17,7 @@ interface IProps {
 export function TraitSelectionButton({ displayIDs, onChange, returnData, multi }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [showTool, setShowTool] = React.useState<boolean>(false);
     const [selectedValue, setValue] = React.useState<Trait[]>();
 
@@ -39,7 +39,7 @@ export function TraitSelectionButton({ displayIDs, onChange, returnData, multi }
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.trait_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.traits[displayID].name)}
+                {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.trait_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.traits[displayID].getName(i18n.language))}
             </Button>
 
             <TraitPicker showTool={showTool} onSelection={onValueSelected} multi={multi} />

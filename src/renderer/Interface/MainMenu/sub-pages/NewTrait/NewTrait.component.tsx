@@ -1,12 +1,13 @@
 import { Button, Stepper, Step, StepButton, TextField, MenuItem } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BasicInfoForm } from './BasicInfoForm.component';
 import { Trait } from '../../../../shared/models/base/Trait.model';
 import { EffectsAndConditions } from './EffectsAndConditions.component';
 import { NewTraitReview } from './NewTraitReview.component';
 import { useTranslation } from 'react-i18next';
 import { getLocaleLabel } from 'renderer/shared/utils/Localization';
+import { LANGUAGE_CODES } from 'renderer/shared/Constants';
 
 interface IProps {}
 
@@ -59,7 +60,7 @@ export function NewTrait(props: IProps) {
                 <h2>Trait Creation</h2>
 
                 <TextField required label={t('interface.commons.language')} value={i18n.language} variant="outlined" select onChange={(event) => i18n.changeLanguage(event.target.value)}>
-                    {i18n.languages.map((value) => {
+                    {LANGUAGE_CODES.map((value) => {
                         return (
                             <MenuItem key={`language_${value}`} value={value}>
                                 {getLocaleLabel(value)}

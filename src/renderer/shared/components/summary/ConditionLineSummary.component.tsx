@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export function ConditionLineSummary({ condition, worldSnapshot }: IProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const database = useSelector((state: RootState) => state.database);
 
@@ -41,7 +41,7 @@ export function ConditionLineSummary({ condition, worldSnapshot }: IProps) {
             case ConditionInitiator.ATTRIBUTE_RANGE:
                 return JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.attributes[target].name));
             case ConditionInitiator.TRAIT:
-                return JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.traits[target].name));
+                return JoinArrayOfString(line.targets.map((target) => database.mappedDatabase.traits[target].getName(i18n.language)));
             case ConditionInitiator.STATUS_RANGE:
                 return t('summary.status.pattern', { name: JoinArrayOfString(line.targets.map((target) => t(target))) });
             case ConditionInitiator.RELATIONSHIP:

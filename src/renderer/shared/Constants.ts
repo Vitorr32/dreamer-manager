@@ -10,8 +10,11 @@ export const MIN_DATE = new Date(872, 1, 1, 0, 0, 0, 0);
 export const START_DATE = new Date(972, 3, 15, 0, 0, 0, 0);
 export const END_DATE = new Date(1072, 1, 1, 0, 0, 0, 0);
 
-export const LANGUAGES: { [key: string]: string } = {
+export const LANGUAGE_CODE_DEFAULT = 'en_US';
+export const LANGUAGE_CODES = ['en_US', 'pt_BR'];
+export const LANGUAGE_NAME: { [key: string]: string } = {
     en_US: 'American English',
+    pt_BR: 'Português Brasileiro',
 };
 
 ///////////////////////////////

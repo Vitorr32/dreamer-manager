@@ -17,7 +17,7 @@ interface IProps {
 export function TraitPicker({ multi, onSelection, showTool }: IProps) {
     const valueList = useSelector((state: RootState) => state.database.traits);
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [query, setQuery] = useState<string>('');
     const [selected, setSelected] = useState<Trait[]>([]);
     const [filtered, setFiltered] = useState<Trait[]>([]);
@@ -28,8 +28,8 @@ export function TraitPicker({ multi, onSelection, showTool }: IProps) {
 
     const filterListByQuery = (query: string): Trait[] => {
         return valueList
-            .filter((value) => value.id?.includes(query) || value.name?.toLowerCase().includes(query) || value.description?.toLowerCase().includes(query))
-            .sort((a: Trait, b: Trait) => a.name.localeCompare(b.name));
+            .filter((value) => value.id?.includes(query) || value.getName(i18n.language)?.toLowerCase().includes(query) || value.getDescription(i18n.language)?.toLowerCase().includes(query))
+            .sort((a: Trait, b: Trait) => a.getName(i18n.language).localeCompare(b.getName(i18n.language)));
     };
 
     const onToggleSelection = (toggled: Trait): void => {
@@ -94,7 +94,7 @@ export function TraitPicker({ multi, onSelection, showTool }: IProps) {
                                 <div className={`cell cell-trait ${selected.includes(value) ? 'cell-selected' : ''}`} key={value.id} onClick={() => onToggleSelection(value)}>
                                     <div className="cell__header">
                                         <Typography className="cell__title" variant="h5">
-                                            {value.name}
+                                            {value.getName(i18n.language)}
                                         </Typography>
                                         <Typography className="cell__sub-title" variant="caption">
                                             ID: <b>{value.id}</b>
@@ -103,15 +103,15 @@ export function TraitPicker({ multi, onSelection, showTool }: IProps) {
                                     <div className="cell__content">
                                         <div className="cell__content-sibling">
                                             <Placeholder />
-                                            <Typography variant="body1">{t(value.name)}</Typography>
+                                            <Typography variant="body1">{value.getName(i18n.language)}</Typography>
                                         </div>
                                         <div className="cell__content-sibling">
                                             <Placeholder />
-                                            <Typography variant="body1">{t(value.name)}</Typography>
+                                            <Typography variant="body1">{t(value.getName(i18n.language))}</Typography>
                                         </div>
 
                                         <div className="cell__content-full">
-                                            <Typography variant="body2">{value.description}</Typography>
+                                            <Typography variant="body2">{value.getDescription(i18n.language)}</Typography>
                                         </div>
                                     </div>
                                 </div>
