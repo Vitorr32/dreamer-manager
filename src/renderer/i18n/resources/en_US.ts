@@ -20,9 +20,11 @@ export const en_US = {
                     select_type: 'Select a Trait Type',
                     id_label: 'ID code',
                     id_helper: 'The unique identifier that this trait will have, it is used for quick search and saving into the static files',
-                    name_label: 'Trait name',
+                    name_label: 'Name',
+                    default_locale_name_label: 'English Name',
                     name_helper: `The name of the trait to be displayed. Examples: 'Leader', 'Charismatic', 'Shy'`,
                     description_label: 'Description of effects/personality',
+                    default_locale_description_label: 'English Description',
                     description_helper: `The description of the trait to give better context of it's effects on game play and character personality. Example: " 'Leader' defines the capacity of this character to inspire, command and support his peers in his job and daily life"`,
                     type_label: 'Type category of the Trait',
                     type_helper: 'The type of the trait, it defines the category that the trait will be presented and in what type of situation it can be obtainable',
@@ -31,6 +33,7 @@ export const en_US = {
                     traits on generation.`,
                     icon_label: 'Avatar Icon',
                     icon_helper: 'The image used as icon for the trait, it should have a square (Optimally 100x100) proportion with transparent background when nescessary.',
+                    localization_message: 'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.'
                 },
                 effect: {
                     unset_modifier: 'New Modifier',
@@ -70,6 +73,12 @@ export const en_US = {
                     input_percent: 'Percentage change',
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                 },
+                validation: {
+                    duplicated_id : 'The id {{id}} is already being used',
+                    missing_name: 'The name of the trait is missing, or it\'s not set in english',
+                    missing_description: 'The description of the trait is missing, or it\'s not set in english',
+                    missing_type: 'The type of the trait is not set'
+                }
             },
             tools: {
                 common: {

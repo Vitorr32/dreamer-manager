@@ -14,7 +14,7 @@ interface IProps {}
 export function NewTrait(props: IProps) {
     const { t, i18n } = useTranslation();
 
-    const [stepperIndex, setStepperIndex] = useState(1);
+    const [stepperIndex, setStepperIndex] = useState(2);
     const [stepsCompleted, setStepsCompleted] = useState([false, false, false]);
     const [newTrait, setNewTrait] = useState(new Trait());
 
