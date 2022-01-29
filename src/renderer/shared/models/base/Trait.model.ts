@@ -19,7 +19,7 @@ export class Trait {
     public type: TraitType;
     public spawnable: boolean;
     public effects: Effect[];
-    public spritePath: string | undefined;
+    public spriteName: string | undefined;
 
     public localization: {
         [key: string]: {

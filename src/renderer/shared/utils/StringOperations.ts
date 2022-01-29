@@ -17,3 +17,8 @@ export function JoinArrayOfString(array: string[], emptyMessage: string = 'None'
 export function ApplyFileProtocol(path: string): string {
     return `local-file-protocol://${path}`;
 }
+
+export async function GetFileFromResources(path: string[]): Promise<string> {
+    const filePath = window.electron.fileSystem.getFileFromResources(path);
+    return ApplyFileProtocol(filePath);
+}

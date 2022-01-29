@@ -17,6 +17,7 @@ export function NewTrait(props: IProps) {
     const [stepperIndex, setStepperIndex] = useState(2);
     const [stepsCompleted, setStepsCompleted] = useState([false, false, false]);
     const [newTrait, setNewTrait] = useState(new Trait());
+    const [tempImagePath, setTempImagePath] = useState<string>('');
 
     const nextStep = (): void => {
         if (stepperIndex === 3) {
@@ -41,11 +42,11 @@ export function NewTrait(props: IProps) {
     const getStepperContent = (index: number): JSX.Element | null => {
         switch (index) {
             case 0:
-                return <BasicInfoForm trait={newTrait} onChange={onTraitChange} nextStep={nextStep} />;
+                return <BasicInfoForm trait={newTrait} onChange={onTraitChange} iconPath={tempImagePath} setTempImage={setTempImagePath} nextStep={nextStep} />;
             case 1:
                 return <EffectsAndConditions trait={newTrait} onChange={onTraitChange} previousStep={previousStep} nextStep={nextStep} />;
             case 2:
-                return <NewTraitReview trait={newTrait} />;
+                return <NewTraitReview trait={newTrait} iconPath={tempImagePath} />;
             default:
                 return null;
         }

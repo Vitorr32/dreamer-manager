@@ -33,7 +33,9 @@ export const en_US = {
                     traits on generation.`,
                     icon_label: 'Avatar Icon',
                     icon_helper: 'The image used as icon for the trait, it should have a square (Optimally 100x100) proportion with transparent background when nescessary.',
-                    localization_message: 'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.'
+                    localization_message: 'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.',
+                    is_spawnable: 'Can spawn',
+                    not_spawnable: 'Can\'t spawn'
                 },
                 effect: {
                     unset_modifier: 'New Modifier',

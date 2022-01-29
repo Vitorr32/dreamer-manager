@@ -10,9 +10,10 @@ import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.
 
 interface IProps {
     trait: Trait;
+    iconPath: string;
 }
 
-export function NewTraitReview({ trait }: IProps) {
+export function NewTraitReview({ trait, iconPath }: IProps) {
     const { t, i18n } = useTranslation();
 
     const database = useSelector((state: RootState) => state.database);
@@ -29,9 +30,9 @@ export function NewTraitReview({ trait }: IProps) {
     const validateTrait = (trait: Trait): boolean => {
         const validation: any = {};
 
-        validation.id = database.mappedDatabase.traits[trait.id] ? t('interface.editor.validation.duplicated_id') : undefined;
+        validation.id = database.mappedDatabase.traits[trait.id] ? t('interface.editor..duplicated_id') : undefined;
         validation.name = !trait.localization[LANGUAGE_CODE_DEFAULT].name ? t('interface.editor.validation.missing_name') : undefined;
-        validation.description = !trait.localization[LANGUAGE_CODE_DEFAULT].description ? t('interface.editor.validation.missing_name') : undefined;
+        validation.description = !trait.localization[LANGUAGE_CODE_DEFAULT].description ? t('interface.editor.validation.missing_description') : undefined;
         validation.type = trait.type === TraitType.UNDEFINED ? t('interface.editor.validation.missing_type') : undefined;
 
         setInputValidation(validation);
@@ -44,7 +45,7 @@ export function NewTraitReview({ trait }: IProps) {
     return (
         <Box className="trait-review">
             <Box className="trait-review__basic">
-                <img className="trait-review__icon" src={trait.spritePath} alt={`${trait.id}_icon`} />
+                <img className="trait-review__icon" src={iconPath || trait.spriteName} alt={`${trait.id}_icon`} />
                 <Box className="trait-review__field">
                     <Typography variant="overline">{t('interface.editor.trait.id_label')}</Typography>
                     <Typography>{trait.id}</Typography>
@@ -69,7 +70,7 @@ export function NewTraitReview({ trait }: IProps) {
                     </Box>
                     <Box className="trait-review__field">
                         <Typography variant="overline">{t('interface.editor.trait.default_locale_description_label')}</Typography>
-                        <Typography>{trait.getName(LANGUAGE_CODE_DEFAULT)}</Typography>
+                        <Typography>{trait.getDescription(LANGUAGE_CODE_DEFAULT)}</Typography>
                     </Box>
                 </Box>
             </Box>
@@ -81,7 +82,7 @@ export function NewTraitReview({ trait }: IProps) {
                 </Box>
                 <Box className="trait-review__field">
                     <Typography variant="overline">{t('interface.editor.trait.spawn_label')}</Typography>
-                    <Typography>{trait.spawnable}</Typography>
+                    <Typography>{trait.spawnable ? t('interface.editor.trait.is_spawnable') : t('interface.editor.trait.not_spawnable') }</Typography>
                 </Box>
             </Box>
             <Box className="trait-review__effect">
@@ -91,7 +92,7 @@ export function NewTraitReview({ trait }: IProps) {
             </Box>
             <Box className="trait-review__footer">
                 <Typography>{t('interface.editor.trait.localization_message')}</Typography>
-                <Button>{t('interface.commons.submit')}</Button>
+                <Button onClick={onSubmit}>{t('interface.commons.submit')}</Button>
             </Box>
         </Box>
     );
