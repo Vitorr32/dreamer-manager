@@ -22,3 +22,8 @@ export async function GetFileFromResources(path: string[]): Promise<string> {
     const filePath = window.electron.fileSystem.getFileFromResources(path);
     return ApplyFileProtocol(filePath);
 }
+
+export async function GetFileInfoFromPath(path: string): Promise<{ fileName: string; fullName: string; extension: string } | undefined> {
+    const filePath = await window.electron.fileSystem.getFileInfo(path);
+    return filePath;
+}

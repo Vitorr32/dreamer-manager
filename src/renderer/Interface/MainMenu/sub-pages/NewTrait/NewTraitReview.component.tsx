@@ -7,6 +7,7 @@ import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { Button, Typography } from '@mui/material';
 import { LANGUAGE_CODE_DEFAULT } from 'renderer/shared/Constants';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
+import { ApplyFileProtocol, GetFileInfoFromPath } from 'renderer/shared/utils/StringOperations';
 
 interface IProps {
     trait: Trait;
@@ -18,13 +19,21 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
 
     const database = useSelector((state: RootState) => state.database);
     const [inputValidation, setInputValidation] = useState({} as any);
+    const [isLoading, setLoading] = useState(false);
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+        setLoading(true);
+
         if (!validateTrait(trait)) {
             console.log('Invalid');
             return;
         }
         console.log('Valid');
+
+        const fileInfo = await GetFileInfoFromPath(ApplyFileProtocol(iconPath));
+        console.log(fileInfo);
+
+        setLoading(false);
     };
 
     const validateTrait = (trait: Trait): boolean => {
@@ -49,13 +58,17 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
                 <Box className="trait-review__field">
                     <Typography variant="overline">{t('interface.editor.trait.id_label')}</Typography>
                     <Typography>{trait.id}</Typography>
-                    <Typography className="trait-review__field-error" variant="subtitle1">{inputValidation.id}</Typography>
+                    <Typography className="trait-review__field-error" variant="subtitle1">
+                        {inputValidation.id}
+                    </Typography>
                 </Box>
                 <Box className="trait-review__localized-field">
                     <Box className="trait-review__field">
                         <Typography variant="overline">{t('interface.editor.trait.name_label')}</Typography>
                         <Typography>{trait.getName(i18n.language)}</Typography>
-                    <Typography className="trait-review__field-error" variant="subtitle1">{inputValidation.name}</Typography>
+                        <Typography className="trait-review__field-error" variant="subtitle1">
+                            {inputValidation.name}
+                        </Typography>
                     </Box>
                     <Box className="trait-review__field">
                         <Typography variant="overline">{t('interface.editor.trait.default_locale_name_label')}</Typography>
@@ -66,7 +79,9 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
                     <Box className="trait-review__field">
                         <Typography variant="overline">{t('interface.editor.trait.description_label')}</Typography>
                         <Typography>{trait.getDescription(i18n.language)}</Typography>
-                    <Typography className="trait-review__field-error" variant="subtitle1">{inputValidation.description}</Typography>
+                        <Typography className="trait-review__field-error" variant="subtitle1">
+                            {inputValidation.description}
+                        </Typography>
                     </Box>
                     <Box className="trait-review__field">
                         <Typography variant="overline">{t('interface.editor.trait.default_locale_description_label')}</Typography>
@@ -78,11 +93,13 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
                 <Box className="trait-review__field">
                     <Typography variant="overline">{t('interface.editor.trait.type_label')}</Typography>
                     <Typography>{t(trait.type)}</Typography>
-                    <Typography className="trait-review__field-error" variant="subtitle1">{inputValidation.type}</Typography>
+                    <Typography className="trait-review__field-error" variant="subtitle1">
+                        {inputValidation.type}
+                    </Typography>
                 </Box>
                 <Box className="trait-review__field">
                     <Typography variant="overline">{t('interface.editor.trait.spawn_label')}</Typography>
-                    <Typography>{trait.spawnable ? t('interface.editor.trait.is_spawnable') : t('interface.editor.trait.not_spawnable') }</Typography>
+                    <Typography>{trait.spawnable ? t('interface.editor.trait.is_spawnable') : t('interface.editor.trait.not_spawnable')}</Typography>
                 </Box>
             </Box>
             <Box className="trait-review__effect">

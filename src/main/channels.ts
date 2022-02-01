@@ -2,6 +2,8 @@ import { ipcMain, app } from 'electron';
 import fs from 'fs';
 import path from 'path';
 
+import './channels/fileSystem';
+
 ipcMain.handle('get-db-files', async (_, args: string[]) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../assets');
 

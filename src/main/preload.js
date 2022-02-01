@@ -14,6 +14,9 @@ contextBridge.exposeInMainWorld('electron', {
         getFileFromResources(path = []) {
             return ipcRenderer.invoke('get-file', path);
         },
+        getFileInfo(path) {
+            return ipcRenderer.invoke('get-file-info', path)
+        }
     },
     ipcRenderer: {
         invoke(channel, args) {

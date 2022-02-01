@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { MenuItem, TextField, FormControlLabel, Switch, Button, Typography } from '@mui/material';
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
@@ -17,18 +17,20 @@ interface IProps {
 export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImage }: IProps) {
     const { t, i18n } = useTranslation();
 
-    const [trueSpritePath, setTrueSpritePath] = useState(trait.spriteName);
-    const [spritePath, setSpritePath] = useState(trait.spriteName);
-
     useEffect(() => {
         async function getTraitFilePath() {
+            //Check if there is already a temporary icon path set.
+            if (iconPath) {
+                return;
+            }
+
             if (trait.spriteName) {
                 const filePath = await GetFileFromResources([ICONS, TRAITS, trait.spriteName]);
-                setTempImage(filePath)
+                setTempImage(filePath);
             } else {
                 //Get the placeholder icon for trait
                 const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([ICONS, TRAITS, PLACEHOLDER_TRAIT_ICON]);
-                setTempImage(ApplyFileProtocol(file.path))
+                setTempImage(ApplyFileProtocol(file.path));
             }
         }
 
@@ -69,8 +71,7 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
 
         const savedFile: any = await window.electron.fileSystem.saveFilesToTempFolder(files);
 
-        setTrueSpritePath(savedFile[0]);
-        setSpritePath(ApplyFileProtocol(savedFile[0]));
+        setTempImage(ApplyFileProtocol(savedFile[0]));
     };
 
     return (
@@ -79,9 +80,23 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
                 <Typography variant="h5">Basic Information</Typography>
             </Box>
 
-            <TextField required label={t('interface.editor.trait.id_label')} helperText={t('interface.editor.trait.id_helper')} variant="outlined" value={trait.id} onChange={(event) => onInputChange('id', event.target.value)} />
+            <TextField
+                required
+                label={t('interface.editor.trait.id_label')}
+                helperText={t('interface.editor.trait.id_helper')}
+                variant="outlined"
+                value={trait.id}
+                onChange={(event) => onInputChange('id', event.target.value)}
+            />
 
-            <TextField required label={t('interface.editor.trait.name_label')} helperText={t('interface.editor.trait.name_helper')} variant="outlined" value={trait.getName(i18n.language)} onChange={(event) => onNameChange(event.target.value)} />
+            <TextField
+                required
+                label={t('interface.editor.trait.name_label')}
+                helperText={t('interface.editor.trait.name_helper')}
+                variant="outlined"
+                value={trait.getName(i18n.language)}
+                onChange={(event) => onNameChange(event.target.value)}
+            />
 
             <TextField
                 required
@@ -122,7 +137,7 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
             <Box className="basic-info__field">
                 <FormControlLabel
                     value="start"
-                    control={<Switch disabled={trait.type === TraitType.NATIONAL} value={trait.spawnable} onChange={(event) => onInputChange('spawnable' ,event.target.checked)} color="primary" />}
+                    control={<Switch disabled={trait.type === TraitType.NATIONAL} value={trait.spawnable} onChange={(event) => onInputChange('spawnable', event.target.checked)} color="primary" />}
                     label={t('interface.editor.trait.spawn_label') as string}
                     labelPlacement="start"
                 />
