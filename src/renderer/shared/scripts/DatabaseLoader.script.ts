@@ -1,12 +1,12 @@
 import { gameLoadUpdate } from 'renderer/redux/database/database.reducer';
 import { store } from 'renderer/redux/store';
-import { ATTRIBUTES_DATABASE, EVENT_DATABASE, TRAIT_DATABASE } from '../Constants';
+import { ATTRIBUTES_DATABASE_FOLDER, EVENT_DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from '../Constants';
 import { Attribute } from '../models/base/Attribute.model';
 import { Event } from '../models/base/Event.model';
 import { Trait } from '../models/base/Trait.model';
 
 export async function GameStartDabaseLoad(): Promise<void> {
-    const loadedTraitsJSON: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(TRAIT_DATABASE);
+    const loadedTraitsJSON: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(TRAIT_DATABASE_FOLDER);
 
     const loadedTraits: Trait[] = [];
     loadedTraitsJSON.map((stringfiedTraitList) => {
@@ -17,9 +17,9 @@ export async function GameStartDabaseLoad(): Promise<void> {
         }
     });
 
-    store.dispatch(gameLoadUpdate({ key: TRAIT_DATABASE, value: loadedTraits, progress: 50 }));
+    store.dispatch(gameLoadUpdate({ key: TRAIT_DATABASE_FOLDER, value: loadedTraits, progress: 50 }));
 
-    const loadedAttributesJSON: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(ATTRIBUTES_DATABASE);
+    const loadedAttributesJSON: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(ATTRIBUTES_DATABASE_FOLDER);
 
     const loadedAttributes: Attribute[] = [];
     loadedAttributesJSON.map((stringfiedAttrList) => {
@@ -30,9 +30,9 @@ export async function GameStartDabaseLoad(): Promise<void> {
         }
     });
 
-    store.dispatch(gameLoadUpdate({ key: ATTRIBUTES_DATABASE, value: loadedAttributes, progress: 100 }));
+    store.dispatch(gameLoadUpdate({ key: ATTRIBUTES_DATABASE_FOLDER, value: loadedAttributes, progress: 100 }));
 
-    const loadedEventsJSON: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(EVENT_DATABASE);
+    const loadedEventsJSON: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(EVENT_DATABASE_FOLDER);
 
     const loadedEvents: Event[] = [];
     loadedEventsJSON.map((stringfiedEventList) => {
@@ -43,7 +43,7 @@ export async function GameStartDabaseLoad(): Promise<void> {
         }
     });
 
-    store.dispatch(gameLoadUpdate({ key: EVENT_DATABASE, value: loadedEvents, progress: 100 }));
+    store.dispatch(gameLoadUpdate({ key: EVENT_DATABASE_FOLDER, value: loadedEvents, progress: 100 }));
 
     console.log(store.getState().database.mappedDatabase);
 }

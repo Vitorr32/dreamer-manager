@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import './channels/fileSystem';
+import './channels/saveFile';
 
 ipcMain.handle('get-db-files', async (_, args: string[]) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../assets');
@@ -15,18 +16,6 @@ ipcMain.handle('get-db-files', async (_, args: string[]) => {
         } catch (e) {
             return e;
         }
-    });
-});
-
-ipcMain.handle('save-assets-files', async (_, args: { path: string[]; files: { name: string; path: string }[] }) => {
-    const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../assets');
-    const ASSET_PATH = path.join(RESOURCES_PATH, ...args.path);
-
-    args.files.forEach((file) => {
-        fs.copyFile(file.path, path.join(ASSET_PATH, file.name), (err) => {
-            if (err) throw err;
-            console.log('source.txt was copied to destination.txt');
-        });
     });
 });
 
@@ -51,7 +40,7 @@ ipcMain.handle('get-file', async (_, args: string[]) => {
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args);
 
     try {
-        return { path: ASSET_PATH, buffer: fs.readFileSync(ASSET_PATH) };
+        return { path: ASSET_PATH, buffer: fs.readFileSync(ASSET_PATH).toString() };
     } catch (e) {
         return e;
     }

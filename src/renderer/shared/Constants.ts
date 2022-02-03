@@ -19,9 +19,15 @@ export const LANGUAGE_NAME: { [key: string]: string } = {
 
 ///////////////////////////////
 //RESOURCES FOLDER NAME
-export const TRAIT_DATABASE = 'traits';
-export const ATTRIBUTES_DATABASE = 'attributes';
-export const EVENT_DATABASE = 'events';
+export const DATABASE_FOLDER = 'db';
+export const ICONS_FOLDER = 'icons';
+export const TRAIT_DATABASE_FOLDER = 'traits';
+export const ATTRIBUTES_DATABASE_FOLDER = 'attributes';
+export const EVENT_DATABASE_FOLDER = 'events';
+
+///////////////////////////////
+//BASE GAME FILES
+export const BASE_TRAIT_FILE = 'BaseGameTraits.json';
 
 ////////////////////////////////
 //RESOURCES FULL QUALIFIED PATH

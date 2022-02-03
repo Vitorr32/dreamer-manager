@@ -5,9 +5,10 @@ import { RootState } from 'renderer/redux/store';
 import { useSelector } from 'react-redux';
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { Button, Typography } from '@mui/material';
-import { LANGUAGE_CODE_DEFAULT } from 'renderer/shared/Constants';
+import { BASE_TRAIT_FILE, DATABASE_FOLDER, ICONS_FOLDER, LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
-import { ApplyFileProtocol, GetFileInfoFromPath } from 'renderer/shared/utils/StringOperations';
+import { ApplyFileProtocol, GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
+import { InsertIconInAssets, InsertJSONFileAsDatabase } from 'renderer/shared/scripts/DatabaseCreate.script';
 
 interface IProps {
     trait: Trait;
@@ -31,7 +32,19 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
         console.log('Valid');
 
         const fileInfo = await GetFileInfoFromPath(ApplyFileProtocol(iconPath));
-        console.log(fileInfo);
+
+        if (!fileInfo) {
+            const newValidation = {
+                common: t('interface.editor.validation.missing_icon'),
+            };
+            setInputValidation(newValidation);
+        }
+
+        const submittedTrait = Object.assign({}, trait);
+        submittedTrait.spriteName = fileInfo?.fullName;
+
+        InsertIconInAssets(RemoveFileProtocol(iconPath), [ICONS_FOLDER, TRAIT_DATABASE_FOLDER], submittedTrait.spriteName);
+        InsertJSONFileAsDatabase([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], BASE_TRAIT_FILE, submittedTrait);
 
         setLoading(false);
     };
@@ -46,10 +59,8 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
 
         setInputValidation(validation);
 
-        return Object.keys(validation).some((inputValidated) => !inputValidated);
+        return Object.keys(validation).some((inputValidated) => !validation[inputValidated]);
     };
-
-    console.log(trait);
 
     return (
         <Box className="trait-review">
@@ -108,6 +119,7 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
                 ))}
             </Box>
             <Box className="trait-review__footer">
+                <Typography>{inputValidation.common}</Typography>
                 <Typography>{t('interface.editor.trait.localization_message')}</Typography>
                 <Button onClick={onSubmit}>{t('interface.commons.submit')}</Button>
             </Box>

@@ -11,7 +11,7 @@ export const en_US = {
                 by: 'by',
                 increase: 'increase',
                 decrease: 'decrease',
-                language: 'Language'
+                language: 'Language',
             },
             editor: {
                 trait: {
@@ -35,7 +35,7 @@ export const en_US = {
                     icon_helper: 'The image used as icon for the trait, it should have a square (Optimally 100x100) proportion with transparent background when nescessary.',
                     localization_message: 'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.',
                     is_spawnable: 'Can spawn',
-                    not_spawnable: 'Can\'t spawn'
+                    not_spawnable: "Can't spawn",
                 },
                 effect: {
                     unset_modifier: 'New Modifier',
@@ -76,11 +76,12 @@ export const en_US = {
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                 },
                 validation: {
-                    duplicated_id : 'The id {{id}} is already being used',
-                    missing_name: 'The name of the trait is missing, or it\'s not set in english',
-                    missing_description: 'The description of the trait is missing, or it\'s not set in english',
-                    missing_type: 'The type of the trait is not set'
-                }
+                    duplicated_id: 'The id {{id}} is already being used',
+                    missing_name: "The name of the trait is missing, or it's not set in english",
+                    missing_description: "The description of the trait is missing, or it's not set in english",
+                    missing_type: 'The type of the trait is not set',
+                    missing_icon: 'The selected icon is missing from the file system, please select the icon again',
+                },
             },
             tools: {
                 common: {

@@ -14,9 +14,15 @@ contextBridge.exposeInMainWorld('electron', {
         getFileFromResources(path = []) {
             return ipcRenderer.invoke('get-file', path);
         },
+        saveFileToResources(path, fileName, content) {
+            return ipcRenderer.invoke('save-as-json', { path: path, fileName: fileName, content: content });
+        },
+        copyFileToResources(originPath, destinationPath) {
+            return ipcRenderer.invoke('save-as-copy', { originPath: originPath, destinationPath: destinationPath });
+        },
         getFileInfo(path) {
-            return ipcRenderer.invoke('get-file-info', path)
-        }
+            return ipcRenderer.invoke('get-file-info', path);
+        },
     },
     ipcRenderer: {
         invoke(channel, args) {

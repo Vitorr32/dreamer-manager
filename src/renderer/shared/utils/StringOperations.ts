@@ -18,12 +18,16 @@ export function ApplyFileProtocol(path: string): string {
     return `local-file-protocol://${path}`;
 }
 
+export function RemoveFileProtocol(path: string): string {
+    return path.replace('local-file-protocol://', '');
+}
+
 export async function GetFileFromResources(path: string[]): Promise<string> {
     const filePath = window.electron.fileSystem.getFileFromResources(path);
     return ApplyFileProtocol(filePath);
 }
 
-export async function GetFileInfoFromPath(path: string): Promise<{ fileName: string; fullName: string; extension: string } | undefined> {
+export async function GetFileInfoFromPath(path: string): Promise<{ fileName: string; fullName: string; extension: string }> {
     const filePath = await window.electron.fileSystem.getFileInfo(path);
     return filePath;
 }

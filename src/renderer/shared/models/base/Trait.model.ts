@@ -32,16 +32,9 @@ export class Trait {
         this.id = 'trait_' + uuidv4();
 
         this.localization = {};
-        LANGUAGE_CODES.forEach((languageCode) => {
-            this.localization[languageCode] = {
-                name: '',
-                description: '',
-            };
-        });
-
         this.type = TraitType.UNDEFINED;
         this.spawnable = false;
-        this.effects = [new Effect()];
+        this.effects = [];
     }
 
     public getName(languageCode: string): string {
@@ -49,6 +42,10 @@ export class Trait {
     }
 
     public setName(name: string, languageCode: string): string {
+        if (!this.localization[languageCode]) {
+            this.localization[languageCode] = {} as any;
+        }
+
         this.localization[languageCode].name = name;
         return this.localization[languageCode].name;
     }
@@ -58,6 +55,10 @@ export class Trait {
     }
 
     public setDescription(description: string, languageCode: string): string {
+        if (!this.localization[languageCode]) {
+            this.localization[languageCode] = {} as any;
+        }
+
         this.localization[languageCode].description = description;
         return this.localization[languageCode].description;
     }

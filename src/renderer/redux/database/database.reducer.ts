@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ATTRIBUTES_DATABASE, EVENT_DATABASE, TRAIT_DATABASE } from 'renderer/shared/Constants';
+import { ATTRIBUTES_DATABASE_FOLDER, EVENT_DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { Trait } from '../../shared/models/base/Trait.model';
@@ -46,7 +46,7 @@ export const databaseSlice = createSlice({
             }
         ) => {
             switch (action.payload.key) {
-                case TRAIT_DATABASE:
+                case TRAIT_DATABASE_FOLDER:
                     state.traits = action.payload.value;
                     state.traits.forEach((trait) => {
                         if (state.mappedDatabase.traits[trait.id]) {
@@ -55,7 +55,7 @@ export const databaseSlice = createSlice({
                         return (state.mappedDatabase.traits[trait.id] = trait);
                     });
                     break;
-                case ATTRIBUTES_DATABASE:
+                case ATTRIBUTES_DATABASE_FOLDER:
                     state.attributes = action.payload.value;
                     state.attributes.forEach((attr) => {
                         if (state.mappedDatabase.attributes[attr.id]) {
@@ -64,7 +64,7 @@ export const databaseSlice = createSlice({
                         return (state.mappedDatabase.attributes[attr.id] = attr);
                     });
                     break;
-                case EVENT_DATABASE:
+                case EVENT_DATABASE_FOLDER:
                     state.events = action.payload.value;
                     state.events.forEach((event) => {
                         if (state.mappedDatabase.events[event.id]) {
