@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { MAX_NUMBER_OF_EFFECTS } from 'renderer/shared/Constants';
-import { EffectEditor } from './EffectEditor.component';
+import { EffectEditor } from '../../../../shared/components/effects/EffectEditor.component';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { ModifierType } from 'renderer/shared/models/base/Modifier';

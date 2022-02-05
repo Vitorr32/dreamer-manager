@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 
 import '@fontsource/roboto';
 import './App.scss';
+import { NewEvent } from './Interface/MainMenu/sub-pages/NewEvent/NewEvent.component';
 
 export default function App() {
     useEffect(() => {
@@ -31,10 +32,11 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <HashRouter>
-                <Route exact path="/" render={() => <Redirect to="/menu/edit/trait/new" />} />
+                <Route exact path="/" render={() => <Redirect to="/menu/edit/event" />} />
                 <Route exact path="/menu" component={MainScreen} />
                 <Route exact path="/menu/edit" component={EditorScreen} />
                 <Route path="/menu/edit/trait" component={TraitEditor} />
+                <Route path="/menu/edit/event" component={NewEvent} />
             </HashRouter>
         </ThemeProvider>
     );

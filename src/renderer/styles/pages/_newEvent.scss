@@ -1,0 +1,12 @@
+.new-event {
+    background: #fae5df;
+    height: 100vh;
+    width: 100vw;
+    padding: 2.5%;
+    overflow: auto;
+
+    &__header {
+        display: flex;
+        align-items: center;
+    }
+}

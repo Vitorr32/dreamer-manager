@@ -8,6 +8,7 @@ import { NewTraitReview } from './NewTraitReview.component';
 import { useTranslation } from 'react-i18next';
 import { getLocaleLabel } from 'renderer/shared/utils/Localization';
 import { LANGUAGE_CODES } from 'renderer/shared/Constants';
+import { Link } from 'react-router-dom';
 
 interface IProps {}
 
@@ -55,9 +56,11 @@ export function NewTrait(props: IProps) {
     return (
         <div className="newtrait">
             <header className="newtrait__header">
-                <Button color="primary">
-                    <ArrowBackIcon />
-                </Button>
+                <Link to="/menu/edit">
+                    <Button color="primary">
+                        <ArrowBackIcon />
+                    </Button>
+                </Link>
                 <h2>Trait Creation</h2>
 
                 <TextField required label={t('interface.commons.language')} value={i18n.language} variant="outlined" select onChange={(event) => i18n.changeLanguage(event.target.value)}>
