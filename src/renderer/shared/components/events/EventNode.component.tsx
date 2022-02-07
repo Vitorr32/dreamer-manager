@@ -1,31 +1,37 @@
 import { Group } from '@visx/group';
 import { HierarchyPointNode } from '@visx/hierarchy/lib/types';
 import { Scene } from 'renderer/shared/models/base/Scene.model';
+import { useTheme } from '@mui/material';
+import { useState } from 'react';
 
-const peach = '#fd9b93';
-const pink = '#fe6e9e';
 const blue = '#03c0dc';
 const green = '#26deb0';
 const plum = '#71248e';
-const lightpurple = '#374469';
 const white = '#ffffff';
 export const background = '#272b4d';
 
 type HierarchyNode = HierarchyPointNode<Scene>;
 
-function EventNode({ node }: { node: HierarchyNode }) {
+/** Handles rendering Root, Parent, and other Nodes. */
+export function EventNode({ node }: { node: HierarchyNode }) {
     const width = 40;
     const height = 20;
     const centerX = -width / 2;
     const centerY = -height / 2;
     const isRoot = node.depth === 0;
     const isParent = !!node.children;
+    const [focusedNode, setFocusedNode] = useState('');
 
-    if (isRoot) return <RootNode node={node} />;
+    if (isRoot) return <RootNode node={node} focusedNode={focusedNode} setFocusedNode={setFocusedNode} />;
     if (isParent) return <ParentNode node={node} />;
 
     return (
-        <Group top={node.x} left={node.y}>
+        <Group
+            top={node.x}
+            left={node.y}
+            className={`eventNode ${focusedNode === node.data.id ? 'focused' : ''}`}
+            onClick={() => setFocusedNode(focusedNode === node.data.id ? '' : node.data.id)}
+        >
             <rect
                 height={height}
                 width={width}
@@ -48,12 +54,43 @@ function EventNode({ node }: { node: HierarchyNode }) {
     );
 }
 
-function RootNode({ node }: { node: HierarchyNode }) {
+function RootNode({ node, focusedNode, setFocusedNode }: { node: HierarchyNode; focusedNode: string; setFocusedNode: React.Dispatch<React.SetStateAction<string>> }) {
+    const theme = useTheme();
+    const thisKey = 'root';
+
     return (
-        <Group top={node.x} left={node.y}>
-            <circle r={12} fill="url('#lg')" />
-            <text dy=".33em" fontSize={9} fontFamily="Arial" textAnchor="middle" style={{ pointerEvents: 'none' }} fill={plum}>
+        <Group
+            top={node.x}
+            left={node.y}
+            className={`eventNode ${focusedNode === thisKey ? 'focused' : ''}`}
+            onClick={() => setFocusedNode(focusedNode === thisKey ? '' : thisKey)}
+        >
+            <circle r={theme.typography.fontSize} fill="crimson" />
+            <text dy=".33em" fontSize={theme.typography.fontSize} fontFamily={theme.typography.fontFamily} textAnchor="middle" fill={plum}>
                 {node.data.id}
+            </text>
+
+            <text
+                className="eventNode__addChild"
+                y={node.y - theme.typography.fontSize * 2}
+                dy=".33em"
+                fontSize={theme.typography.fontSize}
+                fontFamily={theme.typography.fontFamily}
+                fill={theme.palette.common.white}
+                textAnchor="middle"
+            >
+                Add Child
+            </text>
+            <text
+                className="eventNode__editNode"
+                y={node.y - theme.typography.fontSize * 4}
+                dy=".33em"
+                fontSize={theme.typography.fontSize}
+                fontFamily={theme.typography.fontFamily}
+                fill={theme.palette.common.white}
+                textAnchor="middle"
+            >
+                Edit Node
             </text>
         </Group>
     );

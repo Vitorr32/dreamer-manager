@@ -1,0 +1,23 @@
+.eventNode {
+    cursor: pointer;
+
+    &__addChild,
+    &__editNode {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease-in-out;
+        color: white;
+        cursor: pointer;
+    }
+
+    &.focused {
+        stroke: white;
+        stroke-width: 1px;
+
+        .eventNode__addChild,
+        .eventNode__editNode {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}

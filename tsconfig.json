@@ -15,6 +15,7 @@
     "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": false,
+    "strictNullChecks": false,
     /* Module Resolution Options */
     "moduleResolution": "node",
     "esModuleInterop": true,

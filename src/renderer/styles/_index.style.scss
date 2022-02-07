@@ -9,10 +9,11 @@
 @import './components/modal';
 @import './components/selectionModal';
 @import './components/cell';
-@import './components/node';
+@import './components/conditionNode';
 @import './components/line';
 @import './components/modifier';
 @import './components/effect';
+@import './components/eventNode';
 
 //SUB-INDEXES
 @import './components/condition/condition';

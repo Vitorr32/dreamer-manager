@@ -43,16 +43,17 @@ export interface Animation {
 }
 
 export interface SceneResult {
-    choiceLabel: string;
-    choiceCondition: ConditionTree | undefined;
-    resultingScene: Scene;
-    applyFlagToActor: { flagID: string; actor: number };
+    choiceLabel: string | null;
+    choiceCondition: ConditionTree | null;
+    //ID of the resulting scene
+    resultingScene: string;
+    applyFlagToActor: { flagID: string; actor: number }[] | null;
 }
 
 export class Scene {
     public id: string;
 
-    public sceneResults: SceneResult[] | undefined;
+    public sceneResults: SceneResult[] | null = null;
 
     //The string that will appear as the content of the dialog box
     public dialog?: string;
@@ -60,9 +61,9 @@ export class Scene {
     public speakerString?: string;
 
     //The source path of the background image
-    public backgroundSource: string | undefined;
+    public backgroundSource: string | null = null;
     //Which animations will be applied in the actors of the scene?
-    public animations: Animation[] | undefined;
+    public animations: Animation[] | null = null;
 
     constructor(id?: string) {
         this.id = id || 'scene_' + uuidv4();
