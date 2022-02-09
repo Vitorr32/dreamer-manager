@@ -43,9 +43,6 @@ export class VisualNovel {
             resultingScene: newScene.id,
         };
 
-        console.log(parentScene);
-        console.log(this.mappedScenes);
-
         if (this.mappedScenes[parentScene.id].sceneResults) {
             this.mappedScenes[parentScene.id].sceneResults.push(sceneResult);
         } else {
@@ -53,8 +50,42 @@ export class VisualNovel {
         }
     }
 
+    removeScene(parentScene: Scene, deletedScene: Scene) {
+        //If there's nothing in the tree, there's nothing to remove
+        if (!this.rootScene || !this.allScenes || !this.mappedScenes) {
+            console.error('removeScene() - Tried to remove node from a empty VN tree');
+            return;
+        }
+
+        //Modify the parent by removing the children from the scene results
+        const newParent = Object.assign({}, parentScene);
+        newParent.sceneResults = newParent.sceneResults.filter((result) => result.resultingScene !== deletedScene.id);
+
+        const parentIndex = this.getSceneIndex(newParent.id);
+        if (parentIndex === -1) {
+            console.error('removeScene() - The parent scene is not on the VN scene list!');
+            return;
+        }
+
+        const deletedIndex = this.getSceneIndex(deletedScene.id);
+        if (deletedIndex === -1) {
+            console.error('removeScene() - The delete scene is not on the VN scene list!');
+            return;
+        }
+
+        this.mappedScenes[newParent.id] = newParent;
+        this.allScenes[parentIndex] = newParent;
+
+        this.allScenes.splice(deletedIndex, 1);
+        this.mappedScenes[deletedScene.id] = null;
+    }
+
     getRoot(): Scene | null {
         return this.mappedScenes ? this.mappedScenes[this.rootScene] : null;
+    }
+
+    getSceneIndex(id: string): number {
+        return this.allScenes?.findIndex((scene) => scene.id === id);
     }
 
     getScene(id: string): Scene | null {

@@ -2,7 +2,8 @@
     cursor: pointer;
 
     &__addChild,
-    &__editNode {
+    &__editNode,
+    &__removeNode {
         opacity: 0;
         visibility: hidden;
         transition: all 0.2s ease-in-out;
@@ -15,7 +16,8 @@
         stroke-width: 1px;
 
         .eventNode__addChild,
-        .eventNode__editNode {
+        .eventNode__editNode,
+        .eventNode__removeNode {
             opacity: 1;
             visibility: visible;
         }

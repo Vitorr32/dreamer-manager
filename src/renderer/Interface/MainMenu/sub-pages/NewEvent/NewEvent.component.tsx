@@ -1,15 +1,14 @@
-import { Box, Button, MenuItem, TextField } from '@mui/material';
+import { Box, Button, MenuItem, Modal, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useTranslation } from 'react-i18next';
-
 import { Link } from 'react-router-dom';
 import { LANGUAGE_CODES } from 'renderer/shared/Constants';
 import { getLocaleLabel } from 'renderer/shared/utils/Localization';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Event } from 'renderer/shared/models/base/Event.model';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { EventNode } from 'renderer/shared/components/events/EventNode.component';
-import { hierarchy, Tree } from '@visx/hierarchy';
+import { Tree } from '@visx/hierarchy';
 import { Scene } from 'renderer/shared/models/base/Scene.model';
 import { Group } from '@visx/group';
 import { LinkHorizontal } from '@visx/shape';
@@ -28,9 +27,12 @@ const defaultMargin = { top: 10, left: 80, right: 80, bottom: 10 };
 
 export function NewEvent({ width = window.innerWidth - 200, height = 500, margin = defaultMargin }: IProps) {
     const { t, i18n } = useTranslation();
+    const yMax = height - margin.top - margin.bottom;
+    const xMax = width - margin.left - margin.right;
 
+    const [editedNode, setEditedNode] = useState<Scene | null>(null);
     const [newEvent, setNewEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
-    const [newVN, setVN] = useState<VisualNovel>();
+    const [newVN, setVN] = useState<VisualNovel>(null);
 
     useEffect(() => {
         const visualNovel = Object.assign(new VisualNovel(), newVN);
@@ -44,8 +46,25 @@ export function NewEvent({ width = window.innerWidth - 200, height = 500, margin
         setVN(visualNovel);
     }, []);
 
-    const yMax = height - margin.top - margin.bottom;
-    const xMax = width - margin.left - margin.right;
+    const onAddNode = (parent: Scene) => {
+        const visualNovel = Object.assign(new VisualNovel(), newVN);
+
+        visualNovel.addScene(parent, new Scene());
+
+        setVN(visualNovel);
+    };
+
+    const onRemoveNode = (scene: Scene, parent: Scene) => {
+        const visualNovel = Object.assign(new VisualNovel(), newVN);
+
+        visualNovel.removeScene(parent, scene);
+
+        setVN(visualNovel);
+    };
+
+    const onEditNode = (scene: Scene) => {
+        setEditedNode(scene);
+    };
 
     return (
         <Box className="new-event">
@@ -86,7 +105,7 @@ export function NewEvent({ width = window.innerWidth - 200, height = 500, margin
                                         <LinkHorizontal key={`link-${i}`} data={link} stroke={lightpurple} strokeWidth="1" fill="none" />
                                     ))}
                                     {tree.descendants().map((node, i) => (
-                                        <EventNode key={`node-${i}`} node={node} />
+                                        <EventNode key={`node-${i}`} node={node} onAddNode={onAddNode} onRemoveNode={onRemoveNode} />
                                     ))}
                                 </Group>
                             )}
@@ -94,6 +113,17 @@ export function NewEvent({ width = window.innerWidth - 200, height = 500, margin
                     </svg>
                 )}
             </Box>
+
+            <Modal open={editedNode !== null} onClose={() => setEditedNode(null)}>
+                <Box>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Text in a modal
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                    </Typography>
+                </Box>
+            </Modal>
         </Box>
     );
 }
