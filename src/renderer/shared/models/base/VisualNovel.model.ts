@@ -92,6 +92,21 @@ export class VisualNovel {
         return this.mappedScenes?.[id] || null;
     }
 
+    getParentScene(id: string): { scene: Scene; index: number } | null {
+        if (id === this.rootScene) {
+            return null;
+        }
+
+        const parentIndex = this.allScenes.findIndex((scene) => scene.sceneResults.find((sceneResult) => sceneResult.resultingScene === id));
+
+        if (parentIndex === -1) {
+            console.error(`getParentScene(${id}) - No parent for the child ID, maybe broken scene search in action`);
+            return null;
+        } else {
+            return { scene: this.allScenes[parentIndex], index: parentIndex };
+        }
+    }
+
     getChildrenScenes(parentID: string): Scene[] {
         return this.getScene(parentID).sceneResults?.map((result) => this.getScene(result.resultingScene)) || [];
     }
@@ -103,6 +118,21 @@ export class VisualNovel {
         }
 
         return hierarchy<Scene>(this.getRoot(), (scene: Scene) => this.getChildrenScenes(scene.id));
+    }
+
+    updateScene(scene: Scene): Scene | null {
+        const sceneIndex = this.allScenes.findIndex((searchScene) => searchScene.id === scene.id);
+        if (!this.mappedScenes[scene.id] || sceneIndex === -1) {
+            console.error('updateScene() - The scene to update is not currently mapped or in the array of the VisualNovel object!');
+            return null;
+        }
+
+        const updatedScene = Object.assign(new Scene(), scene);
+
+        this.mappedScenes[updatedScene.id] = updatedScene;
+        this.allScenes.splice(sceneIndex, 1, updatedScene);
+
+        return updatedScene;
     }
 
     renderCurrentScene() {}

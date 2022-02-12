@@ -13,6 +13,7 @@ import { Scene } from 'renderer/shared/models/base/Scene.model';
 import { Group } from '@visx/group';
 import { LinkHorizontal } from '@visx/shape';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
+import { EditableScene } from 'renderer/shared/components/scene/EditableScene';
 
 interface IProps {
     width: number;
@@ -25,7 +26,7 @@ export const background = '#272b4d';
 
 const defaultMargin = { top: 10, left: 80, right: 80, bottom: 10 };
 
-export function NewEvent({ width = window.innerWidth - 200, height = 500, margin = defaultMargin }: IProps) {
+export function NewEvent({ width = window.innerWidth - 100, height = 500, margin = defaultMargin }: IProps) {
     const { t, i18n } = useTranslation();
     const yMax = height - margin.top - margin.bottom;
     const xMax = width - margin.left - margin.right;
@@ -62,8 +63,17 @@ export function NewEvent({ width = window.innerWidth - 200, height = 500, margin
         setVN(visualNovel);
     };
 
-    const onEditNode = (scene: Scene) => {
+    const onNodeSelected = (scene: Scene) => {
         setEditedNode(scene);
+    };
+
+    const onNodeEdited = (scene: Scene) => {
+        const visualNovel = Object.assign(new VisualNovel(), newVN);
+
+        visualNovel.updateScene(scene);
+
+        setVN(visualNovel);
+        setEditedNode(null);
     };
 
     return (
@@ -105,7 +115,7 @@ export function NewEvent({ width = window.innerWidth - 200, height = 500, margin
                                         <LinkHorizontal key={`link-${i}`} data={link} stroke={lightpurple} strokeWidth="1" fill="none" />
                                     ))}
                                     {tree.descendants().map((node, i) => (
-                                        <EventNode key={`node-${i}`} node={node} onAddNode={onAddNode} onRemoveNode={onRemoveNode} />
+                                        <EventNode key={`node-${i}`} node={node} onAddNode={onAddNode} onNodeSelected={onNodeSelected} onRemoveNode={onRemoveNode} />
                                     ))}
                                 </Group>
                             )}
@@ -114,14 +124,12 @@ export function NewEvent({ width = window.innerWidth - 200, height = 500, margin
                 )}
             </Box>
 
-            <Modal open={editedNode !== null} onClose={() => setEditedNode(null)}>
-                <Box>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography>
+            <Modal className="modal" open={editedNode !== null} onClose={() => setEditedNode(null)}>
+                <Box className="modal__wrapper">
+                    <Box className="modal__header">Header</Box>
+                    <Box className="modal__content">
+                        <EditableScene scene={editedNode} onSceneEdited={onNodeEdited} />
+                    </Box>
                 </Box>
             </Modal>
         </Box>

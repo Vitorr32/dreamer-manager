@@ -13,7 +13,17 @@ export const background = '#272b4d';
 type HierarchyNode = HierarchyPointNode<Scene>;
 
 /** Handles rendering Root, Parent, and other Nodes. */
-export function EventNode({ node, onAddNode, onRemoveNode }: { node: HierarchyNode; onAddNode: (scene: Scene) => void; onRemoveNode: (scene: Scene, parent: Scene) => void }) {
+export function EventNode({
+    node,
+    onAddNode,
+    onNodeSelected,
+    onRemoveNode,
+}: {
+    node: HierarchyNode;
+    onAddNode: (scene: Scene) => void;
+    onNodeSelected: (scene: Scene) => void;
+    onRemoveNode: (scene: Scene, parent: Scene) => void;
+}) {
     const width = 40;
     const height = 20;
     const centerX = -width / 2;
@@ -23,10 +33,8 @@ export function EventNode({ node, onAddNode, onRemoveNode }: { node: HierarchyNo
     const [focusedNode, setFocusedNode] = useState('');
     const theme = useTheme();
 
-    if (isRoot) return <RootNode node={node} focusedNode={focusedNode} setFocusedNode={setFocusedNode} onAddNode={onAddNode} />;
+    if (isRoot) return <RootNode node={node} focusedNode={focusedNode} setFocusedNode={setFocusedNode} onAddNode={onAddNode} onNodeSelected={onNodeSelected}/>;
     // if (isParent) return <ParentNode node={node} />;
-
-    console.log(node);
 
     return (
         <Group
@@ -60,6 +68,7 @@ export function EventNode({ node, onAddNode, onRemoveNode }: { node: HierarchyNo
                 fontFamily={theme.typography.fontFamily}
                 fill={theme.palette.common.white}
                 textAnchor="middle"
+                onClick={() => onNodeSelected(node.data)}
             >
                 Edit Node
             </text>
@@ -73,7 +82,7 @@ export function EventNode({ node, onAddNode, onRemoveNode }: { node: HierarchyNo
                 textAnchor="middle"
                 onClick={() => onRemoveNode(node.data, node.parent.data)}
             >
-                Add Child
+                Removed Node
             </text>
         </Group>
     );
@@ -84,11 +93,13 @@ function RootNode({
     focusedNode,
     setFocusedNode,
     onAddNode,
+    onNodeSelected
 }: {
     node: HierarchyNode;
     focusedNode: string;
     setFocusedNode: React.Dispatch<React.SetStateAction<string>>;
     onAddNode: (scene: Scene) => void;
+    onNodeSelected: (scene: Scene) => void;
 }) {
     const theme = useTheme();
     const thisKey = 'root';
@@ -125,6 +136,7 @@ function RootNode({
                 fontFamily={theme.typography.fontFamily}
                 fill={theme.palette.common.white}
                 textAnchor="middle"
+                onClick={() => onNodeSelected(node.data)}
             >
                 Edit Node
             </text>

@@ -75,6 +75,9 @@ export const en_US = {
                     input_percent: 'Percentage change',
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                 },
+                event: {
+
+                },
                 validation: {
                     duplicated_id: 'The id {{id}} is already being used',
                     missing_name: "The name of the trait is missing, or it's not set in english",

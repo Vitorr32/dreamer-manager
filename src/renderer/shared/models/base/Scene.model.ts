@@ -61,7 +61,7 @@ export class Scene {
     public speakerString?: string;
 
     //The source path of the background image
-    public backgroundSource: string | null = null;
+    public backgroundImageName: string | null = null;
     //Which animations will be applied in the actors of the scene?
     public animations: Animation[] | null = null;
 
