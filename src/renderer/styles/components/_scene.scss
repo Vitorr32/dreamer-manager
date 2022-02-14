@@ -1,0 +1,36 @@
+.scene {
+    &__wrapper {
+    }
+
+    &__background {
+        position: relative;
+
+        img {
+            width: 100%;
+            object-fit: contain;
+        }
+
+        &-edit {
+            visibility: hidden;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &:hover {
+            img {
+                filter: grayscale(100%);
+            }
+
+            .scene__background-edit {
+                visibility: visible;
+            }
+        }
+    }
+}

@@ -33,14 +33,16 @@ export const en_US = {
                     traits on generation.`,
                     icon_label: 'Avatar Icon',
                     icon_helper: 'The image used as icon for the trait, it should have a square (Optimally 100x100) proportion with transparent background when nescessary.',
-                    localization_message: 'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.',
+                    localization_message:
+                        'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.',
                     is_spawnable: 'Can spawn',
                     not_spawnable: "Can't spawn",
                 },
                 effect: {
                     unset_modifier: 'New Modifier',
                     unset_value: 'Unknown value',
-                    effect_instruction: "* Here you can create/edit the effects that the new trait will have, each effect can have it's own conditions and modifiers, a single trait can have up to {{max}} effects.",
+                    effect_instruction:
+                        "* Here you can create/edit the effects that the new trait will have, each effect can have it's own conditions and modifiers, a single trait can have up to {{max}} effects.",
                     add_effect: 'Add new effect',
                     edit_effect: 'Edit effect',
                     remove_effect: 'Remove effect',
@@ -76,7 +78,9 @@ export const en_US = {
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                 },
                 event: {
-
+                    edit_background_cta: 'Change Background',
+                    background_file_search: 'Local File',
+                    background_resources_search: 'Game File',
                 },
                 validation: {
                     duplicated_id: 'The id {{id}} is already being used',

@@ -34,6 +34,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
     const [newEvent, setNewEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
     const [newVN, setVN] = useState<VisualNovel>(null);
+    const [tempImagesPath, setTempImagesPaths] = useState<{ [key: string]: string }>({});
 
     useEffect(() => {
         const visualNovel = Object.assign(new VisualNovel(), newVN);
@@ -128,7 +129,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                 <Box className="modal__wrapper">
                     <Box className="modal__header">Header</Box>
                     <Box className="modal__content">
-                        <EditableScene scene={editedNode} onSceneEdited={onNodeEdited} />
+                        <EditableScene scene={editedNode} onSceneEdited={onNodeEdited} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
                     </Box>
                 </Box>
             </Modal>

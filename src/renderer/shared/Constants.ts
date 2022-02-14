@@ -19,9 +19,11 @@ export const LANGUAGE_NAME: { [key: string]: string } = {
 
 ///////////////////////////////
 //RESOURCES FOLDER NAME
-export const DATABASE_FOLDER = 'db';
+export const DATABASE_FOLDER = 'database';
 export const ICONS_FOLDER = 'icons';
 export const TRAIT_DATABASE_FOLDER = 'traits';
+export const IMAGES_FOLDER = 'images';
+export const BACKGROUND_IMAGES_FOLDER = 'background';
 export const ATTRIBUTES_DATABASE_FOLDER = 'attributes';
 export const EVENT_DATABASE_FOLDER = 'events';
 
@@ -37,3 +39,4 @@ export const TRAITS = 'traits';
 ////////////////////////////////
 //PLACEHOLDER RESOURCES.
 export const PLACEHOLDER_TRAIT_ICON = 'trait_placeholder.png';
+export const PLACEHOLDER_EVENT_BACKGROUND = 'event_placeholder.png';

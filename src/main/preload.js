@@ -2,17 +2,20 @@ const { contextBridge, ipcRenderer, app } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
     fileSystem: {
+        getFileFromResources(path = []) {
+            return ipcRenderer.invoke('get-file', path);
+        },
+        getFilesFromResources(path = []) {
+            return ipcRenderer.invoke('get-files', path);
+        },
         getFilesFromResourcesDatabase(folderPath = '') {
-            return ipcRenderer.invoke('get-db-files', ['db', folderPath]);
+            return ipcRenderer.invoke('get-db-files', ['database', folderPath]);
         },
         saveFilesToResources(path = [], files) {
             return ipcRenderer.invoke('save-assets-files', { path: path, files: files });
         },
         saveFilesToTempFolder(files) {
             return ipcRenderer.invoke('save-temp-files', files);
-        },
-        getFileFromResources(path = []) {
-            return ipcRenderer.invoke('get-file', path);
         },
         saveFileToResources(path, fileName, content) {
             return ipcRenderer.invoke('save-as-json', { path: path, fileName: fileName, content: content });
