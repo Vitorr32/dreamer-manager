@@ -11,11 +11,19 @@ interface IProps {
     rootFolder?: string[];
 }
 
+interface ContentView {
+    fileName: string;
+    filePath: string;
+    isDirectory: boolean;
+    isImage: boolean;
+    extension: string;
+}
+
 export function ResourcesSearch({ rootFolder = null, onResourceSelected: onModalSubmit }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [query, setQuery] = useState<string>();
-    const [currentContentView, setContentView] = useState<{ fileName: string; filePath: string; isDirectory: boolean; isImage: boolean; extension: string }[]>([]);
+    const [currentContentView, setContentView] = useState<ContentView[]>([]);
     const [currentPath, setCurrentPath] = useState<string[]>();
     const [previousPath, setPreviousPath] = useState<string[]>();
 
@@ -32,7 +40,22 @@ export function ResourcesSearch({ rootFolder = null, onResourceSelected: onModal
         getCurrentFolderContent();
     }, []);
 
-    const navigateIntoFolder = (folderName: string) => {};
+    const navigateIntoFolder = async (folderInfo: ContentView) => {
+        const newPath = [...currentPath, folderInfo.fileName];
+        const files = await window.electron.fileSystem.getFilesFromResources(newPath);
+
+        setContentView(files);
+        setPreviousPath(currentPath);
+        setCurrentPath(newPath);
+    };
+
+    const stepBackFromFolder = async () => {};
+
+    const onFolderClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, clickedFolderInfo: ContentView): void => {
+        if (event.detail === 2) {
+            navigateIntoFolder(clickedFolderInfo);
+        }
+    };
 
     return (
         <Box className="resources">
@@ -60,7 +83,7 @@ export function ResourcesSearch({ rootFolder = null, onResourceSelected: onModal
                 {currentContentView.map((content) => {
                     if (content.isDirectory) {
                         return (
-                            <Box className="resources__folder" onClick={(e) => e.detail === 2}>
+                            <Box className="resources__folder" onClick={(event) => onFolderClick(event, content)}>
                                 <FolderIcon />
                                 <Typography>{content.fileName}</Typography>
                             </Box>
