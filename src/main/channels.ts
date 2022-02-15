@@ -18,19 +18,3 @@ ipcMain.handle('get-db-files', async (_, args: string[]) => {
         }
     });
 });
-
-ipcMain.handle('save-temp-files', async (_, args: { name: string; path: string }[]) => {
-    const filesInDestination: any[] = [];
-
-    args.forEach((file) => {
-        const destinationPath = path.join(app.getPath('temp'), file.name);
-        try {
-            fs.copyFileSync(file.path, destinationPath);
-            filesInDestination.push(destinationPath);
-        } catch (e) {
-            console.log(e);
-        }
-    });
-
-    return filesInDestination;
-});

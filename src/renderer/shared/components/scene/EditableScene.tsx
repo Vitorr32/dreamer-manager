@@ -43,7 +43,21 @@ export function EditableScene({ scene, pathOfTempImages, setPathOfTempImages }: 
         getImageFilePath();
     }, []);
 
-    const onBackgroundSelected = (fileName: string, filePath: string, internal: boolean = true): void => {};
+    const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[], internal: boolean = true): Promise<void> => {
+        const setFilePath = internal
+            ? await GetFileFromResources([IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, scene.backgroundImageName])
+            : ApplyFileProtocol(await window.electron.fileSystem.saveFilesToTempFolder([{ name: fileName, path: filePath }]));
+
+        //If the file selected is not internal, it should be added to the temp paths as it was copied to temp folder.
+        if (!internal) {
+            const newTempPaths = Object.assign({}, pathOfTempImages);
+            newTempPaths[scene.id] = setFilePath;
+
+            setPathOfTempImages(newTempPaths);
+        }
+
+        setBackgroundPath(setFilePath);
+    };
 
     return (
         <Box className="scene__wrapper">
@@ -58,7 +72,7 @@ export function EditableScene({ scene, pathOfTempImages, setPathOfTempImages }: 
                     <Button>{t('interface.editor.event.background_file_search')}</Button>
                     <Button onClick={() => setGaleryState(true)}>{t('interface.editor.event.background_resources_search')}</Button>
 
-                    {openGalery && <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[]} />}
+                    {openGalery && <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER]} />}
                 </Box>
             </Modal>
         </Box>

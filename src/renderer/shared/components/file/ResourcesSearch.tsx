@@ -1,13 +1,15 @@
-import { Box, InputAdornment, OutlinedInput, Typography } from '@mui/material';
+import { Box, Button, InputAdornment, OutlinedInput, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
 import { ApplyFileProtocol } from 'renderer/shared/utils/StringOperations';
 import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 interface IProps {
-    onResourceSelected: (fileName: string, filePath: string) => void;
+    onResourceSelected: (fileName: string, filePath: string, internalPath: string[]) => void;
+    restriction?: RegExp;
     rootFolder?: string[];
 }
 
@@ -19,13 +21,14 @@ interface ContentView {
     extension: string;
 }
 
-export function ResourcesSearch({ rootFolder = null, onResourceSelected: onModalSubmit }: IProps) {
+export function ResourcesSearch({ rootFolder = null, restriction = null, onResourceSelected }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [query, setQuery] = useState<string>();
     const [currentContentView, setContentView] = useState<ContentView[]>([]);
     const [currentPath, setCurrentPath] = useState<string[]>();
     const [previousPath, setPreviousPath] = useState<string[]>();
+    const [selectedFile, setSelectedFile] = useState<ContentView>();
 
     useEffect(() => {
         async function getCurrentFolderContent() {
@@ -44,17 +47,47 @@ export function ResourcesSearch({ rootFolder = null, onResourceSelected: onModal
         const newPath = [...currentPath, folderInfo.fileName];
         const files = await window.electron.fileSystem.getFilesFromResources(newPath);
 
-        setContentView(files);
+        setContentView(sortContentView(files));
         setPreviousPath(currentPath);
         setCurrentPath(newPath);
     };
 
-    const stepBackFromFolder = async () => {};
+    const sortContentView = (contentView: ContentView[]): ContentView[] => {
+        return contentView.sort((a, b) => (a.isDirectory ? 1 : a.isImage ? 0 : -1));
+    };
+
+    const stepBackFromFolder = async () => {
+        const newPath = currentPath.slice();
+        newPath.pop();
+
+        const files = await window.electron.fileSystem.getFilesFromResources(newPath);
+
+        setContentView(sortContentView(files));
+        setPreviousPath(currentPath);
+        setCurrentPath(newPath);
+    };
 
     const onFolderClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, clickedFolderInfo: ContentView): void => {
         if (event.detail === 2) {
             navigateIntoFolder(clickedFolderInfo);
         }
+    };
+
+    const onFileClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, clickedFileInfo: ContentView): void => {
+        setSelectedFile(clickedFileInfo);
+
+        //If double click, immediately submit the file
+        if (event.detail === 2) {
+            onFileSubmit();
+        }
+    };
+
+    const onFileSubmit = () => {
+        if (restriction && !restriction.test(selectedFile.extension)) {
+            //TODO: Error messager
+            return;
+        }
+        onResourceSelected(selectedFile.fileName, selectedFile.filePath, [...currentPath, selectedFile.fileName]);
     };
 
     return (
@@ -65,6 +98,10 @@ export function ResourcesSearch({ rootFolder = null, onResourceSelected: onModal
                 </Typography>
 
                 <Box className="resources__path">
+                    <Button onClick={stepBackFromFolder}>
+                        <ArrowBackIcon />
+                    </Button>
+
                     <Typography>{currentPath}</Typography>
                     <OutlinedInput
                         value={query}
@@ -83,23 +120,23 @@ export function ResourcesSearch({ rootFolder = null, onResourceSelected: onModal
                 {currentContentView.map((content) => {
                     if (content.isDirectory) {
                         return (
-                            <Box className="resources__folder" onClick={(event) => onFolderClick(event, content)}>
+                            <Box className="resources__file resources__file-folder" onClick={(event) => onFolderClick(event, content)}>
                                 <FolderIcon />
-                                <Typography>{content.fileName}</Typography>
+                                <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
                     } else if (content.isImage) {
                         return (
-                            <Box className="resources__image">
+                            <Box className="resources__file resources__file-image" onClick={(event) => onFileClick(event, content)}>
                                 <img src={ApplyFileProtocol(content.filePath)} />
-                                <Typography>{content.fileName}</Typography>
+                                <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
                     } else {
                         return (
-                            <Box className="resources__file">
+                            <Box className="resources__file resources__file-file" onClick={(event) => onFileClick(event, content)}>
                                 <InsertDriveFileIcon />
-                                <Typography>{content.fileName}</Typography>
+                                <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
                     }
