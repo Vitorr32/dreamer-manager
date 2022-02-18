@@ -24,6 +24,7 @@ export const ICONS_FOLDER = 'icons';
 export const TRAIT_DATABASE_FOLDER = 'traits';
 export const IMAGES_FOLDER = 'images';
 export const BACKGROUND_IMAGES_FOLDER = 'background';
+export const EVENT_BACKGROUND_IMAGES_FOLDER = 'event'
 export const ATTRIBUTES_DATABASE_FOLDER = 'attributes';
 export const EVENT_DATABASE_FOLDER = 'events';
 

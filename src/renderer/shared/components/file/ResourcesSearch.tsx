@@ -6,6 +6,7 @@ import { ApplyFileProtocol } from 'renderer/shared/utils/StringOperations';
 import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { AreArraysEqual } from 'renderer/shared/utils/General';
 
 interface IProps {
     onResourceSelected: (fileName: string, filePath: string, internalPath: string[]) => void;
@@ -34,8 +35,6 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
         async function getCurrentFolderContent() {
             const files = await window.electron.fileSystem.getFilesFromResources(rootFolder || []);
 
-            console.log(files);
-
             setContentView(files);
             setCurrentPath(rootFolder || null);
         }
@@ -57,6 +56,10 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
     };
 
     const stepBackFromFolder = async () => {
+        if (AreArraysEqual(rootFolder, currentPath)) {
+            return;
+        }
+
         const newPath = currentPath.slice();
         newPath.pop();
 
@@ -98,7 +101,7 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
                 </Typography>
 
                 <Box className="resources__path">
-                    <Button onClick={stepBackFromFolder}>
+                    <Button onClick={stepBackFromFolder} disabled={AreArraysEqual(rootFolder, currentPath)}>
                         <ArrowBackIcon />
                     </Button>
 
@@ -120,21 +123,21 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
                 {currentContentView.map((content) => {
                     if (content.isDirectory) {
                         return (
-                            <Box className="resources__file resources__file-folder" onClick={(event) => onFolderClick(event, content)}>
+                            <Box key={`content_${content.fileName}`} className="resources__file resources__file-folder" onClick={(event) => onFolderClick(event, content)}>
                                 <FolderIcon />
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
                     } else if (content.isImage) {
                         return (
-                            <Box className="resources__file resources__file-image" onClick={(event) => onFileClick(event, content)}>
+                            <Box key={`content_${content.fileName}`} className="resources__file resources__file-image" onClick={(event) => onFileClick(event, content)}>
                                 <img src={ApplyFileProtocol(content.filePath)} />
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
                     } else {
                         return (
-                            <Box className="resources__file resources__file-file" onClick={(event) => onFileClick(event, content)}>
+                            <Box key={`content_${content.fileName}`} className="resources__file resources__file-file" onClick={(event) => onFileClick(event, content)}>
                                 <InsertDriveFileIcon />
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>

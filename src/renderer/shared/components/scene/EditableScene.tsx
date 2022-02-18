@@ -1,7 +1,7 @@
 import { Box, Button, Modal, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND } from 'renderer/shared/Constants';
+import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND } from 'renderer/shared/Constants';
 import { Scene } from 'renderer/shared/models/base/Scene.model';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
@@ -13,39 +13,41 @@ interface IProps {
     setPathOfTempImages: Dispatch<SetStateAction<{ [key: string]: string }>>;
 }
 
-export function EditableScene({ scene, pathOfTempImages, setPathOfTempImages }: IProps) {
+const backgroundImagesGamePath = [IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER];
+
+export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
     const { t, i18n } = useTranslation();
     const [backgroundPath, setBackgroundPath] = useState<string>();
     const [backgroundSelectOpen, setBackgroudSelectState] = useState<boolean>(false);
     const [openGalery, setGaleryState] = useState<boolean>(false);
 
     useEffect(() => {
-        async function getImageFilePath() {
-            if (pathOfTempImages[scene.id]) {
-                setBackgroundPath(ApplyFileProtocol(pathOfTempImages[scene.id]));
-                return;
-            }
-
-            if (scene.backgroundImageName) {
-                const filePath = await GetFileFromResources([IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, scene.backgroundImageName]);
-                console.log(filePath);
-                setBackgroundPath(filePath);
-            } else {
-                const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([
-                    IMAGES_FOLDER,
-                    BACKGROUND_IMAGES_FOLDER,
-                    PLACEHOLDER_EVENT_BACKGROUND,
-                ]);
-                setBackgroundPath(ApplyFileProtocol(file.path));
-            }
-        }
-
         getImageFilePath();
     }, []);
 
-    const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[], internal: boolean = true): Promise<void> => {
+    const getImageFilePath = async () => {
+        if (pathOfTempImages[scene.id]) {
+            setBackgroundPath(pathOfTempImages[scene.id]);
+            return;
+        }
+
+        if (scene.backgroundImageName) {
+            const filePath = await GetFileFromResources([...backgroundImagesGamePath, scene.backgroundImageName]);
+            console.log(filePath);
+            setBackgroundPath(filePath);
+        } else {
+            const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([
+                IMAGES_FOLDER,
+                BACKGROUND_IMAGES_FOLDER,
+                PLACEHOLDER_EVENT_BACKGROUND,
+            ]);
+            setBackgroundPath(ApplyFileProtocol(file.path));
+        }
+    };
+
+    const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal: boolean = true): Promise<void> => {
         const setFilePath = internal
-            ? await GetFileFromResources([IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, scene.backgroundImageName])
+            ? await GetFileFromResources([...backgroundImagesGamePath, scene.backgroundImageName])
             : ApplyFileProtocol(await window.electron.fileSystem.saveFilesToTempFolder([{ name: fileName, path: filePath }]));
 
         //If the file selected is not internal, it should be added to the temp paths as it was copied to temp folder.
@@ -54,7 +56,15 @@ export function EditableScene({ scene, pathOfTempImages, setPathOfTempImages }: 
             newTempPaths[scene.id] = setFilePath;
 
             setPathOfTempImages(newTempPaths);
+        } else {
+            const newScene = Object.assign({}, scene);
+            newScene.backgroundImageName = fileName;
+
+            onSceneEdited(newScene);
+            return;
         }
+
+        console.log(setFilePath);
 
         setBackgroundPath(setFilePath);
     };
@@ -69,7 +79,18 @@ export function EditableScene({ scene, pathOfTempImages, setPathOfTempImages }: 
             </Box>
             <Modal className="modal" open={backgroundSelectOpen} onClose={() => setBackgroudSelectState(false)}>
                 <Box className="modal__wrapper modal__wrapper-small">
-                    <Button>{t('interface.editor.event.background_file_search')}</Button>
+                    <Button variant="contained" component="label" htmlFor="imageSelection">
+                        {t('interface.editor.event.background_file_search')}
+                        <input
+                            id="imageSelection"
+                            name="avatar"
+                            type="file"
+                            hidden
+                            onChange={(({ target }) => onBackgroundSelected(target.files[0].name, target.files[0].path, null, false))}
+                            accept="image/*"
+                        />
+                    </Button>
+
                     <Button onClick={() => setGaleryState(true)}>{t('interface.editor.event.background_resources_search')}</Button>
 
                     {openGalery && <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER]} />}
