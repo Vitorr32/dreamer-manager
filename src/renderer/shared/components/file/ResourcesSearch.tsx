@@ -80,7 +80,7 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
         setSelectedFile(clickedFileInfo);
 
         //If double click, immediately submit the file
-        if (event.detail === 2) {
+        if (event.detail === 2 && clickedFileInfo === selectedFile) {
             onFileSubmit();
         }
     };

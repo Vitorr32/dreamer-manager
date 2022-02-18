@@ -25,8 +25,8 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
             }
 
             if (trait.spriteName) {
-                const filePath = await GetFileFromResources([ICONS, TRAITS, trait.spriteName]);
-                setTempImage(filePath);
+                const file = await GetFileFromResources([ICONS, TRAITS, trait.spriteName]);
+                setTempImage(file.path);
             } else {
                 //Get the placeholder icon for trait
                 const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([ICONS, TRAITS, PLACEHOLDER_TRAIT_ICON]);
@@ -137,7 +137,14 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
             <Box className="basic-info__field">
                 <FormControlLabel
                     value="start"
-                    control={<Switch disabled={trait.type === TraitType.NATIONAL} value={trait.spawnable} onChange={(event) => onInputChange('spawnable', event.target.checked)} color="primary" />}
+                    control={
+                        <Switch
+                            disabled={trait.type === TraitType.NATIONAL}
+                            value={trait.spawnable}
+                            onChange={(event) => onInputChange('spawnable', event.target.checked)}
+                            color="primary"
+                        />
+                    }
                     label={t('interface.editor.trait.spawn_label') as string}
                     labelPlacement="start"
                 />

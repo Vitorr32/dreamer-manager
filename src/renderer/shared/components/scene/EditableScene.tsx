@@ -32,9 +32,8 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
         }
 
         if (scene.backgroundImageName) {
-            const filePath = await GetFileFromResources([...backgroundImagesGamePath, scene.backgroundImageName]);
-            console.log(filePath);
-            setBackgroundPath(filePath);
+            const file = await GetFileFromResources([...backgroundImagesGamePath, scene.backgroundImageName]);
+            setBackgroundPath(file.path);
         } else {
             const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([
                 IMAGES_FOLDER,
@@ -46,8 +45,12 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
     };
 
     const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal: boolean = true): Promise<void> => {
-        const setFilePath = internal
-            ? await GetFileFromResources([...backgroundImagesGamePath, scene.backgroundImageName])
+        if (!fileName || !filePath) {
+            return;
+        }
+
+        let setFilePath = internal
+            ? (await GetFileFromResources(internalPath)).path
             : ApplyFileProtocol(await window.electron.fileSystem.saveFilesToTempFolder([{ name: fileName, path: filePath }]));
 
         //If the file selected is not internal, it should be added to the temp paths as it was copied to temp folder.
@@ -59,12 +62,7 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
         } else {
             const newScene = Object.assign({}, scene);
             newScene.backgroundImageName = fileName;
-
-            onSceneEdited(newScene);
-            return;
         }
-
-        console.log(setFilePath);
 
         setBackgroundPath(setFilePath);
     };
@@ -86,7 +84,7 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
                             name="avatar"
                             type="file"
                             hidden
-                            onChange={(({ target }) => onBackgroundSelected(target.files[0].name, target.files[0].path, null, false))}
+                            onChange={({ target }) => onBackgroundSelected(target.files[0].name, target.files[0].path, null, false)}
                             accept="image/*"
                         />
                     </Button>
