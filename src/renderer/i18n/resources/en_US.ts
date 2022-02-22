@@ -78,6 +78,7 @@ export const en_US = {
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                 },
                 event: {
+                    add_actor: 'Add Actor to Event',
                     edit_background_cta: 'Change Background',
                     background_file_search: 'Local File',
                     background_resources_search: 'Game File',

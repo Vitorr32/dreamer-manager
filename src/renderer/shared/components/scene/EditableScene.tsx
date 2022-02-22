@@ -18,8 +18,8 @@ const backgroundImagesGamePath = [IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, EVENT
 export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
     const { t, i18n } = useTranslation();
     const [backgroundPath, setBackgroundPath] = useState<string>();
-    const [backgroundSelectOpen, setBackgroudSelectState] = useState<boolean>(false);
-    const [openGalery, setGaleryState] = useState<boolean>(false);
+    const [backgroundSelectOpen, setBackgroundSelectState] = useState<boolean>(false);
+    const [openGallery, setGalleryState] = useState<boolean>(false);
 
     useEffect(() => {
         getImageFilePath();
@@ -64,7 +64,9 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
             newScene.backgroundImageName = fileName;
         }
 
+        setBackgroundSelectState(false);
         setBackgroundPath(setFilePath);
+        setGalleryState(false);
     };
 
     return (
@@ -72,10 +74,16 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
             <Box className="scene__background">
                 <img src={backgroundPath}></img>
                 <Box className="scene__background-edit">
-                    <Button onClick={() => setBackgroudSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
+                    <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
                 </Box>
             </Box>
-            <Modal className="modal" open={backgroundSelectOpen} onClose={() => setBackgroudSelectState(false)}>
+            <Box className="scene__actors">
+
+            </Box>
+            <Box className="scene__dialogue">
+                <Typography variant="h4" className="scene__dialogue-actor">{scene.actors}</Typography>
+            </Box>
+            <Modal className="modal" open={backgroundSelectOpen} onClose={() => setBackgroundSelectState(false)}>
                 <Box className="modal__wrapper modal__wrapper-small">
                     <Button variant="contained" component="label" htmlFor="imageSelection">
                         {t('interface.editor.event.background_file_search')}
@@ -89,9 +97,9 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
                         />
                     </Button>
 
-                    <Button onClick={() => setGaleryState(true)}>{t('interface.editor.event.background_resources_search')}</Button>
+                    <Button onClick={() => setGalleryState(true)}>{t('interface.editor.event.background_resources_search')}</Button>
 
-                    {openGalery && <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER]} />}
+                    {openGallery && <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER]} />}
                 </Box>
             </Modal>
         </Box>

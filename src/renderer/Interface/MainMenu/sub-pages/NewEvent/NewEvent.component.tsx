@@ -14,6 +14,7 @@ import { Group } from '@visx/group';
 import { LinkHorizontal } from '@visx/shape';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EditableScene } from 'renderer/shared/components/scene/EditableScene';
+import { ActorsCasting } from 'renderer/shared/components/scene/ActorsCasting';
 
 interface IProps {
     width: number;
@@ -106,6 +107,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             </Box>
             <Box component="main" className="new-event__content">
                 <Button color="primary">Add Visual Novel</Button>
+                <ActorsCasting event={newEvent} onEventEdited={setNewEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
                 {newVN && newVN.getVISXHierarchyOfVN() && (
                     <svg className="new-event__flow" width={width} height={height}>
                         <rect width={width} height={height} rx={14} fill={background} />

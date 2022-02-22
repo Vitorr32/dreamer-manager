@@ -26,13 +26,23 @@ export interface Flag {
     global: boolean;
 }
 
+export interface Actor {
+    //If the actor is a specific character, just put the id here.
+    characterID?: string;
+    //If this event actors are pooled on the moment that the event happens.
+    dynamic: boolean;
+    //Condition to be checked to select the actor in case of dynamic casting
+    actorCastingCondition?: ConditionTree;
+}
+
 export class Event {
     public id: string;
     public displayName: string;
 
     public trigger: Trigger;
     public flags: Flag[] = [];
-    public visualNovel: VisualNovel | undefined;
+    public visualNovel: VisualNovel | null;
+    public actors: Actor[] | null = null;
     //If this event can happens more than one time, if true the event will not enter the "Already triggered events list" in the World state
     public unique: boolean;
 

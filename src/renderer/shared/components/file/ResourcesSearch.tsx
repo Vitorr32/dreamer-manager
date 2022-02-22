@@ -123,21 +123,33 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
                 {currentContentView.map((content) => {
                     if (content.isDirectory) {
                         return (
-                            <Box key={`content_${content.fileName}`} className="resources__file resources__file-folder" onClick={(event) => onFolderClick(event, content)}>
+                            <Box
+                                key={`content_${content.fileName}`}
+                                className={`resources__file resources__file-folder${selectedFile === content ? ' selected' : ''}`}
+                                onClick={(event) => onFolderClick(event, content)}
+                            >
                                 <FolderIcon />
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
                     } else if (content.isImage) {
                         return (
-                            <Box key={`content_${content.fileName}`} className="resources__file resources__file-image" onClick={(event) => onFileClick(event, content)}>
+                            <Box
+                                key={`content_${content.fileName}`}
+                                className={`resources__file resources__file-image${selectedFile === content ? ' selected' : ''}`}
+                                onClick={(event) => onFileClick(event, content)}
+                            >
                                 <img src={ApplyFileProtocol(content.filePath)} />
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
                     } else {
                         return (
-                            <Box key={`content_${content.fileName}`} className="resources__file resources__file-file" onClick={(event) => onFileClick(event, content)}>
+                            <Box
+                                key={`content_${content.fileName}`}
+                                className={`resources__file resources__file-file${selectedFile === content ? ' selected' : ''}`}
+                                onClick={(event) => onFileClick(event, content)}
+                            >
                                 <InsertDriveFileIcon />
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
@@ -145,6 +157,9 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
                     }
                 })}
             </Box>
+            <Button onClick={onFileSubmit} disabled={!selectedFile}>
+                {t('interface.commons.submit')}
+            </Button>
         </Box>
     );
 }

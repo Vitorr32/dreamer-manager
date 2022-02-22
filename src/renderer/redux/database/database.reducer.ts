@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ATTRIBUTES_DATABASE_FOLDER, EVENT_DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
+import { Character } from 'renderer/shared/models/base/Character.model';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { Trait } from '../../shared/models/base/Trait.model';
 
@@ -16,6 +17,7 @@ interface GameLoopState {
         traits: { [id: string]: Trait };
         events: { [id: string]: Event };
         flags: { [id: string]: Flag };
+        characters: { [id: string]: Character };
     };
 }
 
@@ -31,6 +33,7 @@ const initialState: GameLoopState = {
         traits: {},
         events: {},
         flags: {},
+        characters: {}
     },
 };
 

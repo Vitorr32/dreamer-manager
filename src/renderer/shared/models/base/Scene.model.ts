@@ -60,6 +60,8 @@ export class Scene {
     //The string that will appear as the "Speaker" of the scene, above the dialog box, may be empty
     public speakerString?: string;
 
+    public actors?: string[] | null = null;
+
     //The source path of the background image
     public backgroundImageName: string | null = null;
     //Which animations will be applied in the actors of the scene?
