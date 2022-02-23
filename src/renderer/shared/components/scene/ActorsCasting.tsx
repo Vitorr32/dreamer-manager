@@ -7,6 +7,7 @@ import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Actor, Event } from 'renderer/shared/models/base/Event.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
+import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component';
 
 interface IProps {
     event: Event;
@@ -34,6 +35,22 @@ export function ActorsCasting({ event, onEventEdited }: IProps) {
         onEventEdited(editedEvent);
     };
 
+    const onActorConditionEdited = (originalActor: Actor, updatedTree: ConditionTree): void => {
+        const newActor = Object.assign({}, originalActor);
+        const modifiedEvent = Object.assign({}, event);
+        const indexOfActor = event.actors.findIndex((actor) => originalActor === actor);
+
+        if (indexOfActor === -1) {
+            console.error("Couldn't find actor on the event list");
+            return;
+        }
+
+        newActor.actorCastingCondition = updatedTree;
+        modifiedEvent.actors[indexOfActor] = newActor;
+
+        onEventEdited(modifiedEvent);
+    };
+
     const toggleModal = (): void => {
         setModalOpen(!modalOpen);
     };
@@ -59,12 +76,25 @@ export function ActorsCasting({ event, onEventEdited }: IProps) {
                                     const key = `actor_${index}`;
                                     const actorName = actor.dynamic ? `Actor ${index}` : charactersDB[actor.characterID].name;
 
-                                    <ListItemButton key={key} selected={selectedActor === actor} onClick={() => setSelectedActor(actor)}>
-                                        <ListItemText primary={actorName} />
-                                    </ListItemButton>;
+                                    return (
+                                        <ListItemButton key={key} selected={selectedActor === actor} onClick={() => setSelectedActor(actor)}>
+                                            <ListItemText primary={actorName} />
+                                        </ListItemButton>
+                                    );
                                 })}
                             </List>
                         </Box>
+
+                        {selectedActor && (
+                            <Box className="casting__actors-detail">
+                                {selectedActor.actorCastingCondition && (
+                                    <ConditionTreeEditor
+                                        conditionTree={selectedActor.actorCastingCondition}
+                                        onChange={(conditionTree) => onActorConditionEdited(selectedActor, conditionTree)}
+                                    />
+                                )}
+                            </Box>
+                        )}
                     </Box>
                 </Box>
             </Modal>
