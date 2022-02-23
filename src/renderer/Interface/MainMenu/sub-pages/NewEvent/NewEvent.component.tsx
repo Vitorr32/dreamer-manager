@@ -107,7 +107,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             </Box>
             <Box component="main" className="new-event__content">
                 <Button color="primary">Add Visual Novel</Button>
-                <ActorsCasting event={newEvent} onEventEdited={setNewEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
+                <ActorsCasting event={newEvent} onEventEdited={setNewEvent} />
                 {newVN && newVN.getVISXHierarchyOfVN() && (
                     <svg className="new-event__flow" width={width} height={height}>
                         <rect width={width} height={height} rx={14} fill={background} />

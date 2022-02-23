@@ -78,6 +78,9 @@ export const en_US = {
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                 },
                 event: {
+                    navigate_casting: 'Event Actors Casting',
+                    casting_heading: 'Actors of Event',
+                    casting_sub_heading: 'Here is the list of actors that are participating on this event',
                     add_actor: 'Add Actor to Event',
                     edit_background_cta: 'Change Background',
                     background_file_search: 'Local File',
