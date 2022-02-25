@@ -33,6 +33,10 @@ export interface Actor {
     dynamic: boolean;
     //Condition to be checked to select the actor in case of dynamic casting
     actorCastingCondition?: ConditionTree;
+    // Actor object ID
+    id: string;
+    // Actor alias that the user may change to better edit the event
+    alias: string;
 }
 
 export class Event {

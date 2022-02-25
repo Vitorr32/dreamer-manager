@@ -69,13 +69,17 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         setEditedNode(scene);
     };
 
-    const onNodeEdited = (scene: Scene) => {
+    const onNodeEdited = (scene: Scene, closeModal: boolean = false) => {
         const visualNovel = Object.assign(new VisualNovel(), newVN);
 
         visualNovel.updateScene(scene);
 
         setVN(visualNovel);
-        setEditedNode(null);
+        if (closeModal) {
+            setEditedNode(null);
+        } else {
+            setEditedNode(scene);
+        }
     };
 
     return (
@@ -131,7 +135,13 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                 <Box className="modal__wrapper">
                     <Box className="modal__header">Header</Box>
                     <Box className="modal__content">
-                        <EditableScene scene={editedNode} onSceneEdited={onNodeEdited} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
+                        <EditableScene
+                            event={newEvent}
+                            scene={editedNode}
+                            onSceneEdited={onNodeEdited}
+                            pathOfTempImages={tempImagesPath}
+                            setPathOfTempImages={setTempImagesPaths}
+                        />
                     </Box>
                 </Box>
             </Modal>

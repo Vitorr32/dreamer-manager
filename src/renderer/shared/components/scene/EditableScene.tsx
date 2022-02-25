@@ -1,12 +1,15 @@
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Modal, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND } from 'renderer/shared/Constants';
 import { Scene } from 'renderer/shared/models/base/Scene.model';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
+import { Event } from 'renderer/shared/models/base/Event.model';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
+    readonly event: Event;
     scene: Scene;
     onSceneEdited: (scene: Scene) => void;
     pathOfTempImages: { [key: string]: string };
@@ -15,7 +18,7 @@ interface IProps {
 
 const backgroundImagesGamePath = [IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER];
 
-export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
+export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
     const { t, i18n } = useTranslation();
     const [backgroundPath, setBackgroundPath] = useState<string>();
     const [backgroundSelectOpen, setBackgroundSelectState] = useState<boolean>(false);
@@ -69,6 +72,29 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
         setGalleryState(false);
     };
 
+    const onActorCastChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+        const modifiedScene = CopyClassInstance(scene);
+
+        if (!modifiedScene.actors) {
+            modifiedScene.actors = [];
+        }
+
+        if (checked) {
+            modifiedScene.actors.push(event.target.name);
+        } else {
+            const actorIndexOnScene = modifiedScene.actors.findIndex((actor) => actor === event.target.name);
+
+            if (actorIndexOnScene === -1) {
+                console.error('EditableScene - Tried to uncheck an actor from scene that does not exist');
+                return;
+            }
+
+            modifiedScene.actors.splice(actorIndexOnScene);
+        }
+
+        onSceneEdited(modifiedScene);
+    };
+
     return (
         <Box className="scene__wrapper">
             <Box className="scene__background">
@@ -77,11 +103,27 @@ export function EditableScene({ scene, onSceneEdited, pathOfTempImages, setPathO
                     <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
                 </Box>
             </Box>
-            <Box className="scene__actors">
 
+            <Box className="scene__actors">
+                <FormControl component="fieldset" variant="standard">
+                    <FormLabel component="legend">{t('interface.editor.event.scene_casting')}</FormLabel>
+                    <FormGroup>
+                        {event.actors?.map((actor) => (
+                            <FormControlLabel
+                                key={`scene_${actor.id}`}
+                                control={<Checkbox checked={scene.actors?.includes(actor.id) || false} onChange={onActorCastChange} name={actor.id} />}
+                                label={actor.alias}
+                            />
+                        ))}
+                    </FormGroup>
+                    <FormHelperText>{t('interface.editor.event.scene_casting_helper')}</FormHelperText>
+                </FormControl>
             </Box>
+
             <Box className="scene__dialogue">
-                <Typography variant="h4" className="scene__dialogue-actor">{scene.actors}</Typography>
+                <Typography variant="h4" className="scene__dialogue-actor">
+                    {scene.actors}
+                </Typography>
             </Box>
             <Modal className="modal" open={backgroundSelectOpen} onClose={() => setBackgroundSelectState(false)}>
                 <Box className="modal__wrapper modal__wrapper-small">

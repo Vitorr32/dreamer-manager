@@ -81,6 +81,9 @@ export const en_US = {
                     navigate_casting: 'Event Actors Casting',
                     casting_heading: 'Actors of Event',
                     casting_sub_heading: 'Here is the list of actors that are participating on this event',
+                    casting_actor_add_conditoin: 'Specify conditions for actor casting for event',
+                    scene_casting: 'Actors casted to this scene',
+                    scene_casting_helper: 'Please select the actors present on this scene',
                     add_actor: 'Add Actor to Event',
                     edit_background_cta: 'Change Background',
                     background_file_search: 'Local File',
@@ -142,7 +145,6 @@ export const en_US = {
                     mood: 'Mood',
                 },
             },
-
             condition: {
                 initiator: {
                     status_range: 'Status Range',
@@ -271,6 +273,9 @@ export const en_US = {
                     event: 'Event modifiers',
                     static: 'Character values modifier',
                 },
+            },
+            event: {
+                actor: 'Actor',
             },
         },
         summary: {
