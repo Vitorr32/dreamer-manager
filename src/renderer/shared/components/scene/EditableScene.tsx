@@ -85,9 +85,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     };
 
     const onActorHighlightChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        console.log(scene.id);
         const modifiedScene = CopyClassInstance(scene);
-        console.log(modifiedScene.id);
 
         modifiedScene.toggleActorHighlight(event.target.name, checked);
 

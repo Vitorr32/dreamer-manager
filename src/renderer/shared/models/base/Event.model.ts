@@ -26,17 +26,25 @@ export interface Flag {
     global: boolean;
 }
 
+export enum ActorType {
+    GENERIC_TYPE,
+    DYNAMIC_TYPE,
+    SPECIFIC_TYPE,
+}
+
 export interface Actor {
+    //If this event actors are pooled on the moment that the event happens.
+    actorType: ActorType;
+    // Generic sprite path
+    spriteFileName?: string;
     //If the actor is a specific character, just put the id here.
     characterID?: string;
-    //If this event actors are pooled on the moment that the event happens.
-    dynamic: boolean;
     //Condition to be checked to select the actor in case of dynamic casting
     actorCastingCondition?: ConditionTree;
     // Actor object ID
     id: string;
-    // Actor alias that the user may change to better edit the event
-    alias: string;
+    // Actor alias that the user may change to better edit the event, or if the actor is generic, the name that will appear on the dialogue screen.
+    alias?: string;
 }
 
 export class Event {

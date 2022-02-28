@@ -1,6 +1,7 @@
 import { Character } from './Character.model';
 import { ConditionTree } from './ConditionTree';
 import { v4 as uuidv4 } from 'uuid';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 export enum Sprite {
     NEUTRAL,

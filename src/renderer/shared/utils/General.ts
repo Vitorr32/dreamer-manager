@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 export function AreArraysEqual(array1: any[], array2: any[]): boolean {
     if (!array1 && !array2) {
         return true;
@@ -9,5 +11,5 @@ export function AreArraysEqual(array1: any[], array2: any[]): boolean {
 }
 
 export function CopyClassInstance<T>(object: T): T {
-    return Object.assign(Object.create(Object.getPrototypeOf(object)), object);
+    return Object.assign(Object.create(Object.getPrototypeOf(object)), cloneDeep(object));
 }

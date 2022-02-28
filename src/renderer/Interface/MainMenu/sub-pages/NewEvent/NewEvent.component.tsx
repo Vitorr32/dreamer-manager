@@ -51,7 +51,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     }, []);
 
     const onAddNode = (parent: Scene) => {
-        const visualNovel = Object.assign(new VisualNovel(), newVN);
+        const visualNovel = CopyClassInstance(newVN);
 
         visualNovel.addScene(parent, new Scene());
 
@@ -59,7 +59,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     };
 
     const onRemoveNode = (scene: Scene, parent: Scene) => {
-        const visualNovel = Object.assign(new VisualNovel(), newVN);
+        const visualNovel = CopyClassInstance(newVN);
 
         visualNovel.removeScene(parent, scene);
 

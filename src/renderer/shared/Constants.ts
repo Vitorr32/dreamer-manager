@@ -41,3 +41,4 @@ export const TRAITS = 'traits';
 //PLACEHOLDER RESOURCES.
 export const PLACEHOLDER_TRAIT_ICON = 'trait_placeholder.png';
 export const PLACEHOLDER_EVENT_BACKGROUND = 'event_placeholder.png';
+export const PLACEHOLDER_ACTOR_SPRITE = 'male_0.png';
