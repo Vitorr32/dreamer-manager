@@ -60,7 +60,10 @@ export class Scene {
     //The string that will appear as the "Speaker" of the scene, above the dialog box, may be empty
     public speakerString?: string;
 
-    public actors?: string[] | null = null;
+    //Which actors will appear on the scene
+    public actors: string[] | null = null;
+    //Which actors of the scene are actively talking
+    public highlighted: string[] | null = null;
 
     //The source path of the background image
     public backgroundImageName: string | null = null;
@@ -72,4 +75,86 @@ export class Scene {
     }
 
     public runScene(actors: Character[], event: Event) {}
+
+    public addActorToScene(actorID: string): boolean {
+        if (!this.actors) {
+            this.actors = [actorID];
+            return true;
+        }
+
+        if (this.actors.includes(actorID)) {
+            console.error('Scene Model - Actor already is added to the scene');
+            return false;
+        }
+
+        this.actors.push(actorID);
+
+        return true;
+    }
+
+    public removeActorFromScene(actorID: string): boolean {
+        const actorIndex = this.actors?.findIndex((actor) => actor === actorID);
+
+        if (!this.actors || this.actors.length === 0 || actorIndex === -1) {
+            console.error('Scene Model - No actors are in the scene, or the specified actor is not in the scene');
+            return false;
+        }
+
+        this.actors.splice(actorIndex);
+        this.removeActorHighlight(actorID);
+
+        return true;
+    }
+
+    public toggleActorHighlight(actorID: string, toggleState?: boolean): boolean {
+        if (!this.actors.includes(actorID)) {
+            console.error('Scene Model (toggleActorHighlight) - The actor to be highlighted does not exist in this scene');
+            return false;
+        }
+
+        const simpleToggle = toggleState === undefined;
+        const currentState = this.highlighted?.includes(actorID) || false;
+
+        if (!this.highlighted) {
+            this.highlighted = [];
+        }
+
+        if (simpleToggle) {
+            if (currentState) {
+                this.removeActorHighlight(actorID);
+            } else {
+                this.highlightActor(actorID);
+            }
+        } else {
+            if (toggleState) {
+                this.highlightActor(actorID);
+            } else {
+                this.removeActorHighlight(actorID);
+            }
+        }
+
+        return true;
+    }
+
+    public highlightActor(actorID: string): boolean {
+        if (!this.actors.includes(actorID)) {
+            console.error('Scene Model - The actor to be highlighted does not exist in this scene');
+            return false;
+        }
+
+        if (!this.highlighted) {
+            this.highlighted = [actorID];
+        } else {
+            this.highlighted.push(actorID);
+        }
+
+        return true;
+    }
+
+    private removeActorHighlight(actorID: string): void {
+        const highlightedActorIndex = this.highlighted?.findIndex((actor) => actor === actorID);
+        if (this.highlighted && this.highlighted.length !== 0 && highlightedActorIndex !== -1) {
+            this.highlighted.splice(highlightedActorIndex);
+        }
+    }
 }

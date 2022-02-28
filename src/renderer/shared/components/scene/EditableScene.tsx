@@ -75,22 +75,21 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     const onActorCastChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
         const modifiedScene = CopyClassInstance(scene);
 
-        if (!modifiedScene.actors) {
-            modifiedScene.actors = [];
-        }
-
         if (checked) {
-            modifiedScene.actors.push(event.target.name);
+            modifiedScene.addActorToScene(event.target.name);
         } else {
-            const actorIndexOnScene = modifiedScene.actors.findIndex((actor) => actor === event.target.name);
-
-            if (actorIndexOnScene === -1) {
-                console.error('EditableScene - Tried to uncheck an actor from scene that does not exist');
-                return;
-            }
-
-            modifiedScene.actors.splice(actorIndexOnScene);
+            modifiedScene.removeActorFromScene(event.target.name);
         }
+
+        onSceneEdited(modifiedScene);
+    };
+
+    const onActorHighlightChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+        console.log(scene.id);
+        const modifiedScene = CopyClassInstance(scene);
+        console.log(modifiedScene.id);
+
+        modifiedScene.toggleActorHighlight(event.target.name, checked);
 
         onSceneEdited(modifiedScene);
     };
@@ -115,6 +114,21 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                                 label={actor.alias}
                             />
                         ))}
+
+                        {event.actors?.map((actor) => (
+                            <FormControlLabel
+                                key={`scene_highlighted_${actor.id}`}
+                                control={
+                                    <Checkbox
+                                        disabled={!scene.actors?.includes(actor.id)}
+                                        checked={scene.highlighted?.includes(actor.id) || false}
+                                        onChange={onActorHighlightChange}
+                                        name={actor.id}
+                                    />
+                                }
+                                label={actor.alias}
+                            />
+                        ))}
                     </FormGroup>
                     <FormHelperText>{t('interface.editor.event.scene_casting_helper')}</FormHelperText>
                 </FormControl>
@@ -125,6 +139,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                     {scene.actors}
                 </Typography>
             </Box>
+
             <Modal className="modal" open={backgroundSelectOpen} onClose={() => setBackgroundSelectState(false)}>
                 <Box className="modal__wrapper modal__wrapper-small">
                     <Button variant="contained" component="label" htmlFor="imageSelection">

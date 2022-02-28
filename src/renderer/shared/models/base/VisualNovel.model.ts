@@ -122,6 +122,7 @@ export class VisualNovel {
 
     updateScene(scene: Scene): Scene | null {
         const sceneIndex = this.allScenes.findIndex((searchScene) => searchScene.id === scene.id);
+
         if (!this.mappedScenes[scene.id] || sceneIndex === -1) {
             console.error('updateScene() - The scene to update is not currently mapped or in the array of the VisualNovel object!');
             return null;

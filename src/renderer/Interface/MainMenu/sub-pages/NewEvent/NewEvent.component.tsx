@@ -15,6 +15,7 @@ import { LinkHorizontal } from '@visx/shape';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EditableScene } from 'renderer/shared/components/scene/EditableScene';
 import { ActorsCasting } from 'renderer/shared/components/scene/ActorsCasting';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
     width: number;
@@ -70,7 +71,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     };
 
     const onNodeEdited = (scene: Scene, closeModal: boolean = false) => {
-        const visualNovel = Object.assign(new VisualNovel(), newVN);
+        const visualNovel = CopyClassInstance(newVN);
 
         visualNovel.updateScene(scene);
 
