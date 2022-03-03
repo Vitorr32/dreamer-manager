@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Modal, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND } from 'renderer/shared/Constants';
+import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND, SPRITES_FOLDER } from 'renderer/shared/Constants';
 import { Scene } from 'renderer/shared/models/base/Scene.model';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
@@ -17,10 +17,11 @@ interface IProps {
 }
 
 const backgroundImagesGamePath = [IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER];
+const spriteGamePath = [SPRITES_FOLDER];
 
 export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
     const { t, i18n } = useTranslation();
-    const [backgroundPath, setBackgroundPath] = useState<string>();
+    const [backgroundPath, setBackgroundPath] = useState<{ scene: string; actors: { [key: string]: string } }>();
     const [backgroundSelectOpen, setBackgroundSelectState] = useState<boolean>(false);
     const [openGallery, setGalleryState] = useState<boolean>(false);
 
@@ -29,22 +30,37 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     }, []);
 
     const getImageFilePath = async () => {
-        if (pathOfTempImages[scene.id]) {
-            setBackgroundPath(pathOfTempImages[scene.id]);
-            return;
-        }
+        const imagesPaths: { scene: string; actors: { [key: string]: string } } = {
+            scene: '',
+            actors: {},
+        };
 
-        if (scene.backgroundImageName) {
+        if (pathOfTempImages[scene.id]) {
+            imagesPaths.scene = pathOfTempImages[scene.id];
+        } else if (scene.backgroundImageName) {
             const file = await GetFileFromResources([...backgroundImagesGamePath, scene.backgroundImageName]);
-            setBackgroundPath(file.path);
+            imagesPaths.scene = file.path;
         } else {
             const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([
                 IMAGES_FOLDER,
                 BACKGROUND_IMAGES_FOLDER,
                 PLACEHOLDER_EVENT_BACKGROUND,
             ]);
-            setBackgroundPath(ApplyFileProtocol(file.path));
+            imagesPaths.scene = ApplyFileProtocol(file.path);
         }
+
+        scene.actors?.forEach(async (actorID) => {
+            const actor = event.actors.find((actor) => actorID === actor.id);
+
+            if (pathOfTempImages[actor.id]) {
+                imagesPaths.actors[actorID] = pathOfTempImages[actor.id];
+            } else {
+                const file = await GetFileFromResources([...spriteGamePath, ...actor.spriteFilePath]);
+                imagesPaths.actors[actorID] = file.path;
+            }
+        });
+
+        setBackgroundPath(imagesPaths);
     };
 
     const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal: boolean = true): Promise<void> => {
@@ -68,7 +84,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         }
 
         setBackgroundSelectState(false);
-        setBackgroundPath(setFilePath);
+        setBackgroundPath(Object.assign({}, backgroundPath, { scene: backgroundPath }));
         setGalleryState(false);
     };
 
@@ -95,46 +111,52 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     return (
         <Box className="scene__wrapper">
             <Box className="scene__background">
-                <img src={backgroundPath}></img>
+                <img src={backgroundPath?.scene}></img>
                 <Box className="scene__background-edit">
                     <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
                 </Box>
             </Box>
 
             <Box className="scene__actors">
-                <FormControl component="fieldset" variant="standard">
-                    <FormLabel component="legend">{t('interface.editor.event.scene_casting')}</FormLabel>
-                    <FormGroup>
-                        {event.actors?.map((actor) => (
-                            <FormControlLabel
-                                key={`scene_${actor.id}`}
-                                control={<Checkbox checked={scene.actors?.includes(actor.id) || false} onChange={onActorCastChange} name={actor.id} />}
-                                label={actor.alias}
-                            />
-                        ))}
+                {event.actors && event.actors.length !== 0 ? (
+                    <FormControl component="fieldset" variant="standard">
+                        <FormLabel component="legend">{t('interface.editor.event.scene_casting')}</FormLabel>
+                        <FormGroup>
+                            {event.actors?.map((actor) => (
+                                <FormControlLabel
+                                    key={`scene_${actor.id}`}
+                                    control={<Checkbox checked={scene.actors?.includes(actor.id) || false} onChange={onActorCastChange} name={actor.id} />}
+                                    label={actor.alias}
+                                />
+                            ))}
 
-                        {event.actors?.map((actor) => (
-                            <FormControlLabel
-                                key={`scene_highlighted_${actor.id}`}
-                                control={
-                                    <Checkbox
-                                        disabled={!scene.actors?.includes(actor.id)}
-                                        checked={scene.highlighted?.includes(actor.id) || false}
-                                        onChange={onActorHighlightChange}
-                                        name={actor.id}
-                                    />
-                                }
-                                label={actor.alias}
-                            />
-                        ))}
-                    </FormGroup>
-                    <FormHelperText>{t('interface.editor.event.scene_casting_helper')}</FormHelperText>
-                </FormControl>
+                            {event.actors?.map((actor) => (
+                                <FormControlLabel
+                                    key={`scene_highlighted_${actor.id}`}
+                                    control={
+                                        <Checkbox
+                                            disabled={!scene.actors?.includes(actor.id)}
+                                            checked={scene.highlighted?.includes(actor.id) || false}
+                                            onChange={onActorHighlightChange}
+                                            name={actor.id}
+                                        />
+                                    }
+                                    label={actor.alias}
+                                />
+                            ))}
+                        </FormGroup>
+                        <FormHelperText>{t('interface.editor.event.scene_casting_helper')}</FormHelperText>
+                    </FormControl>
+                ) : (
+                    <Typography>{t('interface.editor.event.scene_casting_no_actors')}</Typography>
+                )}
             </Box>
 
             <Box className="scene__dialogue">
                 <Typography variant="h4" className="scene__dialogue-actor">
-                    {scene.actors}
+                    {scene.actors?.map((actor) => {
+                        <img></img>;
+                    })}
                 </Typography>
             </Box>
 

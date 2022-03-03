@@ -112,7 +112,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             </Box>
             <Box component="main" className="new-event__content">
                 <Button color="primary">Add Visual Novel</Button>
-                <ActorsCasting event={newEvent} onEventEdited={setNewEvent} />
+                <ActorsCasting event={newEvent} onEventEdited={setNewEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
                 {newVN && newVN.getVISXHierarchyOfVN() && (
                     <svg className="new-event__flow" width={width} height={height}>
                         <rect width={width} height={height} rx={14} fill={background} />
@@ -133,7 +133,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             </Box>
 
             <Modal className="modal" open={editedNode !== null} onClose={() => setEditedNode(null)}>
-                <Box className="modal__wrapper">
+                <Box className="modal__wrapper modal__wrapper-large">
                     <Box className="modal__header">Header</Box>
                     <Box className="modal__content">
                         <EditableScene

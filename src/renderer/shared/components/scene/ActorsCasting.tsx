@@ -1,11 +1,9 @@
 import {
     Box,
     Button,
-    Checkbox,
     Divider,
     FormControl,
     FormControlLabel,
-    FormGroup,
     FormHelperText,
     FormLabel,
     List,
@@ -18,17 +16,18 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_ACTOR_SPRITE } from 'renderer/shared/Constants';
+import { BACKGROUND_IMAGES_FOLDER, GENERIC_SPRITES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_ACTOR_SPRITE, SPRITES_FOLDER } from 'renderer/shared/Constants';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Actor, ActorType, Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component';
 import { v4 as uuidv4 } from 'uuid';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
+import { ResourcesSearch } from '../file/ResourcesSearch';
 
 interface IProps {
     event: Event;
@@ -37,17 +36,43 @@ interface IProps {
     setPathOfTempImages: Dispatch<SetStateAction<{ [key: string]: string }>>;
 }
 
-const backgroundImagesGamePath = [IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER];
+const spriteGamePath = [SPRITES_FOLDER];
 
 export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedActor, setSelectedActor] = useState<Actor>();
+    const [selectedActorSpritePath, setSelectedActorSpritePath] = useState<string>();
     const [selectedActorIndex, setSelectedActorIndex] = useState<number>();
-    const [spriteSelectModalOpen, setSpriteSelectModalOpen] = useState<boolean>(false);
+    const [spriteSelectModalOpen, setSpriteSelectModalState] = useState<boolean>(false);
     const [openGallery, setGalleryState] = useState<boolean>(false);
     const charactersDB = useSelector((state: RootState) => state.database.mappedDatabase.characters);
+
+    useEffect(() => {
+        if (selectedActor) {
+            getImageFilePath();
+        }
+    }, [selectedActor]);
+
+    const getImageFilePath = async () => {
+        if (pathOfTempImages[selectedActor.id]) {
+            setSelectedActorSpritePath(pathOfTempImages[selectedActor.id]);
+            return;
+        }
+
+        if (selectedActor.spriteFilePath) {
+            const file = await GetFileFromResources([...spriteGamePath, ...selectedActor.spriteFilePath]);
+            setSelectedActorSpritePath(file.path);
+        } else {
+            const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([
+                ...spriteGamePath,
+                GENERIC_SPRITES_FOLDER,
+                PLACEHOLDER_ACTOR_SPRITE,
+            ]);
+            setSelectedActorSpritePath(ApplyFileProtocol(file.path));
+        }
+    };
 
     const onCharacterAdded = (): void => {
         const editedEvent = Object.assign({}, event);
@@ -55,7 +80,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
             actorType: ActorType.GENERIC_TYPE,
             id: `actor_${uuidv4()}`,
             alias: `${t('model.event.actor')}_${editedEvent.actors?.length || 0}`,
-            spriteFileName: PLACEHOLDER_ACTOR_SPRITE,
+            spriteFilePath: [GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE],
         };
 
         if (editedEvent.actors) {
@@ -113,6 +138,8 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         newActor.actorType = value;
         modifiedEvent.actors[index] = newActor;
 
+        console.log(modifiedEvent.actors[index]);
+
         onEventEdited(modifiedEvent);
         setSelectedActor(newActor);
         setSelectedActorIndex(index);
@@ -146,12 +173,12 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
 
             setPathOfTempImages(newTempPaths);
         } else {
-            const newScene = CopyClassInstance(selectedActor);
-            // newScene.backgroundImageName = fileName;
+            const newActor = CopyClassInstance(selectedActor);
+            newActor.spriteFilePath = [fileName];
         }
 
-        // setBackgroundSelectState(false);
-        // setBackgroundPath(setFilePath);
+        setSpriteSelectModalState(false);
+        setSelectedActorSpritePath(setFilePath);
         setGalleryState(false);
     };
 
@@ -177,7 +204,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                                     const actorName =
                                         actor.actorType === ActorType.DYNAMIC_TYPE || actor.actorType === ActorType.GENERIC_TYPE
                                             ? actor.alias
-                                            : charactersDB[actor.characterID].name;
+                                            : actor.characterID ? charactersDB[actor.characterID].name : actor.alias;
 
                                     return (
                                         <ListItemButton key={key} selected={selectedActor === actor} onClick={() => onActorSelected(actor, index)}>
@@ -232,15 +259,17 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
 
                                 {selectedActor.actorType === ActorType.GENERIC_TYPE && (
                                     <Box className="basic-info__image-input">
-                                        <Typography variant="overline"> {t('interface.editor.trait.icon_label')}</Typography>
+                                        <Typography variant="overline"> {t('interface.editor.event.casting_sprite')}</Typography>
 
-                                        {/* <Box className="basic-info__image-current">
-                                            <img src={iconPath} alt={`${selectedActor.alias}_icon`} />
-                                        </Box> */}
+                                        <Button onClick={() => setSpriteSelectModalState(true)}>{t('interface.editor.event.casting_sprite_cta')}</Button>
 
-                                        <Typography variant="caption">{t('interface.editor.trait.icon_helper')}</Typography>
+                                        <Box className="basic-info__image-current">
+                                            <img src={selectedActorSpritePath} alt={`${selectedActor.alias}_icon`} />
+                                        </Box>
 
-                                        <Modal className="modal" open={spriteSelectModalOpen} onClose={() => setSpriteSelectModalOpen(false)}>
+                                        <Typography variant="caption">{t('interface.editor.event.casting_sprite_helper')}</Typography>
+
+                                        <Modal className="modal" open={spriteSelectModalOpen} onClose={() => setSpriteSelectModalState(false)}>
                                             <Box className="modal__wrapper modal__wrapper-small">
                                                 <Button variant="contained" component="label" htmlFor="imageSelection">
                                                     {t('interface.editor.event.background_file_search')}
@@ -254,11 +283,11 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                                                     />
                                                 </Button>
 
-                                                <Button onClick={() => setSpriteSelectModalOpen(true)}>{t('interface.editor.event.background_resources_search')}</Button>
+                                                <Button onClick={() => setGalleryState(true)}>{t('interface.editor.event.background_resources_search')}</Button>
 
-                                                {/* {openGallery && (
-                                                    <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER]} />
-                                                )} */}
+                                                {openGallery && (
+                                                    <ResourcesSearch onResourceSelected={onSpriteSelected} rootFolder={[SPRITES_FOLDER]} />
+                                                )}
                                             </Box>
                                         </Modal>
                                     </Box>

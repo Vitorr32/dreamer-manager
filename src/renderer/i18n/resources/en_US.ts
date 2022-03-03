@@ -32,7 +32,7 @@ export const en_US = {
                     spawn_helper: `Whatever this trait can be found on generated Dreamers, otherwise it can be obtainable only by events (Do note that traits of type 'National' will always be spawned), generated dreamers will have up to {{max}}
                     traits on generation.`,
                     icon_label: 'Avatar Icon',
-                    icon_helper: 'The image used as icon for the trait, it should have a square (Optimally 100x100) proportion with transparent background when nescessary.',
+                    icon_helper: 'The image used as icon for the trait, it should have a square (Optimally 100x100) proportion with transparent background when necessary.',
                     localization_message:
                         'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.',
                     is_spawnable: 'Can spawn',
@@ -92,9 +92,11 @@ export const en_US = {
                     casting_alias_helper: 'What alias will this actor be recognized with?',
                     casting_sprite: 'Actor Sprite',
                     casting_sprite_cta: 'Choose Generic Sprite',
+                    casting_sprite_helper: 'The image used as sprite for the generic actor, It should have 9:1 proportion (For example, 900 pixels of height and 100 wide) with transparent background when necessary.',
                     casting_actor_add_condition: 'Specify conditions for actor casting for event',
                     scene_casting: 'Actors casted to this scene',
                     scene_casting_helper: 'Please select the actors present on this scene',
+                    scene_casting_no_actors: 'There is currently no actors associated to this event chain, please go back and add actors if necessary.',
                     add_actor: 'Add Actor to Event',
                     edit_background_cta: 'Change Background',
                     background_file_search: 'Local File',

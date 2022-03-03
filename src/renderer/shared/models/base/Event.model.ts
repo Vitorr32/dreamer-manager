@@ -27,16 +27,16 @@ export interface Flag {
 }
 
 export enum ActorType {
-    GENERIC_TYPE,
-    DYNAMIC_TYPE,
-    SPECIFIC_TYPE,
+    GENERIC_TYPE = 'generic',
+    DYNAMIC_TYPE = 'dynamic',
+    SPECIFIC_TYPE = 'specific',
 }
 
 export interface Actor {
     //If this event actors are pooled on the moment that the event happens.
     actorType: ActorType;
     // Generic sprite path
-    spriteFileName?: string;
+    spriteFilePath?: string[];
     //If the actor is a specific character, just put the id here.
     characterID?: string;
     //Condition to be checked to select the actor in case of dynamic casting
