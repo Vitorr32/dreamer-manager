@@ -135,7 +135,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             <Modal className="modal" open={editedNode !== null} onClose={() => setEditedNode(null)}>
                 <Box className="modal__wrapper modal__wrapper-large">
                     <Box className="modal__header">Header</Box>
-                    <Box className="modal__content">
+                    <Box className="modal__content utils__full-height">
                         <EditableScene
                             event={newEvent}
                             scene={editedNode}

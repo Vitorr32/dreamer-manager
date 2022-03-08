@@ -1,0 +1,12 @@
+.utils {
+    &__full-height {
+        height: 100%;
+    }
+
+    &__full-width-absolute-child {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+}

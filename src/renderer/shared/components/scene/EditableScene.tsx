@@ -118,62 +118,62 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     };
 
     return (
-        <Box className="scene__wrapper">
-            <Box className="scene__background">
-                <img src={imagePaths?.scene}></img>
-                <Box className="scene__background-edit">
+        <Box className="scene__wrapper utils__full-height">
+            <Box className="scene__stage">
+                <img className="scene__background utils__full-width-absolute-child utils__full-height" src={imagePaths?.scene}></img>
+                <Box className="scene__background-edit utils__full-width-absolute-child=">
                     <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
                 </Box>
-            </Box>
 
-            <Box className="scene__actors">
-                {event.actors && event.actors.length !== 0 ? (
-                    <FormControl component="fieldset" variant="standard">
-                        <FormLabel component="legend">{t('interface.editor.event.scene_casting')}</FormLabel>
-                        <FormGroup>
-                            {event.actors?.map((actor) => (
-                                <FormControlLabel
-                                    key={`scene_${actor.id}`}
-                                    control={<Checkbox checked={scene.actors?.includes(actor.id) || false} onChange={onActorCastChange} name={actor.id} />}
-                                    label={actor.alias}
-                                />
-                            ))}
+                <Box className="scene__dialogue utils__full-width-absolute-child">
+                    {scene.actors?.map((actor) => {
+                        return (
+                            imagePaths && (
+                                <Box className="scene__dialogue-actor" onClick={() => onActorPositioning(actor)}>
+                                    <img src={imagePaths.actors[actor]} alt={actor}></img>
+                                </Box>
+                            )
+                        );
+                    })}
 
-                            {event.actors?.map((actor) => (
-                                <FormControlLabel
-                                    key={`scene_highlighted_${actor.id}`}
-                                    control={
-                                        <Checkbox
-                                            disabled={!scene.actors?.includes(actor.id)}
-                                            checked={scene.highlighted?.includes(actor.id) || false}
-                                            onChange={onActorHighlightChange}
-                                            name={actor.id}
-                                        />
-                                    }
-                                    label={actor.alias}
-                                />
-                            ))}
-                        </FormGroup>
-                        <FormHelperText>{t('interface.editor.event.scene_casting_helper')}</FormHelperText>
-                    </FormControl>
-                ) : (
-                    <Typography>{t('interface.editor.event.scene_casting_no_actors')}</Typography>
-                )}
-            </Box>
+                    <Box className="scene__dialogue-box" onClick={() => setDialogState(true)}>
+                        <Typography>{scene.dialog}</Typography>
+                    </Box>
+                </Box>
 
-            <Box className="scene__dialogue">
-                {scene.actors?.map((actor) => {
-                    return (
-                        imagePaths && (
-                            <Box className="scene__dialogue-actor" onClick={() => onActorPositioning(actor)}>
-                                <img src={imagePaths.actors[actor]} alt={actor}></img>
-                            </Box>
-                        )
-                    );
-                })}
+                <Box className="scene__actors">
+                    {event.actors && event.actors.length !== 0 ? (
+                        <FormControl component="fieldset" variant="standard">
+                            <FormLabel component="legend">{t('interface.editor.event.scene_casting')}</FormLabel>
+                            <FormGroup>
+                                {event.actors?.map((actor) => (
+                                    <FormControlLabel
+                                        key={`scene_${actor.id}`}
+                                        control={<Checkbox checked={scene.actors?.includes(actor.id) || false} onChange={onActorCastChange} name={actor.id} />}
+                                        label={actor.alias}
+                                    />
+                                ))}
 
-                <Box className="scene__dialogue-box" onClick={() => setDialogState(true)}>
-                    <Typography>{scene.dialog}</Typography>
+                                {event.actors?.map((actor) => (
+                                    <FormControlLabel
+                                        key={`scene_highlighted_${actor.id}`}
+                                        control={
+                                            <Checkbox
+                                                disabled={!scene.actors?.includes(actor.id)}
+                                                checked={scene.highlighted?.includes(actor.id) || false}
+                                                onChange={onActorHighlightChange}
+                                                name={actor.id}
+                                            />
+                                        }
+                                        label={actor.alias}
+                                    />
+                                ))}
+                            </FormGroup>
+                            <FormHelperText>{t('interface.editor.event.scene_casting_helper')}</FormHelperText>
+                        </FormControl>
+                    ) : (
+                        <Typography>{t('interface.editor.event.scene_casting_no_actors')}</Typography>
+                    )}
                 </Box>
             </Box>
 
