@@ -5,7 +5,7 @@ import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER
 import { Scene } from 'renderer/shared/models/base/Scene.model';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
-import { Event } from 'renderer/shared/models/base/Event.model';
+import { Actor, Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
@@ -21,9 +21,11 @@ const spriteGamePath = [SPRITES_FOLDER];
 
 export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
     const { t, i18n } = useTranslation();
-    const [backgroundPath, setBackgroundPath] = useState<{ scene: string; actors: { [key: string]: string } }>();
+    const [imagePaths, setImagePaths] = useState<{ scene: string; actors: { [key: string]: string } }>();
     const [backgroundSelectOpen, setBackgroundSelectState] = useState<boolean>(false);
     const [openGallery, setGalleryState] = useState<boolean>(false);
+    const [selectedActor, setSelectedActor] = useState<{ actor: Actor; index: number }>();
+    const [isModifyingDialog, setDialogState] = useState<boolean>(false);
 
     useEffect(() => {
         getImageFilePath();
@@ -60,7 +62,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
             }
         });
 
-        setBackgroundPath(imagesPaths);
+        setImagePaths(imagesPaths);
     };
 
     const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal: boolean = true): Promise<void> => {
@@ -84,7 +86,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         }
 
         setBackgroundSelectState(false);
-        setBackgroundPath(Object.assign({}, backgroundPath, { scene: backgroundPath }));
+        setImagePaths(Object.assign({}, imagePaths, { scene: imagePaths }));
         setGalleryState(false);
     };
 
@@ -108,10 +110,17 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         onSceneEdited(modifiedScene);
     };
 
+    const onActorPositioning = (actorID: string) => {
+        const actorIndex = event.actors.findIndex((actor) => actor.id === actorID);
+        const actor = event.actors[actorIndex];
+
+        setSelectedActor({ actor, index: actorIndex });
+    };
+
     return (
         <Box className="scene__wrapper">
             <Box className="scene__background">
-                <img src={backgroundPath?.scene}></img>
+                <img src={imagePaths?.scene}></img>
                 <Box className="scene__background-edit">
                     <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
                 </Box>
@@ -153,11 +162,19 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
             </Box>
 
             <Box className="scene__dialogue">
-                <Typography variant="h4" className="scene__dialogue-actor">
-                    {scene.actors?.map((actor) => {
-                        <img></img>;
-                    })}
-                </Typography>
+                {scene.actors?.map((actor) => {
+                    return (
+                        imagePaths && (
+                            <Box className="scene__dialogue-actor" onClick={() => onActorPositioning(actor)}>
+                                <img src={imagePaths.actors[actor]} alt={actor}></img>
+                            </Box>
+                        )
+                    );
+                })}
+
+                <Box className="scene__dialogue-box" onClick={() => setDialogState(true)}>
+                    <Typography>{scene.dialog}</Typography>
+                </Box>
             </Box>
 
             <Modal className="modal" open={backgroundSelectOpen} onClose={() => setBackgroundSelectState(false)}>
