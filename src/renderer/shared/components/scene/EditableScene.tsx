@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Modal, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Modal, TextField, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND, SPRITES_FOLDER } from 'renderer/shared/Constants';
@@ -7,6 +7,7 @@ import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/S
 import { ResourcesSearch } from '../file/ResourcesSearch';
 import { Actor, Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface IProps {
     readonly event: Event;
@@ -25,7 +26,6 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     const [backgroundSelectOpen, setBackgroundSelectState] = useState<boolean>(false);
     const [openGallery, setGalleryState] = useState<boolean>(false);
     const [selectedActor, setSelectedActor] = useState<{ actor: Actor; index: number }>();
-    const [isModifyingDialog, setDialogState] = useState<boolean>(false);
 
     useEffect(() => {
         getImageFilePath();
@@ -86,7 +86,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         }
 
         setBackgroundSelectState(false);
-        setImagePaths(Object.assign({}, imagePaths, { scene: imagePaths }));
+        setImagePaths(Object.assign({}, imagePaths, { scene: setFilePath }));
         setGalleryState(false);
     };
 
@@ -95,11 +95,31 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
 
         if (checked) {
             modifiedScene.addActorToScene(event.target.name);
+            saveImageOfSpecificActor(event.target.name);
         } else {
             modifiedScene.removeActorFromScene(event.target.name);
         }
 
         onSceneEdited(modifiedScene);
+    };
+
+    const saveImageOfSpecificActor = async (actorID: string) => {
+        const newImagePaths = CopyClassInstance(imagePaths);
+        const actorInEvent = event.actors.find((actor) => actor.id === actorID);
+
+        if (!actorInEvent) {
+            console.error('Editable Scene - saveImageOfSpecificActor() - No actor of such id on this event');
+            return;
+        }
+
+        if (pathOfTempImages[actorInEvent.id]) {
+            newImagePaths.actors[actorID] = pathOfTempImages[actorInEvent.id];
+        } else {
+            const file = await GetFileFromResources([...spriteGamePath, ...actorInEvent.spriteFilePath]);
+            newImagePaths.actors[actorID] = file.path;
+        }
+
+        setImagePaths(newImagePaths);
     };
 
     const onActorHighlightChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -117,30 +137,58 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         setSelectedActor({ actor, index: actorIndex });
     };
 
+    const onDialogueEdit = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const modifiedScene = CopyClassInstance(scene);
+        modifiedScene.dialog = event.target.value;
+
+        onSceneEdited(modifiedScene);
+    };
+
     return (
         <Box className="scene__wrapper utils__full-height">
             <Box className="scene__stage">
-                <img className="scene__background utils__full-width-absolute-child utils__full-height" src={imagePaths?.scene}></img>
+                {/* Change background button render on the stage //////////////////// */}
                 <Box className="scene__background-edit utils__full-width-absolute-child=">
                     <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
                 </Box>
+                {/* Background render on the stage ////////////////////////////////// */}
+                <img className="scene__background utils__full-width-absolute-child utils__full-height" src={imagePaths?.scene}></img>
 
-                <Box className="scene__dialogue utils__full-width-absolute-child">
-                    {scene.actors?.map((actor) => {
-                        return (
-                            imagePaths && (
-                                <Box className="scene__dialogue-actor" onClick={() => onActorPositioning(actor)}>
-                                    <img src={imagePaths.actors[actor]} alt={actor}></img>
-                                </Box>
-                            )
-                        );
-                    })}
+                {/* Actors render on the stage ////////////////////////////////////// */}
+                {scene.actors?.map((actorID, index) => {
+                    let actorImagePath;
 
-                    <Box className="scene__dialogue-box" onClick={() => setDialogState(true)}>
-                        <Typography>{scene.dialog}</Typography>
+                    if (imagePaths) {
+                        actorImagePath = imagePaths.actors[actorID];
+                    }
+
+                    return (
+                        actorImagePath && (
+                            <Box className="scene__dialogue-actor" key={`dialogue_actor_${index}`} onClick={() => onActorPositioning(actorID)}>
+                                <img src={actorImagePath} alt={actorID} />
+                            </Box>
+                        )
+                    );
+                })}
+
+                {/* Dialogue box render on the stage ////////////////////////////////// */}
+                <Box className="scene__dialogue">
+                    <Box className="scene__dialogue-wrapper">
+                        <TextField
+                            className="scene__dialogue-box"
+                            multiline
+                            maxRows={4}
+                            variant="outlined"
+                            value={scene.dialog}
+                            onChange={onDialogueEdit}
+                            placeholder={t('interface.editor.event.scene_dialogue_placeholder')}
+                        />
+                        <EditIcon className="scene__dialogue-icon" />
                     </Box>
                 </Box>
+            </Box>
 
+            <Box className="scene__config">
                 <Box className="scene__actors">
                     {event.actors && event.actors.length !== 0 ? (
                         <FormControl component="fieldset" variant="standard">
@@ -194,6 +242,19 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                     <Button onClick={() => setGalleryState(true)}>{t('interface.editor.event.background_resources_search')}</Button>
 
                     {openGallery && <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER]} />}
+                </Box>
+            </Modal>
+
+            <Modal className="modal" open={selectedActor !== null} onClose={() => setSelectedActor(null)}>
+                <Box className="modal__wrapper modal__wrapper-small">
+                    {/* TODO: Think of best way to save in scene the actor/highlight/animation for each actor */}
+                    {/* <TextField
+                        label={t('interface.editor.event.scene_actor_x_offset')}
+                        helperText={t('interface.editor.event.scene_actor_x_offset_helper')}
+                        variant="outlined"
+                        value={selectedActor.actor.}
+                        onChange={(event) => onActorAliasChange(selectedActor, event.target.value as string, selectedActorIndex)}
+                    /> */}
                 </Box>
             </Modal>
         </Box>
