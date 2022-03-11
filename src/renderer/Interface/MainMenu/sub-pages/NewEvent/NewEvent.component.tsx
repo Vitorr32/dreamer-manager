@@ -18,8 +18,8 @@ import { ActorsCasting } from 'renderer/shared/components/scene/ActorsCasting';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
     margin?: { top: number; right: number; bottom: number; left: number };
 }
 

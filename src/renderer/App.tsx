@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { HashRouter, Route, Redirect } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { EditorScreen } from './Interface/MainMenu/page/EditorScreen/EditorScreen.component';
 import { MainScreen } from './Interface/MainMenu/page/MainScreen/MainScreen.component';
 import { TraitEditor } from './Interface/MainMenu/sub-pages/TraitEditor/TraitEditor.component';
@@ -31,13 +31,15 @@ export default function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <HashRouter>
-                <Route exact path="/" render={() => <Redirect to="/menu/edit/event" />} />
-                <Route exact path="/menu" component={MainScreen} />
-                <Route exact path="/menu/edit" component={EditorScreen} />
-                <Route path="/menu/edit/trait" component={TraitEditor} />
-                <Route path="/menu/edit/event" component={NewEvent} />
-            </HashRouter>
+            <MemoryRouter>
+                <Routes>
+                    <Route path="/" element ={<Navigate to="/menu/edit/event" />} />
+                    <Route path="/menu" element ={<MainScreen/>} />
+                    <Route path="/menu/edit" element ={<EditorScreen/>} />
+                    <Route path="/menu/edit/trait" element ={<TraitEditor/>} />
+                    <Route path="/menu/edit/event" element ={<NewEvent/>} />
+                </Routes>
+            </MemoryRouter>
         </ThemeProvider>
     );
 }
