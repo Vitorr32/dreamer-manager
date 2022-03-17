@@ -92,12 +92,15 @@ export const en_US = {
                     casting_alias_helper: 'What alias will this actor be recognized with?',
                     casting_sprite: 'Actor Sprite',
                     casting_sprite_cta: 'Choose Generic Sprite',
-                    casting_sprite_helper: 'The image used as sprite for the generic actor, It should have 9:1 proportion (For example, 900 pixels of height and 100 wide) with transparent background when necessary.',
+                    casting_sprite_helper:
+                        'The image used as sprite for the generic actor, It should have 9:1 proportion (For example, 900 pixels of height and 100 wide) with transparent background when necessary.',
                     casting_actor_add_condition: 'Specify conditions for actor casting for event',
                     scene_casting: 'Actors casted to this scene',
                     scene_casting_helper: 'Please select the actors present on this scene',
                     scene_casting_no_actors: 'There is currently no actors associated to this event chain, please go back and add actors if necessary.',
                     scene_dialogue_placeholder: 'Click to change the dialogue text of this scene',
+                    scene_actor_animation_helper:
+                        'Here you can edit the animations that will occurs for the actor on this scene, each animation will be tweened together into a singular movement during the scene',
                     scene_actor_x_offset: 'X-axis offset',
                     scene_actor_y_offset: 'Y-axis offset',
                     scene_actor_x_offset_helper: 'Set the value of offset in X axis (from 0 to 100)',

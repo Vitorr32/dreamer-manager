@@ -1,4 +1,21 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Modal, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Checkbox,
+    Dialog,
+    DialogContent,
+    DialogContentText,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormHelperText,
+    FormLabel,
+    Modal,
+    Tab,
+    Tabs,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND, SPRITES_FOLDER } from 'renderer/shared/Constants';
@@ -26,6 +43,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     const [backgroundSelectOpen, setBackgroundSelectState] = useState<boolean>(false);
     const [openGallery, setGalleryState] = useState<boolean>(false);
     const [selectedActor, setSelectedActor] = useState<{ actor: Actor; index: number }>();
+    const [selectedAnimation, setSelectedAnimation] = useState<number>(0);
 
     useEffect(() => {
         getImageFilePath();
@@ -51,7 +69,9 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
             imagesPaths.scene = ApplyFileProtocol(file.path);
         }
 
-        scene.actors?.forEach(async (actorID) => {
+        Object.keys(scene.actorsState).forEach(async (actorID) => {
+            console.log(actorID);
+
             const actor = event.actors.find((actor) => actorID === actor.id);
 
             if (pathOfTempImages[actor.id]) {
@@ -155,7 +175,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                 <img className="scene__background utils__full-width-absolute-child utils__full-height" src={imagePaths?.scene}></img>
 
                 {/* Actors render on the stage ////////////////////////////////////// */}
-                {scene.actors?.map((actorID, index) => {
+                {Object.keys(scene.actorsState).map((actorID, index) => {
                     let actorImagePath;
 
                     if (imagePaths) {
@@ -197,7 +217,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                                 {event.actors?.map((actor) => (
                                     <FormControlLabel
                                         key={`scene_${actor.id}`}
-                                        control={<Checkbox checked={scene.actors?.includes(actor.id) || false} onChange={onActorCastChange} name={actor.id} />}
+                                        control={<Checkbox checked={!!scene.actorsState[actor.id] || false} onChange={onActorCastChange} name={actor.id} />}
                                         label={actor.alias}
                                     />
                                 ))}
@@ -207,8 +227,8 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                                         key={`scene_highlighted_${actor.id}`}
                                         control={
                                             <Checkbox
-                                                disabled={!scene.actors?.includes(actor.id)}
-                                                checked={scene.highlighted?.includes(actor.id) || false}
+                                                disabled={!scene.actorsState[actor.id]}
+                                                checked={scene.actorsState[actor.id]?.isHighlighted || false}
                                                 onChange={onActorHighlightChange}
                                                 name={actor.id}
                                             />
@@ -245,18 +265,35 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                 </Box>
             </Modal>
 
-            <Modal className="modal" open={selectedActor !== null} onClose={() => setSelectedActor(null)}>
-                <Box className="modal__wrapper modal__wrapper-small">
-                    {/* TODO: Think of best way to save in scene the actor/highlight/animation for each actor */}
-                    {/* <TextField
-                        label={t('interface.editor.event.scene_actor_x_offset')}
-                        helperText={t('interface.editor.event.scene_actor_x_offset_helper')}
-                        variant="outlined"
-                        value={selectedActor.actor.}
-                        onChange={(event) => onActorAliasChange(selectedActor, event.target.value as string, selectedActorIndex)}
-                    /> */}
-                </Box>
-            </Modal>
+            <Dialog className="animation" open={!!selectedActor} onClose={() => setSelectedActor(null)}>
+                {selectedActor && (
+                    <DialogContent>
+                        <DialogContentText>{t('interface.editor.event.scene_actor_animation_helper')}</DialogContentText>
+
+                        <Box className="animation__tabs">
+                            <Tabs value={selectedAnimation} onChange={(_, value) => setSelectedAnimation(value)} aria-label="basic tabs example">
+                                {scene.actorsState[selectedActor.actor.id].animations.map((animation, index) => {
+                                    const id = `Animation ${index}`;
+                                    return <Tab key={id} label={id} id={id} />;
+                                })}
+                                <Tab label={<button onClick={() => console.log('Tolo')}>React</button>} value={-1} />
+                            </Tabs>
+                        </Box>
+
+                        <Box className="animation__form">
+                            {scene.actorsState[selectedActor.actor.id].animations.map((animation, index) => (
+                                <TextField
+                                    label={t('interface.editor.event.scene_actor_x_offset')}
+                                    helperText={t('interface.editor.event.scene_actor_x_offset_helper')}
+                                    variant="outlined"
+                                    value={animation.options.offset.x || 0}
+                                    onChange={(event) => {}}
+                                />
+                            ))}
+                        </Box>
+                    </DialogContent>
+                )}
+            </Dialog>
         </Box>
     );
 }
