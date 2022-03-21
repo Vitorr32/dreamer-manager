@@ -15,16 +15,22 @@ import {
     Tabs,
     TextField,
     Typography,
+    MenuItem,
+    Select,
+    InputLabel,
 } from '@mui/material';
+import { TabContext, TabPanel } from '@mui/lab';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND, SPRITES_FOLDER } from 'renderer/shared/Constants';
-import { Scene } from 'renderer/shared/models/base/Scene.model';
+import { Scene, BasicAnimations, BASE_ANIMATION_OBJECT } from 'renderer/shared/models/base/Scene.model';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
 import { Actor, Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
+import { ActorOnScene } from './ActorOnScene';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface IProps {
     readonly event: Event;
@@ -164,6 +170,56 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         onSceneEdited(modifiedScene);
     };
 
+    const onAddAnimationToActor = (actorID: string) => {
+        const modifiedScene = CopyClassInstance(scene);
+
+        modifiedScene.actorsState[actorID].animations.push(BASE_ANIMATION_OBJECT);
+
+        onSceneEdited(modifiedScene);
+        setSelectedAnimation(modifiedScene.actorsState[actorID].animations.length - 1);
+    };
+
+    const onRemoveAnimationToActor = (actorID: string, animationIndex: number) => {
+        const modifiedScene = CopyClassInstance(scene);
+
+        modifiedScene.actorsState[actorID].animations.splice(animationIndex);
+
+        onSceneEdited(modifiedScene);
+        setSelectedAnimation(0);
+    };
+
+    const onAnimationXOffsetChange = (value: number, actorID: string, index: number) => {
+        const modifiedScene = CopyClassInstance(scene);
+
+        modifiedScene.actorsState[actorID].animations[index].options.offset.x = value;
+
+        onSceneEdited(modifiedScene);
+    };
+
+    const onAnimationYOffsetChange = (value: number, actorID: string, index: number) => {
+        const modifiedScene = CopyClassInstance(scene);
+
+        modifiedScene.actorsState[actorID].animations[index].options.offset.y = value;
+
+        onSceneEdited(modifiedScene);
+    };
+
+    const onAnimationScaleChange = (value: number, actorID: string, index: number) => {
+        const modifiedScene = CopyClassInstance(scene);
+
+        modifiedScene.actorsState[actorID].animations[index].options.scale = value;
+
+        onSceneEdited(modifiedScene);
+    };
+
+    const onAnimationTypeChange = (value: BasicAnimations, actorID: string, index: number) => {
+        const modifiedScene = CopyClassInstance(scene);
+
+        modifiedScene.actorsState[actorID].animations[index].type = value;
+
+        onSceneEdited(modifiedScene);
+    };
+
     return (
         <Box className="scene__wrapper utils__full-height">
             <Box className="scene__stage">
@@ -176,17 +232,23 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
 
                 {/* Actors render on the stage ////////////////////////////////////// */}
                 {Object.keys(scene.actorsState).map((actorID, index) => {
-                    let actorImagePath;
-
-                    if (imagePaths) {
-                        actorImagePath = imagePaths.actors[actorID];
+                    if (!scene.actorsState[actorID]) {
+                        return null;
                     }
+
+                    const currentActor = event.actors.find((actor) => actor.id === actorID);
+                    const actorImagePath = imagePaths.actors[actorID];
 
                     return (
                         actorImagePath && (
-                            <Box className="scene__dialogue-actor" key={`dialogue_actor_${index}`} onClick={() => onActorPositioning(actorID)}>
-                                <img src={actorImagePath} alt={actorID} />
-                            </Box>
+                            <ActorOnScene
+                                actor={currentActor}
+                                key={`dialogue_actor_${index}`}
+                                onActorClick={() => onActorPositioning(actorID)}
+                                actorImagePath={actorImagePath}
+                                animations={scene.actorsState[actorID].animations}
+                                isGameCharacter={!!currentActor.characterID}
+                            />
                         )
                     );
                 })}
@@ -270,27 +332,77 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                     <DialogContent>
                         <DialogContentText>{t('interface.editor.event.scene_actor_animation_helper')}</DialogContentText>
 
-                        <Box className="animation__tabs">
-                            <Tabs value={selectedAnimation} onChange={(_, value) => setSelectedAnimation(value)} aria-label="basic tabs example">
-                                {scene.actorsState[selectedActor.actor.id].animations.map((animation, index) => {
-                                    const id = `Animation ${index}`;
-                                    return <Tab key={id} label={id} id={id} />;
-                                })}
-                                <Tab label={<button onClick={() => console.log('Tolo')}>React</button>} value={-1} />
-                            </Tabs>
-                        </Box>
+                        <TabContext value={selectedAnimation.toString()}>
+                            <Box className="animation__tabs">
+                                <Tabs value={selectedAnimation} onChange={(_, value) => setSelectedAnimation(value)} aria-label="basic tabs example">
+                                    {scene.actorsState[selectedActor.actor.id].animations.map((animation, index) => {
+                                        const id = `Animation ${index}`;
+                                        return <Tab key={id} label={id} id={id} value={index} />;
+                                    })}
+                                    <Tab
+                                        label={t('interface.editor.event.scene_actor_animation_add')}
+                                        onClick={() => onAddAnimationToActor(selectedActor.actor.id)}
+                                        value={-1}
+                                    />
+                                </Tabs>
+                            </Box>
 
-                        <Box className="animation__form">
-                            {scene.actorsState[selectedActor.actor.id].animations.map((animation, index) => (
-                                <TextField
-                                    label={t('interface.editor.event.scene_actor_x_offset')}
-                                    helperText={t('interface.editor.event.scene_actor_x_offset_helper')}
-                                    variant="outlined"
-                                    value={animation.options.offset.x || 0}
-                                    onChange={(event) => {}}
-                                />
-                            ))}
-                        </Box>
+                            <Box className="animation__form">
+                                {scene.actorsState[selectedActor.actor.id].animations.map((animation, index) => (
+                                    <TabPanel value={index.toString()} key={`animation_tab_panel_${index}`}>
+                                        {index !== 0 && (
+                                            <Button onClick={() => onRemoveAnimationToActor(selectedActor.actor.id, index)}>
+                                                <DeleteIcon />
+                                            </Button>
+                                        )}
+
+                                        <FormControl fullWidth>
+                                            <InputLabel>{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
+                                            <Select
+                                                value={animation.type}
+                                                onChange={(event) => onAnimationTypeChange(event.target.value as BasicAnimations, selectedActor.actor.id, index)}
+                                            >
+                                                <MenuItem value={BasicAnimations.IDLE}>{t(BasicAnimations.IDLE)}</MenuItem>
+                                                <MenuItem value={BasicAnimations.FADE_IN}>{t(BasicAnimations.FADE_IN)}</MenuItem>
+                                                <MenuItem value={BasicAnimations.FADE_OUT}>{t(BasicAnimations.FADE_OUT)}</MenuItem>
+                                                <MenuItem value={BasicAnimations.MOVE_LEFT}>{t(BasicAnimations.MOVE_LEFT)}</MenuItem>
+                                                <MenuItem value={BasicAnimations.MOVE_RIGHT}>{t(BasicAnimations.MOVE_RIGHT)}</MenuItem>
+                                                <MenuItem value={BasicAnimations.GET_CLOSER}>{t(BasicAnimations.GET_CLOSER)}</MenuItem>
+                                                <MenuItem value={BasicAnimations.GET_FARTHER}>{t(BasicAnimations.GET_FARTHER)}</MenuItem>
+                                            </Select>
+                                            <FormHelperText>{t('interface.editor.event.scene_actor_animation_type_helper')}</FormHelperText>
+                                        </FormControl>
+
+                                        <TextField
+                                            type="number"
+                                            label={t('interface.editor.event.scene_actor_x_offset')}
+                                            helperText={t('interface.editor.event.scene_actor_x_offset_helper')}
+                                            variant="outlined"
+                                            value={animation.options?.offset.x || 0}
+                                            onChange={(event) => onAnimationXOffsetChange(Number(event.target.value), selectedActor.actor.id, index)}
+                                        />
+
+                                        <TextField
+                                            type="number"
+                                            label={t('interface.editor.event.scene_actor_y_offset')}
+                                            helperText={t('interface.editor.event.scene_actor_y_offset_helper')}
+                                            variant="outlined"
+                                            value={animation.options?.offset.y || 0}
+                                            onChange={(event) => onAnimationYOffsetChange(Number(event.target.value), selectedActor.actor.id, index)}
+                                        />
+
+                                        <TextField
+                                            type="number"
+                                            label={t('interface.editor.event.scene_actor_animation_scale_label')}
+                                            helperText={t('interface.editor.event.scene_actor_animation_scale_helper')}
+                                            variant="outlined"
+                                            value={animation.options.scale || 0}
+                                            onChange={(event) => onAnimationYOffsetChange(Number(event.target.value), selectedActor.actor.id, index)}
+                                        />
+                                    </TabPanel>
+                                ))}
+                            </Box>
+                        </TabContext>
                     </DialogContent>
                 )}
             </Dialog>

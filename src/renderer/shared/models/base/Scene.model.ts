@@ -15,13 +15,13 @@ export enum Sprite {
 }
 
 export enum BasicAnimations {
-    IDLE,
-    FADE_IN,
-    FADE_OUT,
-    MOVE_LEFT,
-    MOVE_RIGHT,
-    GET_CLOSER,
-    GET_FARTHER,
+    IDLE = 'model.event.animation.type.idle',
+    FADE_IN = 'model.event.animation.type.fadeIn',
+    FADE_OUT = 'model.event.animation.type.fadeOut',
+    MOVE_LEFT = 'model.event.animation.type.moveLeft',
+    MOVE_RIGHT = 'model.event.animation.type.moveRight',
+    GET_CLOSER = 'model.event.animation.type.getCloser',
+    GET_FARTHER = 'model.event.animation.type.getFarther',
 }
 
 export interface Sound {
@@ -33,12 +33,14 @@ export interface Animation {
     type: BasicAnimations;
     //Options to configure the animation, like rotation degrees, offset to move, etc.
     options: {
-        offset?: {
+        offset: {
             x: number;
             y: number;
         };
+        scale: number,
         facing: 'Left' | 'Right';
         rotation: number;
+        delay: number;
     };
 }
 
@@ -49,6 +51,20 @@ export interface SceneResult {
     resultingScene: string;
     applyFlagToActor: { flagID: string; actor: number }[] | null;
 }
+
+export const BASE_ANIMATION_OBJECT: Animation = {
+    type: BasicAnimations.IDLE,
+    options: {
+        facing: 'Right',
+        rotation: 0,
+        scale: 0,
+        offset: {
+            x: 50,
+            y: 50,
+        },
+        delay: 0
+    },
+};
 
 export class Scene {
     public id: string;
@@ -86,19 +102,7 @@ export class Scene {
 
         this.actorsState[actorID] = {
             isHighlighted: false,
-            animations: [
-                {
-                    type: BasicAnimations.IDLE,
-                    options: {
-                        facing: 'Right',
-                        rotation: 0,
-                        offset: {
-                            x: 50,
-                            y: 50,
-                        },
-                    },
-                },
-            ],
+            animations: [BASE_ANIMATION_OBJECT]
         };
 
         return true;

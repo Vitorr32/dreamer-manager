@@ -101,6 +101,12 @@ export const en_US = {
                     scene_dialogue_placeholder: 'Click to change the dialogue text of this scene',
                     scene_actor_animation_helper:
                         'Here you can edit the animations that will occurs for the actor on this scene, each animation will be tweened together into a singular movement during the scene',
+                    scene_actor_animation_add: 'Add Animation Step',
+                    scene_actor_animation_type_label: 'Type of animation',
+                    scene_actor_animation_type_helper:
+                        'The type of animation that this keyframe will have, it could be set for transition between animation. For example: For the character entrance, the first animation would be a fade in, and the second would be a idle with the final position on the scene',
+                    scene_actor_animation_scale_label: 'Scale Percentage',
+                    scene_actor_animation_scale_helper: 'How much in percent the scale of the element will expand/contract from the default size',
                     scene_actor_x_offset: 'X-axis offset',
                     scene_actor_y_offset: 'Y-axis offset',
                     scene_actor_x_offset_helper: 'Set the value of offset in X axis (from 0 to 100)',
@@ -297,6 +303,17 @@ export const en_US = {
             },
             event: {
                 actor: 'Actor',
+                animation: {
+                    type: {
+                        idle: 'Idle',
+                        fadeIn: 'Fade in',
+                        fadeOut: 'Fade out',
+                        moveLeft: 'Move/Face Left',
+                        moveRight: 'Move/Face Right',
+                        getCloser: 'Get Closer',
+                        getFarther: 'Get Farther',
+                    },
+                },
             },
         },
         summary: {

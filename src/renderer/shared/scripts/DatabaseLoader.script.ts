@@ -5,7 +5,7 @@ import { Attribute } from '../models/base/Attribute.model';
 import { Event } from '../models/base/Event.model';
 import { Trait } from '../models/base/Trait.model';
 
-export async function GameStartDabaseLoad(): Promise<void> {
+export async function GameStartDatabaseLoad(): Promise<void> {
     const loadedTraitsJSON: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(TRAIT_DATABASE_FOLDER);
 
     const loadedTraits: Trait[] = [];
