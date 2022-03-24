@@ -31,17 +31,13 @@ export interface Sound {
 
 export interface Animation {
     type: BasicAnimations;
-    //Options to configure the animation, like rotation degrees, offset to move, etc.
-    options: {
-        offset: {
-            x: number;
-            y: number;
-        };
-        scale: number,
-        facing: 'Left' | 'Right';
-        rotation: number;
-        delay: number;
-    };
+    xAxisOffset: number;
+    yAxisOffset: number;
+    scale: number;
+    facing: 'Left' | 'Right';
+    rotation: number;
+    delay: number;
+    duration: number;
 }
 
 export interface SceneResult {
@@ -54,16 +50,13 @@ export interface SceneResult {
 
 export const BASE_ANIMATION_OBJECT: Animation = {
     type: BasicAnimations.IDLE,
-    options: {
-        facing: 'Right',
-        rotation: 0,
-        scale: 0,
-        offset: {
-            x: 50,
-            y: 50,
-        },
-        delay: 0
-    },
+    facing: 'Right',
+    rotation: 0,
+    scale: 0,
+    xAxisOffset: 50,
+    yAxisOffset: 50,
+    delay: 0,
+    duration: 1000,
 };
 
 export class Scene {
@@ -102,7 +95,7 @@ export class Scene {
 
         this.actorsState[actorID] = {
             isHighlighted: false,
-            animations: [BASE_ANIMATION_OBJECT]
+            animations: [BASE_ANIMATION_OBJECT],
         };
 
         return true;

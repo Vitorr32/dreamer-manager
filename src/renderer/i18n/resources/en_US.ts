@@ -102,6 +102,11 @@ export const en_US = {
                     scene_actor_animation_helper:
                         'Here you can edit the animations that will occurs for the actor on this scene, each animation will be tweened together into a singular movement during the scene',
                     scene_actor_animation_add: 'Add Animation Step',
+                    scene_actor_duration_label: 'Duration (milliseconds)',
+                    scene_actor_duration_helper: 'The duration, in milliseconds, that will take to smoothly change between the previous animation step to this one.',
+                    scene_actor_animation_facing_left: 'Left side',
+                    scene_actor_animation_facing_right: 'Right side',
+                    scene_actor_animation_facing_helper: 'Which side of the screen is the actor facing?',
                     scene_actor_animation_type_label: 'Type of animation',
                     scene_actor_animation_type_helper:
                         'The type of animation that this keyframe will have, it could be set for transition between animation. For example: For the character entrance, the first animation would be a fade in, and the second would be a idle with the final position on the scene',

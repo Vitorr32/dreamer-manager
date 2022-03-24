@@ -30,22 +30,28 @@ interface IProps {
     animations: Animation[];
     isGameCharacter?: boolean;
     actorImagePath: string;
-    onActorClick: () => any;
+    onActorClick?: () => any;
     playAnimation?: boolean;
 }
-
-const spriteGamePath = [SPRITES_FOLDER];
 
 export function ActorOnScene({ actor, animations, isGameCharacter = false, playAnimation = false, onActorClick, actorImagePath }: IProps) {
     const { t, i18n } = useTranslation();
 
-    const [currentAnimation, setCurrentAnimation] = useState<Animation>(animations[0] || null);
+    const [currentAnimationIndex, setCurrentAnimationIndex] = useState<number>(0);
+    const [isPlayingAnimation, setPlayingAnimationState] = useState<boolean>(false);
+    const currentAnimation = animations && animations.length !== 0 ? animations[currentAnimationIndex] : null;
 
     // const actorAssociatedCharacter = isGameCharacter ? useSelector((state: RootState) => state.database.mappedDatabase.characters[actor.characterID]) : null;
 
-    return (
-        <Box className="scene__stage-actor" style={{ top: `${currentAnimation.options?.offset.y}%`, left: `${currentAnimation.options?.offset.x}%` }} onClick={onActorClick}>
-            <img src={actorImagePath} alt={actor.id} style={{ transform: `scale(${1 + currentAnimation.options.scale / 100})` }} />
+    const startAnimationPlayback = () => {};
+
+    if (playAnimation && !isPlayingAnimation) {
+        startAnimationPlayback();
+    }
+
+    return currentAnimation ? (
+        <Box className="scene__stage-actor" style={{ top: `${currentAnimation.yAxisOffset}%`, left: `${currentAnimation.xAxisOffset}%` }} onClick={onActorClick}>
+            <img src={actorImagePath} alt={actor.id} style={{ transform: `scale(${1 + currentAnimation.scale / 100})` }} />
         </Box>
-    );
+    ) : null;
 }

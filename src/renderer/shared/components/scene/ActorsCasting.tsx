@@ -204,7 +204,9 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                                     const actorName =
                                         actor.actorType === ActorType.DYNAMIC_TYPE || actor.actorType === ActorType.GENERIC_TYPE
                                             ? actor.alias
-                                            : actor.characterID ? charactersDB[actor.characterID].name : actor.alias;
+                                            : actor.characterID
+                                            ? charactersDB[actor.characterID].name
+                                            : actor.alias;
 
                                     return (
                                         <ListItemButton key={key} selected={selectedActor === actor} onClick={() => onActorSelected(actor, index)}>
@@ -285,9 +287,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
 
                                                 <Button onClick={() => setGalleryState(true)}>{t('interface.editor.event.background_resources_search')}</Button>
 
-                                                {openGallery && (
-                                                    <ResourcesSearch onResourceSelected={onSpriteSelected} rootFolder={[SPRITES_FOLDER]} />
-                                                )}
+                                                {openGallery && <ResourcesSearch onResourceSelected={onSpriteSelected} rootFolder={[SPRITES_FOLDER]} />}
                                             </Box>
                                         </Modal>
                                     </Box>

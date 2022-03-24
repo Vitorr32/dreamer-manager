@@ -18,6 +18,8 @@ import {
     MenuItem,
     Select,
     InputLabel,
+    ToggleButtonGroup,
+    ToggleButton,
 } from '@mui/material';
 import { TabContext, TabPanel } from '@mui/lab';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -31,6 +33,8 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ActorOnScene } from './ActorOnScene';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 interface IProps {
     readonly event: Event;
@@ -188,34 +192,18 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         setSelectedAnimation(0);
     };
 
-    const onAnimationXOffsetChange = (value: number, actorID: string, index: number) => {
+    const onAnimationConfigurationChange = (
+        value: any,
+        variableName: 'xAxisOffset' | 'yAxisOffset' | 'scale' | 'facing' | 'type' | 'duration',
+        actorID: string,
+        index: number
+    ) => {
         const modifiedScene = CopyClassInstance(scene);
 
-        modifiedScene.actorsState[actorID].animations[index].options.offset.x = value;
-
-        onSceneEdited(modifiedScene);
-    };
-
-    const onAnimationYOffsetChange = (value: number, actorID: string, index: number) => {
-        const modifiedScene = CopyClassInstance(scene);
-
-        modifiedScene.actorsState[actorID].animations[index].options.offset.y = value;
-
-        onSceneEdited(modifiedScene);
-    };
-
-    const onAnimationScaleChange = (value: number, actorID: string, index: number) => {
-        const modifiedScene = CopyClassInstance(scene);
-
-        modifiedScene.actorsState[actorID].animations[index].options.scale = value;
-
-        onSceneEdited(modifiedScene);
-    };
-
-    const onAnimationTypeChange = (value: BasicAnimations, actorID: string, index: number) => {
-        const modifiedScene = CopyClassInstance(scene);
-
-        modifiedScene.actorsState[actorID].animations[index].type = value;
+        modifiedScene.actorsState[actorID].animations[index] = {
+            ...modifiedScene.actorsState[actorID].animations[index],
+            [variableName]: value,
+        };
 
         onSceneEdited(modifiedScene);
     };
@@ -356,11 +344,14 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                                             </Button>
                                         )}
 
-                                        <FormControl fullWidth>
-                                            <InputLabel>{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
+                                        <FormControl fullWidth variant="filled">
+                                            <InputLabel htmlFor={`animation_${index}_type_selected`}>
+                                                {t('interface.editor.event.scene_actor_animation_type_label')}
+                                            </InputLabel>
                                             <Select
+                                                id={`animation_${index}_type_selected`}
                                                 value={animation.type}
-                                                onChange={(event) => onAnimationTypeChange(event.target.value as BasicAnimations, selectedActor.actor.id, index)}
+                                                onChange={(event) => onAnimationConfigurationChange(event.target.value, 'type', selectedActor.actor.id, index)}
                                             >
                                                 <MenuItem value={BasicAnimations.IDLE}>{t(BasicAnimations.IDLE)}</MenuItem>
                                                 <MenuItem value={BasicAnimations.FADE_IN}>{t(BasicAnimations.FADE_IN)}</MenuItem>
@@ -373,31 +364,67 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                                             <FormHelperText>{t('interface.editor.event.scene_actor_animation_type_helper')}</FormHelperText>
                                         </FormControl>
 
-                                        <TextField
-                                            type="number"
-                                            label={t('interface.editor.event.scene_actor_x_offset')}
-                                            helperText={t('interface.editor.event.scene_actor_x_offset_helper')}
-                                            variant="outlined"
-                                            value={animation.options?.offset.x || 0}
-                                            onChange={(event) => onAnimationXOffsetChange(Number(event.target.value), selectedActor.actor.id, index)}
-                                        />
+                                        <FormControl fullWidth>
+                                            <ToggleButtonGroup
+                                                value={animation.facing}
+                                                exclusive
+                                                onChange={(_event, facing) => onAnimationConfigurationChange(facing, 'facing', selectedActor.actor.id, index)}
+                                                aria-label="text alignment"
+                                            >
+                                                <ToggleButton value="Left" aria-label="left aligned">
+                                                    <ArrowLeftIcon /> {t('interface.editor.event.scene_actor_animation_facing_left')}
+                                                </ToggleButton>
+                                                <ToggleButton value="Right" aria-label="centered">
+                                                    <ArrowRightIcon /> {t('interface.editor.event.scene_actor_animation_facing_right')}
+                                                </ToggleButton>
+                                            </ToggleButtonGroup>
+                                            <FormHelperText> {t('interface.editor.event.scene_actor_animation_facing_helper')}</FormHelperText>
+                                        </FormControl>
+
+                                        {animation.type !== BasicAnimations.GET_CLOSER && animation.type !== BasicAnimations.GET_FARTHER && (
+                                            <>
+                                                <TextField
+                                                    type="number"
+                                                    label={t('interface.editor.event.scene_actor_x_offset')}
+                                                    helperText={t('interface.editor.event.scene_actor_x_offset_helper')}
+                                                    variant="outlined"
+                                                    value={animation.xAxisOffset || 0}
+                                                    onChange={(event) =>
+                                                        onAnimationConfigurationChange(Number(event.target.value), 'xAxisOffset', selectedActor.actor.id, index)
+                                                    }
+                                                />
+
+                                                <TextField
+                                                    type="number"
+                                                    label={t('interface.editor.event.scene_actor_y_offset')}
+                                                    helperText={t('interface.editor.event.scene_actor_y_offset_helper')}
+                                                    variant="outlined"
+                                                    value={animation.yAxisOffset || 0}
+                                                    onChange={(event) =>
+                                                        onAnimationConfigurationChange(Number(event.target.value), 'yAxisOffset', selectedActor.actor.id, index)
+                                                    }
+                                                />
+                                            </>
+                                        )}
+
+                                        {(animation.type === BasicAnimations.GET_CLOSER || animation.type === BasicAnimations.GET_FARTHER) && (
+                                            <TextField
+                                                type="number"
+                                                label={t('interface.editor.event.scene_actor_animation_scale_label')}
+                                                helperText={t('interface.editor.event.scene_actor_animation_scale_helper')}
+                                                variant="outlined"
+                                                value={animation.scale || 0}
+                                                onChange={(event) => onAnimationConfigurationChange(Number(event.target.value), 'scale', selectedActor.actor.id, index)}
+                                            />
+                                        )}
 
                                         <TextField
                                             type="number"
-                                            label={t('interface.editor.event.scene_actor_y_offset')}
-                                            helperText={t('interface.editor.event.scene_actor_y_offset_helper')}
+                                            label={t('interface.editor.event.scene_actor_duration_label')}
+                                            helperText={t('interface.editor.event.scene_actor_duration_helper')}
                                             variant="outlined"
-                                            value={animation.options?.offset.y || 0}
-                                            onChange={(event) => onAnimationYOffsetChange(Number(event.target.value), selectedActor.actor.id, index)}
-                                        />
-
-                                        <TextField
-                                            type="number"
-                                            label={t('interface.editor.event.scene_actor_animation_scale_label')}
-                                            helperText={t('interface.editor.event.scene_actor_animation_scale_helper')}
-                                            variant="outlined"
-                                            value={animation.options.scale || 0}
-                                            onChange={(event) => onAnimationYOffsetChange(Number(event.target.value), selectedActor.actor.id, index)}
+                                            value={animation.duration || 1000}
+                                            onChange={(event) => onAnimationConfigurationChange(Number(event.target.value), 'duration', selectedActor.actor.id, index)}
                                         />
                                     </TabPanel>
                                 ))}
