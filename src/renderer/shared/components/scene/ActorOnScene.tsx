@@ -16,6 +16,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import { motion } from 'framer-motion';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -43,11 +44,43 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
 
     // const actorAssociatedCharacter = isGameCharacter ? useSelector((state: RootState) => state.database.mappedDatabase.characters[actor.characterID]) : null;
 
-    const startAnimationPlayback = () => {};
+    const startAnimationPlayback = () => {
+        setPlayingAnimationState(true);
+        setCurrentAnimationIndex(0);
+
+        playAnimationStep(animations[currentAnimationIndex]);
+    };
+
+    const playAnimationStep = (currentAnimation: Animation) => {};
 
     if (playAnimation && !isPlayingAnimation) {
         startAnimationPlayback();
     }
+
+    const getAnimatedContainer = () => {
+        const sumOfDuration = animations.reduce((sum, animation) => sum + animation.duration, 0);
+
+        animations[0].rotation;
+
+        return (
+            <motion.div
+                animate={{
+                    left: animations.map((animation) => animation.xAxisOffset),
+                    top: animations.map((animation) => animation.yAxisOffset),
+                    scale: animations.map((animation) => animation.scale),
+                    rotateY: animations.map((animation) => (animation.facing === 'Left' ? 180 : 0)),
+                    rotateZ: animations.map((animation) => animation.rotation),
+                }}
+                transition={{
+                    duration: sumOfDuration,
+                    times: animations.map((_animation, index) => {
+                        const sumOfDurationUntilNow = animations.slice(0, index).reduce((sum, animation) => sum + animation.duration, 0);
+                        return sumOfDurationUntilNow / sumOfDuration;
+                    }),
+                }}
+            />
+        );
+    };
 
     return currentAnimation ? (
         <Box className="scene__stage-actor" style={{ top: `${currentAnimation.yAxisOffset}%`, left: `${currentAnimation.xAxisOffset}%` }} onClick={onActorClick}>

@@ -25,7 +25,7 @@ import { TabContext, TabPanel } from '@mui/lab';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND, SPRITES_FOLDER } from 'renderer/shared/Constants';
-import { Scene, BasicAnimations, BASE_ANIMATION_OBJECT } from 'renderer/shared/models/base/Scene.model';
+import { Scene, BasicAnimations } from 'renderer/shared/models/base/Scene.model';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
 import { Actor, Event } from 'renderer/shared/models/base/Event.model';
@@ -177,7 +177,8 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     const onAddAnimationToActor = (actorID: string) => {
         const modifiedScene = CopyClassInstance(scene);
 
-        modifiedScene.actorsState[actorID].animations.push(BASE_ANIMATION_OBJECT);
+        const newAnimation = modifiedScene.actorsState[actorID].animations[modifiedScene.actorsState[actorID].animations.length - 1];
+        modifiedScene.actorsState[actorID].animations.push(CopyClassInstance(newAnimation));
 
         onSceneEdited(modifiedScene);
         setSelectedAnimation(modifiedScene.actorsState[actorID].animations.length - 1);
@@ -418,14 +419,16 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                                             />
                                         )}
 
-                                        <TextField
-                                            type="number"
-                                            label={t('interface.editor.event.scene_actor_duration_label')}
-                                            helperText={t('interface.editor.event.scene_actor_duration_helper')}
-                                            variant="outlined"
-                                            value={animation.duration || 1000}
-                                            onChange={(event) => onAnimationConfigurationChange(Number(event.target.value), 'duration', selectedActor.actor.id, index)}
-                                        />
+                                        {index !== 0 && (
+                                            <TextField
+                                                type="number"
+                                                label={t('interface.editor.event.scene_actor_duration_label')}
+                                                helperText={t('interface.editor.event.scene_actor_duration_helper')}
+                                                variant="outlined"
+                                                value={animation.duration || 1000}
+                                                onChange={(event) => onAnimationConfigurationChange(Number(event.target.value), 'duration', selectedActor.actor.id, index)}
+                                            />
+                                        )}
                                     </TabPanel>
                                 ))}
                             </Box>
