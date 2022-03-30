@@ -16,7 +16,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { motion } from 'framer-motion';
+import { motion, TargetAndTransition } from 'framer-motion';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -40,51 +40,61 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
 
     const [currentAnimationIndex, setCurrentAnimationIndex] = useState<number>(0);
     const [isPlayingAnimation, setPlayingAnimationState] = useState<boolean>(false);
-    const currentAnimation = animations && animations.length !== 0 ? animations[currentAnimationIndex] : null;
+    const [currentAnimationVariants, setAnimationVariants] = useState<{ idle: any; animation: any }>();
 
     // const actorAssociatedCharacter = isGameCharacter ? useSelector((state: RootState) => state.database.mappedDatabase.characters[actor.characterID]) : null;
 
     const startAnimationPlayback = () => {
         setPlayingAnimationState(true);
-        setCurrentAnimationIndex(0);
-
-        playAnimationStep(animations[currentAnimationIndex]);
     };
-
-    const playAnimationStep = (currentAnimation: Animation) => {};
 
     if (playAnimation && !isPlayingAnimation) {
         startAnimationPlayback();
     }
 
-    const getAnimatedContainer = () => {
-        const sumOfDuration = animations.reduce((sum, animation) => sum + animation.duration, 0);
-
-        animations[0].rotation;
-
-        return (
-            <motion.div
-                animate={{
-                    left: animations.map((animation) => animation.xAxisOffset),
-                    top: animations.map((animation) => animation.yAxisOffset),
-                    scale: animations.map((animation) => animation.scale),
-                    rotateY: animations.map((animation) => (animation.facing === 'Left' ? 180 : 0)),
-                    rotateZ: animations.map((animation) => animation.rotation),
-                }}
-                transition={{
-                    duration: sumOfDuration,
-                    times: animations.map((_animation, index) => {
-                        const sumOfDurationUntilNow = animations.slice(0, index).reduce((sum, animation) => sum + animation.duration, 0);
-                        return sumOfDurationUntilNow / sumOfDuration;
-                    }),
-                }}
-            />
-        );
+    const onAnimationComplete = () => {
+        setPlayingAnimationState(false);
     };
 
-    return currentAnimation ? (
-        <Box className="scene__stage-actor" style={{ top: `${currentAnimation.yAxisOffset}%`, left: `${currentAnimation.xAxisOffset}%` }} onClick={onActorClick}>
-            <img src={actorImagePath} alt={actor.id} style={{ transform: `scale(${1 + currentAnimation.scale / 100})` }} />
+    const updateAnimationVariants = () => {
+        if (!animations || animations.length === 0) {
+            setAnimationVariants(null);
+            return;
+        }
+
+        const initialAnimationStep = animations[0];
+        //Mount initial state of the actor on screen
+        const initialState: TargetAndTransition = {
+            left: `${initialAnimationStep.xAxisOffset}%`,
+            top: `${initialAnimationStep.yAxisOffset}%`,
+            scale: 1 + initialAnimationStep.scale / 100,
+            rotateY: initialAnimationStep.facing === 'Left' ? 180 : 0,
+            rotateZ: initialAnimationStep.rotation,
+        };
+
+        const completeAnimation: TargetAndTransition = {
+            left: animations.map((animation) => `${animation.xAxisOffset}%`),
+            top: animations.map((animation) => `${animation.yAxisOffset}%`),
+            scale: animations.map((animation) => 1 + animation.scale / 100),
+            rotateY: animations.map((animation) => (animation.facing === 'Left' ? 180 : 0)),
+            rotateZ: animations.map((animation) => animation.rotation),
+        };
+
+        const sumOfDuration = animations.reduce((sum, animation) => sum + animation.duration, 0);
+        const transitionConfiguration = {
+            duration: sumOfDuration,
+            times: animations.map((_animation, index) => {
+                const sumOfDurationUntilNow = animations.slice(0, index).reduce((sum, animation) => sum + animation.duration, 0);
+                return sumOfDurationUntilNow / sumOfDuration;
+            }),
+        };
+    };
+
+    return (
+        <Box className="scene__stage-actor" onClick={onActorClick}>
+            <motion.div initial={isPlayingAnimation ? 'animation' : 'idle'} variants={currentAnimationVariants} onAnimationComplete={onAnimationComplete}>
+                <img src={actorImagePath} alt={actor.id} />
+            </motion.div>
         </Box>
-    ) : null;
+    );
 }

@@ -54,6 +54,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     const [openGallery, setGalleryState] = useState<boolean>(false);
     const [selectedActor, setSelectedActor] = useState<{ actor: Actor; index: number }>();
     const [selectedAnimation, setSelectedAnimation] = useState<number>(0);
+    const [isPreviewingAnimation, setAnimationPreviewState] = useState<boolean>(false);
 
     useEffect(() => {
         getImageFilePath();
@@ -237,6 +238,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                                 actorImagePath={actorImagePath}
                                 animations={scene.actorsState[actorID].animations}
                                 isGameCharacter={!!currentActor.characterID}
+                                playAnimation={isPreviewingAnimation}
                             />
                         )
                     );
