@@ -51,7 +51,6 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
 
     useEffect(() => {
         if (!isPlayingAnimation) {
-            // console.log(animations);
             updateAnimationVariants();
         }
     }, [animations]);
@@ -90,15 +89,12 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
         };
 
         setAnimationVariants({ idle: initialState, animation: completeAnimation, transition: transitionConfiguration });
-        setPlayingAnimationState(true);
     };
 
     const onAnimationComplete = () => {
         setPlayingAnimationState(false);
         onAnimationEnd();
     };
-
-    console.log(currentAnimationVariants);
 
     return (
         <Box className="scene__stage-actor" onClick={onActorClick}>
