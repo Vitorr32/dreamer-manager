@@ -81,8 +81,6 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         }
 
         Object.keys(scene.actorsState).forEach(async (actorID) => {
-            console.log(actorID);
-
             const actor = event.actors.find((actor) => actorID === actor.id);
 
             if (pathOfTempImages[actor.id]) {
@@ -201,6 +199,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         index: number
     ) => {
         const modifiedScene = CopyClassInstance(scene);
+        modifiedScene.actorsState = CopyClassInstance(modifiedScene.actorsState);
 
         modifiedScene.actorsState[actorID].animations[index] = {
             ...modifiedScene.actorsState[actorID].animations[index],
@@ -262,6 +261,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
             </Box>
 
             <Box className="scene__config">
+                <Button onClick={() => setAnimationPreviewState(!isPreviewingAnimation)}>Animate</Button>
                 <Box className="scene__actors">
                     {event.actors && event.actors.length !== 0 ? (
                         <FormControl component="fieldset" variant="standard">

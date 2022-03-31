@@ -32,29 +32,29 @@ interface IProps {
     isGameCharacter?: boolean;
     actorImagePath: string;
     onActorClick?: () => any;
+    onAnimationEnd?: () => any;
     playAnimation?: boolean;
 }
 
-export function ActorOnScene({ actor, animations, isGameCharacter = false, playAnimation = false, onActorClick, actorImagePath }: IProps) {
+export function ActorOnScene({ actor, animations, isGameCharacter = false, playAnimation = false, onActorClick, onAnimationEnd, actorImagePath }: IProps) {
     const { t, i18n } = useTranslation();
 
-    const [currentAnimationIndex, setCurrentAnimationIndex] = useState<number>(0);
     const [isPlayingAnimation, setPlayingAnimationState] = useState<boolean>(false);
-    const [currentAnimationVariants, setAnimationVariants] = useState<{ idle: any; animation: any }>();
-
+    const [currentAnimationVariants, setAnimationVariants] = useState<{ idle: any; animation: any; transition: any }>();
     // const actorAssociatedCharacter = isGameCharacter ? useSelector((state: RootState) => state.database.mappedDatabase.characters[actor.characterID]) : null;
 
-    const startAnimationPlayback = () => {
-        setPlayingAnimationState(true);
-    };
+    useEffect(() => {
+        if (playAnimation && !isPlayingAnimation) {
+            setPlayingAnimationState(true);
+        }
+    }, [playAnimation]);
 
-    if (playAnimation && !isPlayingAnimation) {
-        startAnimationPlayback();
-    }
-
-    const onAnimationComplete = () => {
-        setPlayingAnimationState(false);
-    };
+    useEffect(() => {
+        if (!isPlayingAnimation) {
+            // console.log(animations);
+            updateAnimationVariants();
+        }
+    }, [animations]);
 
     const updateAnimationVariants = () => {
         if (!animations || animations.length === 0) {
@@ -88,11 +88,27 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
                 return sumOfDurationUntilNow / sumOfDuration;
             }),
         };
+
+        setAnimationVariants({ idle: initialState, animation: completeAnimation, transition: transitionConfiguration });
+        setPlayingAnimationState(true);
     };
+
+    const onAnimationComplete = () => {
+        setPlayingAnimationState(false);
+        onAnimationEnd();
+    };
+
+    console.log(currentAnimationVariants);
 
     return (
         <Box className="scene__stage-actor" onClick={onActorClick}>
-            <motion.div initial={isPlayingAnimation ? 'animation' : 'idle'} variants={currentAnimationVariants} onAnimationComplete={onAnimationComplete}>
+            <motion.div
+                className="scene__stage-animated"
+                initial={isPlayingAnimation ? 'animation' : 'idle'}
+                variants={currentAnimationVariants}
+                transition={currentAnimationVariants?.transition || null}
+                onAnimationComplete={onAnimationComplete}
+            >
                 <img src={actorImagePath} alt={actor.id} />
             </motion.div>
         </Box>
