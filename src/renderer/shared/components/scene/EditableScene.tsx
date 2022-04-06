@@ -177,7 +177,8 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         const modifiedScene = CopyClassInstance(scene);
 
         const newAnimation = modifiedScene.actorsState[actorID].animations[modifiedScene.actorsState[actorID].animations.length - 1];
-        modifiedScene.actorsState[actorID].animations.push(CopyClassInstance(newAnimation));
+        newAnimation.duration = 1000;
+        modifiedScene.actorsState[actorID].animations.push(newAnimation);
 
         onSceneEdited(modifiedScene);
         setSelectedAnimation(modifiedScene.actorsState[actorID].animations.length - 1);
@@ -238,6 +239,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                                 animations={scene.actorsState[actorID].animations}
                                 isGameCharacter={!!currentActor.characterID}
                                 playAnimation={isPreviewingAnimation}
+                                onAnimationEnd={() => setAnimationPreviewState(false)}
                             />
                         )
                     );
@@ -261,7 +263,9 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
             </Box>
 
             <Box className="scene__config">
-                <Button onClick={() => setAnimationPreviewState(!isPreviewingAnimation)}>Animate</Button>
+                <Button onClick={() => setAnimationPreviewState(!isPreviewingAnimation)} disabled={isPreviewingAnimation}>
+                    {!isPreviewingAnimation ? 'Animate' : 'Animating...'}
+                </Button>
                 <Box className="scene__actors">
                     {event.actors && event.actors.length !== 0 ? (
                         <FormControl component="fieldset" variant="standard">

@@ -56,7 +56,7 @@ export const BASE_ANIMATION_OBJECT: Animation = {
     xAxisOffset: 50,
     yAxisOffset: 50,
     delay: 0,
-    duration: 1000,
+    duration: 0,
 };
 
 export class Scene {

@@ -16,7 +16,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { motion, TargetAndTransition } from 'framer-motion';
+import { motion, TargetAndTransition, useAnimation } from 'framer-motion';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -40,16 +40,20 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
     const { t, i18n } = useTranslation();
 
     const [isPlayingAnimation, setPlayingAnimationState] = useState<boolean>(false);
-    const [currentAnimationVariants, setAnimationVariants] = useState<{ idle: any; animation: any; transition: any }>();
+    const [currentAnimationVariants, setAnimationVariants] = useState<{ idle: TargetAndTransition; animation: TargetAndTransition }>();
+    const framerMotionAnimationControls = useAnimation();
     // const actorAssociatedCharacter = isGameCharacter ? useSelector((state: RootState) => state.database.mappedDatabase.characters[actor.characterID]) : null;
 
     useEffect(() => {
         if (playAnimation && !isPlayingAnimation) {
+            console.log('Playing animations...');
             setPlayingAnimationState(true);
+            framerMotionAnimationControls.start('animation');
         }
     }, [playAnimation]);
 
     useEffect(() => {
+        console.log('Animations updated?', !isPlayingAnimation);
         if (!isPlayingAnimation) {
             updateAnimationVariants();
         }
@@ -71,42 +75,55 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
             rotateZ: initialAnimationStep.rotation,
         };
 
+        const sumOfDuration = animations.reduce((sum, animation) => sum + animation.duration, 0);
         const completeAnimation: TargetAndTransition = {
             left: animations.map((animation) => `${animation.xAxisOffset}%`),
             top: animations.map((animation) => `${animation.yAxisOffset}%`),
             scale: animations.map((animation) => 1 + animation.scale / 100),
             rotateY: animations.map((animation) => (animation.facing === 'Left' ? 180 : 0)),
             rotateZ: animations.map((animation) => animation.rotation),
+            transition: {
+                duration: sumOfDuration / 1000,
+                times: animations.map((_animation, index) => {
+                    if (index === 0) {
+                        return 0;
+                    } else if (index === animations.length - 1) {
+                        return 1;
+                    }
+
+                    const sumOfDurationUntilNow = animations.slice(0, index).reduce((sum, animation) => sum + animation.duration, 0);
+                    return sumOfDurationUntilNow / sumOfDuration;
+                }),
+            },
         };
 
-        const sumOfDuration = animations.reduce((sum, animation) => sum + animation.duration, 0);
-        const transitionConfiguration = {
-            duration: sumOfDuration,
-            times: animations.map((_animation, index) => {
-                const sumOfDurationUntilNow = animations.slice(0, index).reduce((sum, animation) => sum + animation.duration, 0);
-                return sumOfDurationUntilNow / sumOfDuration;
-            }),
-        };
+        console.log();
 
-        setAnimationVariants({ idle: initialState, animation: completeAnimation, transition: transitionConfiguration });
+        console.log(completeAnimation);
+
+        setAnimationVariants({ idle: initialState, animation: completeAnimation });
     };
 
     const onAnimationComplete = () => {
+        console.log('Animation ended');
         setPlayingAnimationState(false);
-        onAnimationEnd();
+        updateAnimationVariants();
+        framerMotionAnimationControls.set('idle');
+
+        if (onAnimationEnd) {
+            onAnimationEnd();
+        }
     };
 
     return (
-        <Box className="scene__stage-actor" onClick={onActorClick}>
-            <motion.div
-                className="scene__stage-animated"
-                initial={isPlayingAnimation ? 'animation' : 'idle'}
-                variants={currentAnimationVariants}
-                transition={currentAnimationVariants?.transition || null}
-                onAnimationComplete={onAnimationComplete}
-            >
-                <img src={actorImagePath} alt={actor.id} />
-            </motion.div>
-        </Box>
+        <motion.div
+            className="scene__stage-actor"
+            animate={framerMotionAnimationControls}
+            variants={currentAnimationVariants}
+            onAnimationComplete={onAnimationComplete}
+            onClick={onActorClick}
+        >
+            <img src={actorImagePath} alt={actor.id} />
+        </motion.div>
     );
 }
