@@ -46,18 +46,22 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
 
     useEffect(() => {
         if (playAnimation && !isPlayingAnimation) {
-            console.log('Playing animations...');
             setPlayingAnimationState(true);
             framerMotionAnimationControls.start('animation');
         }
     }, [playAnimation]);
 
     useEffect(() => {
-        console.log('Animations updated?', !isPlayingAnimation);
         if (!isPlayingAnimation) {
             updateAnimationVariants();
         }
     }, [animations]);
+
+    useEffect(() => {
+        if (!isPlayingAnimation && currentAnimationVariants) {
+            framerMotionAnimationControls.set('idle');
+        }
+    }, [currentAnimationVariants]);
 
     const updateAnimationVariants = () => {
         if (!animations || animations.length === 0) {
@@ -97,18 +101,12 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
             },
         };
 
-        console.log();
-
-        console.log(completeAnimation);
-
         setAnimationVariants({ idle: initialState, animation: completeAnimation });
     };
 
     const onAnimationComplete = () => {
-        console.log('Animation ended');
         setPlayingAnimationState(false);
         updateAnimationVariants();
-        framerMotionAnimationControls.set('idle');
 
         if (onAnimationEnd) {
             onAnimationEnd();

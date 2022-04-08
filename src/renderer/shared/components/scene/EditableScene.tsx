@@ -61,37 +61,47 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     }, []);
 
     const getImageFilePath = async () => {
-        const imagesPaths: { scene: string; actors: { [key: string]: string } } = {
+        const newImagesPaths: { scene: string; actors: { [key: string]: string } } = {
             scene: '',
             actors: {},
         };
 
         if (pathOfTempImages[scene.id]) {
-            imagesPaths.scene = pathOfTempImages[scene.id];
+            newImagesPaths.scene = pathOfTempImages[scene.id];
         } else if (scene.backgroundImageName) {
             const file = await GetFileFromResources([...backgroundImagesGamePath, scene.backgroundImageName]);
-            imagesPaths.scene = file.path;
+            newImagesPaths.scene = file.path;
         } else {
             const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([
                 IMAGES_FOLDER,
                 BACKGROUND_IMAGES_FOLDER,
                 PLACEHOLDER_EVENT_BACKGROUND,
             ]);
-            imagesPaths.scene = ApplyFileProtocol(file.path);
+            newImagesPaths.scene = ApplyFileProtocol(file.path);
         }
 
-        Object.keys(scene.actorsState).forEach(async (actorID) => {
+        newImagesPaths.actors = await getActorsImagePathsFromState();
+
+        setImagePaths(newImagesPaths);
+    };
+
+    const getActorsImagePathsFromState = async (): Promise<{ [key: string]: any }> => {
+        const actorsImagePaths: { [key: string]: any } = {};
+
+        const promises = Object.keys(scene.actorsState).map(async (actorID) => {
             const actor = event.actors.find((actor) => actorID === actor.id);
 
             if (pathOfTempImages[actor.id]) {
-                imagesPaths.actors[actorID] = pathOfTempImages[actor.id];
+                actorsImagePaths[actorID] = pathOfTempImages[actor.id];
             } else {
                 const file = await GetFileFromResources([...spriteGamePath, ...actor.spriteFilePath]);
-                imagesPaths.actors[actorID] = file.path;
+                actorsImagePaths[actorID] = file.path;
             }
         });
 
-        setImagePaths(imagesPaths);
+        return Promise.all(promises).then((_) => {
+            return actorsImagePaths;
+        });
     };
 
     const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal: boolean = true): Promise<void> => {
@@ -212,55 +222,57 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
 
     return (
         <Box className="scene__wrapper utils__full-height">
-            <Box className="scene__stage">
-                {/* Change background button render on the stage //////////////////// */}
-                <Box className="scene__background-edit utils__full-width-absolute-child=">
-                    <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
-                </Box>
-                {/* Background render on the stage ////////////////////////////////// */}
-                <img className="scene__background utils__full-width-absolute-child utils__full-height" src={imagePaths?.scene}></img>
+            {imagePaths && (
+                <Box className="scene__stage">
+                    {/* Change background button render on the stage //////////////////// */}
+                    <Box className="scene__background-edit utils__full-width-absolute-child=">
+                        <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
+                    </Box>
+                    {/* Background render on the stage ////////////////////////////////// */}
+                    <img className="scene__background utils__full-width-absolute-child utils__full-height" src={imagePaths?.scene}></img>
 
-                {/* Actors render on the stage ////////////////////////////////////// */}
-                {Object.keys(scene.actorsState).map((actorID, index) => {
-                    if (!scene.actorsState[actorID]) {
-                        return null;
-                    }
+                    {/* Actors render on the stage ////////////////////////////////////// */}
+                    {Object.keys(scene.actorsState).map((actorID, index) => {
+                        if (!scene.actorsState[actorID]) {
+                            return null;
+                        }
 
-                    const currentActor = event.actors.find((actor) => actor.id === actorID);
-                    const actorImagePath = imagePaths.actors[actorID];
+                        const currentActor = event.actors.find((actor) => actor.id === actorID);
+                        const actorImagePath = imagePaths.actors[actorID];
 
-                    return (
-                        actorImagePath && (
-                            <ActorOnScene
-                                actor={currentActor}
-                                key={`dialogue_actor_${index}`}
-                                onActorClick={() => onActorPositioning(actorID)}
-                                actorImagePath={actorImagePath}
-                                animations={scene.actorsState[actorID].animations}
-                                isGameCharacter={!!currentActor.characterID}
-                                playAnimation={isPreviewingAnimation}
-                                onAnimationEnd={() => setAnimationPreviewState(false)}
+                        return (
+                            actorImagePath && (
+                                <ActorOnScene
+                                    actor={currentActor}
+                                    key={`dialogue_actor_${index}`}
+                                    onActorClick={() => onActorPositioning(actorID)}
+                                    actorImagePath={actorImagePath}
+                                    animations={scene.actorsState[actorID].animations}
+                                    isGameCharacter={!!currentActor.characterID}
+                                    playAnimation={isPreviewingAnimation}
+                                    onAnimationEnd={() => setAnimationPreviewState(false)}
+                                />
+                            )
+                        );
+                    })}
+
+                    {/* Dialogue box render on the stage ////////////////////////////////// */}
+                    <Box className="scene__dialogue">
+                        <Box className="scene__dialogue-wrapper">
+                            <TextField
+                                className="scene__dialogue-box"
+                                multiline
+                                maxRows={4}
+                                variant="outlined"
+                                value={scene.dialog}
+                                onChange={onDialogueEdit}
+                                placeholder={t('interface.editor.event.scene_dialogue_placeholder')}
                             />
-                        )
-                    );
-                })}
-
-                {/* Dialogue box render on the stage ////////////////////////////////// */}
-                <Box className="scene__dialogue">
-                    <Box className="scene__dialogue-wrapper">
-                        <TextField
-                            className="scene__dialogue-box"
-                            multiline
-                            maxRows={4}
-                            variant="outlined"
-                            value={scene.dialog}
-                            onChange={onDialogueEdit}
-                            placeholder={t('interface.editor.event.scene_dialogue_placeholder')}
-                        />
-                        <EditIcon className="scene__dialogue-icon" />
+                            <EditIcon className="scene__dialogue-icon" />
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
+            )}
 
             <Box className="scene__config">
                 <Button onClick={() => setAnimationPreviewState(!isPreviewingAnimation)} disabled={isPreviewingAnimation}>
