@@ -220,6 +220,12 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         onSceneEdited(modifiedScene);
     };
 
+    const onAnimationPreviewClick = () => {
+        if (Object.keys(scene.actorsState).length !== 0 && Object.keys(scene.actorsState).find((key) => scene.actorsState[key].animations.length > 1)) {
+            setAnimationPreviewState(true);
+        }
+    };
+
     return (
         <Box className="scene__wrapper utils__full-height">
             {imagePaths && (
@@ -275,7 +281,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
             )}
 
             <Box className="scene__config">
-                <Button onClick={() => setAnimationPreviewState(!isPreviewingAnimation)} disabled={isPreviewingAnimation}>
+                <Button onClick={onAnimationPreviewClick} disabled={isPreviewingAnimation}>
                     {!isPreviewingAnimation ? 'Animate' : 'Animating...'}
                 </Button>
                 <Box className="scene__actors">

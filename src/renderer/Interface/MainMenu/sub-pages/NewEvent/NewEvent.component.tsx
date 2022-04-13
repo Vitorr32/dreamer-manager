@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Modal, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Modal, TextField, Tooltip, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -16,6 +16,9 @@ import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EditableScene } from 'renderer/shared/components/scene/EditableScene';
 import { ActorsCasting } from 'renderer/shared/components/scene/ActorsCasting';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
+import { useTooltip, useTooltipInPortal, defaultStyles } from '@visx/tooltip';
+import { EventLinkModal } from './EventLinkModal.component';
+import { HierarchyPointLink } from '@visx/hierarchy/lib/types';
 
 interface IProps {
     width?: number;
@@ -33,10 +36,17 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     const yMax = height - margin.top - margin.bottom;
     const xMax = width - margin.left - margin.right;
 
+    const { containerRef, containerBounds, TooltipInPortal } = useTooltipInPortal({
+        scroll: true,
+        detectBounds: true,
+    });
+    const { showTooltip, updateTooltip, hideTooltip, tooltipOpen, tooltipData, tooltipLeft = 0, tooltipTop = 0 } = useTooltip();
+
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
     const [newEvent, setNewEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
     const [newVN, setVN] = useState<VisualNovel>(null);
     const [tempImagesPath, setTempImagesPaths] = useState<{ [key: string]: string }>({});
+    const [eventLinkEditInfo, setEventLinkEditInfo] = useState<HierarchyPointLink<Scene>>();
 
     useEffect(() => {
         const visualNovel = Object.assign(new VisualNovel(), newVN);
@@ -83,6 +93,33 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         }
     };
 
+    const onEventLinkMouseOver = () => {
+        showTooltip({ tooltipData: 'Link Horizontal' });
+    };
+
+    const onEventLinkMouseExit = () => {
+        hideTooltip();
+    };
+
+    const onEventLinkClick = (linkData: HierarchyPointLink<Scene>) => {
+        setEventLinkEditInfo(linkData);
+    };
+
+    const onCursorMoveInsideCanvas = (event: React.PointerEvent<HTMLDivElement>) => {
+        if (!tooltipOpen) {
+            return;
+        }
+
+        const containerX = ('clientX' in event ? event.clientX : 0) - containerBounds.left;
+        const containerY = ('clientY' in event ? event.clientY : 0) - containerBounds.top;
+        updateTooltip({
+            tooltipOpen: tooltipOpen,
+            tooltipLeft: containerX,
+            tooltipTop: containerY,
+            tooltipData: tooltipData,
+        });
+    };
+
     return (
         <Box className="new-event">
             <Box component="header" className="new-event__header">
@@ -110,25 +147,42 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                     })}
                 </TextField>
             </Box>
-            <Box component="main" className="new-event__content">
+            <Box component="main" className="new-event__content" onPointerMove={onCursorMoveInsideCanvas}>
                 <Button color="primary">Add Visual Novel</Button>
                 <ActorsCasting event={newEvent} onEventEdited={setNewEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
                 {newVN && newVN.getVISXHierarchyOfVN() && (
-                    <svg className="new-event__flow" width={width} height={height}>
-                        <rect width={width} height={height} rx={14} fill={background} />
-                        <Tree<Scene> root={newVN.getVISXHierarchyOfVN()} size={[yMax, xMax]}>
-                            {(tree) => (
-                                <Group top={margin.top} left={margin.left}>
-                                    {tree.links().map((link, i) => (
-                                        <LinkHorizontal key={`link-${i}`} data={link} stroke={lightpurple} strokeWidth="1" fill="none" />
-                                    ))}
-                                    {tree.descendants().map((node, i) => (
-                                        <EventNode key={`node-${i}`} node={node} onAddNode={onAddNode} onNodeSelected={onNodeSelected} onRemoveNode={onRemoveNode} />
-                                    ))}
-                                </Group>
-                            )}
-                        </Tree>
-                    </svg>
+                    <>
+                        <svg className="new-event__flow" width={width} height={height} ref={containerRef}>
+                            <rect width={width} height={height} rx={14} fill={background} />
+                            <Tree<Scene> root={newVN.getVISXHierarchyOfVN()} size={[yMax, xMax]} className="event-tree">
+                                {(tree) => (
+                                    <Group top={margin.top} left={margin.left}>
+                                        {tree.links().map((link, i) => (
+                                            <LinkHorizontal
+                                                className="event-tree__link"
+                                                key={`link-${i}`}
+                                                data={link}
+                                                stroke={lightpurple}
+                                                strokeWidth="5"
+                                                onMouseLeave={onEventLinkMouseExit}
+                                                onMouseOver={onEventLinkMouseOver}
+                                                onMouseDown={() => onEventLinkClick(link)}
+                                                fill="none"
+                                            />
+                                        ))}
+                                        {tree.descendants().map((node, i) => (
+                                            <EventNode key={`node-${i}`} node={node} onAddNode={onAddNode} onNodeSelected={onNodeSelected} onRemoveNode={onRemoveNode} />
+                                        ))}
+                                    </Group>
+                                )}
+                            </Tree>
+                        </svg>
+                        {tooltipOpen && (
+                            <TooltipInPortal key={Math.random()} left={tooltipLeft} top={tooltipTop} style={defaultStyles}>
+                                {tooltipData}
+                            </TooltipInPortal>
+                        )}
+                    </>
                 )}
             </Box>
 
@@ -146,6 +200,8 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                     </Box>
                 </Box>
             </Modal>
+
+            <EventLinkModal open={!!eventLinkEditInfo} onClose={() => setEventLinkEditInfo(null)} />
         </Box>
     );
 }

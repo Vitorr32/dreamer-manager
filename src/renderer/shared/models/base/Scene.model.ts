@@ -107,7 +107,8 @@ export class Scene {
             return false;
         }
 
-        this.actorsState[actorID] = null;
+        delete this.actorsState[actorID];
+
         return true;
     }
 

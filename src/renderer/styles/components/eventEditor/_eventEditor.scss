@@ -1,0 +1,8 @@
+.event-tree {
+  &__link{
+    cursor: pointer;
+    &:hover {
+      stroke-width: 10px;
+    }
+  } 
+}
