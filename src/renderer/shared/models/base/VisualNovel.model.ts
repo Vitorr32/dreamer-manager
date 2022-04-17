@@ -1,6 +1,6 @@
 import { hierarchy } from '@visx/hierarchy';
 import { HierarchyNode } from '@visx/hierarchy/lib/types';
-import { Scene, SceneResult } from './Scene.model';
+import { Scene, SceneConnection } from './Scene.model';
 
 export class VisualNovel {
     rootScene: string;
@@ -36,17 +36,17 @@ export class VisualNovel {
         this.allScenes.push(newScene);
         this.mappedScenes[newScene.id] = newScene;
 
-        const sceneResult: SceneResult = {
+        const sceneResult: SceneConnection = {
             applyFlagToActor: null,
             choiceCondition: null,
             choiceLabel: null,
             resultingScene: newScene.id,
         };
 
-        if (this.mappedScenes[parentScene.id].sceneResults) {
-            this.mappedScenes[parentScene.id].sceneResults.push(sceneResult);
+        if (this.mappedScenes[parentScene.id].sceneConnections) {
+            this.mappedScenes[parentScene.id].sceneConnections.push(sceneResult);
         } else {
-            this.mappedScenes[parentScene.id].sceneResults = [sceneResult];
+            this.mappedScenes[parentScene.id].sceneConnections = [sceneResult];
         }
     }
 
@@ -59,7 +59,7 @@ export class VisualNovel {
 
         //Modify the parent by removing the children from the scene results
         const newParent = Object.assign({}, parentScene);
-        newParent.sceneResults = newParent.sceneResults.filter((result) => result.resultingScene !== deletedScene.id);
+        newParent.sceneConnections = newParent.sceneConnections.filter((result) => result.resultingScene !== deletedScene.id);
 
         const parentIndex = this.getSceneIndex(newParent.id);
         if (parentIndex === -1) {
@@ -97,7 +97,7 @@ export class VisualNovel {
             return null;
         }
 
-        const parentIndex = this.allScenes.findIndex((scene) => scene.sceneResults.find((sceneResult) => sceneResult.resultingScene === id));
+        const parentIndex = this.allScenes.findIndex((scene) => scene.sceneConnections.find((sceneResult) => sceneResult.resultingScene === id));
 
         if (parentIndex === -1) {
             console.error(`getParentScene(${id}) - No parent for the child ID, maybe broken scene search in action`);
@@ -108,7 +108,7 @@ export class VisualNovel {
     }
 
     getChildrenScenes(parentID: string): Scene[] {
-        return this.getScene(parentID).sceneResults?.map((result) => this.getScene(result.resultingScene)) || [];
+        return this.getScene(parentID).sceneConnections?.map((result) => this.getScene(result.resultingScene)) || [];
     }
 
     getVISXHierarchyOfVN(): HierarchyNode<Scene> | null {

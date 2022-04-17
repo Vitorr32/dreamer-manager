@@ -9,7 +9,7 @@ import { Event } from 'renderer/shared/models/base/Event.model';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { EventNode } from 'renderer/shared/components/events/EventNode.component';
 import { Tree } from '@visx/hierarchy';
-import { Scene } from 'renderer/shared/models/base/Scene.model';
+import { ConnectionType, Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
 import { Group } from '@visx/group';
 import { LinkHorizontal } from '@visx/shape';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
@@ -46,7 +46,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     const [newEvent, setNewEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
     const [newVN, setVN] = useState<VisualNovel>(null);
     const [tempImagesPath, setTempImagesPaths] = useState<{ [key: string]: string }>({});
-    const [eventLinkEditInfo, setEventLinkEditInfo] = useState<HierarchyPointLink<Scene>>();
+    const [eventLinkEditInfo, setEventLinkEditInfo] = useState<{ source: Scene; target: Scene; connection: SceneConnection }>();
 
     useEffect(() => {
         const visualNovel = Object.assign(new VisualNovel(), newVN);
@@ -93,6 +93,31 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         }
     };
 
+    const onConnectionEdited = (sceneConnection: SceneConnection, closeModal: boolean = false) => {
+        const visualNovel = CopyClassInstance(newVN);
+
+        const parentScene = eventLinkEditInfo.source;
+        const childScene = eventLinkEditInfo.target;
+        const connectionIndex = parentScene.sceneConnections.findIndex((connection) => connection.resultingScene === childScene.id);
+
+        if (connectionIndex === -1) {
+            console.error('onConnectionEdited() - Connection to a empty child scene');
+            return;
+        }
+
+        const newScene = CopyClassInstance(parentScene);
+        newScene.sceneConnections[connectionIndex] = sceneConnection;
+
+        visualNovel.updateScene(newScene);
+        setVN(visualNovel);
+
+        if (closeModal) {
+            setEventLinkEditInfo(null);
+        } else {
+            setEventLinkEditInfo({ source: newScene, connection: sceneConnection, target: eventLinkEditInfo.target });
+        }
+    };
+
     const onEventLinkMouseOver = () => {
         showTooltip({ tooltipData: 'Link Horizontal' });
     };
@@ -102,7 +127,18 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     };
 
     const onEventLinkClick = (linkData: HierarchyPointLink<Scene>) => {
-        setEventLinkEditInfo(linkData);
+        const connectionIndex = linkData.source.data.sceneConnections.findIndex((connection) => connection.resultingScene === linkData.target.data.id);
+
+        setEventLinkEditInfo({
+            source: linkData.source.data,
+            target: linkData.target.data,
+            connection:
+                connectionIndex === -1
+                    ? {
+                          type: ConnectionType.NORMAL,
+                      }
+                    : linkData.source.data.sceneConnections[connectionIndex],
+        });
     };
 
     const onCursorMoveInsideCanvas = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -201,7 +237,14 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                 </Box>
             </Modal>
 
-            <EventLinkModal open={!!eventLinkEditInfo} onClose={() => setEventLinkEditInfo(null)} />
+            <EventLinkModal
+                childScene={eventLinkEditInfo?.target}
+                parentScene={eventLinkEditInfo?.source}
+                sceneConnection={eventLinkEditInfo?.connection}
+                onSceneConnectionChange={onConnectionEdited}
+                open={!!eventLinkEditInfo}
+                onClose={() => onConnectionEdited(null)}
+            />
         </Box>
     );
 }

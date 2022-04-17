@@ -116,6 +116,9 @@ export const en_US = {
                     scene_actor_y_offset: 'Y-axis offset',
                     scene_actor_x_offset_helper: 'Set the value of offset in X axis (from 0 to 100)',
                     scene_actor_y_offset_helper: 'Set the value of offset in Y axis (from 0 to 100)',
+                    add_link_condition: 'Link Connection Condition',
+                    scene_link_normal_type_helper: 'The Regular Progression indicates that the parent will transition to the children scene without any checks or choices, the default progression.',
+                    scene_link_normal_type_helper: 'The Regular Progression indicates that the parent will transition to the children scene without any checks or choices, the default progression.',
                     add_actor: 'Add Actor to Event',
                     edit_background_cta: 'Change Background',
                     background_file_search: 'Local File',
@@ -319,6 +322,14 @@ export const en_US = {
                         getFarther: 'Get Farther',
                     },
                 },
+                connection: {
+                    type: {
+                        normal: 'Regular Progression',
+                        simple_choice: 'Regular Choice Option',
+                        hidden_condition: 'Hidden Condition Check',
+                        normal_condition: 'Conditional Check',
+                    }
+                }
             },
         },
         summary: {

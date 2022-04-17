@@ -24,6 +24,13 @@ export enum BasicAnimations {
     GET_FARTHER = 'model.event.animation.type.getFarther',
 }
 
+export enum ConnectionType {
+    NORMAL = 'model.event.connection.type.normal',
+    CHOICE = 'model.event.connection.type.simple_choice',
+    HIDDEN_CHECK = 'model.event.connection.type.hidden_condition',
+    CONDITIONAL_CHECK = 'model.event.connection.type.normal_condition',
+}
+
 export interface Sound {
     soundSource: string;
     soundTimeTrigger: number;
@@ -40,12 +47,17 @@ export interface Animation {
     duration: number;
 }
 
-export interface SceneResult {
-    choiceLabel: string | null;
-    choiceCondition: ConditionTree | null;
+export interface SceneConnection {
+    type: ConnectionType;
+    choiceCondition?: ConditionTree | null;
     //ID of the resulting scene
-    resultingScene: string;
-    applyFlagToActor: { flagID: string; actor: number }[] | null;
+    resultingScene?: string;
+    applyFlagToActor?: { flagID: string; actor: number }[] | null;
+    localization?: {
+        [key: string]: {
+            choiceLabel: string;
+        };
+    };
 }
 
 export const BASE_ANIMATION_OBJECT: Animation = {
@@ -62,7 +74,7 @@ export const BASE_ANIMATION_OBJECT: Animation = {
 export class Scene {
     public id: string;
 
-    public sceneResults: SceneResult[] | null = null;
+    public sceneConnections: SceneConnection[] | null = null;
 
     //The string that will appear as the content of the dialog box
     public dialog?: string;
