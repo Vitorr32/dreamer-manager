@@ -64,6 +64,7 @@ export const en_US = {
                     numeric_selector_input_from: 'From',
                     numeric_selector_input_to: 'To',
                     time_datepicker_label: 'Pick the date',
+                    add_condition_label: 'Add Condition',
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -117,8 +118,11 @@ export const en_US = {
                     scene_actor_x_offset_helper: 'Set the value of offset in X axis (from 0 to 100)',
                     scene_actor_y_offset_helper: 'Set the value of offset in Y axis (from 0 to 100)',
                     add_link_condition: 'Link Connection Condition',
+                    scene_link_choice_label: 'Choice Label',
+                    scene_link_choice_helper: 'Label that will appear on the condition button when the player ends the parent scene and the transition is triggered.',
                     scene_link_normal_type_helper: 'The Regular Progression indicates that the parent will transition to the children scene without any checks or choices, the default progression.',
-                    scene_link_normal_type_helper: 'The Regular Progression indicates that the parent will transition to the children scene without any checks or choices, the default progression.',
+                    scene_link_hidden_type_helper: 'The Hidden Check Connection is a simple conditional connection that does not present to the player any feedback that a check was made.',
+                    scene_link_choice_type_helper: 'The Choice Connection is a simple branching of the event tree, it require a label for the choice button, and may have a condition to be unlocked.',
                     add_actor: 'Add Actor to Event',
                     edit_background_cta: 'Change Background',
                     background_file_search: 'Local File',
@@ -325,9 +329,8 @@ export const en_US = {
                 connection: {
                     type: {
                         normal: 'Regular Progression',
-                        simple_choice: 'Regular Choice Option',
-                        hidden_condition: 'Hidden Condition Check',
-                        normal_condition: 'Conditional Check',
+                        choice: 'Regular Choice Option',
+                        hidden: 'Hidden Condition Check'
                     }
                 }
             },

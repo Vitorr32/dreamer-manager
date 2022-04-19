@@ -26,9 +26,8 @@ export enum BasicAnimations {
 
 export enum ConnectionType {
     NORMAL = 'model.event.connection.type.normal',
-    CHOICE = 'model.event.connection.type.simple_choice',
-    HIDDEN_CHECK = 'model.event.connection.type.hidden_condition',
-    CONDITIONAL_CHECK = 'model.event.connection.type.normal_condition',
+    CHOICE = 'model.event.connection.type.choice',
+    HIDDEN_CHECK = 'model.event.connection.type.hidden',
 }
 
 export interface Sound {

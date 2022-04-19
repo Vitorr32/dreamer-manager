@@ -94,6 +94,11 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     };
 
     const onConnectionEdited = (sceneConnection: SceneConnection, closeModal: boolean = false) => {
+        if (!sceneConnection) {
+            setEventLinkEditInfo(null);
+            return;
+        }
+
         const visualNovel = CopyClassInstance(newVN);
 
         const parentScene = eventLinkEditInfo.source;
