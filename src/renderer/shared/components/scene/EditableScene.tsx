@@ -35,6 +35,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import { SceneResultsDialog } from './SceneResultsDialog';
 
 interface IProps {
     readonly event: Event;
@@ -55,6 +56,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     const [selectedActor, setSelectedActor] = useState<{ actor: Actor; index: number }>();
     const [selectedAnimation, setSelectedAnimation] = useState<number>(0);
     const [isPreviewingAnimation, setAnimationPreviewState] = useState<boolean>(false);
+    const [isChangingSceneResult, setSceneResultState] = useState<boolean>(false);
 
     useEffect(() => {
         getImageFilePath();
@@ -460,6 +462,8 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                     </DialogContent>
                 )}
             </Dialog>
+
+            <SceneResultsDialog isOpen={isChangingSceneResult} onClose={() => setSceneResultState(false)} scene={scene} />
         </Box>
     );
 }

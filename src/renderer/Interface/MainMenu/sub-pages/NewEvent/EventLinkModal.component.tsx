@@ -70,7 +70,11 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
 
     return (
         <Modal className="modal" open={open} onClose={onClose}>
-            <Box className={`modal__wrapper ${sceneConnection?.type !== ConnectionType.NORMAL && sceneConnection?.choiceCondition ? 'modal__wrapper-large' : 'modal__wrapper-small'} `}>
+            <Box
+                className={`modal__wrapper ${
+                    sceneConnection?.type !== ConnectionType.NORMAL && sceneConnection?.choiceCondition ? 'modal__wrapper-large' : 'modal__wrapper-small'
+                } `}
+            >
                 <Box className="modal__header">{t('interface.editor.event.add_link_condition')}</Box>
                 <Box className="modal__content utils__full-height">
                     <FormControl fullWidth variant="filled">

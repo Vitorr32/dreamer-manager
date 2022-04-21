@@ -120,13 +120,22 @@ export const en_US = {
                     add_link_condition: 'Link Connection Condition',
                     scene_link_choice_label: 'Choice Label',
                     scene_link_choice_helper: 'Label that will appear on the condition button when the player ends the parent scene and the transition is triggered.',
-                    scene_link_normal_type_helper: 'The Regular Progression indicates that the parent will transition to the children scene without any checks or choices, the default progression.',
-                    scene_link_hidden_type_helper: 'The Hidden Check Connection is a simple conditional connection that does not present to the player any feedback that a check was made.',
-                    scene_link_choice_type_helper: 'The Choice Connection is a simple branching of the event tree, it require a label for the choice button, and may have a condition to be unlocked.',
+                    scene_link_normal_type_helper:
+                        'The Regular Progression indicates that the parent will transition to the children scene without any checks or choices, the default progression.',
+                    scene_link_hidden_type_helper:
+                        'The Hidden Check Connection is a simple conditional connection that does not present to the player any feedback that a check was made.',
+                    scene_link_choice_type_helper:
+                        'The Choice Connection is a simple branching of the event tree, it require a label for the choice button, and may have a condition to be unlocked.',
                     add_actor: 'Add Actor to Event',
                     edit_background_cta: 'Change Background',
                     background_file_search: 'Local File',
                     background_resources_search: 'Game File',
+                    scene_effect_heading: 'Scene Effects',
+                    scene_effect_helper:
+                        'Here you can configure the effects that this scene will have on the world when it is finished, such as relationship change between two actors, if the attributes of another character should change, or any other effect in the game state.',
+                    scene_effect_button_add_effect: 'Add Effect To World',
+                    scene_effect_button_add_flag_actor: 'Add Flag to Actor',
+                    scene_effect_button_add_flag_any: 'Add Flag to World/Character',
                 },
                 validation: {
                     duplicated_id: 'The id {{id}} is already being used',
@@ -330,9 +339,9 @@ export const en_US = {
                     type: {
                         normal: 'Regular Progression',
                         choice: 'Regular Choice Option',
-                        hidden: 'Hidden Condition Check'
-                    }
-                }
+                        hidden: 'Hidden Condition Check',
+                    },
+                },
             },
         },
         summary: {

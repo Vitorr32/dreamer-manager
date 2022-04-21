@@ -26,7 +26,9 @@ interface IProps {
     margin?: { top: number; right: number; bottom: number; left: number };
 }
 
-const lightpurple = '#374469';
+const whitesmoke = '#f5f5f5';
+const lightpurple = '#CBC3E3';
+const lightorange = '#FFD580';
 export const background = '#272b4d';
 
 const defaultMargin = { top: 10, left: 80, right: 80, bottom: 10 };
@@ -38,7 +40,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
 
     const { containerRef, containerBounds, TooltipInPortal } = useTooltipInPortal({
         scroll: true,
-        detectBounds: true,
+        detectBounds: false,
     });
     const { showTooltip, updateTooltip, hideTooltip, tooltipOpen, tooltipData, tooltipLeft = 0, tooltipTop = 0 } = useTooltip();
 
@@ -123,7 +125,11 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         }
     };
 
-    const onEventLinkMouseOver = () => {
+    const getConnectionInformation = (source: Scene, target: Scene) => {
+        return source.sceneConnections.find((connection) => connection.resultingScene === target.id);
+    };
+
+    const onEventLinkMouseOver = (sceneConnection: SceneConnection) => {
         showTooltip({ tooltipData: 'Link Horizontal' });
     };
 
@@ -141,6 +147,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                 connectionIndex === -1
                     ? {
                           type: ConnectionType.NORMAL,
+                          resultingScene: linkData.target.data.id,
                       }
                     : linkData.source.data.sceneConnections[connectionIndex],
         });
@@ -198,19 +205,29 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                             <Tree<Scene> root={newVN.getVISXHierarchyOfVN()} size={[yMax, xMax]} className="event-tree">
                                 {(tree) => (
                                     <Group top={margin.top} left={margin.left}>
-                                        {tree.links().map((link, i) => (
-                                            <LinkHorizontal
-                                                className="event-tree__link"
-                                                key={`link-${i}`}
-                                                data={link}
-                                                stroke={lightpurple}
-                                                strokeWidth="5"
-                                                onMouseLeave={onEventLinkMouseExit}
-                                                onMouseOver={onEventLinkMouseOver}
-                                                onMouseDown={() => onEventLinkClick(link)}
-                                                fill="none"
-                                            />
-                                        ))}
+                                        {tree.links().map((link, i) => {
+                                            const linkInfo = getConnectionInformation(link.source.data, link.target.data);
+
+                                            return (
+                                                <LinkHorizontal
+                                                    className="event-tree__link"
+                                                    key={`link-${i}`}
+                                                    data={link}
+                                                    stroke={
+                                                        linkInfo?.type === ConnectionType.NORMAL || !linkInfo?.type
+                                                            ? whitesmoke
+                                                            : linkInfo?.type === ConnectionType.HIDDEN_CHECK
+                                                            ? lightpurple
+                                                            : lightorange
+                                                    }
+                                                    strokeWidth="5"
+                                                    onMouseLeave={onEventLinkMouseExit}
+                                                    onMouseOver={() => onEventLinkMouseOver(linkInfo)}
+                                                    onMouseDown={() => onEventLinkClick(link)}
+                                                    fill="none"
+                                                />
+                                            );
+                                        })}
                                         {tree.descendants().map((node, i) => (
                                             <EventNode key={`node-${i}`} node={node} onAddNode={onAddNode} onNodeSelected={onNodeSelected} onRemoveNode={onRemoveNode} />
                                         ))}
