@@ -1,6 +1,6 @@
 import { hierarchy } from '@visx/hierarchy';
 import { HierarchyNode } from '@visx/hierarchy/lib/types';
-import { Scene, SceneConnection } from './Scene.model';
+import { ConnectionType, Scene, SceneConnection } from './Scene.model';
 
 export class VisualNovel {
     rootScene: string;
@@ -37,10 +37,9 @@ export class VisualNovel {
         this.mappedScenes[newScene.id] = newScene;
 
         const sceneResult: SceneConnection = {
-            applyFlagToActor: null,
             choiceCondition: null,
-            choiceLabel: null,
             resultingScene: newScene.id,
+            type: ConnectionType.NORMAL,
         };
 
         if (this.mappedScenes[parentScene.id].sceneConnections) {

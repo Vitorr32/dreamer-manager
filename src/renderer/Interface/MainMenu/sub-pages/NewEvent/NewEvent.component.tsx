@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { LANGUAGE_CODES } from 'renderer/shared/Constants';
 import { getLocaleLabel } from 'renderer/shared/utils/Localization';
 import { useEffect, useState } from 'react';
-import { Event } from 'renderer/shared/models/base/Event.model';
+import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { EventNode } from 'renderer/shared/components/events/EventNode.component';
 import { Tree } from '@visx/hierarchy';
@@ -19,6 +19,7 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { useTooltip, useTooltipInPortal, defaultStyles } from '@visx/tooltip';
 import { EventLinkModal } from './EventLinkModal.component';
 import { HierarchyPointLink } from '@visx/hierarchy/lib/types';
+import { NewEventFlag } from './NewEventFlag.component';
 
 interface IProps {
     width?: number;
@@ -38,17 +39,15 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     const yMax = height - margin.top - margin.bottom;
     const xMax = width - margin.left - margin.right;
 
-    const { containerRef, containerBounds, TooltipInPortal } = useTooltipInPortal({
-        scroll: true,
-        detectBounds: false,
-    });
+    const { containerRef, containerBounds, TooltipInPortal } = useTooltipInPortal({ scroll: true, detectBounds: false });
     const { showTooltip, updateTooltip, hideTooltip, tooltipOpen, tooltipData, tooltipLeft = 0, tooltipTop = 0 } = useTooltip();
 
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
     const [newEvent, setNewEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
     const [newVN, setVN] = useState<VisualNovel>(null);
     const [tempImagesPath, setTempImagesPaths] = useState<{ [key: string]: string }>({});
-    const [eventLinkEditInfo, setEventLinkEditInfo] = useState<{ source: Scene; target: Scene; connection: SceneConnection }>();
+    const [sceneLinkEditInfo, setSceneLinkEditInfo] = useState<{ source: Scene; target: Scene; connection: SceneConnection }>();
+    const [editingFlagModalOpen, setFlagModalState] = useState<boolean>(false);
 
     useEffect(() => {
         const visualNovel = Object.assign(new VisualNovel(), newVN);
@@ -95,16 +94,29 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         }
     };
 
+    const onFlagModified = (flag: Flag) => {
+        const updatedEvent = CopyClassInstance(newEvent);
+        const flagIndex = newEvent.flags.findIndex((toCompareFlag) => toCompareFlag.id === flag.id);
+
+        if (flagIndex === -1) {
+            updatedEvent.flags.push(flag);
+        } else {
+            updatedEvent.flags[flagIndex] = flag;
+        }
+
+        setNewEvent(updatedEvent);
+    };
+
     const onConnectionEdited = (sceneConnection: SceneConnection, closeModal: boolean = false) => {
         if (!sceneConnection) {
-            setEventLinkEditInfo(null);
+            setSceneLinkEditInfo(null);
             return;
         }
 
         const visualNovel = CopyClassInstance(newVN);
 
-        const parentScene = eventLinkEditInfo.source;
-        const childScene = eventLinkEditInfo.target;
+        const parentScene = sceneLinkEditInfo.source;
+        const childScene = sceneLinkEditInfo.target;
         const connectionIndex = parentScene.sceneConnections.findIndex((connection) => connection.resultingScene === childScene.id);
 
         if (connectionIndex === -1) {
@@ -119,9 +131,9 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         setVN(visualNovel);
 
         if (closeModal) {
-            setEventLinkEditInfo(null);
+            setSceneLinkEditInfo(null);
         } else {
-            setEventLinkEditInfo({ source: newScene, connection: sceneConnection, target: eventLinkEditInfo.target });
+            setSceneLinkEditInfo({ source: newScene, connection: sceneConnection, target: sceneLinkEditInfo.target });
         }
     };
 
@@ -129,18 +141,18 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         return source.sceneConnections.find((connection) => connection.resultingScene === target.id);
     };
 
-    const onEventLinkMouseOver = (sceneConnection: SceneConnection) => {
+    const onSceneLinkMouseOver = (sceneConnection: SceneConnection) => {
         showTooltip({ tooltipData: 'Link Horizontal' });
     };
 
-    const onEventLinkMouseExit = () => {
+    const onSceneLinkMouseExit = () => {
         hideTooltip();
     };
 
-    const onEventLinkClick = (linkData: HierarchyPointLink<Scene>) => {
+    const onSceneLinkClick = (linkData: HierarchyPointLink<Scene>) => {
         const connectionIndex = linkData.source.data.sceneConnections.findIndex((connection) => connection.resultingScene === linkData.target.data.id);
 
-        setEventLinkEditInfo({
+        setSceneLinkEditInfo({
             source: linkData.source.data,
             target: linkData.target.data,
             connection:
@@ -198,6 +210,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             <Box component="main" className="new-event__content" onPointerMove={onCursorMoveInsideCanvas}>
                 <Button color="primary">Add Visual Novel</Button>
                 <ActorsCasting event={newEvent} onEventEdited={setNewEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
+                <Button onClick={() => setFlagModalState(true)}>Modify Event Flags</Button>
                 {newVN && newVN.getVISXHierarchyOfVN() && (
                     <>
                         <svg className="new-event__flow" width={width} height={height} ref={containerRef}>
@@ -221,9 +234,9 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                                                             : lightorange
                                                     }
                                                     strokeWidth="5"
-                                                    onMouseLeave={onEventLinkMouseExit}
-                                                    onMouseOver={() => onEventLinkMouseOver(linkInfo)}
-                                                    onMouseDown={() => onEventLinkClick(link)}
+                                                    onMouseLeave={onSceneLinkMouseExit}
+                                                    onMouseOver={() => onSceneLinkMouseOver(linkInfo)}
+                                                    onMouseDown={() => onSceneLinkClick(link)}
                                                     fill="none"
                                                 />
                                             );
@@ -260,13 +273,15 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             </Modal>
 
             <EventLinkModal
-                childScene={eventLinkEditInfo?.target}
-                parentScene={eventLinkEditInfo?.source}
-                sceneConnection={eventLinkEditInfo?.connection}
+                childScene={sceneLinkEditInfo?.target}
+                parentScene={sceneLinkEditInfo?.source}
+                sceneConnection={sceneLinkEditInfo?.connection}
                 onSceneConnectionChange={onConnectionEdited}
-                open={!!eventLinkEditInfo}
+                open={!!sceneLinkEditInfo}
                 onClose={() => onConnectionEdited(null)}
             />
+
+            <NewEventFlag isOpen={editingFlagModalOpen} onClose={() => setFlagModalState(false)} event={newEvent} onFlagModified={onFlagModified} />
         </Box>
     );
 }

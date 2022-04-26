@@ -102,7 +102,7 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
                         />
                     )}
 
-                    {sceneConnection && sceneConnection.type !== ConnectionType.NORMAL && (
+                    {sceneConnection && sceneConnection.type && sceneConnection.type !== ConnectionType.NORMAL && (
                         <ConditionTreeEditor conditionTree={sceneConnection?.choiceCondition} onChange={onConditionChanged} />
                     )}
                 </Box>
