@@ -18,7 +18,8 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
-import { Scene } from 'renderer/shared/models/base/Scene.model';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IProps {
@@ -60,8 +61,13 @@ export function NewEventFlag({ isOpen, onClose, event, onFlagModified }: IProps)
 
                 {...event.flags.map((flag) => (
                     <Box className="new-flag__flag">
-                        <Box className="new-flag__flag-header" onClick={() => setSelectedFlag(flag)}>
+                        <Box className="new-flag__flag-header" onClick={() => setSelectedFlag(selectedFlag?.id === flag.id ? null : flag)}>
                             {flag.displayName || ''} - {flag.id}
+                            {selectedFlag?.id === flag.id ? (
+                                <ExpandLessIcon className="new-flag__flag-header-icon" />
+                            ) : (
+                                <ExpandMoreIcon className="new-flag__flag-header-icon" />
+                            )}
                         </Box>
                         <Collapse in={selectedFlag?.id === flag.id}>
                             <TextField

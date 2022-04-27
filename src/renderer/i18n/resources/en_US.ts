@@ -91,7 +91,7 @@ export const en_US = {
                     flag_global: 'Global flag',
                     flag_global_helper: 'The global option will determine if this flag should be applied to the world state, or to a specific actor',
                     flag_hours: 'Hours to Expire',
-                    flag_hours_helper: 'How much hours in game will have to pass before this flag is to be removed from the world/actor',
+                    flag_hours_helper: 'How much hours in game will have to pass before this flag is to be removed from the world/actor after it is applied',
                     flag_add_new: 'Add New Flag',
                     navigate_casting: 'Event Actors Casting',
                     casting_heading: 'Actors of Event',
@@ -148,7 +148,7 @@ export const en_US = {
                     scene_effect_helper:
                         'Here you can configure the effects that this scene will have on the world when it is finished, such as relationship change between two actors, if the attributes of another character should change, or any other effect in the game state.',
                     scene_effect_button_add_effect: 'Add Effect To World',
-                    scene_effect_button_add_flag_actor: 'Add Flag to Actor',
+                    scene_effect_button_add_flag_actor: "Add Flag to Event's Actor",
                     scene_effect_button_add_flag_any: 'Add Flag to World/Character',
                 },
                 validation: {

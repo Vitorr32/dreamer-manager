@@ -1,0 +1,14 @@
+.new-flag {
+  &__flag {
+
+  }
+
+  &__flag-header{
+    border: 1px solid gray;
+    padding: 10px;
+
+    &-icon {
+      margin-left: auto;
+    }
+  }
+}
