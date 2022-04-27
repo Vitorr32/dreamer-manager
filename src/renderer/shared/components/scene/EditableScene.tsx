@@ -284,7 +284,14 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
 
             <AnimationEditDialog isOpen={!!selectedActor} onClose={() => setSelectedActor(null)} scene={scene} onSceneEdited={onSceneEdited} selectedActor={selectedActor} />
 
-            <SceneResultsDialog isOpen={isChangingSceneResult} onClose={() => setSceneResultState(false)} scene={scene} onResultModified={onSceneResultModified} />
+            <SceneResultsDialog
+                isOpen={isChangingSceneResult}
+                onClose={() => setSceneResultState(false)}
+                scene={scene}
+                flags={event.flags}
+                actors={event.actors}
+                onResultModified={onSceneResultModified}
+            />
         </Box>
     );
 }

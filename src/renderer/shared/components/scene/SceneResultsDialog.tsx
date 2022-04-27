@@ -1,9 +1,11 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
-import { Flag } from 'renderer/shared/models/base/Event.model';
+import { Actor, Flag } from 'renderer/shared/models/base/Event.model';
 import { Scene, SceneResult } from 'renderer/shared/models/base/Scene.model';
+import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component';
 import { EffectEditor } from '../effects/EffectEditor.component';
 
 interface IProps {
@@ -11,6 +13,7 @@ interface IProps {
     onClose: () => void;
     scene: Scene;
     flags: Flag[];
+    actors: Actor[];
     onResultModified: (sceneResult: SceneResult) => void;
 }
 
@@ -20,7 +23,7 @@ enum SceneResultAdd {
     APPLY_EFFECT_TO_WORLD,
 }
 
-export function SceneResultsDialog({ isOpen, onClose, scene, onResultModified, flags }: IProps) {
+export function SceneResultsDialog({ isOpen, onClose, scene, onResultModified, flags, actors }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [selectedSceneResult, setSelectedSceneResult] = useState<number>();
@@ -42,6 +45,10 @@ export function SceneResultsDialog({ isOpen, onClose, scene, onResultModified, f
 
     const flagToActorHasChanged = (index: number, flagID: string): void => {};
 
+    const flagToWorldStateHasChanged = (index: number, flagID: string): void => {};
+
+    const flagToWorldStateCondtionChanged = (index: number, conditionTree: ConditionTree): void => {};
+
     return (
         <Dialog className={`scene-result__dialog ${eventHasEffect() ? 'modal__wrapper-large' : ''}`} open={isOpen} onClose={onClose}>
             <DialogContent>
@@ -58,17 +65,39 @@ export function SceneResultsDialog({ isOpen, onClose, scene, onResultModified, f
                 {scene.sceneResult.applyFlagToActorInScene?.map((flagApplial, index) => {
                     <Box className="scene-result__result" key={`flag_applied_${index}`}>
                         <FormControl fullWidth variant="filled">
-                            <InputLabel htmlFor="link_type">{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
-                            <Select id="link_type" value={flagApplial.flagID} onChange={(event) => flagToActorHasChanged(index, event.target.value)}>
+                            <InputLabel>{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
+                            <Select value={flagApplial.flagID} onChange={(event) => flagToActorHasChanged(index, event.target.value)}>
                                 {flags.map((flag) => (
                                     <MenuItem value={flag.id}>{flag.displayName}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl fullWidth variant="filled">
+                            <InputLabel>{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
+                            <Select value={flagApplial.flagID} onChange={(event) => flagToActorHasChanged(index, event.target.value)}>
+                                {actors.map((actor) => (
+                                    <MenuItem value={actor.id}>{actor.alias}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Box>;
                 })}
 
-                <Box className=""></Box>
+                {scene.sceneResult.applyFlagToActorOnCondition?.map((flagApplial, index) => {
+                    <Box className="scene-result__result" key={`flag_applied_${index}`}>
+                        <FormControl fullWidth variant="filled">
+                            <InputLabel>{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
+                            <Select value={flagApplial.flagID} onChange={(event) => flagToWorldStateHasChanged(index, event.target.value)}>
+                                {flags.map((flag) => (
+                                    <MenuItem value={flag.id}>{flag.displayName}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <ConditionTreeEditor conditionTree={flagApplial.conditionTree} onChange={(conditionTree) => flagToWorldStateCondtionChanged(index, conditionTree)} />
+                    </Box>;
+                })}
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => addResultToScene(SceneResultAdd.APPLY_EFFECT_TO_WORLD)}>{t('interface.editor.event.scene_effect_button_add_effect')}</Button>
