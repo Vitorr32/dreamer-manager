@@ -165,7 +165,12 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         }
     };
 
-    const onSceneResultModified = (sceneResult: SceneResult) => {};
+    const onSceneResultModified = (sceneResult: SceneResult) => {
+        const modifiedScene = CopyClassInstance(scene);
+        modifiedScene.sceneResult = sceneResult;
+
+        onSceneEdited(modifiedScene);
+    };
 
     return (
         <Box className="scene__wrapper utils__full-height">
@@ -287,7 +292,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
             <SceneResultsDialog
                 isOpen={isChangingSceneResult}
                 onClose={() => setSceneResultState(false)}
-                scene={scene}
+                sceneResults={scene.sceneResult}
                 flags={event.flags}
                 actors={event.actors}
                 onResultModified={onSceneResultModified}

@@ -150,6 +150,8 @@ export const en_US = {
                     scene_effect_button_add_effect: 'Add Effect To World',
                     scene_effect_button_add_flag_actor: "Add Flag to Event's Actor",
                     scene_effect_button_add_flag_any: 'Add Flag to World/Character',
+                    scene_result_no_actors: 'There is currently no actors associated with the current event, please add them so that this list can be populated.',
+                    scene_result_no_flags: 'There is currently no flags associated with the current event, please add them so that this list can be populated.',
                 },
                 validation: {
                     duplicated_id: 'The id {{id}} is already being used',

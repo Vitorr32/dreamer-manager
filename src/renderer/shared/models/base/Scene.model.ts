@@ -1,7 +1,6 @@
 import { Character } from './Character.model';
 import { ConditionTree } from './ConditionTree';
 import { v4 as uuidv4 } from 'uuid';
-import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { Effect } from './Effect.model';
 
 export enum Sprite {
@@ -62,7 +61,7 @@ export interface SceneConnection {
 //The resulting changes on the game actors/data from the respective scene end. these effects will be applied on the end of every scene with contains a result.
 export interface SceneResult {
     applyFlagToActorOnCondition: { flagID: string; conditionTree: ConditionTree }[] | null;
-    applyFlagToActorInScene: { flagID: string; actor: number }[] | null;
+    applyFlagToActorInScene: { flagID: string; actorID: string }[] | null;
     applyEffect: Effect[] | null;
 }
 
