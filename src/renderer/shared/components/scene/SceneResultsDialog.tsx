@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    Collapse,
     Dialog,
     DialogActions,
     DialogContent,
@@ -18,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { Actor, Flag } from 'renderer/shared/models/base/Event.model';
-import { Scene, SceneResult } from 'renderer/shared/models/base/Scene.model';
+import { Scene, SceneResult, SceneResultType } from 'renderer/shared/models/base/Scene.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component';
 import { EffectEditor } from '../effects/EffectEditor.component';
@@ -26,16 +27,10 @@ import { EffectEditor } from '../effects/EffectEditor.component';
 interface IProps {
     isOpen: boolean;
     onClose: () => void;
-    sceneResults: SceneResult;
+    sceneResults: SceneResult[];
     flags: Flag[];
     actors: Actor[];
-    onResultModified: (sceneResult: SceneResult) => void;
-}
-
-enum SceneResultAdd {
-    MODIFY_FLAG_TO_ACTOR,
-    MODIFY_FLAG_TO_WORLD,
-    APPLY_EFFECT_TO_WORLD,
+    onResultModified: (sceneResults: SceneResult[]) => void;
 }
 
 export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModified, flags, actors }: IProps) {
@@ -43,154 +38,112 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
 
     const [selectedSceneResult, setSelectedSceneResult] = useState<number>();
 
-    const addResultToScene = (resultToAdd: SceneResultAdd): void => {
-        const updatedSceneResults: SceneResult = sceneResults
-            ? CopyClassInstance(sceneResults)
-            : {
-                  applyEffect: [],
-                  applyFlagToActorInScene: [],
-                  applyFlagToActorOnCondition: [],
-              };
+    const addResultToScene = (resultToAdd: SceneResultType): void => {
+        const updatedSceneResults: SceneResult[] = sceneResults ? CopyClassInstance(sceneResults) : [];
 
         switch (resultToAdd) {
-            case SceneResultAdd.APPLY_EFFECT_TO_WORLD:
-                if (updatedSceneResults.applyEffect) {
-                    updatedSceneResults.applyEffect.push(new Effect());
-                } else {
-                    updatedSceneResults.applyEffect = [new Effect()];
-                }
+            case SceneResultType.APPLY_EFFECT_TO_WORLD:
+                updatedSceneResults.push({
+                    effect: new Effect(),
+                    type: SceneResultType.APPLY_EFFECT_TO_WORLD,
+                });
                 break;
-            case SceneResultAdd.MODIFY_FLAG_TO_ACTOR:
-                if (updatedSceneResults.applyEffect) {
-                    updatedSceneResults.applyFlagToActorInScene.push({
-                        actorID: null,
-                        flagID: null,
-                    });
-                } else {
-                    updatedSceneResults.applyFlagToActorInScene = [
-                        {
-                            actorID: null,
-                            flagID: null,
-                        },
-                    ];
-                }
+            case SceneResultType.MODIFY_FLAG_TO_ACTOR:
+                updatedSceneResults.push({
+                    actorID: null,
+                    flagID: null,
+                    type: SceneResultType.MODIFY_FLAG_TO_ACTOR,
+                });
                 break;
-            case SceneResultAdd.MODIFY_FLAG_TO_WORLD:
-                if (updatedSceneResults.applyEffect) {
-                    updatedSceneResults.applyFlagToActorOnCondition.push({
-                        conditionTree: new ConditionTree(),
-                        flagID: null,
-                    });
-                } else {
-                    updatedSceneResults.applyFlagToActorOnCondition = [
-                        {
-                            conditionTree: new ConditionTree(),
-                            flagID: null,
-                        },
-                    ];
-                }
+            case SceneResultType.MODIFY_FLAG_TO_WORLD:
+                updatedSceneResults.push({
+                    conditionTree: new ConditionTree(),
+                    flagID: null,
+                    type: SceneResultType.MODIFY_FLAG_TO_WORLD,
+                });
                 break;
         }
 
         onResultModified(updatedSceneResults);
     };
 
-    const eventHasEffect = (): boolean => {
-        return (
-            sceneResults &&
-            (sceneResults.applyEffect?.length !== 0 || sceneResults.applyFlagToActorInScene?.length !== 0 || sceneResults.applyFlagToActorOnCondition?.length !== 0)
-        );
+    const sceneHasResult = (): boolean => {
+        return sceneResults && sceneResults.length !== 0;
     };
 
-    const appliedEffectHasChanged = (index: number, changedEffect: Effect): void => {
-        const updatedSceneResults: SceneResult = CopyClassInstance(sceneResults);
-        updatedSceneResults.applyEffect[index] = changedEffect;
+    const sceneResultsModified = (index: number, keyName: 'flagID' | 'actorID' | 'conditionTree' | 'effect', value: any): void => {
+        const updatedSceneResults: SceneResult[] = CopyClassInstance(sceneResults);
+        updatedSceneResults[index][keyName] = value;
 
         onResultModified(updatedSceneResults);
     };
-
-    const flagToActorHasChanged = (index: number, keyName: 'flagID' | 'actorID', value: string): void => {
-        const updatedSceneResults: SceneResult = CopyClassInstance(sceneResults);
-        updatedSceneResults.applyFlagToActorInScene[index][keyName] = value;
-
-        onResultModified(updatedSceneResults);
-    };
-
-    const flagToWorldStateHasChanged = (index: number, keyName: 'conditionTree' | 'flagID', value: any): void => {
-        const updatedSceneResults: SceneResult = CopyClassInstance(sceneResults);
-        updatedSceneResults.applyFlagToActorOnCondition[index][keyName] = value;
-
-        onResultModified(updatedSceneResults);
-    };
-
-    console.log(sceneResults);
 
     return (
-        <Dialog className={`scene-result__dialog ${eventHasEffect() ? 'modal__wrapper-large' : ''}`} open={isOpen} onClose={onClose}>
-            <DialogContent>
+        <Dialog className={`scene-result__dialog`} PaperProps={{ sx: sceneHasResult() ? { width: '95vw', maxWidth: 'unset' } : {} }} open={isOpen} onClose={onClose}>
+            <DialogContent className="YOLO">
                 <Typography variant="h5">{t('interface.editor.event.scene_effect_heading')}</Typography>
 
                 <DialogContentText>{t('interface.editor.event.scene_effect_helper')}</DialogContentText>
 
-                {sceneResults &&
-                    sceneResults.applyEffect &&
-                    sceneResults.applyEffect.map((effectToApply, index) => {
-                        <Box className="scene-result__result" key={`effect_applied_${index}`}>
-                            <EffectEditor effect={effectToApply} index={index} onChange={appliedEffectHasChanged} />
-                        </Box>;
-                    })}
+                {sceneHasResult() &&
+                    sceneResults.map((sceneResult, index) => {
+                        return (
+                            <Box className="scene-result__result" key={`effect_applied_${index}`}>
+                                <Box className="scene-result__result-header" onClick={() => setSelectedSceneResult(index === selectedSceneResult ? null : index)}>
+                                    <Typography>{t('interface.editor.event.scene_effect_world_effect_display_name', { index })}</Typography>
+                                </Box>
+                                <Collapse in={selectedSceneResult === index}>
+                                    <>
+                                        {sceneResult.type === SceneResultType.APPLY_EFFECT_TO_WORLD && (
+                                            <EffectEditor
+                                                effect={sceneResult.effect}
+                                                index={index}
+                                                onChange={(index, effect) => sceneResultsModified(index, 'effect', effect)}
+                                            />
+                                        )}
 
-                {sceneResults &&
-                    sceneResults.applyFlagToActorInScene &&
-                    sceneResults.applyFlagToActorInScene.map((flagApplial, index) => {
-                        <Box className="scene-result__result" key={`flag_applied_${index}`}>
-                            <FormControl fullWidth variant="filled">
-                                <InputLabel>{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
-                                <Select value={flagApplial.flagID} onChange={(event) => flagToActorHasChanged(index, 'flagID', event.target.value)}>
-                                    {flags.map((flag) => (
-                                        <MenuItem value={flag.id}>{flag.displayName}</MenuItem>
-                                    ))}
-                                </Select>
-                                {(!flags || flags.length === 0) && <FormHelperText>{t('interface.editor.event.scene_result_no_flags')}</FormHelperText>}
-                            </FormControl>
+                                        {(sceneResult.type === SceneResultType.MODIFY_FLAG_TO_ACTOR || sceneResult.type === SceneResultType.MODIFY_FLAG_TO_WORLD) && (
+                                            <FormControl fullWidth variant="filled">
+                                                <InputLabel>{t('interface.editor.event.scene_effect_label_flags_select')}</InputLabel>
+                                                <Select value={sceneResult.flagID || ''} onChange={(event) => sceneResultsModified(index, 'flagID', event.target.value)}>
+                                                    <MenuItem value=""></MenuItem>
+                                                    {flags.map((flag) => (
+                                                        <MenuItem value={flag.id}>{flag.displayName}</MenuItem>
+                                                    ))}
+                                                </Select>
+                                                {(!flags || flags.length === 0) && <FormHelperText>{t('interface.editor.event.scene_result_no_flags')}</FormHelperText>}
+                                            </FormControl>
+                                        )}
 
-                            <FormControl fullWidth variant="filled">
-                                <InputLabel>{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
-                                <Select value={flagApplial.flagID} onChange={(event) => flagToActorHasChanged(index, 'actorID', event.target.value)}>
-                                    {actors?.map((actor) => (
-                                        <MenuItem value={actor.id}>{actor.alias}</MenuItem>
-                                    ))}
-                                </Select>
-                                {(!actors || actors.length === 0) && <FormHelperText>{t('interface.editor.event.scene_result_no_actors')}</FormHelperText>}
-                            </FormControl>
-                        </Box>;
-                    })}
+                                        {sceneResult.type === SceneResultType.MODIFY_FLAG_TO_ACTOR && (
+                                            <FormControl fullWidth variant="filled">
+                                                <InputLabel>{t('interface.editor.event.scene_effect_label_actors_select')}</InputLabel>
+                                                <Select value={sceneResult.actorID || ''} onChange={(event) => sceneResultsModified(index, 'actorID', event.target.value)}>
+                                                    <MenuItem value=""></MenuItem>
+                                                    {actors?.map((actor) => (
+                                                        <MenuItem value={actor.id}>{actor.alias}</MenuItem>
+                                                    ))}
+                                                </Select>
+                                                {(!actors || actors.length === 0) && <FormHelperText>{t('interface.editor.event.scene_result_no_actors')}</FormHelperText>}
+                                            </FormControl>
+                                        )}
 
-                {sceneResults &&
-                    sceneResults.applyFlagToActorOnCondition &&
-                    sceneResults.applyFlagToActorOnCondition.map((flagApplial, index) => {
-                        <Box className="scene-result__result" key={`flag_applied_${index}`}>
-                            <FormControl fullWidth variant="filled">
-                                <InputLabel>{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
-                                <Select value={flagApplial.flagID} onChange={(event) => flagToWorldStateHasChanged(index, 'flagID', event.target.value)}>
-                                    {flags.map((flag) => (
-                                        <MenuItem value={flag.id}>{flag.displayName}</MenuItem>
-                                    ))}
-                                </Select>
-                                {(!flags || flags.length === 0) && <FormHelperText>{t('interface.editor.event.scene_result_no_flags')}</FormHelperText>}
-                            </FormControl>
-
-                            <ConditionTreeEditor
-                                conditionTree={flagApplial.conditionTree}
-                                onChange={(conditionTree) => flagToWorldStateHasChanged(index, 'conditionTree', conditionTree)}
-                            />
-                        </Box>;
+                                        {sceneResult.type === SceneResultType.MODIFY_FLAG_TO_WORLD && (
+                                            <ConditionTreeEditor
+                                                conditionTree={sceneResult.conditionTree}
+                                                onChange={(conditionTree) => sceneResultsModified(index, 'conditionTree', conditionTree)}
+                                            />
+                                        )}
+                                    </>
+                                </Collapse>
+                            </Box>
+                        );
                     })}
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => addResultToScene(SceneResultAdd.APPLY_EFFECT_TO_WORLD)}>{t('interface.editor.event.scene_effect_button_add_effect')}</Button>
-                <Button onClick={() => addResultToScene(SceneResultAdd.MODIFY_FLAG_TO_WORLD)}>{t('interface.editor.event.scene_effect_button_add_flag_any')}</Button>
-                <Button onClick={() => addResultToScene(SceneResultAdd.MODIFY_FLAG_TO_ACTOR)}>{t('interface.editor.event.scene_effect_button_add_flag_actor')}</Button>
+                <Button onClick={() => addResultToScene(SceneResultType.APPLY_EFFECT_TO_WORLD)}>{t('interface.editor.event.scene_effect_button_add_effect')}</Button>
+                <Button onClick={() => addResultToScene(SceneResultType.MODIFY_FLAG_TO_WORLD)}>{t('interface.editor.event.scene_effect_button_add_flag_any')}</Button>
+                <Button onClick={() => addResultToScene(SceneResultType.MODIFY_FLAG_TO_ACTOR)}>{t('interface.editor.event.scene_effect_button_add_flag_actor')}</Button>
             </DialogActions>
         </Dialog>
     );

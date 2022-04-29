@@ -165,9 +165,9 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         }
     };
 
-    const onSceneResultModified = (sceneResult: SceneResult) => {
+    const onSceneResultModified = (sceneResults: SceneResult[]) => {
         const modifiedScene = CopyClassInstance(scene);
-        modifiedScene.sceneResult = sceneResult;
+        modifiedScene.sceneResults = sceneResults;
 
         onSceneEdited(modifiedScene);
     };
@@ -292,7 +292,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
             <SceneResultsDialog
                 isOpen={isChangingSceneResult}
                 onClose={() => setSceneResultState(false)}
-                sceneResults={scene.sceneResult}
+                sceneResults={scene.sceneResults}
                 flags={event.flags}
                 actors={event.actors}
                 onResultModified={onSceneResultModified}

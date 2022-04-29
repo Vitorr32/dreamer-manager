@@ -58,11 +58,19 @@ export interface SceneConnection {
     };
 }
 
+export enum SceneResultType {
+    MODIFY_FLAG_TO_ACTOR,
+    MODIFY_FLAG_TO_WORLD,
+    APPLY_EFFECT_TO_WORLD,
+}
+
 //The resulting changes on the game actors/data from the respective scene end. these effects will be applied on the end of every scene with contains a result.
 export interface SceneResult {
-    applyFlagToActorOnCondition: { flagID: string; conditionTree: ConditionTree }[] | null;
-    applyFlagToActorInScene: { flagID: string; actorID: string }[] | null;
-    applyEffect: Effect[] | null;
+    type: SceneResultType;
+    flagID?: string;
+    conditionTree?: ConditionTree;
+    actorID?: string;
+    effect?: Effect;
 }
 
 export const BASE_ANIMATION_OBJECT: Animation = {
@@ -81,7 +89,7 @@ export class Scene {
 
     public sceneConnections: SceneConnection[] | null = null;
 
-    public sceneResult: SceneResult | null = null;
+    public sceneResults: SceneResult[] | null = null;
 
     //The string that will appear as the content of the dialog box
     public dialog?: string;
