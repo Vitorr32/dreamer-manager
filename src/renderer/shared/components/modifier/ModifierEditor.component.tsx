@@ -4,17 +4,19 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modifier, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
+import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
+import { AffectedActorsSelect } from '../effects/AffectedActorsSelect.component';
 
 interface IProps {
     modifier: Modifier;
     onChange: (modifier: Modifier) => void;
-    filteredTypes?: ModifierTypeSection[];
+    options?: EffectEditorOptions;
 }
 
-export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
+export function ModifierEditor({ modifier, onChange, options }: IProps) {
     const { t } = useTranslation();
 
     const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
@@ -25,8 +27,12 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
     const onSectionSelected = (section: ModifierTypeSection) => {
         onTypeSelected(ModifierType.UNDEFINED);
 
-        setSelectableTypes(GetModifierTypesOfSection(section, filteredTypes));
+        setSelectableTypes(GetModifierTypesOfSection(section, options && options.filteredTypes ? options.filteredTypes : []));
         setModifierSection(section);
+    };
+
+    const hasSpecificActors = (): boolean => {
+        return options && !!options.specifiedActors;
     };
 
     const onTypeSelected = (type: ModifierType) => {
@@ -77,10 +83,27 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
             case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
             case ModifierType.MODIFY_POTENTIAL_VALUE:
-                return <AttributeSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} multi/>;
+                return <AttributeSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} multi />;
             case ModifierType.MODIFY_TRAIT_GAIN:
             case ModifierType.MODIFY_TRAIT_REMOVE:
                 return <TraitSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} />;
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
+                if (hasSpecificActors()) {
+                    return (
+                        <AffectedActorsSelect
+                            actors={options.specifiedActors}
+                            originActor={modifier && modifier.modifierTargets.length > 0 ? modifier.modifierTargets[0] : null}
+                            targetActor={modifier && modifier.modifierTargets.length > 1 ? modifier.modifierTargets[1] : null}
+                            onChange={onToolPickerSelection}
+                        />
+                    );
+                } else {
+                    return null;
+                }
             default:
                 return null;
         }
@@ -158,7 +181,7 @@ export function ModifierEditor({ modifier, onChange, filteredTypes }: IProps) {
                             <Divider />
 
                             {Object.values(ModifierTypeSection).map((value) => {
-                                if (filteredTypes?.includes(value)) {
+                                if (options && options.filteredTypes && options.filteredTypes?.includes(value)) {
                                     return null;
                                 }
 

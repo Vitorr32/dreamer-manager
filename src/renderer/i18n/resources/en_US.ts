@@ -146,7 +146,7 @@ export const en_US = {
                     background_resources_search: 'Game File',
                     scene_effect_heading: 'Scene Effects',
                     scene_effect_helper:
-                        'Here you can configure the effects that this scene will have on the world when it is finished, such as relationship change between two actors, if the attributes of another character should change, or any other effect in the game state.',
+                        'Here you can configure the effects that this scene will have on the world when it is finished, such as relationship change between two actors, if the attributes of another character should change, or any other effect in the game state. If this effect should only happen on a specific condition or world state, be sure to add that condition to the scene connection conditions',
                     scene_effect_button_add_effect: 'Add Effect To World',
                     scene_effect_button_add_flag_actor: "Add Flag to Event's Actor",
                     scene_effect_button_add_flag_any: 'Add Flag to World/Character',

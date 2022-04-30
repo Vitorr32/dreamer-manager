@@ -39,7 +39,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
     const [selectedSceneResult, setSelectedSceneResult] = useState<number>();
 
     const addResultToScene = (resultToAdd: SceneResultType): void => {
-        const updatedSceneResults: SceneResult[] = sceneResults ? CopyClassInstance(sceneResults) : [];
+        const updatedSceneResults: SceneResult[] = !!sceneResults ? CopyClassInstance(sceneResults) : [];
 
         switch (resultToAdd) {
             case SceneResultType.APPLY_EFFECT_TO_WORLD:
@@ -68,7 +68,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
     };
 
     const sceneHasResult = (): boolean => {
-        return sceneResults && sceneResults.length !== 0;
+        return !!sceneResults && sceneResults.length !== 0;
     };
 
     const sceneResultsModified = (index: number, keyName: 'flagID' | 'actorID' | 'conditionTree' | 'effect', value: any): void => {
@@ -80,7 +80,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
 
     return (
         <Dialog className={`scene-result__dialog`} PaperProps={{ sx: sceneHasResult() ? { width: '95vw', maxWidth: 'unset' } : {} }} open={isOpen} onClose={onClose}>
-            <DialogContent className="YOLO">
+            <DialogContent>
                 <Typography variant="h5">{t('interface.editor.event.scene_effect_heading')}</Typography>
 
                 <DialogContentText>{t('interface.editor.event.scene_effect_helper')}</DialogContentText>
@@ -99,6 +99,10 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                                 effect={sceneResult.effect}
                                                 index={index}
                                                 onChange={(index, effect) => sceneResultsModified(index, 'effect', effect)}
+                                                options={{
+                                                    filteredTypes: [],
+                                                    specifiedActors: !!actors ? actors : []
+                                                }}
                                             />
                                         )}
 

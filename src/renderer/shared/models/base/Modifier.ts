@@ -49,6 +49,8 @@ export enum ModifierTypeSection {
 export class Modifier {
     public type: ModifierType;
 
+    //The modifier target depends on the Modifier Type, if the modifier type is about traits, the string will refer to the trait ID,
+    //if it's a event, the event ID; in case it's a relationship change it may contains the actors IDs.
     public modifierTargets: string[];
     public effectiveChange: number;
     public targetSelf: boolean;

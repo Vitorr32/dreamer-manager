@@ -1,5 +1,19 @@
 import { useState } from 'react';
-import { Button, IconButton, List, ListItem, ListItemText, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, ListItemIcon, Tooltip } from '@mui/material';
+import {
+    Button,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Typography,
+    ListItemIcon,
+    Tooltip,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -8,7 +22,7 @@ import { MAX_NUMBER_OF_EFFECTS } from 'renderer/shared/Constants';
 import { EffectEditor } from '../../../../shared/components/effects/EffectEditor.component';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
-import { ModifierType } from 'renderer/shared/models/base/Modifier';
+import { ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 import { Box } from '@mui/system';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 
@@ -81,8 +95,14 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                                 </ListItemIcon>
                             </Tooltip>
                             <ListItemText
-                                primary={t(effect.modifier && effect.modifier.type && effect.modifier.type !== ModifierType.UNDEFINED ? effect.modifier.type : 'interface.editor.effect.unset_modifier')}
-                                secondary={effect.modifier && effect.modifier.effectiveChange !== 0 ? effect.modifier.effectiveChange : t('interface.editor.effect.unset_value')}
+                                primary={t(
+                                    effect.modifier && effect.modifier.type && effect.modifier.type !== ModifierType.UNDEFINED
+                                        ? effect.modifier.type
+                                        : 'interface.editor.effect.unset_modifier'
+                                )}
+                                secondary={
+                                    effect.modifier && effect.modifier.effectiveChange !== 0 ? effect.modifier.effectiveChange : t('interface.editor.effect.unset_value')
+                                }
                             />
                         </ListItem>
                     ))}
@@ -95,7 +115,14 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                 ) : null}
             </Box>
 
-            {editEffectIndex !== -1 && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={trait.effects[editEffectIndex]} options={{ impliedActingAgent: true }} />}
+            {editEffectIndex !== -1 && (
+                <EffectEditor
+                    onChange={onEditEffect}
+                    index={editEffectIndex}
+                    effect={trait.effects[editEffectIndex]}
+                    options={{ filteredTypes: [ModifierTypeSection.EVENT_SECTION, ModifierTypeSection.TRAIT_SECTION], allowConditionTree: true }}
+                />
+            )}
 
             {trait.effects.map((effect, index) => (
                 <EffectSummary key={'effect_' + index} effect={effect} />

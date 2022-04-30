@@ -11,5 +11,9 @@ export function AreArraysEqual(array1: any[], array2: any[]): boolean {
 }
 
 export function CopyClassInstance<T>(object: T): T {
+    if(Array.isArray(object)) {
+        return cloneDeep(object);
+    }
+
     return Object.assign(Object.create(Object.getPrototypeOf(object)), cloneDeep(object));
 }
