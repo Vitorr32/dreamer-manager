@@ -5,7 +5,10 @@
 
     &__content {
         display: flex;
+        flex-wrap: wrap;
         align-items: flex-start;
+        row-gap: 10px;
+        column-gap: 10px;
     }
 
     &__select-type {

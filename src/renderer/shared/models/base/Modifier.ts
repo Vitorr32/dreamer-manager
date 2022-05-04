@@ -46,19 +46,31 @@ export enum ModifierTypeSection {
     STATIC_SECTION = 'model.modifier.section.static',
 }
 
+export enum ModifierTargetType {
+    ATTRIBUTE_ID = 'attributes',
+    TRAIT_ID = 'traits',
+    EVENT_ID = 'events',
+    FLAG_ID = 'flags',
+    ORIGN_ACTOR = 'originActor',
+    RECEPTOR_ACTOR = 'receptorActor',
+}
+
+export enum ModifierTargetSpecification {
+    EVERYONE = 'model.modifier.target.specification.everyone',
+    EVERYONE_ATTENDS_CONDITION = 'model.modifier.target.specification.everyone_condition',
+}
+
 export class Modifier {
     public type: ModifierType;
-
-    //The modifier target depends on the Modifier Type, if the modifier type is about traits, the string will refer to the trait ID,
-    //if it's a event, the event ID; in case it's a relationship change it may contains the actors IDs.
-    public modifierTargets: string[];
+    public modifiedWorldState: {
+        [key in ModifierTargetType]?: string[];
+    };
     public effectiveChange: number;
     public targetSelf: boolean;
     public percentage: boolean;
 
     constructor() {
         this.type = ModifierType.UNDEFINED;
-        this.modifierTargets = [];
         this.effectiveChange = 0;
         this.targetSelf = true;
         this.percentage = false;

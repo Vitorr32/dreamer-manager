@@ -54,15 +54,14 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         <React.Fragment>
             <ModifierEditor modifier={effect.modifier} onChange={onEffectChanged} options={options} />
 
-            {!options ||
-                (options.allowConditionTree && (
-                    <>
-                        <Button variant="contained" onClick={onAddConditionTree}>
-                            {t('interface.editor.condition.add_condition_label')}
-                        </Button>
-                        <ConditionTreeEditor conditionTree={effect.conditionTree} onChange={onConditionChanged} />
-                    </>
-                ))}
+            {(!options || options.allowConditionTree) && (
+                <>
+                    <Button variant="contained" onClick={onAddConditionTree}>
+                        {t('interface.editor.condition.add_condition_label')}
+                    </Button>
+                    <ConditionTreeEditor conditionTree={effect.conditionTree} onChange={onConditionChanged} />
+                </>
+            )}
         </React.Fragment>
     );
 }

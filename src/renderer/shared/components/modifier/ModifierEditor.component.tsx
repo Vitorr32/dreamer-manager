@@ -3,7 +3,7 @@ import { Button, Divider, List, ListItem, ListItemButton, ListItemText, Modal, T
 import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modifier, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
+import { Modifier, ModifierTargetType, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
@@ -32,7 +32,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
     };
 
     const hasSpecificActors = (): boolean => {
-        return options && !!options.specifiedActors;
+        return modifier.type !== ModifierType.UNDEFINED && options && !!options.specifiedActors;
     };
 
     const onTypeSelected = (type: ModifierType) => {
@@ -54,7 +54,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         //Reset layout of inputs on change of type
         if (modifier.type !== tempType) {
             newModifier.effectiveChange = 0;
-            newModifier.modifierTargets = [];
+            newModifier.modifiedWorldState = {};
         }
 
         newModifier.type = tempType;
@@ -67,13 +67,13 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         onChange(newModifier);
     };
 
-    const onToolPickerSelection = (selection: string[] | undefined) => {
+    const onToolPickerSelection = (selection: string[], type: ModifierTargetType) => {
         if (!selection) {
             throw new Error('The selection is not empty but has no Identifier variable');
         }
 
         const newModifier = Object.assign({}, modifier);
-        newModifier.modifierTargets = selection;
+        newModifier.modifiedWorldState[type] = selection;
 
         onChange(newModifier);
     };
@@ -83,27 +83,22 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
             case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
             case ModifierType.MODIFY_POTENTIAL_VALUE:
-                return <AttributeSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} multi />;
+                return (
+                    <AttributeSelectionButton
+                        displayIDs={modifier.modifiedWorldState?.attributes}
+                        onChange={(value) => onToolPickerSelection(value, ModifierTargetType.ATTRIBUTE_ID)}
+                        multi
+                    />
+                );
             case ModifierType.MODIFY_TRAIT_GAIN:
             case ModifierType.MODIFY_TRAIT_REMOVE:
-                return <TraitSelectionButton displayIDs={modifier.modifierTargets} onChange={onToolPickerSelection} />;
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
-                if (hasSpecificActors()) {
-                    return (
-                        <AffectedActorsSelect
-                            actors={options.specifiedActors}
-                            originActor={modifier && modifier.modifierTargets.length > 0 ? modifier.modifierTargets[0] : null}
-                            targetActor={modifier && modifier.modifierTargets.length > 1 ? modifier.modifierTargets[1] : null}
-                            onChange={onToolPickerSelection}
-                        />
-                    );
-                } else {
-                    return null;
-                }
+                return (
+                    <TraitSelectionButton
+                        displayIDs={modifier.modifiedWorldState?.traits}
+                        onChange={(value) => onToolPickerSelection(value, ModifierTargetType.TRAIT_ID)}
+                        multi
+                    />
+                );
             default:
                 return null;
         }
@@ -153,6 +148,38 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         }
     };
 
+    const renderActorSelection = (): React.ReactElement | null => {
+        if (!hasSpecificActors()) {
+            return;
+        }
+
+        switch (modifier.type) {
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
+                return (
+                    <AffectedActorsSelect
+                        actors={options.specifiedActors}
+                        originActors={modifier.modifiedWorldState?.originActor}
+                        targetActors={modifier.modifiedWorldState?.receptorActor}
+                        onChange={(value, isOrigin) => onToolPickerSelection(value, isOrigin ? ModifierTargetType.ORIGN_ACTOR : ModifierTargetType.RECEPTOR_ACTOR)}
+                        hasOriginActor={true}
+                    />
+                );
+            default:
+                return (
+                    <AffectedActorsSelect
+                        actors={options.specifiedActors}
+                        targetActors={modifier.modifiedWorldState?.receptorActor}
+                        onChange={(value) => onToolPickerSelection(value, ModifierTargetType.RECEPTOR_ACTOR)}
+                        hasOriginActor={false}
+                    />
+                );
+        }
+    };
+
     return (
         <Box className="modifier-editor" sx={{ bgcolor: 'background.default' }}>
             <Box className="modifier-editor__header">
@@ -164,6 +191,8 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                 <Button className="modifier-editor__select-type" variant="contained" endIcon={<ArrowForward />} onClick={() => setShowTypeModal(true)}>
                     {modifier.type === ModifierType.UNDEFINED ? t('interface.editor.modifier.select_type') : t(modifier.type)}
                 </Button>
+
+                {renderActorSelection()}
 
                 {renderModifierSelectionInput()}
 

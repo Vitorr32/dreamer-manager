@@ -9,12 +9,12 @@ import { RootState } from 'renderer/redux/store';
 
 interface IProps {
     displayIDs: string[];
-    onChange: (value: string[], returnData?: any) => void;
+    onChange: (value: string[]) => void;
     returnData?: any;
     multi?: boolean;
 }
 
-export function AttributeSelectionButton({ displayIDs, onChange, returnData, multi }: IProps) {
+export function AttributeSelectionButton({ displayIDs, onChange, multi }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const { t } = useTranslation();
@@ -28,10 +28,7 @@ export function AttributeSelectionButton({ displayIDs, onChange, returnData, mul
             return;
         }
 
-        onChange(
-            values.map((value) => value.id),
-            returnData
-        );
+        onChange(values.map((value) => value.id));
 
         setAttribute(values);
         setShowTool(false);
@@ -40,7 +37,9 @@ export function AttributeSelectionButton({ displayIDs, onChange, returnData, mul
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedAttribute === undefined || displayIDs.length === 0 ? t('interface.editor.condition.attr_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].name).join(', ')}
+                {selectedAttribute === undefined || displayIDs.length === 0
+                    ? t('interface.editor.condition.attr_selector_placeholder')
+                    : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].name).join(', ')}
             </Button>
 
             <AttributePicker showTool={showTool} onSelection={onAttributeSelected} multi={multi} />

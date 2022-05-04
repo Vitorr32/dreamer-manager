@@ -9,12 +9,12 @@ import { TraitPicker } from '../tools/TraitPicker';
 
 interface IProps {
     displayIDs: string[];
-    onChange: (values: string[], returnData?: any) => void;
+    onChange: (values: string[]) => void;
     returnData?: any;
     multi?: boolean;
 }
 
-export function TraitSelectionButton({ displayIDs, onChange, returnData, multi }: IProps) {
+export function TraitSelectionButton({ displayIDs, onChange, multi }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const { t, i18n } = useTranslation();
@@ -28,10 +28,7 @@ export function TraitSelectionButton({ displayIDs, onChange, returnData, multi }
             return;
         }
 
-        onChange(
-            values.map((value) => value.id),
-            returnData
-        );
+        onChange(values.map((value) => value.id));
         setValue(values);
         setShowTool(false);
     };
@@ -39,7 +36,9 @@ export function TraitSelectionButton({ displayIDs, onChange, returnData, multi }
     return (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
-                {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.trait_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.traits[displayID].getName(i18n.language))}
+                {selectedValue === undefined || displayIDs.length === 0
+                    ? t('interface.editor.condition.trait_selector_placeholder')
+                    : displayIDs.map((displayID) => mappedDatabase.traits[displayID].getName(i18n.language))}
             </Button>
 
             <TraitPicker showTool={showTool} onSelection={onValueSelected} multi={multi} />
