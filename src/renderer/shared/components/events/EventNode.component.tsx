@@ -16,11 +16,13 @@ type HierarchyNode = HierarchyPointNode<Scene>;
 export function EventNode({
     node,
     onAddNode,
+    onAddNodeAutoCompleted,
     onNodeSelected,
     onRemoveNode,
 }: {
     node: HierarchyNode;
     onAddNode: (scene: Scene) => void;
+    onAddNodeAutoCompleted: (scene: Scene) => void;
     onNodeSelected: (scene: Scene) => void;
     onRemoveNode: (scene: Scene, parent: Scene) => void;
 }) {
@@ -33,7 +35,17 @@ export function EventNode({
     const [focusedNode, setFocusedNode] = useState('');
     const theme = useTheme();
 
-    if (isRoot) return <RootNode node={node} focusedNode={focusedNode} setFocusedNode={setFocusedNode} onAddNode={onAddNode} onNodeSelected={onNodeSelected}/>;
+    if (isRoot)
+        return (
+            <RootNode
+                node={node}
+                focusedNode={focusedNode}
+                onAddNodeAutoCompleted={onAddNodeAutoCompleted}
+                setFocusedNode={setFocusedNode}
+                onAddNode={onAddNode}
+                onNodeSelected={onNodeSelected}
+            />
+        );
     // if (isParent) return <ParentNode node={node} />;
 
     return (
@@ -61,8 +73,20 @@ export function EventNode({
                 Add Child
             </text>
             <text
-                className="eventNode__editNode"
+                className="eventNode__addParentCopy"
                 y={-theme.typography.fontSize * 4}
+                dy=".33em"
+                fontSize={theme.typography.fontSize}
+                fontFamily={theme.typography.fontFamily}
+                fill={theme.palette.common.white}
+                textAnchor="middle"
+                onClick={() => onAddNodeAutoCompleted(node.data)}
+            >
+                Add Copy of Parent
+            </text>
+            <text
+                className="eventNode__editNode"
+                y={-theme.typography.fontSize * 6}
                 dy=".33em"
                 fontSize={theme.typography.fontSize}
                 fontFamily={theme.typography.fontFamily}
@@ -74,7 +98,7 @@ export function EventNode({
             </text>
             <text
                 className="eventNode__removeNode"
-                y={-theme.typography.fontSize * 6}
+                y={-theme.typography.fontSize * 8}
                 dy=".33em"
                 fontSize={theme.typography.fontSize}
                 fontFamily={theme.typography.fontFamily}
@@ -93,12 +117,14 @@ function RootNode({
     focusedNode,
     setFocusedNode,
     onAddNode,
-    onNodeSelected
+    onAddNodeAutoCompleted,
+    onNodeSelected,
 }: {
     node: HierarchyNode;
     focusedNode: string;
     setFocusedNode: React.Dispatch<React.SetStateAction<string>>;
     onAddNode: (scene: Scene) => void;
+    onAddNodeAutoCompleted: (scene: Scene) => void;
     onNodeSelected: (scene: Scene) => void;
 }) {
     const theme = useTheme();
@@ -129,8 +155,20 @@ function RootNode({
                 Add Child
             </text>
             <text
+                className="eventNode__addParentCopy"
+                y={-theme.typography.fontSize * 4}
+                dy=".33em"
+                fontSize={theme.typography.fontSize}
+                fontFamily={theme.typography.fontFamily}
+                fill={theme.palette.common.white}
+                textAnchor="middle"
+                onClick={() => onAddNodeAutoCompleted(node.data)}
+            >
+                Add Copy of Parent
+            </text>
+            <text
                 className="eventNode__editNode"
-                y={node.y - theme.typography.fontSize * 4}
+                y={node.y - theme.typography.fontSize * 6}
                 dy=".33em"
                 fontSize={theme.typography.fontSize}
                 fontFamily={theme.typography.fontFamily}

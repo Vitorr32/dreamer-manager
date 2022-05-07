@@ -1,4 +1,4 @@
-import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Modal, Select, TextField } from '@mui/material';
+import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Modal, Select, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { ConditionTreeEditor } from 'renderer/shared/components/condition/ConditionTreeEditor.component';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
@@ -19,6 +19,13 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
     const onConnectionTypeChange = (newType: ConnectionType): void => {
         const newConnection = CopyClassInstance(sceneConnection);
         newConnection.type = newType;
+
+        onSceneConnectionChange(newConnection);
+    };
+
+    const onAddConditionToConnection = (): void => {
+        const newConnection = CopyClassInstance(sceneConnection);
+        newConnection.choiceCondition = new ConditionTree();
 
         onSceneConnectionChange(newConnection);
     };
@@ -75,7 +82,6 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
                     sceneConnection?.type !== ConnectionType.NORMAL && sceneConnection?.choiceCondition ? 'modal__wrapper-large' : 'modal__wrapper-small'
                 } `}
             >
-                <Box className="modal__header">{t('interface.editor.event.add_link_condition')}</Box>
                 <Box className="modal__content utils__full-height">
                     <FormControl fullWidth variant="filled">
                         <InputLabel htmlFor="link_type">{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
@@ -102,7 +108,11 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
                         />
                     )}
 
-                    {sceneConnection && sceneConnection.type && sceneConnection.type !== ConnectionType.NORMAL && (
+                    {sceneConnection && sceneConnection.type && sceneConnection.type !== ConnectionType.NORMAL && sceneConnection.choiceCondition && (
+                        <Button onClick={onAddConditionToConnection}>{t('interface.editor.event.add_link_condition')}</Button>
+                    )}
+
+                    {sceneConnection && !!sceneConnection.type && sceneConnection.type !== ConnectionType.NORMAL && (
                         <ConditionTreeEditor conditionTree={sceneConnection?.choiceCondition} onChange={onConditionChanged} />
                     )}
                 </Box>

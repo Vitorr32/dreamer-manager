@@ -20,6 +20,8 @@ import { useTooltip, useTooltipInPortal, defaultStyles } from '@visx/tooltip';
 import { EventLinkModal } from './EventLinkModal.component';
 import { HierarchyPointLink } from '@visx/hierarchy/lib/types';
 import { NewEventFlag } from './NewEventFlag.component';
+import { Zoom } from '@visx/zoom';
+import { localPoint } from '@visx/event';
 
 interface IProps {
     width?: number;
@@ -33,6 +35,14 @@ const lightorange = '#FFD580';
 export const background = '#272b4d';
 
 const defaultMargin = { top: 10, left: 80, right: 80, bottom: 10 };
+const initialTransform = {
+    scaleX: 1.27,
+    scaleY: 1.27,
+    translateX: -211.62,
+    translateY: 162.59,
+    skewX: 0,
+    skewY: 0,
+};
 
 export function NewEvent({ width = window.innerWidth - 100, height = 500, margin = defaultMargin }: IProps) {
     const { t, i18n } = useTranslation();
@@ -65,6 +75,19 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         const visualNovel = CopyClassInstance(newVN);
 
         visualNovel.addScene(parent, new Scene());
+
+        setVN(visualNovel);
+    };
+
+    const onAddNodeFromParent = (parent: Scene) => {
+        const visualNovel = CopyClassInstance(newVN);
+
+        const newScene = CopyClassInstance(parent);
+        const newSceneID = new Scene().id;
+
+        newScene.id = newSceneID;
+
+        visualNovel.addScene(parent, newScene);
 
         setVN(visualNovel);
     };
@@ -213,41 +236,105 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                 <Button onClick={() => setFlagModalState(true)}>Modify Event Flags</Button>
                 {newVN && newVN.getVISXHierarchyOfVN() && (
                     <>
-                        <svg className="new-event__flow" width={width} height={height} ref={containerRef}>
-                            <rect width={width} height={height} rx={14} fill={background} />
-                            <Tree<Scene> root={newVN.getVISXHierarchyOfVN()} size={[yMax, xMax]} className="event-tree">
-                                {(tree) => (
-                                    <Group top={margin.top} left={margin.left}>
-                                        {tree.links().map((link, i) => {
-                                            const linkInfo = getConnectionInformation(link.source.data, link.target.data);
+                        <Zoom<SVGSVGElement>
+                            width={width}
+                            height={height}
+                            scaleXMin={1 / 2}
+                            scaleXMax={4}
+                            scaleYMin={1 / 2}
+                            scaleYMax={4}
+                            initialTransformMatrix={initialTransform}
+                        >
+                            {(zoom) => (
+                                <Box style={{ position: 'relative' }}>
+                                    {console.log(zoom)}
+                                    <svg
+                                        className="new-event__flow"
+                                        width={width}
+                                        height={height}
+                                        ref={zoom.containerRef}
+                                        style={{ cursor: zoom.isDragging ? 'grabbing' : 'grab', touchAction: 'none' }}
+                                    >
+                                        <rect
+                                            width={width}
+                                            height={height}
+                                            rx={14}
+                                            fill={background}
+                                            onTouchStart={zoom.dragStart}
+                                            onTouchMove={zoom.dragMove}
+                                            onTouchEnd={zoom.dragEnd}
+                                            onMouseDown={zoom.dragStart}
+                                            onMouseMove={zoom.dragMove}
+                                            onMouseUp={zoom.dragEnd}
+                                            onMouseLeave={() => {
+                                                if (zoom.isDragging) zoom.dragEnd();
+                                            }}
+                                            onDoubleClick={(event) => {
+                                                const point = localPoint(event) || { x: 0, y: 0 };
+                                                zoom.scale({ scaleX: 1.1, scaleY: 1.1, point });
+                                            }}
+                                        />
+                                        <Tree<Scene> root={newVN.getVISXHierarchyOfVN()} size={[yMax, xMax]} className="event-tree">
+                                            {(tree) => (
+                                                <Group top={margin.top} left={margin.left} transform={zoom.toString()}>
+                                                    {tree.links().map((link, i) => {
+                                                        const linkInfo = getConnectionInformation(link.source.data, link.target.data);
 
-                                            return (
-                                                <LinkHorizontal
-                                                    className="event-tree__link"
-                                                    key={`link-${i}`}
-                                                    data={link}
-                                                    stroke={
-                                                        linkInfo?.type === ConnectionType.NORMAL || !linkInfo?.type
-                                                            ? whitesmoke
-                                                            : linkInfo?.type === ConnectionType.HIDDEN_CHECK
-                                                            ? lightpurple
-                                                            : lightorange
-                                                    }
-                                                    strokeWidth="5"
-                                                    onMouseLeave={onSceneLinkMouseExit}
-                                                    onMouseOver={() => onSceneLinkMouseOver(linkInfo)}
-                                                    onMouseDown={() => onSceneLinkClick(link)}
-                                                    fill="none"
-                                                />
-                                            );
-                                        })}
-                                        {tree.descendants().map((node, i) => (
-                                            <EventNode key={`node-${i}`} node={node} onAddNode={onAddNode} onNodeSelected={onNodeSelected} onRemoveNode={onRemoveNode} />
-                                        ))}
-                                    </Group>
-                                )}
-                            </Tree>
-                        </svg>
+                                                        return (
+                                                            <LinkHorizontal
+                                                                className="event-tree__link"
+                                                                key={`link-${i}`}
+                                                                data={link}
+                                                                stroke={
+                                                                    linkInfo?.type === ConnectionType.NORMAL || !linkInfo?.type
+                                                                        ? whitesmoke
+                                                                        : linkInfo?.type === ConnectionType.HIDDEN_CHECK
+                                                                        ? lightpurple
+                                                                        : lightorange
+                                                                }
+                                                                strokeWidth="5"
+                                                                onMouseLeave={onSceneLinkMouseExit}
+                                                                onMouseOver={() => onSceneLinkMouseOver(linkInfo)}
+                                                                onMouseDown={() => onSceneLinkClick(link)}
+                                                                fill="none"
+                                                            />
+                                                        );
+                                                    })}
+                                                    {tree.descendants().map((node, i) => (
+                                                        <EventNode
+                                                            key={`node-${i}`}
+                                                            node={node}
+                                                            onAddNode={onAddNode}
+                                                            onAddNodeAutoCompleted={onAddNodeFromParent}
+                                                            onNodeSelected={onNodeSelected}
+                                                            onRemoveNode={onRemoveNode}
+                                                        />
+                                                    ))}
+                                                </Group>
+                                            )}
+                                        </Tree>
+                                    </svg>
+
+                                    <div className="controls">
+                                        <button type="button" className="btn btn-zoom" onClick={() => zoom.scale({ scaleX: 1.2, scaleY: 1.2 })}>
+                                            +
+                                        </button>
+                                        <button type="button" className="btn btn-zoom btn-bottom" onClick={() => zoom.scale({ scaleX: 0.8, scaleY: 0.8 })}>
+                                            -
+                                        </button>
+                                        <button type="button" className="btn btn-lg" onClick={zoom.center}>
+                                            Center
+                                        </button>
+                                        <button type="button" className="btn btn-lg" onClick={zoom.reset}>
+                                            Reset
+                                        </button>
+                                        <button type="button" className="btn btn-lg" onClick={zoom.clear}>
+                                            Clear
+                                        </button>
+                                    </div>
+                                </Box>
+                            )}
+                        </Zoom>
                         {tooltipOpen && (
                             <TooltipInPortal key={Math.random()} left={tooltipLeft} top={tooltipTop} style={defaultStyles}>
                                 {tooltipData}

@@ -1,6 +1,7 @@
 .eventNode {
     cursor: pointer;
 
+    &__addParentCopy,
     &__addChild,
     &__editNode,
     &__removeNode {
@@ -15,6 +16,7 @@
         stroke: white;
         stroke-width: 1px;
 
+        .eventNode__addParentCopy,
         .eventNode__addChild,
         .eventNode__editNode,
         .eventNode__removeNode {
@@ -22,4 +24,13 @@
             visibility: visible;
         }
     }
+}
+
+.controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }

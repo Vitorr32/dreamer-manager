@@ -202,6 +202,7 @@
         "@visx/responsive": "^2.8.0",
         "@visx/shape": "^2.4.0",
         "@visx/tooltip": "^2.8.0",
+        "@visx/zoom": "^2.10.0",
         "date-fns": "^2.27.0",
         "electron-debug": "^3.2.0",
         "electron-log": "^4.4.4",
