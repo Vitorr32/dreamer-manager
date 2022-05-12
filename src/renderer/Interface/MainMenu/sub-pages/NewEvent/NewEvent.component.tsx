@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { LANGUAGE_CODES } from 'renderer/shared/Constants';
 import { getLocaleLabel } from 'renderer/shared/utils/Localization';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { EventNode } from 'renderer/shared/components/events/EventNode.component';
@@ -36,10 +36,10 @@ export const background = '#272b4d';
 
 const defaultMargin = { top: 10, left: 80, right: 80, bottom: 10 };
 const initialTransform = {
-    scaleX: 1.27,
-    scaleY: 1.27,
-    translateX: -211.62,
-    translateY: 162.59,
+    scaleX: 1,
+    scaleY: 1,
+    translateX: 0,
+    translateY: 0,
     skewX: 0,
     skewY: 0,
 };
@@ -49,7 +49,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     const yMax = height - margin.top - margin.bottom;
     const xMax = width - margin.left - margin.right;
 
-    const { containerRef, containerBounds, TooltipInPortal } = useTooltipInPortal({ scroll: true, detectBounds: false });
+    const { containerBounds, TooltipInPortal } = useTooltipInPortal({ scroll: true, detectBounds: false });
     const { showTooltip, updateTooltip, hideTooltip, tooltipOpen, tooltipData, tooltipLeft = 0, tooltipTop = 0 } = useTooltip();
 
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
@@ -239,15 +239,14 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                         <Zoom<SVGSVGElement>
                             width={width}
                             height={height}
-                            scaleXMin={1 / 2}
+                            scaleXMin={1 / 32}
                             scaleXMax={4}
-                            scaleYMin={1 / 2}
+                            scaleYMin={1 / 32}
                             scaleYMax={4}
                             initialTransformMatrix={initialTransform}
                         >
                             {(zoom) => (
                                 <Box style={{ position: 'relative' }}>
-                                    {console.log(zoom)}
                                     <svg
                                         className="new-event__flow"
                                         width={width}
@@ -265,7 +264,14 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                                             onTouchEnd={zoom.dragEnd}
                                             onMouseDown={zoom.dragStart}
                                             onMouseMove={zoom.dragMove}
-                                            onMouseUp={zoom.dragEnd}
+                                            onMouseUp={() => {
+                                                zoom.dragEnd();
+                                                // zoom.setTransformMatrix({
+                                                //     ...zoom.transformMatrix,
+                                                //     translateX: Math.min(Math.max(-1 * (width / 2), zoom.transformMatrix.translateX), width / 2),
+                                                //     translateY: Math.min(Math.max(-1 * (width / 2), zoom.transformMatrix.translateY), width / 2),
+                                                // });
+                                            }}
                                             onMouseLeave={() => {
                                                 if (zoom.isDragging) zoom.dragEnd();
                                             }}
@@ -313,6 +319,57 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                                                 </Group>
                                             )}
                                         </Tree>
+                                        {/* <g clipPath="url(#zoom-clip)" transform={`scale(0.25) translate(${width * 4 - width - 60}, ${height * 4 - height - 60}) `}>
+                                            <rect width={width} height={height} rx={14} fill={'crimson'} />
+                                            <Tree<Scene> root={newVN.getVISXHierarchyOfVN()} size={[yMax, xMax]} className="event-tree">
+                                                {(tree) => (
+                                                    <Group top={margin.top} left={margin.left}>
+                                                        {tree.links().map((link, i) => {
+                                                            const linkInfo = getConnectionInformation(link.source.data, link.target.data);
+
+                                                            return (
+                                                                <LinkHorizontal
+                                                                    className="event-tree__link"
+                                                                    key={`link-${i}`}
+                                                                    data={link}
+                                                                    stroke={
+                                                                        linkInfo?.type === ConnectionType.NORMAL || !linkInfo?.type
+                                                                            ? whitesmoke
+                                                                            : linkInfo?.type === ConnectionType.HIDDEN_CHECK
+                                                                            ? lightpurple
+                                                                            : lightorange
+                                                                    }
+                                                                    strokeWidth="5"
+                                                                    onMouseLeave={onSceneLinkMouseExit}
+                                                                    onMouseOver={() => onSceneLinkMouseOver(linkInfo)}
+                                                                    onMouseDown={() => onSceneLinkClick(link)}
+                                                                    fill="none"
+                                                                />
+                                                            );
+                                                        })}
+                                                        {tree.descendants().map((node, i) => (
+                                                            <EventNode
+                                                                key={`node-${i}`}
+                                                                node={node}
+                                                                onAddNode={onAddNode}
+                                                                onAddNodeAutoCompleted={onAddNodeFromParent}
+                                                                onNodeSelected={onNodeSelected}
+                                                                onRemoveNode={onRemoveNode}
+                                                            />
+                                                        ))}
+                                                    </Group>
+                                                )}
+                                            </Tree>
+                                            <rect
+                                                width={width}
+                                                height={height}
+                                                fill="white"
+                                                fillOpacity={0.2}
+                                                stroke="white"
+                                                strokeWidth={4}
+                                                transform={zoom.toStringInvert()}
+                                            />
+                                        </g> */}
                                     </svg>
 
                                     <div className="controls">

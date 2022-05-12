@@ -4,10 +4,17 @@
     width: 100vw;
     padding: 2.5%;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
 
     &__header {
         display: flex;
         align-items: center;
+    }
+
+    &__content {
+        overflow: hidden;
+        flex: 1;
     }
 
     &__flow {
