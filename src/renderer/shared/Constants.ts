@@ -33,6 +33,7 @@ export const EVENT_DATABASE_FOLDER = 'events';
 ///////////////////////////////
 //BASE GAME FILES
 export const BASE_TRAIT_FILE = 'BaseGameTraits.json';
+export const BASE_EVENT_FILE = 'BaseGameEvents.json';
 
 ////////////////////////////////
 //RESOURCES FULL QUALIFIED PATH

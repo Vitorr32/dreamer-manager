@@ -1,8 +1,18 @@
-import { Box, Button, MenuItem, Modal, TextField, Tooltip, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Modal, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { LANGUAGE_CODES } from 'renderer/shared/Constants';
+import {
+    BASE_EVENT_FILE,
+    DATABASE_FOLDER,
+    EVENT_BACKGROUND_IMAGES_FOLDER,
+    EVENT_DATABASE_FOLDER,
+    GENERIC_SPRITES_FOLDER,
+    IMAGES_FOLDER,
+    LANGUAGE_CODES,
+    SPRITES_FOLDER,
+} from 'renderer/shared/Constants';
 import { getLocaleLabel } from 'renderer/shared/utils/Localization';
 import React, { useEffect, useState } from 'react';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
@@ -22,6 +32,11 @@ import { HierarchyPointLink } from '@visx/hierarchy/lib/types';
 import { NewEventFlag } from './NewEventFlag.component';
 import { Zoom } from '@visx/zoom';
 import { localPoint } from '@visx/event';
+import { ApplyFileProtocol, GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
+import { InsertIconInAssets, InsertJSONFileAsDatabase } from 'renderer/shared/scripts/DatabaseCreate.script';
+import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
+import { Effect } from 'renderer/shared/models/base/Effect.model';
+import { EffectEditor } from 'renderer/shared/components/effects/EffectEditor.component';
 
 interface IProps {
     width?: number;
@@ -52,6 +67,8 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     const { containerBounds, TooltipInPortal } = useTooltipInPortal({ scroll: true, detectBounds: false });
     const { showTooltip, updateTooltip, hideTooltip, tooltipOpen, tooltipData, tooltipLeft = 0, tooltipTop = 0 } = useTooltip();
 
+    const [isLoading, setLoadingState] = useState<boolean>(false);
+    const [editEffectIndex, setEditEffectIndex] = useState<number>();
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
     const [newEvent, setNewEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
     const [newVN, setVN] = useState<VisualNovel>(null);
@@ -59,7 +76,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     const [sceneLinkEditInfo, setSceneLinkEditInfo] = useState<{ source: Scene; target: Scene; connection: SceneConnection }>();
     const [editingFlagModalOpen, setFlagModalState] = useState<boolean>(false);
 
-    useEffect(() => {
+    const onAddVisualNovelToEvent = (): void => {
         const visualNovel = Object.assign(new VisualNovel(), newVN);
 
         const rootScene = new Scene();
@@ -69,7 +86,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         visualNovel.addScene(rootScene, childScene);
 
         setVN(visualNovel);
-    }, []);
+    };
 
     const onAddNode = (parent: Scene) => {
         const visualNovel = CopyClassInstance(newVN);
@@ -203,6 +220,64 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         });
     };
 
+    const onAddEffectsToEvent = () : void => {
+        const modifiedEvent = Object.assign({}, newEvent);
+        modifiedEvent.effects = [];
+
+        setNewEvent(modifiedEvent);
+    }
+
+    const onNewEffectAddedToList = (): void => {
+        const modifiedEvent = Object.assign({}, newEvent);
+        modifiedEvent.effects.push(new Effect());
+
+        setNewEvent(modifiedEvent);
+    };
+
+    const onEditEffect = (index: number, effect: Effect): void => {
+        const modifiedEvent = Object.assign({}, newEvent);
+        modifiedEvent.effects[index] = effect;
+
+        setEditEffectIndex(null);
+        setNewEvent(modifiedEvent);
+    };
+
+    const onDeleteEffectFromList = (index: number): void => {
+        const modifiedEvent = Object.assign({}, newEvent);
+        modifiedEvent.effects.splice(index, 1);
+
+        setNewEvent(modifiedEvent);
+    };
+
+    const onEventSubmitted = async () => {
+        setLoadingState(true);
+        //TODO: Make the checks to see if all the event content is correct.
+        if (false) {
+            console.log('Invalid');
+            return;
+        }
+        console.log('Valid');
+
+        //Copy temporary files into the game static files.
+        Object.keys(tempImagesPath).forEach(async (key) => {
+            const tempImagePath = tempImagesPath[key];
+            const fileInfo = await GetFileInfoFromPath(tempImagePath);
+
+            if (key.startsWith('scene')) {
+                InsertIconInAssets(RemoveFileProtocol(tempImagePath), [IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER], fileInfo.fileName);
+            } else if (key.startsWith('actor')) {
+                InsertIconInAssets(RemoveFileProtocol(tempImagePath), [SPRITES_FOLDER, GENERIC_SPRITES_FOLDER], fileInfo.fileName);
+            }
+        });
+
+        if (newVN) {
+            newEvent.visualNovel = newVN;
+        }
+
+        InsertJSONFileAsDatabase([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], BASE_EVENT_FILE, newEvent, true);
+        setLoadingState(false);
+    };
+
     return (
         <Box className="new-event">
             <Box component="header" className="new-event__header">
@@ -231,11 +306,19 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                 </TextField>
             </Box>
             <Box component="main" className="new-event__content" onPointerMove={onCursorMoveInsideCanvas}>
-                <Button color="primary">Add Visual Novel</Button>
-                <ActorsCasting event={newEvent} onEventEdited={setNewEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
-                <Button onClick={() => setFlagModalState(true)}>Modify Event Flags</Button>
+                <Box>
+                    <Button onClick={onAddVisualNovelToEvent} color="primary">
+                        {t('interface.editor.event.event_add_visual_novel')}
+                    </Button>
+                    <Button onClick={onAddEffectsToEvent} color="primary">
+                        {t('interface.editor.event.event_add_event_effect')}
+                    </Button>
+                    <Button onClick={() => setFlagModalState(true)}>Modify Event Flags</Button>
+                    <Typography variant="subtitle2">{t('interface.editor.event.event_options_helper')}</Typography>
+                </Box>
                 {newVN && newVN.getVISXHierarchyOfVN() && (
                     <>
+                        <ActorsCasting event={newEvent} onEventEdited={setNewEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
                         <Zoom<SVGSVGElement>
                             width={width}
                             height={height}
@@ -264,14 +347,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                                             onTouchEnd={zoom.dragEnd}
                                             onMouseDown={zoom.dragStart}
                                             onMouseMove={zoom.dragMove}
-                                            onMouseUp={() => {
-                                                zoom.dragEnd();
-                                                // zoom.setTransformMatrix({
-                                                //     ...zoom.transformMatrix,
-                                                //     translateX: Math.min(Math.max(-1 * (width / 2), zoom.transformMatrix.translateX), width / 2),
-                                                //     translateY: Math.min(Math.max(-1 * (width / 2), zoom.transformMatrix.translateY), width / 2),
-                                                // });
-                                            }}
+                                            onMouseUp={zoom.dragEnd}
                                             onMouseLeave={() => {
                                                 if (zoom.isDragging) zoom.dragEnd();
                                             }}
@@ -319,76 +395,25 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                                                 </Group>
                                             )}
                                         </Tree>
-                                        {/* <g clipPath="url(#zoom-clip)" transform={`scale(0.25) translate(${width * 4 - width - 60}, ${height * 4 - height - 60}) `}>
-                                            <rect width={width} height={height} rx={14} fill={'crimson'} />
-                                            <Tree<Scene> root={newVN.getVISXHierarchyOfVN()} size={[yMax, xMax]} className="event-tree">
-                                                {(tree) => (
-                                                    <Group top={margin.top} left={margin.left}>
-                                                        {tree.links().map((link, i) => {
-                                                            const linkInfo = getConnectionInformation(link.source.data, link.target.data);
-
-                                                            return (
-                                                                <LinkHorizontal
-                                                                    className="event-tree__link"
-                                                                    key={`link-${i}`}
-                                                                    data={link}
-                                                                    stroke={
-                                                                        linkInfo?.type === ConnectionType.NORMAL || !linkInfo?.type
-                                                                            ? whitesmoke
-                                                                            : linkInfo?.type === ConnectionType.HIDDEN_CHECK
-                                                                            ? lightpurple
-                                                                            : lightorange
-                                                                    }
-                                                                    strokeWidth="5"
-                                                                    onMouseLeave={onSceneLinkMouseExit}
-                                                                    onMouseOver={() => onSceneLinkMouseOver(linkInfo)}
-                                                                    onMouseDown={() => onSceneLinkClick(link)}
-                                                                    fill="none"
-                                                                />
-                                                            );
-                                                        })}
-                                                        {tree.descendants().map((node, i) => (
-                                                            <EventNode
-                                                                key={`node-${i}`}
-                                                                node={node}
-                                                                onAddNode={onAddNode}
-                                                                onAddNodeAutoCompleted={onAddNodeFromParent}
-                                                                onNodeSelected={onNodeSelected}
-                                                                onRemoveNode={onRemoveNode}
-                                                            />
-                                                        ))}
-                                                    </Group>
-                                                )}
-                                            </Tree>
-                                            <rect
-                                                width={width}
-                                                height={height}
-                                                fill="white"
-                                                fillOpacity={0.2}
-                                                stroke="white"
-                                                strokeWidth={4}
-                                                transform={zoom.toStringInvert()}
-                                            />
-                                        </g> */}
                                     </svg>
 
-                                    <div className="controls">
-                                        <button type="button" className="btn btn-zoom" onClick={() => zoom.scale({ scaleX: 1.2, scaleY: 1.2 })}>
+                                    <Box className="controls">
+                                        <Button type="button" className="btn btn-zoom" onClick={() => zoom.scale({ scaleX: 1.2, scaleY: 1.2 })}>
                                             +
-                                        </button>
-                                        <button type="button" className="btn btn-zoom btn-bottom" onClick={() => zoom.scale({ scaleX: 0.8, scaleY: 0.8 })}>
+                                        </Button>
+                                        <Button type="button" className="btn btn-zoom btn-bottom" onClick={() => zoom.scale({ scaleX: 0.8, scaleY: 0.8 })}>
                                             -
-                                        </button>
-                                        <button type="button" className="btn btn-lg" onClick={zoom.center}>
+                                        </Button>
+                                        <Button type="button" className="btn btn-lg" onClick={zoom.center}>
                                             Center
-                                        </button>
-                                        <button type="button" className="btn btn-lg" onClick={zoom.reset}>
+                                        </Button>
+                                        <Button type="button" className="btn btn-lg" onClick={zoom.reset}>
                                             Reset
-                                        </button>
-                                        <button type="button" className="btn btn-lg" onClick={zoom.clear}>
+                                        </Button>
+                                        <Button type="button" className="btn btn-lg" onClick={zoom.clear}>
                                             Clear
-                                        </button>
-                                    </div>
+                                        </Button>
+                                    </Box>
                                 </Box>
                             )}
                         </Zoom>
@@ -399,6 +424,27 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                         )}
                     </>
                 )}
+            </Box>
+            {newEvent.effects && (
+                <>
+                    <Box className="new-event__list-wrapper">
+                        <EffectList
+                            effects={newEvent.effects || []}
+                            onEffectSelected={(index) => setEditEffectIndex(index)}
+                            onEffectDeleted={(index) => onDeleteEffectFromList(index)}
+                        />
+
+                        <Button variant="outlined" startIcon={<AddIcon />} onClick={onNewEffectAddedToList}>
+                            {t('interface.editor.effect.add_effect')}
+                        </Button>
+
+                        {editEffectIndex && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={newEvent.effects[editEffectIndex]} />}
+                    </Box>
+                </>
+            )}
+
+            <Box>
+                <Button onClick={onEventSubmitted}>{t('interface.editor.event.submit_event_button_label')}</Button>
             </Box>
 
             <Modal className="modal" open={editedNode !== null} onClose={() => setEditedNode(null)}>

@@ -1,6 +1,7 @@
 import { ConditionTree } from './ConditionTree';
 import { v4 as uuidv4 } from 'uuid';
 import { VisualNovel } from './VisualNovel.model';
+import { Effect } from './Effect.model';
 
 export interface Trigger {
     //In what circumstances should this event happen.
@@ -53,8 +54,10 @@ export class Event {
 
     public trigger: Trigger;
     public flags: Flag[] = [];
+    //The Event can modify the world immediately by the means of "Effects", or he can have a full Visual Novel which effects happen on specific scenes.
     public visualNovel: VisualNovel | null;
-    public actors: Actor[] | null = null;
+    public effects: Effect[] | null;
+    public actors: Actor[] | null;
     //If this event can happens more than one time, if true the event will not enter the "Already triggered events list" in the World state
     public unique: boolean;
 

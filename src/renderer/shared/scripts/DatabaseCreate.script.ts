@@ -8,7 +8,12 @@ export async function InsertJSONFileAsDatabase(path: string[], fileName: string,
     if (fileIndex === -1) {
         parsedFile.push(newValue);
     } else {
-        parsedFile[fileIndex] = newValue;
+        if (overwrite) {
+            parsedFile[fileIndex] = newValue;
+        } else {
+            console.error("InsertJSONFileAsDatabase() - Insert element ID already exists and overwrite is false");
+            return;
+        }
     }
 
     const result = await window.electron.fileSystem.saveFileToResources(path, fileName, JSON.stringify(parsedFile));
