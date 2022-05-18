@@ -103,9 +103,10 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         const newSceneID = new Scene().id;
 
         newScene.id = newSceneID;
+        newScene.sceneResults = null;
+        newScene.sceneConnections = null;
 
         visualNovel.addScene(parent, newScene);
-
         setVN(visualNovel);
     };
 
@@ -438,12 +439,12 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                             {t('interface.editor.effect.add_effect')}
                         </Button>
 
-                        {editEffectIndex && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={newEvent.effects[editEffectIndex]} />}
+                        {editEffectIndex !== null && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={newEvent.effects[editEffectIndex]} />}
                     </Box>
                 </>
             )}
 
-            <Box>
+            <Box className="new-event__submit-wrapper">
                 <Button onClick={onEventSubmitted}>{t('interface.editor.event.submit_event_button_label')}</Button>
             </Box>
 

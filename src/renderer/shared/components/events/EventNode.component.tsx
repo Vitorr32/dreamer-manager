@@ -3,6 +3,7 @@ import { HierarchyPointNode } from '@visx/hierarchy/lib/types';
 import { Scene } from 'renderer/shared/models/base/Scene.model';
 import { useTheme } from '@mui/material';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const blue = '#03c0dc';
 const green = '#26deb0';
@@ -26,16 +27,16 @@ export function EventNode({
     onNodeSelected: (scene: Scene) => void;
     onRemoveNode: (scene: Scene, parent: Scene) => void;
 }) {
+    const { t, i18n } = useTranslation();
     const width = 40;
     const height = 20;
     const centerX = -width / 2;
     const centerY = -height / 2;
     const isRoot = node.depth === 0;
-    const isParent = !!node.children;
     const [focusedNode, setFocusedNode] = useState('');
     const theme = useTheme();
 
-    if (isRoot)
+    if (isRoot) {
         return (
             <RootNode
                 node={node}
@@ -46,7 +47,7 @@ export function EventNode({
                 onNodeSelected={onNodeSelected}
             />
         );
-    // if (isParent) return <ParentNode node={node} />;
+    }
 
     return (
         <Group
@@ -70,7 +71,7 @@ export function EventNode({
                 textAnchor="middle"
                 onClick={() => onAddNode(node.data)}
             >
-                Add Child
+                {t('interface.editor.event.scene_node_add')}
             </text>
             <text
                 className="eventNode__addParentCopy"
@@ -82,7 +83,7 @@ export function EventNode({
                 textAnchor="middle"
                 onClick={() => onAddNodeAutoCompleted(node.data)}
             >
-                Add Copy of Parent
+                {t('interface.editor.event.scene_node_copy')}
             </text>
             <text
                 className="eventNode__editNode"
@@ -94,7 +95,7 @@ export function EventNode({
                 textAnchor="middle"
                 onClick={() => onNodeSelected(node.data)}
             >
-                Edit Node
+                {t('interface.editor.event.scene_node_edit')}
             </text>
             <text
                 className="eventNode__removeNode"
@@ -106,7 +107,7 @@ export function EventNode({
                 textAnchor="middle"
                 onClick={() => onRemoveNode(node.data, node.parent.data)}
             >
-                Removed Node
+                {t('interface.editor.event.scene_node_remove')}
             </text>
         </Group>
     );
@@ -127,6 +128,7 @@ function RootNode({
     onAddNodeAutoCompleted: (scene: Scene) => void;
     onNodeSelected: (scene: Scene) => void;
 }) {
+    const { t, i18n } = useTranslation();
     const theme = useTheme();
     const thisKey = 'root';
 
@@ -139,7 +141,7 @@ function RootNode({
         >
             <circle r={theme.typography.fontSize} fill="crimson" />
             <text dy=".33em" fontSize={theme.typography.fontSize} fontFamily={theme.typography.fontFamily} textAnchor="middle" fill={plum}>
-                {node.data.id}
+                {t('interface.editor.event.scene_root')}
             </text>
 
             <text

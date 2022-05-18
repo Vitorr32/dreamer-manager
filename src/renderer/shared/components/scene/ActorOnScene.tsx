@@ -121,7 +121,10 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
             onAnimationComplete={onAnimationComplete}
             onClick={onActorClick}
         >
-            <img src={actorImagePath} alt={actor.id} />
+            <Box className="scene__stage-sprite-wrapper">
+                <img className="scene__stage-sprite" src={actorImagePath} alt={actor.id} />
+                {actor.alias && <Typography className="scene__stage-alias" variant="caption">{actor.alias}</Typography>}
+            </Box>
         </motion.div>
     );
 }

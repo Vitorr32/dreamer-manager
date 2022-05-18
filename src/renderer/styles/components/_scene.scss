@@ -14,6 +14,22 @@
             height: 100%;
             cursor: pointer;
         }
+
+        &-sprite-wrapper {
+            position: relative;
+        }
+
+        &-sprite {
+            width: 100%;
+        }
+
+        &-alias {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: whitesmoke;
+        }
     }
 
     &__dialogue {

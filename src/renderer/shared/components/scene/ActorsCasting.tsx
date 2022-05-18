@@ -130,6 +130,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         switch (value) {
             case ActorType.DYNAMIC_TYPE:
                 newActor.characterID = null;
+            case ActorType.PlAYER_CHARACTER:
             case ActorType.GENERIC_TYPE:
                 newActor.characterID = null;
                 newActor.actorCastingCondition = null;
@@ -137,8 +138,6 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
 
         newActor.actorType = value;
         modifiedEvent.actors[index] = newActor;
-
-        console.log(modifiedEvent.actors[index]);
 
         onEventEdited(modifiedEvent);
         setSelectedActor(newActor);
@@ -227,6 +226,11 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                                         defaultValue={ActorType.GENERIC_TYPE}
                                         onChange={(event) => onActorTypeChange(selectedActor, event.target.value as any, selectedActorIndex)}
                                     >
+                                        <FormControlLabel
+                                            control={<Radio />}
+                                            value={ActorType.PlAYER_CHARACTER}
+                                            label={t('interface.editor.event.casting_player') as string}
+                                        />
                                         <FormControlLabel
                                             control={<Radio />}
                                             value={ActorType.GENERIC_TYPE}

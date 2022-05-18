@@ -28,6 +28,7 @@ export interface Flag {
 }
 
 export enum ActorType {
+    PlAYER_CHARACTER = 'player',
     GENERIC_TYPE = 'generic',
     DYNAMIC_TYPE = 'dynamic',
     SPECIFIC_TYPE = 'specific',

@@ -14,9 +14,12 @@
 
     &__content {
         overflow: hidden;
-        flex: 1;
     }
 
     &__flow {
+    }
+
+    &__submit-wrapper {
+        margin-top: auto;
     }
 }
