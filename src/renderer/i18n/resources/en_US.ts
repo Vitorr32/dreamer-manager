@@ -163,8 +163,12 @@ export const en_US = {
                     scene_result_no_flags: 'There is currently no flags associated with the current event, please add them so that this list can be populated.',
                     event_options_helper:
                         'An event may have several effects or a Visual Novel associated with it, the effects happen immediately after the event is triggered and no visual feedback will be seen by the player; If the event has a visual novel the effects will happen, but others specific effects associated with scenes and choices are included inside the visual novel',
+                    event_id_label: 'Event ID',
+                    event_display_name_label: 'Event Display Name',
                     event_add_visual_novel: 'Add Visual Novel',
                     event_add_event_effect: 'Add New Effect',
+                    event_open_flags_modal: 'Modify Event Flags',
+                    event_open_info_modal: 'Modify Event Basic Info',
                     submit_event_button_label: 'Save Event',
                 },
                 validation: {

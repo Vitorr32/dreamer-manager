@@ -32,11 +32,12 @@ import { HierarchyPointLink } from '@visx/hierarchy/lib/types';
 import { NewEventFlag } from './NewEventFlag.component';
 import { Zoom } from '@visx/zoom';
 import { localPoint } from '@visx/event';
-import { ApplyFileProtocol, GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
+import { GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { InsertIconInAssets, InsertJSONFileAsDatabase } from 'renderer/shared/scripts/DatabaseCreate.script';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { EffectEditor } from 'renderer/shared/components/effects/EffectEditor.component';
+import { EventInfoModal } from './EventInfoModal.component';
 
 interface IProps {
     width?: number;
@@ -75,6 +76,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     const [tempImagesPath, setTempImagesPaths] = useState<{ [key: string]: string }>({});
     const [sceneLinkEditInfo, setSceneLinkEditInfo] = useState<{ source: Scene; target: Scene; connection: SceneConnection }>();
     const [editingFlagModalOpen, setFlagModalState] = useState<boolean>(false);
+    const [editingEventInfoModalOpen, setEventInfoState] = useState<boolean>(false);
 
     const onAddVisualNovelToEvent = (): void => {
         const visualNovel = Object.assign(new VisualNovel(), newVN);
@@ -221,12 +223,20 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         });
     };
 
-    const onAddEffectsToEvent = () : void => {
+    const onChangeInEventAttributes = (keyName: 'id' | 'displayName', value: any) => {
+        const modifiedEvent = CopyClassInstance(newEvent);
+
+        modifiedEvent[keyName] = value;
+
+        setNewEvent(modifiedEvent);
+    };
+
+    const onAddEffectsToEvent = (): void => {
         const modifiedEvent = Object.assign({}, newEvent);
         modifiedEvent.effects = [];
 
         setNewEvent(modifiedEvent);
-    }
+    };
 
     const onNewEffectAddedToList = (): void => {
         const modifiedEvent = Object.assign({}, newEvent);
@@ -314,7 +324,8 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                     <Button onClick={onAddEffectsToEvent} color="primary">
                         {t('interface.editor.event.event_add_event_effect')}
                     </Button>
-                    <Button onClick={() => setFlagModalState(true)}>Modify Event Flags</Button>
+                    <Button onClick={() => setFlagModalState(true)}>{t('interface.editor.event.event_open_flags_modal')}</Button>
+                    <Button onClick={() => setEventInfoState(true)}>{t('interface.editor.event.event_open_info_modal')}</Button>
                     <Typography variant="subtitle2">{t('interface.editor.event.event_options_helper')}</Typography>
                 </Box>
                 {newVN && newVN.getVISXHierarchyOfVN() && (
@@ -462,6 +473,8 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                     </Box>
                 </Box>
             </Modal>
+
+            <EventInfoModal open={editingEventInfoModalOpen} event={newEvent} onEventChange={onChangeInEventAttributes} onClose={() => setEventInfoState(false)} />
 
             <EventLinkModal
                 childScene={sceneLinkEditInfo?.target}
