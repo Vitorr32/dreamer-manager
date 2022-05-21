@@ -3,11 +3,12 @@ import { ATTRIBUTES_DATABASE_FOLDER, EVENT_DATABASE_FOLDER, TRAIT_DATABASE_FOLDE
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { Character } from 'renderer/shared/models/base/Character.model';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
+import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { Trait } from '../../shared/models/base/Trait.model';
 
 interface GameLoopState {
     isLoadingDatabase: boolean;
-    loadProguess: number;
+    loadProgress: number;
     traits: Trait[];
     attributes: Attribute[];
     events: Event[];
@@ -23,7 +24,7 @@ interface GameLoopState {
 
 const initialState: GameLoopState = {
     isLoadingDatabase: false,
-    loadProguess: 0,
+    loadProgress: 0,
     traits: [],
     attributes: [],
     events: [],
@@ -83,17 +84,20 @@ export const databaseSlice = createSlice({
                             state.mappedDatabase.flags[flag.id] = flag;
                         });
 
+                        //Map the visual novel data to a newly created instance using the prototype.
+                        event.visualNovel = Object.assign(Object.create(VisualNovel.prototype), event.visualNovel);
+
                         return (state.mappedDatabase.events[event.id] = event);
                     });
                 default:
                     console.error('Unknown load update: ' + action.payload.key);
             }
 
-            state.loadProguess = action.payload.progress;
+            state.loadProgress = action.payload.progress;
         },
         gameStartLoad: (state) => {
             state.isLoadingDatabase = true;
-            state.loadProguess = 0;
+            state.loadProgress = 0;
         },
     },
 });

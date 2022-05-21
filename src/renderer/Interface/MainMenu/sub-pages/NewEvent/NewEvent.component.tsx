@@ -2,7 +2,7 @@ import { Box, Button, MenuItem, Modal, TextField, Typography } from '@mui/materi
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import {
     BASE_EVENT_FILE,
     DATABASE_FOLDER,
@@ -38,48 +38,40 @@ import { EffectList } from 'renderer/shared/components/effects/EffectList.compon
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { EffectEditor } from 'renderer/shared/components/effects/EffectEditor.component';
 import { EventInfoModal } from './EventInfoModal.component';
+import { useSelector } from 'react-redux';
+import { RootState } from 'renderer/redux/store';
+import { EventTreeRender } from './EventTreeRender.component';
 
-interface IProps {
-    width?: number;
-    height?: number;
-    margin?: { top: number; right: number; bottom: number; left: number };
-}
+interface IProps {}
 
-const whitesmoke = '#f5f5f5';
-const lightpurple = '#CBC3E3';
-const lightorange = '#FFD580';
-export const background = '#272b4d';
-
-const defaultMargin = { top: 10, left: 80, right: 80, bottom: 10 };
-const initialTransform = {
-    scaleX: 1,
-    scaleY: 1,
-    translateX: 0,
-    translateY: 0,
-    skewX: 0,
-    skewY: 0,
-};
-
-export function NewEvent({ width = window.innerWidth - 100, height = 500, margin = defaultMargin }: IProps) {
+export function NewEvent({}: IProps) {
     const { t, i18n } = useTranslation();
-    const yMax = height - margin.top - margin.bottom;
-    const xMax = width - margin.left - margin.right;
+    const params = useParams();
 
-    const { containerBounds, TooltipInPortal } = useTooltipInPortal({ scroll: true, detectBounds: false });
-    const { showTooltip, updateTooltip, hideTooltip, tooltipOpen, tooltipData, tooltipLeft = 0, tooltipTop = 0 } = useTooltip();
-
+    const mappedEvents = useSelector((state: RootState) => state.database.mappedDatabase.events);
     const [isLoading, setLoadingState] = useState<boolean>(false);
     const [editEffectIndex, setEditEffectIndex] = useState<number>();
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
-    const [newEvent, setNewEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
-    const [newVN, setVN] = useState<VisualNovel>(null);
+    const [currentEvent, setCurrentEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
+    const [currentVN, setCurrentVN] = useState<VisualNovel>(null);
     const [tempImagesPath, setTempImagesPaths] = useState<{ [key: string]: string }>({});
     const [sceneLinkEditInfo, setSceneLinkEditInfo] = useState<{ source: Scene; target: Scene; connection: SceneConnection }>();
     const [editingFlagModalOpen, setFlagModalState] = useState<boolean>(false);
     const [editingEventInfoModalOpen, setEventInfoState] = useState<boolean>(false);
 
+    useEffect(() => {
+        const eventIDParameter = params?.id;
+
+        if (eventIDParameter) {
+            const toEditEvent = mappedEvents[eventIDParameter];
+
+            setCurrentEvent(toEditEvent);
+            setCurrentVN(toEditEvent.visualNovel);
+        }
+    }, []);
+
     const onAddVisualNovelToEvent = (): void => {
-        const visualNovel = Object.assign(new VisualNovel(), newVN);
+        const visualNovel = Object.assign(new VisualNovel(), currentVN);
 
         const rootScene = new Scene();
         const childScene = new Scene();
@@ -87,19 +79,19 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         visualNovel.addScene(null, rootScene);
         visualNovel.addScene(rootScene, childScene);
 
-        setVN(visualNovel);
+        setCurrentVN(visualNovel);
     };
 
     const onAddNode = (parent: Scene) => {
-        const visualNovel = CopyClassInstance(newVN);
+        const visualNovel = CopyClassInstance(currentVN);
 
         visualNovel.addScene(parent, new Scene());
 
-        setVN(visualNovel);
+        setCurrentVN(visualNovel);
     };
 
     const onAddNodeFromParent = (parent: Scene) => {
-        const visualNovel = CopyClassInstance(newVN);
+        const visualNovel = CopyClassInstance(currentVN);
 
         const newScene = CopyClassInstance(parent);
         const newSceneID = new Scene().id;
@@ -109,15 +101,15 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         newScene.sceneConnections = null;
 
         visualNovel.addScene(parent, newScene);
-        setVN(visualNovel);
+        setCurrentVN(visualNovel);
     };
 
     const onRemoveNode = (scene: Scene, parent: Scene) => {
-        const visualNovel = CopyClassInstance(newVN);
+        const visualNovel = CopyClassInstance(currentVN);
 
         visualNovel.removeScene(parent, scene);
 
-        setVN(visualNovel);
+        setCurrentVN(visualNovel);
     };
 
     const onNodeSelected = (scene: Scene) => {
@@ -125,11 +117,11 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     };
 
     const onNodeEdited = (scene: Scene, closeModal: boolean = false) => {
-        const visualNovel = CopyClassInstance(newVN);
+        const visualNovel = CopyClassInstance(currentVN);
 
         visualNovel.updateScene(scene);
 
-        setVN(visualNovel);
+        setCurrentVN(visualNovel);
         if (closeModal) {
             setEditedNode(null);
         } else {
@@ -138,8 +130,8 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
     };
 
     const onFlagModified = (flag: Flag) => {
-        const updatedEvent = CopyClassInstance(newEvent);
-        const flagIndex = newEvent.flags.findIndex((toCompareFlag) => toCompareFlag.id === flag.id);
+        const updatedEvent = CopyClassInstance(currentEvent);
+        const flagIndex = currentEvent.flags.findIndex((toCompareFlag) => toCompareFlag.id === flag.id);
 
         if (flagIndex === -1) {
             updatedEvent.flags.push(flag);
@@ -147,7 +139,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             updatedEvent.flags[flagIndex] = flag;
         }
 
-        setNewEvent(updatedEvent);
+        setCurrentEvent(updatedEvent);
     };
 
     const onConnectionEdited = (sceneConnection: SceneConnection, closeModal: boolean = false) => {
@@ -156,7 +148,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             return;
         }
 
-        const visualNovel = CopyClassInstance(newVN);
+        const visualNovel = CopyClassInstance(currentVN);
 
         const parentScene = sceneLinkEditInfo.source;
         const childScene = sceneLinkEditInfo.target;
@@ -171,7 +163,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         newScene.sceneConnections[connectionIndex] = sceneConnection;
 
         visualNovel.updateScene(newScene);
-        setVN(visualNovel);
+        setCurrentVN(visualNovel);
 
         if (closeModal) {
             setSceneLinkEditInfo(null);
@@ -180,84 +172,41 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
         }
     };
 
-    const getConnectionInformation = (source: Scene, target: Scene) => {
-        return source.sceneConnections.find((connection) => connection.resultingScene === target.id);
-    };
-
-    const onSceneLinkMouseOver = (sceneConnection: SceneConnection) => {
-        showTooltip({ tooltipData: 'Link Horizontal' });
-    };
-
-    const onSceneLinkMouseExit = () => {
-        hideTooltip();
-    };
-
-    const onSceneLinkClick = (linkData: HierarchyPointLink<Scene>) => {
-        const connectionIndex = linkData.source.data.sceneConnections.findIndex((connection) => connection.resultingScene === linkData.target.data.id);
-
-        setSceneLinkEditInfo({
-            source: linkData.source.data,
-            target: linkData.target.data,
-            connection:
-                connectionIndex === -1
-                    ? {
-                          type: ConnectionType.NORMAL,
-                          resultingScene: linkData.target.data.id,
-                      }
-                    : linkData.source.data.sceneConnections[connectionIndex],
-        });
-    };
-
-    const onCursorMoveInsideCanvas = (event: React.PointerEvent<HTMLDivElement>) => {
-        if (!tooltipOpen) {
-            return;
-        }
-
-        const containerX = ('clientX' in event ? event.clientX : 0) - containerBounds.left;
-        const containerY = ('clientY' in event ? event.clientY : 0) - containerBounds.top;
-        updateTooltip({
-            tooltipOpen: tooltipOpen,
-            tooltipLeft: containerX,
-            tooltipTop: containerY,
-            tooltipData: tooltipData,
-        });
-    };
-
     const onChangeInEventAttributes = (keyName: 'id' | 'displayName', value: any) => {
-        const modifiedEvent = CopyClassInstance(newEvent);
+        const modifiedEvent = CopyClassInstance(currentEvent);
 
         modifiedEvent[keyName] = value;
 
-        setNewEvent(modifiedEvent);
+        setCurrentEvent(modifiedEvent);
     };
 
     const onAddEffectsToEvent = (): void => {
-        const modifiedEvent = Object.assign({}, newEvent);
+        const modifiedEvent = Object.assign({}, currentEvent);
         modifiedEvent.effects = [];
 
-        setNewEvent(modifiedEvent);
+        setCurrentEvent(modifiedEvent);
     };
 
     const onNewEffectAddedToList = (): void => {
-        const modifiedEvent = Object.assign({}, newEvent);
+        const modifiedEvent = Object.assign({}, currentEvent);
         modifiedEvent.effects.push(new Effect());
 
-        setNewEvent(modifiedEvent);
+        setCurrentEvent(modifiedEvent);
     };
 
     const onEditEffect = (index: number, effect: Effect): void => {
-        const modifiedEvent = Object.assign({}, newEvent);
+        const modifiedEvent = Object.assign({}, currentEvent);
         modifiedEvent.effects[index] = effect;
 
         setEditEffectIndex(null);
-        setNewEvent(modifiedEvent);
+        setCurrentEvent(modifiedEvent);
     };
 
     const onDeleteEffectFromList = (index: number): void => {
-        const modifiedEvent = Object.assign({}, newEvent);
+        const modifiedEvent = Object.assign({}, currentEvent);
         modifiedEvent.effects.splice(index, 1);
 
-        setNewEvent(modifiedEvent);
+        setCurrentEvent(modifiedEvent);
     };
 
     const onEventSubmitted = async () => {
@@ -281,11 +230,11 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
             }
         });
 
-        if (newVN) {
-            newEvent.visualNovel = newVN;
+        if (currentVN) {
+            currentEvent.visualNovel = currentVN;
         }
 
-        InsertJSONFileAsDatabase([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], BASE_EVENT_FILE, newEvent, true);
+        InsertJSONFileAsDatabase([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], BASE_EVENT_FILE, currentEvent, true);
         setLoadingState(false);
     };
 
@@ -316,7 +265,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                     })}
                 </TextField>
             </Box>
-            <Box component="main" className="new-event__content" onPointerMove={onCursorMoveInsideCanvas}>
+            <Box component="main" className="new-event__content">
                 <Box>
                     <Button onClick={onAddVisualNovelToEvent} color="primary">
                         {t('interface.editor.event.event_add_visual_novel')}
@@ -328,120 +277,22 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                     <Button onClick={() => setEventInfoState(true)}>{t('interface.editor.event.event_open_info_modal')}</Button>
                     <Typography variant="subtitle2">{t('interface.editor.event.event_options_helper')}</Typography>
                 </Box>
-                {newVN && newVN.getVISXHierarchyOfVN() && (
-                    <>
-                        <ActorsCasting event={newEvent} onEventEdited={setNewEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
-                        <Zoom<SVGSVGElement>
-                            width={width}
-                            height={height}
-                            scaleXMin={1 / 32}
-                            scaleXMax={4}
-                            scaleYMin={1 / 32}
-                            scaleYMax={4}
-                            initialTransformMatrix={initialTransform}
-                        >
-                            {(zoom) => (
-                                <Box style={{ position: 'relative' }}>
-                                    <svg
-                                        className="new-event__flow"
-                                        width={width}
-                                        height={height}
-                                        ref={zoom.containerRef}
-                                        style={{ cursor: zoom.isDragging ? 'grabbing' : 'grab', touchAction: 'none' }}
-                                    >
-                                        <rect
-                                            width={width}
-                                            height={height}
-                                            rx={14}
-                                            fill={background}
-                                            onTouchStart={zoom.dragStart}
-                                            onTouchMove={zoom.dragMove}
-                                            onTouchEnd={zoom.dragEnd}
-                                            onMouseDown={zoom.dragStart}
-                                            onMouseMove={zoom.dragMove}
-                                            onMouseUp={zoom.dragEnd}
-                                            onMouseLeave={() => {
-                                                if (zoom.isDragging) zoom.dragEnd();
-                                            }}
-                                            onDoubleClick={(event) => {
-                                                const point = localPoint(event) || { x: 0, y: 0 };
-                                                zoom.scale({ scaleX: 1.1, scaleY: 1.1, point });
-                                            }}
-                                        />
-                                        <Tree<Scene> root={newVN.getVISXHierarchyOfVN()} size={[yMax, xMax]} className="event-tree">
-                                            {(tree) => (
-                                                <Group top={margin.top} left={margin.left} transform={zoom.toString()}>
-                                                    {tree.links().map((link, i) => {
-                                                        const linkInfo = getConnectionInformation(link.source.data, link.target.data);
 
-                                                        return (
-                                                            <LinkHorizontal
-                                                                className="event-tree__link"
-                                                                key={`link-${i}`}
-                                                                data={link}
-                                                                stroke={
-                                                                    linkInfo?.type === ConnectionType.NORMAL || !linkInfo?.type
-                                                                        ? whitesmoke
-                                                                        : linkInfo?.type === ConnectionType.HIDDEN_CHECK
-                                                                        ? lightpurple
-                                                                        : lightorange
-                                                                }
-                                                                strokeWidth="5"
-                                                                onMouseLeave={onSceneLinkMouseExit}
-                                                                onMouseOver={() => onSceneLinkMouseOver(linkInfo)}
-                                                                onMouseDown={() => onSceneLinkClick(link)}
-                                                                fill="none"
-                                                            />
-                                                        );
-                                                    })}
-                                                    {tree.descendants().map((node, i) => (
-                                                        <EventNode
-                                                            key={`node-${i}`}
-                                                            node={node}
-                                                            onAddNode={onAddNode}
-                                                            onAddNodeAutoCompleted={onAddNodeFromParent}
-                                                            onNodeSelected={onNodeSelected}
-                                                            onRemoveNode={onRemoveNode}
-                                                        />
-                                                    ))}
-                                                </Group>
-                                            )}
-                                        </Tree>
-                                    </svg>
-
-                                    <Box className="controls">
-                                        <Button type="button" className="btn btn-zoom" onClick={() => zoom.scale({ scaleX: 1.2, scaleY: 1.2 })}>
-                                            +
-                                        </Button>
-                                        <Button type="button" className="btn btn-zoom btn-bottom" onClick={() => zoom.scale({ scaleX: 0.8, scaleY: 0.8 })}>
-                                            -
-                                        </Button>
-                                        <Button type="button" className="btn btn-lg" onClick={zoom.center}>
-                                            Center
-                                        </Button>
-                                        <Button type="button" className="btn btn-lg" onClick={zoom.reset}>
-                                            Reset
-                                        </Button>
-                                        <Button type="button" className="btn btn-lg" onClick={zoom.clear}>
-                                            Clear
-                                        </Button>
-                                    </Box>
-                                </Box>
-                            )}
-                        </Zoom>
-                        {tooltipOpen && (
-                            <TooltipInPortal key={Math.random()} left={tooltipLeft} top={tooltipTop} style={defaultStyles}>
-                                {tooltipData}
-                            </TooltipInPortal>
-                        )}
-                    </>
-                )}
+                <ActorsCasting event={currentEvent} onEventEdited={setCurrentEvent} pathOfTempImages={tempImagesPath} setPathOfTempImages={setTempImagesPaths} />
+                <EventTreeRender
+                    visualNovel={currentVN}
+                    parentNodeCopied={onAddNodeFromParent}
+                    nodeAdded={onAddNode}
+                    nodeRemoved={onRemoveNode}
+                    nodeSelected={onNodeSelected}
+                    onLinkClicked={(linkData) => setSceneLinkEditInfo(linkData)}
+                />
             </Box>
-            {newEvent.effects && (
+            {currentEvent.effects && (
                 <>
                     <Box className="new-event__list-wrapper">
                         <EffectList
-                            effects={newEvent.effects || []}
+                            effects={currentEvent.effects || []}
                             onEffectSelected={(index) => setEditEffectIndex(index)}
                             onEffectDeleted={(index) => onDeleteEffectFromList(index)}
                         />
@@ -450,7 +301,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                             {t('interface.editor.effect.add_effect')}
                         </Button>
 
-                        {editEffectIndex !== null && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={newEvent.effects[editEffectIndex]} />}
+                        {editEffectIndex !== null && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={currentEvent.effects[editEffectIndex]} />}
                     </Box>
                 </>
             )}
@@ -464,7 +315,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                     <Box className="modal__header">Header</Box>
                     <Box className="modal__content utils__full-height">
                         <EditableScene
-                            event={newEvent}
+                            event={currentEvent}
                             scene={editedNode}
                             onSceneEdited={onNodeEdited}
                             pathOfTempImages={tempImagesPath}
@@ -474,7 +325,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                 </Box>
             </Modal>
 
-            <EventInfoModal open={editingEventInfoModalOpen} event={newEvent} onEventChange={onChangeInEventAttributes} onClose={() => setEventInfoState(false)} />
+            <EventInfoModal open={editingEventInfoModalOpen} event={currentEvent} onEventChange={onChangeInEventAttributes} onClose={() => setEventInfoState(false)} />
 
             <EventLinkModal
                 childScene={sceneLinkEditInfo?.target}
@@ -485,7 +336,7 @@ export function NewEvent({ width = window.innerWidth - 100, height = 500, margin
                 onClose={() => onConnectionEdited(null)}
             />
 
-            <NewEventFlag isOpen={editingFlagModalOpen} onClose={() => setFlagModalState(false)} event={newEvent} onFlagModified={onFlagModified} />
+            <NewEventFlag isOpen={editingFlagModalOpen} onClose={() => setFlagModalState(false)} event={currentEvent} onFlagModified={onFlagModified} />
         </Box>
     );
 }

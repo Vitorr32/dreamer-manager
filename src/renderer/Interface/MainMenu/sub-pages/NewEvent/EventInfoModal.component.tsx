@@ -1,10 +1,6 @@
-import { Box, Button, Dialog, DialogContent, FormControl, FormHelperText, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
+import { Dialog, DialogContent, TextField, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { ConditionTreeEditor } from 'renderer/shared/components/condition/ConditionTreeEditor.component';
-import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Event } from 'renderer/shared/models/base/Event.model';
-import { ConnectionType, Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
-import { CopyClassInstance } from 'renderer/shared/utils/General';
 interface IProps {
     open: boolean;
     event: Event;
@@ -14,8 +10,6 @@ interface IProps {
 
 export function EventInfoModal({ open, event, onClose, onEventChange }: IProps) {
     const { t, i18n } = useTranslation();
-
-    const onConnectionTypeChange = (newType: ConnectionType): void => {};
 
     return (
         <Dialog open={open} onClose={onClose}>

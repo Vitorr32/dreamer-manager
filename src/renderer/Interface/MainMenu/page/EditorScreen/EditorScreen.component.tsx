@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export function EditorScreen(_: any) {
-
     console.log('Editor!');
 
     return (
@@ -16,7 +15,7 @@ export function EditorScreen(_: any) {
             <Link to="/menu" >
                 <button>Return Menu</button>
             </Link>
-            
+
         </menu>
     )
 }

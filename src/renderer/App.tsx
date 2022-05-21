@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { MemoryRouter, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { EditorScreen } from './Interface/MainMenu/page/EditorScreen/EditorScreen.component';
 import { MainScreen } from './Interface/MainMenu/page/MainScreen/MainScreen.component';
 import { TraitEditor } from './Interface/MainMenu/sub-pages/TraitEditor/TraitEditor.component';
@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import '@fontsource/roboto';
 import './App.scss';
 import { NewEvent } from './Interface/MainMenu/sub-pages/NewEvent/NewEvent.component';
+import { EventEditor } from './Interface/MainMenu/sub-pages/EventEditor/EventEditor.component';
 
 export default function App() {
     useEffect(() => {
@@ -37,7 +38,7 @@ export default function App() {
                     <Route path="/menu" element ={<MainScreen/>} />
                     <Route path="/menu/edit" element ={<EditorScreen/>} />
                     <Route path="/menu/edit/trait/*" element ={<TraitEditor/>} />
-                    <Route path="/menu/edit/event/*" element ={<NewEvent/>} />
+                    <Route path="/menu/edit/event/*" element ={<EventEditor/>} />
                 </Routes>
             </MemoryRouter>
         </ThemeProvider>

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { NewTrait } from '../NewTrait/NewTrait.component';
 
@@ -17,6 +18,7 @@ export function TraitEditor() {
                                 <Link to="new">
                                     <button>New Trait</button>
                                 </Link>
+
                             </div>
                         </main>
                     </>

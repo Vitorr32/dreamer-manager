@@ -146,6 +146,7 @@ export const en_US = {
                         'The Hidden Check Connection is a simple conditional connection that does not present to the player any feedback that a check was made.',
                     scene_link_choice_type_helper:
                         'The Choice Connection is a simple branching of the event tree, it require a label for the choice button, and may have a condition to be unlocked.',
+                    button_submit_edited_event: 'Select Event',
                     add_actor: 'Add Actor to Event',
                     edit_background_cta: 'Change Background',
                     background_file_search: 'Local File',
