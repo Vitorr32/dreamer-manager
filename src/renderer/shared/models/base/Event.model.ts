@@ -68,4 +68,22 @@ export class Event {
         this.trigger = trigger;
         this.unique = false;
     }
+
+    public getActor(id: string): Actor | null {
+        return this.actors ? this.actors.find((actor) => actor.id === id) : null;
+    }
+
+    public modifyActor(actor: Actor): void {
+        const index = this.actors.findIndex((iteratedActor) => iteratedActor.id === actor.id);
+
+        if (index === -1) {
+            if (this.actors) {
+                this.actors.push(actor);
+            } else {
+                this.actors = [actor];
+            }
+        } else {
+            this.actors[index] = actor;
+        }
+    }
 }

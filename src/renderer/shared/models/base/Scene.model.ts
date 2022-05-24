@@ -92,9 +92,9 @@ export class Scene {
     public sceneResults: SceneResult[] | null = null;
 
     //The string that will appear as the content of the dialog box
-    public dialog?: string;
+    public dialog: string | null = null;
     //The string that will appear as the "Speaker" of the scene, above the dialog box, may be empty
-    public speakerString?: string;
+    public speakerString: string | null = null;
 
     //Which actors will appear on the scene
     public actorsState: {
@@ -106,7 +106,7 @@ export class Scene {
         };
     } = {};
     //The source path of the background image
-    public backgroundImageName: string | null = null;
+    public backgroundImagePath: string[] | null = null;
 
     constructor(id?: string) {
         this.id = id || 'scene_' + uuidv4();

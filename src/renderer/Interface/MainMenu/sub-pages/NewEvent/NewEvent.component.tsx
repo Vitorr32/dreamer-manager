@@ -10,28 +10,18 @@ import {
     EVENT_DATABASE_FOLDER,
     GENERIC_SPRITES_FOLDER,
     IMAGES_FOLDER,
-    LANGUAGE_CODES,
     SPRITES_FOLDER,
 } from 'renderer/shared/Constants';
-import { getLocaleLabel } from 'renderer/shared/utils/Localization';
 import React, { useEffect, useState } from 'react';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
-import { EventNode } from 'renderer/shared/components/events/EventNode.component';
-import { Tree } from '@visx/hierarchy';
-import { ConnectionType, Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
-import { Group } from '@visx/group';
-import { LinkHorizontal } from '@visx/shape';
+import { Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EditableScene } from 'renderer/shared/components/scene/EditableScene';
 import { ActorsCasting } from 'renderer/shared/components/scene/ActorsCasting';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { useTooltip, useTooltipInPortal, defaultStyles } from '@visx/tooltip';
 import { EventLinkModal } from './EventLinkModal.component';
-import { HierarchyPointLink } from '@visx/hierarchy/lib/types';
 import { NewEventFlag } from './NewEventFlag.component';
-import { Zoom } from '@visx/zoom';
-import { localPoint } from '@visx/event';
 import { GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { InsertIconInAssets, InsertJSONFileAsDatabase } from 'renderer/shared/scripts/DatabaseCreate.script';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
@@ -41,14 +31,15 @@ import { EventInfoModal } from './EventInfoModal.component';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { EventTreeRender } from './EventTreeRender.component';
+import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 
 interface IProps {}
 
 export function NewEvent({}: IProps) {
-    const { t, i18n } = useTranslation();
     const params = useParams();
-
+    const { t, i18n } = useTranslation();
     const mappedEvents = useSelector((state: RootState) => state.database.mappedDatabase.events);
+
     const [isLoading, setLoadingState] = useState<boolean>(false);
     const [editEffectIndex, setEditEffectIndex] = useState<number>();
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
@@ -117,11 +108,11 @@ export function NewEvent({}: IProps) {
     };
 
     const onNodeEdited = (scene: Scene, closeModal: boolean = false) => {
-        const visualNovel = CopyClassInstance(currentVN);
+        const modifiedVisualNovel = CopyClassInstance(currentVN);
+        modifiedVisualNovel.updateScene(scene);
 
-        visualNovel.updateScene(scene);
+        setCurrentVN(modifiedVisualNovel);
 
-        setCurrentVN(visualNovel);
         if (closeModal) {
             setEditedNode(null);
         } else {
@@ -211,6 +202,9 @@ export function NewEvent({}: IProps) {
 
     const onEventSubmitted = async () => {
         setLoadingState(true);
+        const toSubmitEvent = CopyClassInstance(currentEvent);
+        const toSubmitVN = currentVN ? CopyClassInstance(currentVN) : null;
+
         //TODO: Make the checks to see if all the event content is correct.
         if (false) {
             console.log('Invalid');
@@ -218,23 +212,33 @@ export function NewEvent({}: IProps) {
         }
         console.log('Valid');
 
-        //Copy temporary files into the game static files.
-        Object.keys(tempImagesPath).forEach(async (key) => {
-            const tempImagePath = tempImagesPath[key];
-            const fileInfo = await GetFileInfoFromPath(tempImagePath);
+        if (toSubmitVN) {
+            //Copy temporary files into the game static files, then update the references on the objects to internal paths.
+            Object.keys(tempImagesPath).forEach(async (key) => {
+                const tempImagePath = tempImagesPath[key];
+                const fileInfo = await GetFileInfoFromPath(tempImagePath);
 
-            if (key.startsWith('scene')) {
-                InsertIconInAssets(RemoveFileProtocol(tempImagePath), [IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER], fileInfo.fileName);
-            } else if (key.startsWith('actor')) {
-                InsertIconInAssets(RemoveFileProtocol(tempImagePath), [SPRITES_FOLDER, GENERIC_SPRITES_FOLDER], fileInfo.fileName);
-            }
-        });
+                if (key.startsWith('scene')) {
+                    InsertIconInAssets(RemoveFileProtocol(tempImagePath), [IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER], fileInfo.fileName);
 
-        if (currentVN) {
-            currentEvent.visualNovel = currentVN;
+                    const toUpdateScene = toSubmitVN.getScene(key);
+                    toUpdateScene.backgroundImagePath = [IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, fileInfo.fileName];
+
+                    toSubmitVN.updateScene(toUpdateScene);
+                } else if (key.startsWith('actor')) {
+                    InsertIconInAssets(RemoveFileProtocol(tempImagePath), [SPRITES_FOLDER, GENERIC_SPRITES_FOLDER], fileInfo.fileName);
+
+                    const toUpdateActor = toSubmitEvent.getActor(key);
+                    toUpdateActor.spriteFilePath = [SPRITES_FOLDER, GENERIC_SPRITES_FOLDER, fileInfo.fileName];
+
+                    toSubmitEvent.modifyActor(toUpdateActor);
+                }
+            });
+
+            toSubmitEvent.visualNovel = toSubmitVN;
         }
 
-        InsertJSONFileAsDatabase([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], BASE_EVENT_FILE, currentEvent, true);
+        InsertJSONFileAsDatabase([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], BASE_EVENT_FILE, toSubmitEvent, true);
         setLoadingState(false);
     };
 
@@ -248,22 +252,7 @@ export function NewEvent({}: IProps) {
                 </Link>
                 <h2>Event Creation</h2>
 
-                <TextField
-                    required
-                    label={t('interface.commons.language')}
-                    value={i18n.language}
-                    variant="outlined"
-                    select
-                    onChange={(event) => i18n.changeLanguage(event.target.value)}
-                >
-                    {LANGUAGE_CODES.map((value) => {
-                        return (
-                            <MenuItem key={`language_${value}`} value={value}>
-                                {getLocaleLabel(value)}
-                            </MenuItem>
-                        );
-                    })}
-                </TextField>
+                <LanguageToggle />
             </Box>
             <Box component="main" className="new-event__content">
                 <Box>

@@ -20,7 +20,6 @@ interface IProps {
     setPathOfTempImages: Dispatch<SetStateAction<{ [key: string]: string }>>;
 }
 
-const backgroundImagesGamePath = [IMAGES_FOLDER, BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER];
 const spriteGamePath = [SPRITES_FOLDER];
 
 export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
@@ -44,8 +43,8 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
 
         if (pathOfTempImages[scene.id]) {
             newImagesPaths.scene = pathOfTempImages[scene.id];
-        } else if (scene.backgroundImageName) {
-            const file = await GetFileFromResources([...backgroundImagesGamePath, scene.backgroundImageName]);
+        } else if (scene.backgroundImagePath) {
+            const file = await GetFileFromResources(scene.backgroundImagePath);
             newImagesPaths.scene = file.path;
         } else {
             const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([
@@ -96,8 +95,10 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
 
             setPathOfTempImages(newTempPaths);
         } else {
-            const newScene = Object.assign({}, scene);
-            newScene.backgroundImageName = fileName;
+            const newScene = CopyClassInstance(scene);
+            newScene.backgroundImagePath = internalPath;
+
+            onSceneEdited(newScene);
         }
 
         setBackgroundSelectState(false);
@@ -106,7 +107,9 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     };
 
     const onActorCastChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-        const modifiedScene = CopyClassInstance(scene);
+        const modifiedScene = CopyClassInstance<Scene>(Object.assign(new Scene(), scene));
+
+        console.log(modifiedScene);
 
         if (checked) {
             modifiedScene.addActorToScene(event.target.name);

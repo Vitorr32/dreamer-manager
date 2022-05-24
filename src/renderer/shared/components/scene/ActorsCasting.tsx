@@ -75,7 +75,8 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
     };
 
     const onCharacterAdded = (): void => {
-        const editedEvent = Object.assign({}, event);
+        const editedEvent = CopyClassInstance(event);
+
         const newActor: Actor = {
             actorType: ActorType.GENERIC_TYPE,
             id: `actor_${uuidv4()}`,
@@ -227,6 +228,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                                         onChange={(event) => onActorTypeChange(selectedActor, event.target.value as any, selectedActorIndex)}
                                     >
                                         <FormControlLabel
+                                            disabled={!event.actors.find((actor) => actor.actorType === ActorType.PlAYER_CHARACTER)}
                                             control={<Radio />}
                                             value={ActorType.PlAYER_CHARACTER}
                                             label={t('interface.editor.event.casting_player') as string}

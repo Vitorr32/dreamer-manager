@@ -34,7 +34,7 @@ const initialState: GameLoopState = {
         traits: {},
         events: {},
         flags: {},
-        characters: {}
+        characters: {},
     },
 };
 
@@ -86,8 +86,7 @@ export const databaseSlice = createSlice({
 
                         //Map the visual novel data to a newly created instance using the prototype.
                         event.visualNovel = Object.assign(Object.create(VisualNovel.prototype), event.visualNovel);
-
-                        return (state.mappedDatabase.events[event.id] = event);
+                        state.mappedDatabase.events[event.id] = event;
                     });
                 default:
                     console.error('Unknown load update: ' + action.payload.key);
