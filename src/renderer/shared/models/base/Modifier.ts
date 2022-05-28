@@ -1,3 +1,5 @@
+import { Entity } from "../enums/Entities.enum";
+
 export enum ModifierType {
     UNDEFINED = 'model.undefined',
 
@@ -5,6 +7,8 @@ export enum ModifierType {
     MODIFY_SKILL_CURRENT_VALUE = 'model.modifier.type.attr_value',
     MODIFY_SKILL_GAIN_MULTIPLIER_VALUE = 'model.modifier.type.attr_multiplier',
     MODIFY_POTENTIAL_VALUE = 'model.modifier.type.attr_potential',
+
+    MODIFY_ENTITY_VARIABLE = 'model.modifier.type.entity_variable',
 
     //RELATIONSHIP MODIFIERS
     MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE = 'model.modifier.type.relationship_respect',
@@ -51,7 +55,7 @@ export enum ModifierTargetType {
     TRAIT_ID = 'traits',
     EVENT_ID = 'events',
     FLAG_ID = 'flags',
-    ORIGN_ACTOR = 'originActor',
+    ORIGIN_ACTOR = 'originActor',
     RECEPTOR_ACTOR = 'receptorActor',
 }
 
@@ -65,6 +69,8 @@ export class Modifier {
     public modifiedWorldState: {
         [key in ModifierTargetType]?: string[];
     };
+
+    public targetEntity: Entity = Entity.NONE;
     public effectiveChange: number;
     public targetSelf: boolean;
     public percentage: boolean;

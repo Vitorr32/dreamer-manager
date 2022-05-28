@@ -77,6 +77,8 @@ export const en_US = {
                     input_numeric_helper: 'The value that the modifier will apply (can be negative)',
                     input_percent: 'Percentage change',
                     input_percent_helper: 'Percentage to be applied (can be negative)',
+                    input_label_entity: 'Entity Type',
+
                 },
                 event: {
                     flag_heading: 'Event Flags',
@@ -318,11 +320,22 @@ export const en_US = {
                     special: 'Special',
                 },
             },
+            entity: {
+                actors: 'Actors',
+                characters: 'Characters',
+                player: 'Player',
+                staff: 'Staff',
+                agency: 'Agencies',
+                companies: 'Companies',
+                locations: 'Locations',
+                nations: 'Nations'
+            },
             modifier: {
                 type: {
                     attr_value: 'Current attribute value',
                     attr_multiplier: 'Attribute value gain multiplier',
                     attr_potential: 'Potential attribute value',
+                    entity_variable: 'Entity Variable Value',
 
                     relationship_respect: 'Relationship respect metric',
                     relationship_favor: 'Relationship favorable metric',

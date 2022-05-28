@@ -41,7 +41,7 @@ export function NewEvent({}: IProps) {
     const mappedEvents = useSelector((state: RootState) => state.database.mappedDatabase.events);
 
     const [isLoading, setLoadingState] = useState<boolean>(false);
-    const [editEffectIndex, setEditEffectIndex] = useState<number>();
+    const [editEffectIndex, setEditEffectIndex] = useState<number>(-1);
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
     const [currentEvent, setCurrentEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
     const [currentVN, setCurrentVN] = useState<VisualNovel>(null);
@@ -176,6 +176,7 @@ export function NewEvent({}: IProps) {
         modifiedEvent.effects = [];
 
         setCurrentEvent(modifiedEvent);
+        setEditEffectIndex(-1);
     };
 
     const onNewEffectAddedToList = (): void => {
@@ -189,7 +190,6 @@ export function NewEvent({}: IProps) {
         const modifiedEvent = Object.assign({}, currentEvent);
         modifiedEvent.effects[index] = effect;
 
-        setEditEffectIndex(null);
         setCurrentEvent(modifiedEvent);
     };
 
@@ -290,7 +290,7 @@ export function NewEvent({}: IProps) {
                             {t('interface.editor.effect.add_effect')}
                         </Button>
 
-                        {editEffectIndex !== null && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={currentEvent.effects[editEffectIndex]} />}
+                        {editEffectIndex !== -1 && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={currentEvent.effects[editEffectIndex]} />}
                     </Box>
                 </>
             )}

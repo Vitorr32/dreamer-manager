@@ -9,6 +9,8 @@ import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
 import { AffectedActorsSelect } from '../effects/AffectedActorsSelect.component';
+import { ModifierEntitySelector } from './ModifierEntitySelector.component';
+import { ModifierTypeDialog } from './ModifierTypeDialog.component';
 
 interface IProps {
     modifier: Modifier;
@@ -17,26 +19,12 @@ interface IProps {
 }
 
 export function ModifierEditor({ modifier, onChange, options }: IProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
-    const [selectableTypes, setSelectableTypes] = React.useState<ModifierType[]>([]);
-    const [modifierSection, setModifierSection] = React.useState<ModifierTypeSection>();
-    const [tempType, setTempType] = React.useState<ModifierType>(ModifierType.UNDEFINED);
-
-    const onSectionSelected = (section: ModifierTypeSection) => {
-        onTypeSelected(ModifierType.UNDEFINED);
-
-        setSelectableTypes(GetModifierTypesOfSection(section, options && options.filteredTypes ? options.filteredTypes : []));
-        setModifierSection(section);
-    };
 
     const hasSpecificActors = (): boolean => {
         return modifier.type !== ModifierType.UNDEFINED && options && !!options.specifiedActors;
-    };
-
-    const onTypeSelected = (type: ModifierType) => {
-        setTempType(type);
     };
 
     const onEffectiveValueChange = (event: any, isPercentage: boolean) => {
@@ -49,21 +37,17 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         onChange(newModifier);
     };
 
-    const onSubmitType = () => {
+    const onTypeSubmitted = (type: ModifierType) => {
         const newModifier = Object.assign({}, modifier);
         //Reset layout of inputs on change of type
-        if (modifier.type !== tempType) {
+        if (modifier.type !== type) {
             newModifier.effectiveChange = 0;
             newModifier.modifiedWorldState = {};
         }
 
-        newModifier.type = tempType;
+        newModifier.type = type;
 
         setShowTypeModal(false);
-        setSelectableTypes([]);
-        setModifierSection(undefined);
-        setTempType(ModifierType.UNDEFINED);
-
         onChange(newModifier);
     };
 
@@ -148,12 +132,17 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         }
     };
 
-    const renderActorSelection = (): React.ReactElement | null => {
+    const renderEntitySelection = (): React.ReactElement | null => {
         if (!hasSpecificActors()) {
             return;
         }
 
         switch (modifier.type) {
+            case ModifierType.MODIFY_ENTITY_VARIABLE:
+                // TODO: Complete following onChange function
+                return (
+                    <ModifierEntitySelector modifier={modifier} onChange={(modifier) => console.log(modifier)} options={options}/>
+                )
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
@@ -164,7 +153,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                         actors={options.specifiedActors}
                         originActors={modifier.modifiedWorldState?.originActor}
                         targetActors={modifier.modifiedWorldState?.receptorActor}
-                        onChange={(value, isOrigin) => onToolPickerSelection(value, isOrigin ? ModifierTargetType.ORIGN_ACTOR : ModifierTargetType.RECEPTOR_ACTOR)}
+                        onChange={(value, isOrigin) => onToolPickerSelection(value, isOrigin ? ModifierTargetType.ORIGIN_ACTOR : ModifierTargetType.RECEPTOR_ACTOR)}
                         hasOriginActor={true}
                     />
                 );
@@ -192,61 +181,14 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                     {modifier.type === ModifierType.UNDEFINED ? t('interface.editor.modifier.select_type') : t(modifier.type)}
                 </Button>
 
-                {renderActorSelection()}
+                {renderEntitySelection()}
 
                 {renderModifierSelectionInput()}
 
                 {renderModifierValueInput()}
             </Box>
 
-            <Modal className="selection-modal" open={showTypeModal} onClose={() => setShowTypeModal(false)}>
-                <Box className="selection-modal__wrapper" sx={{ bgcolor: 'background.default' }}>
-                    <Box className="selection-modal__selection-wrapper">
-                        <List className="selection-modal__selection selection-modal__selection-primary">
-                            <ListItem disablePadding>
-                                <ListItemText primary={t('interface.editor.modifier.select_type')} secondary={t('interface.editor.modifier.select_type_caption')} />
-                            </ListItem>
-
-                            <Divider />
-
-                            {Object.values(ModifierTypeSection).map((value) => {
-                                if (options && options.filteredTypes && options.filteredTypes?.includes(value)) {
-                                    return null;
-                                }
-
-                                return (
-                                    <ListItemButton key={`section_${value}`} selected={value === modifierSection} onClick={() => onSectionSelected(value)}>
-                                        <ListItemText primary={t(value)} />
-                                    </ListItemButton>
-                                );
-                            })}
-                        </List>
-
-                        {selectableTypes?.length !== 0 && (
-                            <List className="selection-modal__selection selection-modal__selection-secondary">
-                                {selectableTypes.map((value) => {
-                                    return (
-                                        <ListItemButton key={`type_${value}`} selected={value === tempType} onClick={() => onTypeSelected(value)}>
-                                            <ListItemText primary={t(value)} />
-                                        </ListItemButton>
-                                    );
-                                })}
-                            </List>
-                        )}
-                    </Box>
-
-                    <Box className="selection-modal__footer">
-                        {modifier.type === ModifierType.UNDEFINED && (
-                            <Typography variant="caption" className="selection-modal__footer-message">
-                                {t('interface.editor.modifier.select_type_empty')}
-                            </Typography>
-                        )}
-                        <Button className="selection-modal__footer-submit" disabled={tempType === ModifierType.UNDEFINED} variant="contained" onClick={onSubmitType}>
-                            {t('interface.editor.modifier.select_type_submit')}
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
+            <ModifierTypeDialog modifier={modifier} onTypeSelect={onTypeSubmitted} open={showTypeModal} onClose={() => setShowTypeModal(false)} options={options} />
         </Box>
     );
 }
