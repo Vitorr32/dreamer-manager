@@ -34,11 +34,11 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <MemoryRouter>
                 <Routes>
-                    <Route index element ={<Navigate to="/menu/edit/event" />} />
-                    <Route path="/menu" element ={<MainScreen/>} />
-                    <Route path="/menu/edit" element ={<EditorScreen/>} />
-                    <Route path="/menu/edit/trait/*" element ={<TraitEditor/>} />
-                    <Route path="/menu/edit/event/*" element ={<EventEditor/>} />
+                    <Route index element={<Navigate to="/menu/edit/event/new" />} />
+                    <Route path="/menu" element={<MainScreen />} />
+                    <Route path="/menu/edit" element={<EditorScreen />} />
+                    <Route path="/menu/edit/trait/*" element={<TraitEditor />} />
+                    <Route path="/menu/edit/event/*" element={<EventEditor />} />
                 </Routes>
             </MemoryRouter>
         </ThemeProvider>

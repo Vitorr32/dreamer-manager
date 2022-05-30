@@ -363,7 +363,7 @@ export const en_US = {
                     static_stress_max: 'Maximum character stress value',
                 },
                 section: {
-                    attr: 'Attribute modifiers',
+                    entity: 'Entity Modification',
                     relationship: 'Relationship modifiers',
                     trait: 'Traits modifiers',
                     event: 'Event modifiers',

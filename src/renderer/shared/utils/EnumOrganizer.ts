@@ -6,8 +6,8 @@ export function GetModifierTypesOfSection(section: ModifierTypeSection, filtered
     }
 
     switch (section) {
-        case ModifierTypeSection.ATTR_SECTION:
-            return [ModifierType.MODIFY_POTENTIAL_VALUE, ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE, ModifierType.MODIFY_SKILL_CURRENT_VALUE];
+        case ModifierTypeSection.ENTITY_MODIFICATION:
+            return [ModifierType.MODIFY_ENTITY_VARIABLE];
         case ModifierTypeSection.EVENT_SECTION:
             return [ModifierType.MODIFY_EVENT_FLAG_ADD, ModifierType.MODIFY_EVENT_FLAG_REMOVE, ModifierType.MODIFY_EVENT_TRIGGER];
         case ModifierTypeSection.RELATIONSHIP_SECTION:

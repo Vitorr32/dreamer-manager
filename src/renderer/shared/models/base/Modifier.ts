@@ -43,7 +43,7 @@ export enum ModifierType {
 }
 
 export enum ModifierTypeSection {
-    ATTR_SECTION = 'model.modifier.section.attr',
+    ENTITY_MODIFICATION = 'model.modifier.section.entity',
     RELATIONSHIP_SECTION = 'model.modifier.section.relationship',
     TRAIT_SECTION = 'model.modifier.section.trait',
     EVENT_SECTION = 'model.modifier.section.event',
