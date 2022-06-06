@@ -4,8 +4,10 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modifier, ModifierTargetType, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
+import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
 import { AffectedActorsSelect } from '../effects/AffectedActorsSelect.component';
@@ -27,12 +29,29 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         return modifier.type !== ModifierType.UNDEFINED && options && !!options.specifiedActors;
     };
 
-    const onEffectiveValueChange = (event: any, isPercentage: boolean) => {
+    const onEntityModifierChanged = (entity: Entity): void => {
+        const newModifier = CopyClassInstance(modifier);
+
+        newModifier.modifiedEntityVariable = { entity: entity, variableID: '', value: '' };
+        // newModifier.effectiveChange = 0;
+
+        onChange(newModifier);
+    };
+
+    const onEntityVariableChange = (key: 'variableID' | 'value', value: any): void => {
+        const newModifier = CopyClassInstance(modifier);
+
+        console.log('value', value);
+
+        newModifier.modifiedEntityVariable[key] = value;
+        onChange(newModifier);
+    };
+
+    const onEffectiveValueChange = (event: any) => {
         const value = event.target.value;
         const newModifier = Object.assign({}, modifier);
 
         newModifier.effectiveChange = value;
-        newModifier.percentage = isPercentage;
 
         onChange(newModifier);
     };
@@ -88,61 +107,59 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         }
     };
 
-    const renderModifierValueInput = (): React.ReactElement | null => {
-        switch (modifier.type) {
-            case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
-            case ModifierType.MODIFY_POTENTIAL_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_LOVE_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
-            case ModifierType.MODIFY_MOOD_VALUE:
-            case ModifierType.MODIFY_LEARNING_RATE:
-            case ModifierType.MODIFY_ENERGY_MAXIMUM:
-            case ModifierType.MODIFY_ENERGY_VALUE:
-                return (
-                    <TextField
-                        value={modifier.effectiveChange}
-                        label={t('interface.editor.modifier.input_numeric')}
-                        variant="outlined"
-                        helperText={t('interface.editor.modifier.input_numeric_helper')}
-                        type="number"
-                        onChange={(e) => onEffectiveValueChange(e, false)}
-                    />
-                );
-            case ModifierType.MODIFY_ENERGY_GAIN_MULTIPLIER:
-            case ModifierType.MODIFY_ENERGY_FALL_MULTIPLIER:
-            case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
-            case ModifierType.MODIFY_STRESS_FALL_MULTIPLIER:
-            case ModifierType.MODIFY_STRESS_GAIN_MULTIPLIER:
-                return (
-                    <TextField
-                        value={modifier.effectiveChange}
-                        label={t('interface.editor.modifier.input_percent')}
-                        variant="outlined"
-                        helperText={t('interface.editor.modifier.input_percent_helper')}
-                        type="number"
-                        onChange={(e) => onEffectiveValueChange(e, true)}
-                    />
-                );
-            default:
-                return null;
-        }
-    };
+    // const renderModifierValueInput = (): React.ReactElement | null => {
+    //     switch (modifier.type) {
+    //         case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
+    //         case ModifierType.MODIFY_POTENTIAL_VALUE:
+    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
+    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
+    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
+    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_LOVE_VALUE:
+    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
+    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
+    //         case ModifierType.MODIFY_MOOD_VALUE:
+    //         case ModifierType.MODIFY_LEARNING_RATE:
+    //         case ModifierType.MODIFY_ENERGY_MAXIMUM:
+    //         case ModifierType.MODIFY_ENERGY_VALUE:
+    //             return (
+    //                 <TextField
+    //                     value={modifier.effectiveChange}
+    //                     label={t('interface.editor.modifier.input_numeric')}
+    //                     variant="outlined"
+    //                     helperText={t('interface.editor.modifier.input_numeric_helper')}
+    //                     type="number"
+    //                     onChange={(e) => onEffectiveValueChange(e, false)}
+    //                 />
+    //             );
+    //         case ModifierType.MODIFY_ENERGY_GAIN_MULTIPLIER:
+    //         case ModifierType.MODIFY_ENERGY_FALL_MULTIPLIER:
+    //         case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
+    //         case ModifierType.MODIFY_STRESS_FALL_MULTIPLIER:
+    //         case ModifierType.MODIFY_STRESS_GAIN_MULTIPLIER:
+    //             return (
+    //                 <TextField
+    //                     value={modifier.effectiveChange}
+    //                     label={t('interface.editor.modifier.input_percent')}
+    //                     variant="outlined"
+    //                     helperText={t('interface.editor.modifier.input_percent_helper')}
+    //                     type="number"
+    //                     onChange={(e) => onEffectiveValueChange(e, true)}
+    //                 />
+    //             );
+    //         default:
+    //             return null;
+    //     }
+    // };
 
     const renderEntitySelection = (): React.ReactElement | null => {
-        if (!hasSpecificActors()) {
+        if (!hasSpecificActors() && modifier.type !== ModifierType.MODIFY_ENTITY_VARIABLE) {
             return;
         }
 
         switch (modifier.type) {
             case ModifierType.MODIFY_ENTITY_VARIABLE:
                 // TODO: Complete following onChange function
-                return (
-                    <ModifierEntitySelector modifier={modifier} onChange={(modifier) => console.log(modifier)} options={options}/>
-                )
+                return <ModifierEntitySelector modifier={modifier} onEntityChange={onEntityModifierChanged} onVariableChange={onEntityVariableChange} options={options} />;
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
@@ -185,7 +202,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
                 {renderModifierSelectionInput()}
 
-                {renderModifierValueInput()}
+                {/* {renderModifierValueInput()} */}
             </Box>
 
             <ModifierTypeDialog modifier={modifier} onTypeSelect={onTypeSubmitted} open={showTypeModal} onClose={() => setShowTypeModal(false)} options={options} />

@@ -1,4 +1,5 @@
-import { Entity } from "../enums/Entities.enum";
+import { Entity } from '../enums/Entities.enum';
+import { EntityVariableValue } from './EntityVariableValue.model';
 
 export enum ModifierType {
     UNDEFINED = 'model.undefined',
@@ -70,15 +71,14 @@ export class Modifier {
         [key in ModifierTargetType]?: string[];
     };
 
-    public targetEntity: Entity = Entity.NONE;
+    public modifiedEntityVariable?: EntityVariableValue;
+    // TODO: Remove following property from all code, as it was substituted by the one above.
     public effectiveChange: number;
     public targetSelf: boolean;
-    public percentage: boolean;
 
     constructor() {
         this.type = ModifierType.UNDEFINED;
         this.effectiveChange = 0;
         this.targetSelf = true;
-        this.percentage = false;
     }
 }

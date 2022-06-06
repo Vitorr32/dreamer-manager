@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { Character } from '../models/base/Character.model';
+import { Variables } from '../models/base/Variable.model';
 import { Entity } from '../models/enums/Entities.enum';
 
 export function AreArraysEqual(array1: any[], array2: any[]): boolean {
@@ -20,12 +21,12 @@ export function CopyClassInstance<T>(object: T): T {
     return Object.assign(Object.create(Object.getPrototypeOf(object)), cloneDeep(object));
 }
 
-export function GetPrototypeOfEntity(entity: Entity) {
+export function GetVariablesOfEntity(entity: Entity): Variables {
     switch (entity) {
         case Entity.CHARACTERS:
-            return Character._Variables;
+            return Character.getEntityVariables();
         case Entity.ACTORS:
-            // return Actor[keyof Actor];
+        // return Actor[keyof Actor];
         default:
             return null;
     }

@@ -109,8 +109,6 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
     const onActorCastChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
         const modifiedScene = CopyClassInstance<Scene>(Object.assign(new Scene(), scene));
 
-        console.log(modifiedScene);
-
         if (checked) {
             modifiedScene.addActorToScene(event.target.name);
             saveImageOfSpecificActor(event.target.name);

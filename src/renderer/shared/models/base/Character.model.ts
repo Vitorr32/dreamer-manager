@@ -2,17 +2,8 @@ import { Attribute } from './Attribute.model';
 import { Flag } from './Event.model';
 import { Trait } from './Trait.model';
 import { v4 as uuidv4 } from 'uuid';
-import { Variable, VariableType } from './Variable.model';
-
-export enum Kinship {
-    UNDEFINED,
-
-    PARENT,
-    SIBLING,
-    CHILD,
-
-    MAX_KINSHIP,
-}
+import { CustomVariables, Variables, VariableType } from './Variable.model';
+import { Kinship } from './Kinship.model';
 
 export enum Gender {
     MALE = 'male',
@@ -34,24 +25,25 @@ export enum Status {
     ENERGY = 'model.character.status.energy',
 }
 
-export interface KinshipObject {
-    character_id: string;
-    kinship: Kinship;
-}
-
 export interface Sprite {
     path: string[];
 }
 
-export const CharacterEntityVariables: Variable = {
-    id: { type: VariableType.TEXT, read: true, edit: false },
-    name: { type: VariableType.TEXT, read: true, edit: true },
-    surname: { type: VariableType.TEXT, read: true, edit: true },
-    nickname: { type: VariableType.TEXT, read: true, edit: true },
-    birthday: { type: VariableType.DATE, read: true, edit: true },
-    age: { type: VariableType.NUMBER, read: true, edit: true },
-    ethnicity: { type: VariableType.ENUMERATOR, options: Object.values(Ethnicity).map((value) => value), read: true, edit: true },
-    gender: { type: VariableType.ENUMERATOR, options: Object.values(Gender).map((value) => value), read: true, edit: true },
+export const CharacterEntityVariables: Variables = {
+    id: { displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
+    name: { displayName: 'model.character.variables.name', type: VariableType.TEXT, read: true, edit: true },
+    surname: { displayName: 'model.character.variables.surname', type: VariableType.TEXT, read: true, edit: true },
+    nickname: { displayName: 'model.character.variables.nickname', type: VariableType.TEXT, read: true, edit: true },
+    birthday: { displayName: 'model.character.variables.birthday', type: VariableType.DATE, read: true, edit: true },
+    age: { displayName: 'model.character.variables.age', type: VariableType.NUMBER, read: true, edit: true },
+    ethnicity: {
+        displayName: 'model.character.variables.ethnicity',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(Ethnicity).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    gender: { displayName: 'model.character.variables.gender', type: VariableType.ENUMERATOR, options: Object.values(Gender).map((value) => value), read: true, edit: true },
     // age: { type: EntityVariable.NUMBER, read: true, edit: true },
     // age: { type: EntityVariable.NUMBER, read: true, edit: true },
     // age: { type: EntityVariable.NUMBER, read: true, edit: true },
@@ -60,7 +52,7 @@ export const CharacterEntityVariables: Variable = {
 };
 
 export class Character {
-    static _Variables: { [key: string]: { type: VariableType; options?: string[]; read: boolean; edit: boolean } } = CharacterEntityVariables;
+    private static _variables: Variables = CharacterEntityVariables;
     //Absolute Basic values of the character, these will never change
     // ID Pattern : CHAR_*NUMBER*
     public id: string;
@@ -80,9 +72,11 @@ export class Character {
 
     public ethnicity: Ethnicity = Ethnicity.CAUCASIAN;
     public gender: Gender = Gender.FEMALE;
-    public family: KinshipObject[] = [];
+    public family: Kinship[] = [];
     public traits: Trait[] = [];
     public flags: Flag[] = [];
+    //Custom variables should be added to the entity, and it's values should be saved on the customVariables property here.
+    public customVariables: any;
 
     constructor(id?: string, sprites?: Sprite[], name?: string, surname?: string, nickname?: string, birthday?: Date) {
         this.id = id || `char_${uuidv4()}`;
@@ -91,5 +85,13 @@ export class Character {
         this.surname = surname || '';
         this.nickname = nickname || '';
         this.birthday = birthday;
+    }
+
+    static getEntityVariables(): Variables {
+        return this._variables;
+    }
+
+    static addCustomVariablesToEntity(customVariables: CustomVariables): void {
+        Object.keys(customVariables).forEach((key) => {});
     }
 }

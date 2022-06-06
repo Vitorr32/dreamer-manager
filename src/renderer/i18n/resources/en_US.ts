@@ -78,7 +78,8 @@ export const en_US = {
                     input_percent: 'Percentage change',
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                     input_label_entity: 'Entity Type',
-
+                    input_label_variable: 'Entity Variable',
+                    input_label_value_change: 'Modifier Value',
                 },
                 event: {
                     flag_heading: 'Event Flags',
@@ -110,8 +111,7 @@ export const en_US = {
                     casting_alias_helper: 'What alias will this actor be recognized with?',
                     casting_sprite: 'Actor Sprite',
                     casting_sprite_cta: 'Choose Generic Sprite',
-                    casting_sprite_helper:
-                        'The image used as sprite for the generic actor, It should have transparent background when necessary.',
+                    casting_sprite_helper: 'The image used as sprite for the generic actor, It should have transparent background when necessary.',
                     casting_actor_add_condition: 'Specify conditions for actor casting for event',
                     scene_root: 'Root',
                     scene_casting: 'Actors casted to this scene',
@@ -229,6 +229,16 @@ export const en_US = {
                     stress: 'Stress',
                     mood: 'Mood',
                 },
+                variables: {
+                    id: 'ID',
+                    name: 'First Name',
+                    surname: 'Surname',
+                    nickname: 'Nickname',
+                    birthday: 'Birthday',
+                    age: 'Age',
+                    ethnicity: 'Ethnicity',
+                    gender: 'Gender',
+                },
             },
             condition: {
                 initiator: {
@@ -328,7 +338,7 @@ export const en_US = {
                 agency: 'Agencies',
                 companies: 'Companies',
                 locations: 'Locations',
-                nations: 'Nations'
+                nations: 'Nations',
             },
             modifier: {
                 type: {
