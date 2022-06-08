@@ -41,7 +41,7 @@ export const CharacterEntityVariables: Variables = {
         type: VariableType.ENUMERATOR,
         options: Object.values(Ethnicity).map((value) => value),
         read: true,
-        edit: true,
+        edit: false,
     },
     gender: { displayName: 'model.character.variables.gender', type: VariableType.ENUMERATOR, options: Object.values(Gender).map((value) => value), read: true, edit: true },
     // age: { type: EntityVariable.NUMBER, read: true, edit: true },

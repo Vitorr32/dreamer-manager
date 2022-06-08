@@ -18,7 +18,7 @@ interface IProps {
     options?: EffectEditorOptions;
 }
 
-export function ModifierEntitySelector({ modifier, onEntityChange, onVariableChange }: IProps) {
+export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChange }: IProps) {
     const { t } = useTranslation();
 
     const [entityVariables, setEntityVariables] = useState<Variables>();
@@ -96,7 +96,9 @@ export function ModifierEntitySelector({ modifier, onEntityChange, onVariableCha
                     onChange={(e) => onEntitySelectChange(e.target.value as Entity)}
                 >
                     {Object.values(Entity).map((entity) => (
-                        <MenuItem value={entity}>{t(entity)}</MenuItem>
+                        <MenuItem key={entity} value={entity}>
+                            {t(entity)}
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>
@@ -113,7 +115,11 @@ export function ModifierEntitySelector({ modifier, onEntityChange, onVariableCha
                         {Object.keys(entityVariables).map((variable) => {
                             //Check if the variable is editable
                             if (entityVariables[variable].edit) {
-                                return <MenuItem value={variable}>{t(entityVariables[variable].displayName)}</MenuItem>;
+                                return (
+                                    <MenuItem key={variable} value={variable}>
+                                        {t(entityVariables[variable].displayName)}
+                                    </MenuItem>
+                                );
                             }
 
                             return null;

@@ -79,6 +79,7 @@ export const en_US = {
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                     input_label_entity: 'Entity Type',
                     input_label_variable: 'Entity Variable',
+                    input_label_conditional: 'Conditional',
                     input_label_value_change: 'Modifier Value',
                 },
                 event: {
@@ -311,12 +312,27 @@ export const en_US = {
                 },
             },
             relationship: {
-                variable: {
+                status: {
                     favor: 'Favorable',
                     love: 'Romantic',
                     power: 'Power Dynamic',
                     attraction: 'Attractiveness',
                     respect: 'Respect',
+                },
+                variables: {
+                    id: 'ID',
+                    characters: 'Characters',
+                    familiarityFromTo: 'Familiarity of character one to two',
+                    familiarityToFrom: 'Familiarity of character two to one',
+                    loveFromTo: 'Love of character one to two',
+                    loveToFrom: '',
+                    name: 'First Name',
+                    surname: 'Surname',
+                    nickname: 'Nickname',
+                    birthday: 'Birthday',
+                    age: 'Age',
+                    ethnicity: 'Ethnicity',
+                    gender: 'Gender',
                 },
             },
             trait: {

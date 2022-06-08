@@ -19,19 +19,6 @@ export function GetModifierTypesOfSection(section: ModifierTypeSection, filtered
                 ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE,
                 ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE,
             ];
-        case ModifierTypeSection.STATIC_SECTION:
-            return [
-                ModifierType.MODIFY_STRESS_VALUE,
-                ModifierType.MODIFY_STRESS_MAXIMUM,
-                ModifierType.MODIFY_STRESS_FALL_MULTIPLIER,
-                ModifierType.MODIFY_STRESS_GAIN_MULTIPLIER,
-                ModifierType.MODIFY_ENERGY_VALUE,
-                ModifierType.MODIFY_ENERGY_MAXIMUM,
-                ModifierType.MODIFY_ENERGY_FALL_MULTIPLIER,
-                ModifierType.MODIFY_ENERGY_GAIN_MULTIPLIER,
-                ModifierType.MODIFY_MOOD_VALUE,
-                ModifierType.MODIFY_LEARNING_RATE,
-            ];
         case ModifierTypeSection.TRAIT_SECTION:
             return [ModifierType.MODIFY_TRAIT_GAIN, ModifierType.MODIFY_TRAIT_REMOVE];
         default:

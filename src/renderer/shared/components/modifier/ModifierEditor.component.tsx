@@ -1,17 +1,16 @@
 import { ArrowForward } from '@mui/icons-material';
-import { Button, Divider, List, ListItem, ListItemButton, ListItemText, Modal, TextField, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modifier, ModifierTargetType, ModifierType, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
+import { Modifier, ModifierTargetType, ModifierType } from 'renderer/shared/models/base/Modifier';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
-import { GetModifierTypesOfSection } from 'renderer/shared/utils/EnumOrganizer';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { AttributeSelectionButton } from '../buttons/AttributeSelectionButton.component';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
 import { AffectedActorsSelect } from '../effects/AffectedActorsSelect.component';
-import { ModifierEntitySelector } from './ModifierEntitySelector.component';
+import { ModifierEntityEditor } from './ModifierEntityEditor.component';
+import { ModifierTargetSelection } from './ModifierTargetSelection.component';
 import { ModifierTypeDialog } from './ModifierTypeDialog.component';
 
 interface IProps {
@@ -31,10 +30,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
     const onEntityModifierChanged = (entity: Entity): void => {
         const newModifier = CopyClassInstance(modifier);
-
         newModifier.modifiedEntityVariable = { entity: entity, variableID: '', value: '' };
-        // newModifier.effectiveChange = 0;
-
         onChange(newModifier);
     };
 
@@ -44,15 +40,6 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         console.log('value', value);
 
         newModifier.modifiedEntityVariable[key] = value;
-        onChange(newModifier);
-    };
-
-    const onEffectiveValueChange = (event: any) => {
-        const value = event.target.value;
-        const newModifier = Object.assign({}, modifier);
-
-        newModifier.effectiveChange = value;
-
         onChange(newModifier);
     };
 
@@ -83,16 +70,6 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
     const renderModifierSelectionInput = (): React.ReactElement | null => {
         switch (modifier.type) {
-            case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
-            case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
-            case ModifierType.MODIFY_POTENTIAL_VALUE:
-                return (
-                    <AttributeSelectionButton
-                        displayIDs={modifier.modifiedWorldState?.attributes}
-                        onChange={(value) => onToolPickerSelection(value, ModifierTargetType.ATTRIBUTE_ID)}
-                        multi
-                    />
-                );
             case ModifierType.MODIFY_TRAIT_GAIN:
             case ModifierType.MODIFY_TRAIT_REMOVE:
                 return (
@@ -107,82 +84,37 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         }
     };
 
-    // const renderModifierValueInput = (): React.ReactElement | null => {
-    //     switch (modifier.type) {
-    //         case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
-    //         case ModifierType.MODIFY_POTENTIAL_VALUE:
-    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
-    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
-    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
-    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_LOVE_VALUE:
-    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
-    //         case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
-    //         case ModifierType.MODIFY_MOOD_VALUE:
-    //         case ModifierType.MODIFY_LEARNING_RATE:
-    //         case ModifierType.MODIFY_ENERGY_MAXIMUM:
-    //         case ModifierType.MODIFY_ENERGY_VALUE:
-    //             return (
-    //                 <TextField
-    //                     value={modifier.effectiveChange}
-    //                     label={t('interface.editor.modifier.input_numeric')}
-    //                     variant="outlined"
-    //                     helperText={t('interface.editor.modifier.input_numeric_helper')}
-    //                     type="number"
-    //                     onChange={(e) => onEffectiveValueChange(e, false)}
-    //                 />
-    //             );
-    //         case ModifierType.MODIFY_ENERGY_GAIN_MULTIPLIER:
-    //         case ModifierType.MODIFY_ENERGY_FALL_MULTIPLIER:
-    //         case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:
-    //         case ModifierType.MODIFY_STRESS_FALL_MULTIPLIER:
-    //         case ModifierType.MODIFY_STRESS_GAIN_MULTIPLIER:
-    //             return (
-    //                 <TextField
-    //                     value={modifier.effectiveChange}
-    //                     label={t('interface.editor.modifier.input_percent')}
-    //                     variant="outlined"
-    //                     helperText={t('interface.editor.modifier.input_percent_helper')}
-    //                     type="number"
-    //                     onChange={(e) => onEffectiveValueChange(e, true)}
-    //                 />
-    //             );
-    //         default:
-    //             return null;
-    //     }
-    // };
-
     const renderEntitySelection = (): React.ReactElement | null => {
-        if (!hasSpecificActors() && modifier.type !== ModifierType.MODIFY_ENTITY_VARIABLE) {
-            return;
+        if (modifier.type !== ModifierType.MODIFY_ENTITY_VARIABLE) {
+            return null;
         }
 
+        return <ModifierEntityEditor modifier={modifier} onEntityChange={onEntityModifierChanged} onVariableChange={onEntityVariableChange} options={options} />;
+    };
+
+    const renderTargetingSelection = (): React.ReactElement | null => {
         switch (modifier.type) {
             case ModifierType.MODIFY_ENTITY_VARIABLE:
-                // TODO: Complete following onChange function
-                return <ModifierEntitySelector modifier={modifier} onEntityChange={onEntityModifierChanged} onVariableChange={onEntityVariableChange} options={options} />;
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
-                return (
-                    <AffectedActorsSelect
-                        actors={options.specifiedActors}
-                        originActors={modifier.modifiedWorldState?.originActor}
-                        targetActors={modifier.modifiedWorldState?.receptorActor}
-                        onChange={(value, isOrigin) => onToolPickerSelection(value, isOrigin ? ModifierTargetType.ORIGIN_ACTOR : ModifierTargetType.RECEPTOR_ACTOR)}
-                        hasOriginActor={true}
-                    />
-                );
+            // TODO: Create a comprehensive modifier targeting using condition tree independent of the Effect condition tree and that includes
+            // Event actors into consideration.
+
+            // return <ModifierTargetSelection />
+            // return (
+            //     <AffectedActorsSelect
+            //         actors={options.specifiedActors}
+            //         originActors={modifier.modifiedWorldState?.originActor}
+            //         targetActors={modifier.modifiedWorldState?.receptorActor}
+            //         onChange={(value, isOrigin) => onToolPickerSelection(value, isOrigin ? ModifierTargetType.ORIGIN_ACTOR : ModifierTargetType.RECEPTOR_ACTOR)}
+            //         hasOriginActor={true}
+            //     />
+            // );
             default:
-                return (
-                    <AffectedActorsSelect
-                        actors={options.specifiedActors}
-                        targetActors={modifier.modifiedWorldState?.receptorActor}
-                        onChange={(value) => onToolPickerSelection(value, ModifierTargetType.RECEPTOR_ACTOR)}
-                        hasOriginActor={false}
-                    />
-                );
+                return null;
         }
     };
 
@@ -200,9 +132,9 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
                 {renderEntitySelection()}
 
-                {renderModifierSelectionInput()}
+                {renderTargetingSelection()}
 
-                {/* {renderModifierValueInput()} */}
+                {renderModifierSelectionInput()}
             </Box>
 
             <ModifierTypeDialog modifier={modifier} onTypeSelect={onTypeSubmitted} open={showTypeModal} onClose={() => setShowTypeModal(false)} options={options} />

@@ -3,6 +3,7 @@ import { Attribute } from './Attribute.model';
 export enum VariableType {
     TEXT,
     NUMBER,
+    ID_LIST,
     PERCENTAGE_OR_MULTIPLIER,
     ENUMERATOR,
     DATE,

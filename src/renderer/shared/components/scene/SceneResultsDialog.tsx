@@ -100,6 +100,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                                 index={index}
                                                 onChange={(index, effect) => sceneResultsModified(index, 'effect', effect)}
                                                 options={{
+                                                    isEventEffect: true,
                                                     filteredTypes: [],
                                                     specifiedActors: !!actors ? actors : [],
                                                     allowConditionTree: true,
