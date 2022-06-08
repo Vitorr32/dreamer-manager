@@ -319,21 +319,6 @@ export const en_US = {
                     attraction: 'Attractiveness',
                     respect: 'Respect',
                 },
-                variables: {
-                    id: 'ID',
-                    characters: 'Characters',
-                    familiarityFromTo: 'Familiarity of character one to two',
-                    familiarityToFrom: 'Familiarity of character two to one',
-                    loveFromTo: 'Love of character one to two',
-                    loveToFrom: '',
-                    name: 'First Name',
-                    surname: 'Surname',
-                    nickname: 'Nickname',
-                    birthday: 'Birthday',
-                    age: 'Age',
-                    ethnicity: 'Ethnicity',
-                    gender: 'Gender',
-                },
             },
             trait: {
                 type: {
