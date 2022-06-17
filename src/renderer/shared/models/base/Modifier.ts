@@ -1,4 +1,6 @@
-import { EntityVariableValue } from './EntityVariableValue.model';
+import { Entity } from '../enums/Entities.enum';
+import { EntityFilter, EntityVariableValue } from './EntityVariableValue.model';
+import { VariableOperator } from './Variable.model';
 
 export enum ModifierType {
     UNDEFINED = 'model.undefined',
@@ -51,14 +53,15 @@ export class Modifier {
         [key in ModifierTargetType]?: string[];
     };
 
-    public modifiedEntityVariable?: EntityVariableValue;
-    // TODO: Remove following property from all code, as it was substituted by the one above.
-    public effectiveChange: number;
-    public targetSelf: boolean;
+    public modifiedEntityVariable: EntityVariableValue;
+    public targetEntityFilter?: EntityFilter;
 
     constructor() {
         this.type = ModifierType.UNDEFINED;
-        this.effectiveChange = 0;
-        this.targetSelf = true;
+        this.modifiedEntityVariable = {
+            entity: Entity.NONE,
+            value: '',
+            variableKey: '',
+        };
     }
 }

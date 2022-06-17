@@ -1,25 +1,73 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { Tab } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
-import { Variables, VariableType } from 'renderer/shared/models/base/Variable.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
-import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
-import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
-import { DATE_ONLY_DAY_FORMAT } from 'renderer/shared/Constants';
+import { EffectEditorOptions, EffectOriginType } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { EntityFilter as EntityFilterComponent } from '../entity/EntityFilter.component';
+import { CopyClassInstance, GetVariablesOfEntity } from 'renderer/shared/utils/General';
+import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 
 interface IProps {
     modifier: Modifier;
-    onEntityChange: (entity: Entity) => void;
-    onVariableChange: (key: 'variableID' | 'value', value: any) => void;
+    onModifierTargetChange: (filter: EntityFilter) => void;
     options?: EffectEditorOptions;
 }
 
-export function ModifierTargetSelection({ modifier, onEntityChange, onVariableChange }: IProps) {
+export function ModifierTargetSelection({ modifier: { targetEntityFilter }, onModifierTargetChange, options: { effectOriginType, effectOriginID, specifiedActors } }: IProps) {
     const { t } = useTranslation();
+    const [tabIndex, setTabIndex] = useState<string>('0');
 
-    return <Box></Box>;
+    const onFilterChanged = (key: 'entity' | 'variableKey' | 'value' | 'operator', newValue: any) => {
+        const updatedFilter = CopyClassInstance(targetEntityFilter);
+
+        updatedFilter[key] = newValue;
+        onModifierTargetChange(updatedFilter);
+    };
+
+    return (
+        <Box className="">
+            <TabContext value={tabIndex}>
+                {/* Should only have more than one option if the origin is a event. Since only them the actors are selectable */}
+                {effectOriginType === EffectOriginType.EVENT && specifiedActors && specifiedActors.length !== 0 && (
+                    <TabList value={tabIndex} onChange={(_, value) => setTabIndex(value)}>
+                        <Tab label={t('interface.editor.modifier.target_tab_label_entity')} value="0" />
+                        <Tab label={t('interface.editor.modifier.target_tab_label_actors')} value="1" />
+                    </TabList>
+                )}
+
+                <Box></Box>
+
+                <TabPanel value="0">
+                    <EntityFilterComponent
+                        entity={targetEntityFilter.entity}
+                        onEntityChange={(entity) => onFilterChanged('entity', entity)}
+                        variable={GetVariablesOfEntity(targetEntityFilter.entity)[targetEntityFilter.variableKey]}
+                        onVariableChange={(variable) => onFilterChanged('variableKey', variable.key)}
+                        operator={targetEntityFilter.operator}
+                        onOperatorChange={(operator) => onFilterChanged('operator', operator)}
+                        value={targetEntityFilter.value}
+                        onValueChange={(value) => onFilterChanged('value', value)}
+                    />
+                </TabPanel>
+                <TabPanel value="1">
+                    {/*
+                    // TODO: Create the logic for the selection of Actors and Active/Passive agents of the modifier.
+            {effectOriginType === EffectOriginType.EVENT && specifiedActors && specifiedActors.length !== 0 && (
+                <FormControl variant="filled">
+                    <InputLabel htmlFor="origin_actors">{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
+                    <Select id="origin_actors" value={specifiedActors} onChange={(event) => onActorChanged(event.target.value, true)} multiple>
+                        {actors.map((actor) => (
+                            <MenuItem key={`origin_actor_option_${actor.id}`} value={actor.id}>
+                                {actor.alias}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            )} */}
+                </TabPanel>
+            </TabContext>
+        </Box>
+    );
 }

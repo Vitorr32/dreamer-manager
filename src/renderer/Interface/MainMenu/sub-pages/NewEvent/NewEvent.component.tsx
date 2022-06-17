@@ -32,6 +32,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { EventTreeRender } from './EventTreeRender.component';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
+import { EffectOriginType } from 'renderer/shared/models/options/EffectEditorOptions.model';
 
 interface IProps {}
 
@@ -290,7 +291,14 @@ export function NewEvent({}: IProps) {
                             {t('interface.editor.effect.add_effect')}
                         </Button>
 
-                        {editEffectIndex !== -1 && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={currentEvent.effects[editEffectIndex]} />}
+                        {editEffectIndex !== -1 && (
+                            <EffectEditor
+                                onChange={onEditEffect}
+                                index={editEffectIndex}
+                                effect={currentEvent.effects[editEffectIndex]}
+                                options={{ effectOriginType: EffectOriginType.EVENT, effectOriginID: currentEvent.id }}
+                            />
+                        )}
                     </Box>
                 </>
             )}

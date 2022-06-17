@@ -73,6 +73,8 @@ export const en_US = {
                     select_type_caption: 'Select the type of modifier that this effect will have',
                     select_type_submit: 'Submit',
                     select_type_empty: 'Please select the type of modification that this effect will have on characters, events or the game world.',
+                    target_tab_label_entity: "Entity's Variable",
+                    target_tab_label_actors: 'Event Actors',
                     input_numeric: 'Value change',
                     input_numeric_helper: 'The value that the modifier will apply (can be negative)',
                     input_percent: 'Percentage change',
@@ -340,6 +342,19 @@ export const en_US = {
                 companies: 'Companies',
                 locations: 'Locations',
                 nations: 'Nations',
+            },
+            variable: {
+                operator: {
+                    bigger_than: 'Bigger than',
+                    equal_or_bigger_than: 'Equal or bigger than',
+                    lesser_than: 'Less than',
+                    equal_or_lesser_than: 'Equal or less than',
+                    equals_to: 'Equals to / Is',
+                    dont_equals_to: 'Does not equals to / Is Not',
+                    contains: 'Contains / Has',
+                    dont_contain: "Does not contain / Don't have",
+                    starts_with: 'Starts with',
+                },
             },
             modifier: {
                 type: {

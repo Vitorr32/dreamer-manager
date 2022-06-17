@@ -37,7 +37,6 @@ export function ModifierTypeDialog({ modifier, onTypeSelect, open, onClose, opti
         const newModifier = Object.assign({}, modifier);
         //Reset layout of inputs on change of type
         if (modifier.type !== tempType) {
-            newModifier.effectiveChange = 0;
             newModifier.modifiedWorldState = {};
         }
 

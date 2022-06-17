@@ -3,6 +3,7 @@ import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { Modifier, ModifierTargetType, ModifierType } from 'renderer/shared/models/base/Modifier';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
@@ -24,17 +25,13 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
     const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
 
-    const hasSpecificActors = (): boolean => {
-        return modifier.type !== ModifierType.UNDEFINED && options && !!options.specifiedActors;
-    };
-
     const onEntityModifierChanged = (entity: Entity): void => {
         const newModifier = CopyClassInstance(modifier);
-        newModifier.modifiedEntityVariable = { entity: entity, variableID: '', value: '' };
+        newModifier.modifiedEntityVariable = { entity: entity, variableKey: '', value: '' };
         onChange(newModifier);
     };
 
-    const onEntityVariableChange = (key: 'variableID' | 'value', value: any): void => {
+    const onEntityVariableChange = (key: 'variableKey' | 'value', value: any): void => {
         const newModifier = CopyClassInstance(modifier);
 
         console.log('value', value);
@@ -43,11 +40,16 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         onChange(newModifier);
     };
 
+    const onModifierTargetFilterChange = (filter: EntityFilter): void => {
+        const newModifier = CopyClassInstance(modifier);
+        newModifier.modifiedEntityVariable = filter;
+        onChange(newModifier);
+    };
+
     const onTypeSubmitted = (type: ModifierType) => {
         const newModifier = Object.assign({}, modifier);
         //Reset layout of inputs on change of type
         if (modifier.type !== type) {
-            newModifier.effectiveChange = 0;
             newModifier.modifiedWorldState = {};
         }
 
@@ -100,7 +102,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
-            // TODO: Create a comprehensive modifier targeting using condition tree independent of the Effect condition tree and that includes
+                <ModifierTargetSelection modifier={modifier} onModifierTargetChange={onModifierTargetFilterChange} options={options} />;
             // Event actors into consideration.
 
             // return <ModifierTargetSelection />
