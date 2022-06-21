@@ -66,6 +66,10 @@ export const en_US = {
                     time_datepicker_label: 'Pick the date',
                     add_condition_label: 'Add Condition',
                 },
+                actor: {
+                    input_label_selection: 'Actor Selection',
+                    option_actor_all: 'All Actors',
+                },
                 modifier: {
                     title: 'Modifier Editor',
                     subtitle: 'What this effect modify on the game character?',

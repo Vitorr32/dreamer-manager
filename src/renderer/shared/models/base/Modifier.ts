@@ -42,11 +42,6 @@ export enum ModifierTargetType {
     RECEPTOR_ACTOR = 'receptorActor',
 }
 
-export enum ModifierTargetSpecification {
-    EVERYONE = 'model.modifier.target.specification.everyone',
-    EVERYONE_ATTENDS_CONDITION = 'model.modifier.target.specification.everyone_condition',
-}
-
 export class Modifier {
     public type: ModifierType;
     public modifiedWorldState: {
@@ -55,6 +50,7 @@ export class Modifier {
 
     public modifiedEntityVariable: EntityVariableValue;
     public targetEntityFilter?: EntityFilter;
+    public receptorEntityFilter?: EntityFilter;
 
     constructor() {
         this.type = ModifierType.UNDEFINED;

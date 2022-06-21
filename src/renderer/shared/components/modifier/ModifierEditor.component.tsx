@@ -9,7 +9,6 @@ import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
-import { AffectedActorsSelect } from '../effects/AffectedActorsSelect.component';
 import { ModifierEntityEditor } from './ModifierEntityEditor.component';
 import { ModifierTargetSelection } from './ModifierTargetSelection.component';
 import { ModifierTypeDialog } from './ModifierTypeDialog.component';
@@ -40,9 +39,9 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         onChange(newModifier);
     };
 
-    const onModifierTargetFilterChange = (filter: EntityFilter): void => {
+    const onModifierFilteringChange = (target: 'targetEntityFilter' | 'receptorEntityFilter', filter: EntityFilter): void => {
         const newModifier = CopyClassInstance(modifier);
-        newModifier.modifiedEntityVariable = filter;
+        newModifier[target] = filter;
         onChange(newModifier);
     };
 
@@ -95,6 +94,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
     };
 
     const renderTargetingSelection = (): React.ReactElement | null => {
+        console.log('YOLO ' + modifier.type);
         switch (modifier.type) {
             case ModifierType.MODIFY_ENTITY_VARIABLE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
@@ -102,19 +102,14 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
-                <ModifierTargetSelection modifier={modifier} onModifierTargetChange={onModifierTargetFilterChange} options={options} />;
-            // Event actors into consideration.
-
-            // return <ModifierTargetSelection />
-            // return (
-            //     <AffectedActorsSelect
-            //         actors={options.specifiedActors}
-            //         originActors={modifier.modifiedWorldState?.originActor}
-            //         targetActors={modifier.modifiedWorldState?.receptorActor}
-            //         onChange={(value, isOrigin) => onToolPickerSelection(value, isOrigin ? ModifierTargetType.ORIGIN_ACTOR : ModifierTargetType.RECEPTOR_ACTOR)}
-            //         hasOriginActor={true}
-            //     />
-            // );
+                return (
+                    <ModifierTargetSelection
+                        modifier={modifier}
+                        onModifierTargetChange={(filter) => onModifierFilteringChange('targetEntityFilter', filter)}
+                        onModifierReceptorChange={(filter) => onModifierFilteringChange('receptorEntityFilter', filter)}
+                        options={options}
+                    />
+                );
             default:
                 return null;
         }
