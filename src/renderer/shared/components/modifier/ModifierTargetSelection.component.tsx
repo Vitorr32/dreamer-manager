@@ -36,6 +36,7 @@ export function ModifierTargetSelection({
 
     return (
         <Box className="">
+            TARGETTING
             <TabContext value={tabIndex}>
                 {/* Should only have more than one option if the origin is a event. Since only them the actors are selectable */}
                 {effectOriginType === EffectOriginType.EVENT && specifiedActors && specifiedActors.length !== 0 && (

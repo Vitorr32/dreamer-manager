@@ -296,7 +296,7 @@ export function NewEvent({}: IProps) {
                                 onChange={onEditEffect}
                                 index={editEffectIndex}
                                 effect={currentEvent.effects[editEffectIndex]}
-                                options={{ effectOriginType: EffectOriginType.EVENT, effectOriginID: currentEvent.id }}
+                                options={{ effectOriginType: EffectOriginType.EVENT, effectOriginID: currentEvent.id, specifiedActors: currentEvent.actors }}
                             />
                         )}
                     </Box>
