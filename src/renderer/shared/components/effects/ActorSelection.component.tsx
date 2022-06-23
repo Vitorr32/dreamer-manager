@@ -1,7 +1,7 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Actor } from 'renderer/shared/models/base/Event.model';
+import { Actor } from 'renderer/shared/models/base/Actor.model';
 
 interface IProps {
     actorPool: Actor[];
@@ -13,7 +13,7 @@ interface IProps {
 
 export function ActorSelection({ actorPool, onSelection, addEveryoneOption = false, multiple = false, helperText }: IProps) {
     const { t, i18n } = useTranslation();
-    const [selectedActors, setSelectedActors] = useState<string | string[]>();
+    const [selectedActors, setSelectedActors] = useState<string | string[]>('');
 
     const onSelectChange = (changedSelection: string | string[]) => {
         setSelectedActors(changedSelection);

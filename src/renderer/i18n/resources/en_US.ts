@@ -230,6 +230,15 @@ export const en_US = {
                     physical: 'Physical',
                 },
             },
+            actor: {
+                variables: {
+                    type: 'Type of Actor',
+                    spritePath: 'Sprite Path',
+                    characterID: 'Character',
+                    id: 'ID',
+                    alias: 'Alias',
+                },
+            },
             character: {
                 status: {
                     energy: 'Energy',

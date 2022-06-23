@@ -7,6 +7,7 @@ export enum VariableType {
     PERCENTAGE_OR_MULTIPLIER,
     ENUMERATOR,
     DATE,
+    FILE_PATH,
 }
 
 export enum VariableOperator {

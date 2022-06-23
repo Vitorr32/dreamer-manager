@@ -17,7 +17,6 @@ interface IProps {
 export function ModifierTypeDialog({ modifier, onTypeSelect, open, onClose, options }: IProps) {
     const { t } = useTranslation();
 
-    const [showTypeModal, setShowTypeModal] = React.useState<boolean>(false);
     const [selectableTypes, setSelectableTypes] = React.useState<ModifierType[]>([]);
     const [modifierSection, setModifierSection] = React.useState<ModifierTypeSection>();
     const [tempType, setTempType] = React.useState<ModifierType>(ModifierType.UNDEFINED);
@@ -43,7 +42,6 @@ export function ModifierTypeDialog({ modifier, onTypeSelect, open, onClose, opti
         newModifier.type = tempType;
 
         onTypeSelect(tempType);
-        setShowTypeModal(false);
         setSelectableTypes([]);
         setModifierSection(undefined);
         setTempType(ModifierType.UNDEFINED);
@@ -51,7 +49,7 @@ export function ModifierTypeDialog({ modifier, onTypeSelect, open, onClose, opti
 
     return (
         <Dialog className="selection-modal" open={open} onClose={onClose} maxWidth="md" fullWidth={true}>
-            <DialogContent sx={{ backgroundColor: 'background.default'}}>
+            <DialogContent sx={{ backgroundColor: 'background.default' }}>
                 <Box className="selection-modal__selection-wrapper">
                     <List className="selection-modal__selection selection-modal__selection-primary">
                         <ListItem disablePadding>

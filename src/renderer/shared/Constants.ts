@@ -1,3 +1,7 @@
+import { EntityFilter } from './models/base/EntityVariableValue.model';
+import { VariableOperator } from './models/base/Variable.model';
+import { Entity } from './models/enums/Entities.enum';
+
 export const MAX_NUMBER_OF_TRAITS_GENERATED = 5;
 export const MAX_NUMBER_OF_TRAITS = 20;
 export const MAX_NUMBER_OF_EFFECTS = 5;
@@ -9,6 +13,13 @@ export const STORED_DATE_FORMAT = 'x';
 export const MIN_DATE = new Date(872, 1, 1, 0, 0, 0, 0);
 export const START_DATE = new Date(972, 3, 15, 0, 0, 0, 0);
 export const END_DATE = new Date(1072, 1, 1, 0, 0, 0, 0);
+
+export const DEFAULT_ENTITY_FILTER: EntityFilter = {
+    entity: Entity.NONE,
+    operator: VariableOperator.NONE,
+    value: '',
+    variableKey: '',
+};
 
 export const LANGUAGE_CODE_DEFAULT = 'en_US';
 export const LANGUAGE_CODES = ['en_US', 'pt_BR'];
@@ -26,7 +37,7 @@ export const IMAGES_FOLDER = 'images';
 export const SPRITES_FOLDER = 'sprites';
 export const GENERIC_SPRITES_FOLDER = 'generic';
 export const BACKGROUND_IMAGES_FOLDER = 'background';
-export const EVENT_BACKGROUND_IMAGES_FOLDER = 'event'
+export const EVENT_BACKGROUND_IMAGES_FOLDER = 'event';
 export const ATTRIBUTES_DATABASE_FOLDER = 'attributes';
 export const EVENT_DATABASE_FOLDER = 'events';
 

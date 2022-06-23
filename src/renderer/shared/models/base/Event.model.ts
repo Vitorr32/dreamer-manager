@@ -2,6 +2,7 @@ import { ConditionTree } from './ConditionTree';
 import { v4 as uuidv4 } from 'uuid';
 import { VisualNovel } from './VisualNovel.model';
 import { Effect } from './Effect.model';
+import { Actor } from './Actor.model';
 
 export interface Trigger {
     //In what circumstances should this event happen.
@@ -25,28 +26,6 @@ export interface Flag {
     hoursToExpire?: number | null;
     //Is this flag applied to the world state?
     global: boolean;
-}
-
-export enum ActorType {
-    PlAYER_CHARACTER = 'player',
-    GENERIC_TYPE = 'generic',
-    DYNAMIC_TYPE = 'dynamic',
-    SPECIFIC_TYPE = 'specific',
-}
-
-export interface Actor {
-    //If this event actors are pooled on the moment that the event happens.
-    actorType: ActorType;
-    // Generic sprite path
-    spriteFilePath?: string[];
-    //If the actor is a specific character, just put the id here.
-    characterID?: string;
-    //Condition to be checked to select the actor in case of dynamic casting
-    actorCastingCondition?: ConditionTree;
-    // Actor object ID
-    id: string;
-    // Actor alias that the user may change to better edit the event, or if the actor is generic, the name that will appear on the dialogue screen.
-    alias?: string;
 }
 
 export class Event {

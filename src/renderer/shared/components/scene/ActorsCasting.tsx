@@ -22,12 +22,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { BACKGROUND_IMAGES_FOLDER, GENERIC_SPRITES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_ACTOR_SPRITE, SPRITES_FOLDER } from 'renderer/shared/Constants';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
-import { Actor, ActorType, Event } from 'renderer/shared/models/base/Event.model';
+import { Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component';
 import { v4 as uuidv4 } from 'uuid';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
+import { Actor, ActorType } from 'renderer/shared/models/base/Actor.model';
 
 interface IProps {
     event: Event;
@@ -77,12 +78,10 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
     const onCharacterAdded = (): void => {
         const editedEvent = CopyClassInstance(event);
 
-        const newActor: Actor = {
-            actorType: ActorType.GENERIC_TYPE,
-            id: `actor_${uuidv4()}`,
-            alias: `${t('model.event.actor')}_${editedEvent.actors?.length || 0}`,
-            spriteFilePath: [GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE],
-        };
+        const newActor: Actor = new Actor();
+        newActor.actorType = ActorType.GENERIC_TYPE;
+        newActor.alias = `${t('model.event.actor')}_${editedEvent.actors?.length || 0}`;
+        newActor.spriteFilePath = [GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE];
 
         if (editedEvent.actors) {
             editedEvent.actors.push(newActor);

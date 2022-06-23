@@ -46,8 +46,6 @@ export function ModifierTargetSelection({
                     </TabList>
                 )}
 
-                <Box></Box>
-
                 <TabPanel value="0">
                     <EntityFilterComponent
                         entity={targetEntityFilter?.entity || Entity.NONE}
@@ -67,20 +65,6 @@ export function ModifierTargetSelection({
                         onReceptorFilterChange={onModifierReceptorChange}
                         hasOriginActor={true}
                     />
-                    {/*
-                    // TODO: Create the logic for the selection of Actors and Active/Passive agents of the modifier.
-                    {effectOriginType === EffectOriginType.EVENT && specifiedActors && specifiedActors.length !== 0 && (
-                        <FormControl variant="filled">
-                            <InputLabel htmlFor="origin_actors">{t('interface.editor.event.scene_actor_animation_type_label')}</InputLabel>
-                            <Select id="origin_actors" value={specifiedActors} onChange={(event) => onActorChanged(event.target.value, true)} multiple>
-                                {actors.map((actor) => (
-                                    <MenuItem key={`origin_actor_option_${actor.id}`} value={actor.id}>
-                                        {actor.alias}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    )} */}
                 </TabPanel>
             </TabContext>
         </Box>

@@ -3,6 +3,7 @@ import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { Modifier, ModifierTargetType, ModifierType } from 'renderer/shared/models/base/Modifier';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
@@ -52,6 +53,26 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             newModifier.modifiedWorldState = {};
         }
 
+        //Update the filters properties as needed by the modifier type.
+        switch (type) {
+            case ModifierType.MODIFY_ENTITY_VARIABLE:
+                newModifier.targetEntityFilter = DEFAULT_ENTITY_FILTER;
+                newModifier.receptorEntityFilter = null;
+                break;
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
+            case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
+                newModifier.targetEntityFilter = DEFAULT_ENTITY_FILTER;
+                newModifier.receptorEntityFilter = DEFAULT_ENTITY_FILTER;
+                break;
+            default:
+                newModifier.targetEntityFilter = null;
+                newModifier.receptorEntityFilter = null;
+                break;
+        }
+
         newModifier.type = type;
 
         setShowTypeModal(false);
@@ -85,7 +106,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         }
     };
 
-    const renderEntitySelection = (): React.ReactElement | null => {
+    const renderEntityModifier = (): React.ReactElement | null => {
         if (modifier.type !== ModifierType.MODIFY_ENTITY_VARIABLE) {
             return null;
         }
@@ -94,7 +115,6 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
     };
 
     const renderTargetingSelection = (): React.ReactElement | null => {
-        console.log('YOLO ' + modifier.type);
         switch (modifier.type) {
             case ModifierType.MODIFY_ENTITY_VARIABLE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
@@ -127,7 +147,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                     {modifier.type === ModifierType.UNDEFINED ? t('interface.editor.modifier.select_type') : t(modifier.type)}
                 </Button>
 
-                {renderEntitySelection()}
+                {renderEntityModifier()}
 
                 {renderTargetingSelection()}
 
