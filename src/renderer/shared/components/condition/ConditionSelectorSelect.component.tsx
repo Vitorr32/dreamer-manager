@@ -1,6 +1,6 @@
 import { Button, List, ListItem, ListItemText, Menu } from '@mui/material';
 import React from 'react';
-import { Condition, EventFlagSelector, LocationSelector, NumericSelector, TimeSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
+import { Condition, EntitySelector, EventFlagSelector, LocationSelector, NumericSelector, TimeSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
 import { ArrowDropDown } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
@@ -27,8 +27,8 @@ export function ConditionSelectorSelect(props: IProps) {
     const renderAppropriateSelector = (condition: Condition): React.ReactElement[] => {
         let enumType: any;
         switch (condition.initiator) {
-            case ConditionInitiator.STATUS_RANGE:
-            case ConditionInitiator.ATTRIBUTE_RANGE:
+            case ConditionInitiator.ENTITY_FILTERING:
+                enumType = EntitySelector;
             case ConditionInitiator.RELATIONSHIP:
                 enumType = NumericSelector;
                 break;

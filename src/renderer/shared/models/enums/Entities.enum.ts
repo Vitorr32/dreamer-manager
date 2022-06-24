@@ -8,4 +8,5 @@ export enum Entity {
     COMPANIES = 'model.entity.companies',
     LOCATIONS = 'model.entity.locations',
     NATIONS = 'model.entity.nations',
+    WORLD_STATE = 'model.entity.world',
 }

@@ -1,6 +1,7 @@
 import { ConditionInitiator } from '../enums/ConditionInitiator.enum';
 import { ConditionHealthCheckRepository } from '../metadata/ConditionHealth.metadata';
 import { Feedback } from './ConditionFeedback';
+import { ConditionEntityFilter, EntityFilter } from './EntityVariableValue.model';
 
 // export enum ConditionAgent {
 //     UNDEFINED = 'model.undefined',
@@ -26,33 +27,12 @@ export enum Agent {
     GLOBAL = 'model.condition.agent.global',
 }
 
-export enum NumericSelector {
+export enum EntitySelector {
     UNDEFINED = 'model.undefined',
 
-    BIGGER_THAN = 'model.condition.selector.numeric.bigger_than',
-    BIGGER_THAN_TARGET = 'model.condition.selector.numeric.bigger_than_target',
-    SMALLER_THAN = 'model.condition.selector.numeric.smaller_than',
-    SMALLER_THAN_TARGET = 'model.condition.selector.numeric.smaller_than_target',
-    BETWEEN = 'model.condition.selector.numeric.between',
-    EXACTLY = 'model.condition.selector.numeric.exactly',
-}
-
-export enum TraitSelector {
-    UNDEFINED = 'model.undefined',
-
-    HAS = 'model.condition.selector.trait.has',
-    DONT = 'model.condition.selector.trait.dont',
-}
-
-export enum EventFlagSelector {
-    UNDEFINED = 'model.undefined',
-
-    //Trigger refers to world events specifically
-    TRIGGERED = 'model.condition.selector.event.triggered',
-    NOT_TRIGGERED = 'model.condition.selector.event.not_triggered',
-    //Flagged means character flags specifically
-    FLAGGED = 'model.condition.selector.event.flagged',
-    NOT_FLAGGED = 'model.condition.selector.event.not_flagged'
+    ANY_SATISFY_FILTER = 'sadasda',
+    NONE_SATISFY_FILTER = 'asdasd',
+    X_SATISFY_FILTER = 'sdasdasdasdd',
 }
 
 export enum LocationSelector {
@@ -82,6 +62,7 @@ export class Condition {
     public passiveAgent: Agent;
     //A number representing any of the selectors of the individual Initiator
     public selector: string;
+    public entityFilter: ConditionEntityFilter;
     /*
         Parameters will represent different values depending the type of initiator that the condition has
         Status: Up to 3 parameters [Status Enumerator, First Input, Second Input]
@@ -114,7 +95,6 @@ export class Condition {
         this.initiator = ConditionInitiator.UNDEFINED;
         this.activeAgent = Agent.UNDEFINED;
         this.passiveAgent = Agent.UNDEFINED;
-        this.selector = NumericSelector.UNDEFINED;
         this.parameters = [];
         this.targets = [];
     }

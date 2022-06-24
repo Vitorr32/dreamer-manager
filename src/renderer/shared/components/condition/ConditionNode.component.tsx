@@ -4,8 +4,8 @@ import { LogicOperator } from '../../../shared/models/enums/LogicOperator.enum';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { Condition } from '../../../shared/models/base/Condition.model';
-import { ConditionLine } from './ConditionLine.component';
 import { Box } from '@mui/system';
+import { ConditionLineWithEntity } from './ConditionLineWithEntity.component';
 
 interface IProps {
     conditionNode: Node;
@@ -33,7 +33,6 @@ export function ConditionNode({ conditionNode, index, depth, onChange, onRemoveS
     };
 
     const onConditionChange = (childIndex: number, condition: Condition) => {
-        console.log("onConditionChange")
         const newNode: Node = Object.assign({}, conditionNode);
 
         newNode.conditions[childIndex] = condition;
@@ -110,11 +109,28 @@ export function ConditionNode({ conditionNode, index, depth, onChange, onRemoveS
 
             <Box className="node-children">
                 {conditionNode.conditions.map((conditionLine, index) => {
-                    return <ConditionLine key={`condition_line_${depth}_${index}`} index={index} conditionLine={conditionLine} onChange={onConditionChange} onRemove={onConditionLineRemoval} />;
+                    return (
+                        <ConditionLineWithEntity
+                            key={`condition_line_${depth}_${index}`}
+                            index={index}
+                            conditionLine={conditionLine}
+                            onChange={onConditionChange}
+                            onRemove={onConditionLineRemoval}
+                        />
+                    );
                 })}
 
                 {conditionNode.children.map((childNode, index) => {
-                    return <ConditionNode key={`condition_node_${depth}_${index}`} depth={depth + 1} onChange={onChildNodeChange} onRemoveSelf={onSubNodeRemoval} index={index} conditionNode={childNode} />;
+                    return (
+                        <ConditionNode
+                            key={`condition_node_${depth}_${index}`}
+                            depth={depth + 1}
+                            onChange={onChildNodeChange}
+                            onRemoveSelf={onSubNodeRemoval}
+                            index={index}
+                            conditionNode={childNode}
+                        />
+                    );
                 })}
             </Box>
         </Box>

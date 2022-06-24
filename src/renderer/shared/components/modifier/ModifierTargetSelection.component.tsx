@@ -50,7 +50,11 @@ export function ModifierTargetSelection({
                     <EntityFilterComponent
                         entity={targetEntityFilter?.entity || Entity.NONE}
                         onEntityChange={(entity) => onFilterChanged('entity', entity)}
-                        variable={targetEntityFilter?.entity ? GetVariablesOfEntity(targetEntityFilter.entity)[targetEntityFilter.variableKey] : null}
+                        variable={
+                            targetEntityFilter?.entity && targetEntityFilter.variableKey
+                                ? GetVariablesOfEntity(targetEntityFilter.entity)[targetEntityFilter.variableKey]
+                                : null
+                        }
                         onVariableChange={(variable) => onFilterChanged('variableKey', variable.key)}
                         operator={targetEntityFilter?.operator}
                         onOperatorChange={(operator) => onFilterChanged('operator', operator)}

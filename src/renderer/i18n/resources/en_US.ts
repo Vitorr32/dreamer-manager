@@ -258,8 +258,7 @@ export const en_US = {
             },
             condition: {
                 initiator: {
-                    status_range: 'Status Range',
-                    attr_range: 'Attribute Range',
+                    entity_filter: 'Entity',
                     trait: 'Trait',
                     event_flag: 'Event Flag',
                     location: 'Location',

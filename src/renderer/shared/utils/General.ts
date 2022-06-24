@@ -1,6 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep';
+import { Actor } from '../models/base/Actor.model';
 import { Character } from '../models/base/Character.model';
 import { Variables } from '../models/base/Variable.model';
+import { World } from '../models/base/World.model';
 import { Entity } from '../models/enums/Entities.enum';
 
 export function AreArraysEqual(array1: any[], array2: any[]): boolean {
@@ -26,7 +28,9 @@ export function GetVariablesOfEntity(entity: Entity): Variables {
         case Entity.CHARACTERS:
             return Character.getEntityVariables();
         case Entity.ACTORS:
-        // return Actor[keyof Actor];
+            return Actor.getEntityVariables();
+        case Entity.WORLD_STATE:
+            return World.getEntityVariables();
         default:
             return null;
     }

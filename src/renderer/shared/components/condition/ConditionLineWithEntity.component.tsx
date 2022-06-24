@@ -1,10 +1,9 @@
 import React from 'react';
-import { Condition, NumericSelector, TimeSelector, TraitSelector, LocationSelector, EventFlagSelector } from '../../../shared/models/base/Condition.model';
-import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
+import { Condition, TimeSelector, LocationSelector } from '../../models/base/Condition.model';
+import { ConditionInitiator } from '../../models/enums/ConditionInitiator.enum';
 import { FlagSelectionButton } from '../buttons/FlagSelectionButton';
 import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
 import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
-import { NumericSelectorParameterInput } from './NumericSelector.component';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRightSharp';
 import CloseIcon from '@mui/icons-material/Close';
 import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
@@ -26,7 +25,7 @@ interface IProps {
     options?: EffectEditorOptions;
 }
 
-export function ConditionLine({ conditionLine, index, onChange, onRemove, options }: IProps) {
+export function ConditionLineWithEntity({ conditionLine, index, onChange, onRemove, options }: IProps) {
     const { t } = useTranslation();
 
     const onSubComponentChangeOfCondition = (condition: Condition): void => {
@@ -59,21 +58,10 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
             // Take into consideration following cases: If any character charisma is at least 50
             // If character X has 50 Charisma
             // If character X has Flag Y
-            // return <EntityFilter entity={}/>
-            // case ConditionInitiator.ATTRIBUTE_RANGE:
-            //     return <AttributeSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
-            // case ConditionInitiator.STATUS_RANGE:
-            //     return <StaticStatusSelectionButton condition={condition} onChange={onTargetChange} />;
+            // If character X has more Charisma than Character Y
+
             case ConditionInitiator.RELATIONSHIP:
                 return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
-            case ConditionInitiator.EVENT_FLAGGED:
-                return (
-                    <FlagSelectionButton
-                        displayIDs={condition.targets}
-                        onChange={onTargetChange}
-                        global={condition.selector === EventFlagSelector.TRIGGERED || condition.selector === EventFlagSelector.NOT_TRIGGERED}
-                    />
-                );
             //Following initiators does not need selection tools, or they are specific to one selector
             case ConditionInitiator.TIME:
             case ConditionInitiator.LOCATION:
@@ -93,19 +81,6 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
 
     const renderSelectorTools = (condition: Condition): React.ReactElement | null => {
         switch (condition.selector) {
-            case NumericSelector.BIGGER_THAN:
-            case NumericSelector.SMALLER_THAN:
-            case NumericSelector.EXACTLY:
-                return <NumericSelectorParameterInput range={false} condition={condition} onChange={onParameterChange} />;
-            case NumericSelector.BETWEEN:
-                return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
-            case NumericSelector.BIGGER_THAN_TARGET:
-            case NumericSelector.SMALLER_THAN_TARGET:
-            case EventFlagSelector.FLAGGED:
-            case EventFlagSelector.NOT_FLAGGED:
-            case TraitSelector.HAS:
-            case TraitSelector.DONT:
-                return <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
             case TimeSelector.IS_AFTER_DATE:
             case TimeSelector.IS_AT_DATE:
             case TimeSelector.IS_BEFORE_DATE:

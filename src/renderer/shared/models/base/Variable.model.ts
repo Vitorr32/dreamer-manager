@@ -1,4 +1,5 @@
 import { Attribute } from './Attribute.model';
+import { Entity } from './Entity.model';
 
 export enum VariableType {
     TEXT,
@@ -8,6 +9,7 @@ export enum VariableType {
     ENUMERATOR,
     DATE,
     FILE_PATH,
+    EXTERNAL_KEY,
 }
 
 export enum VariableOperator {
@@ -30,8 +32,10 @@ export interface EntityVariable {
     displayName: string;
     // The type defines what operations and values are accepted to the variable.
     type: VariableType;
-    // If it is a variable with special characteristics(such as growth overtime, special calculations and so forth, set the associated object id)
-    associatedID?: string;
+    // If it is a variable with type External Key, it means it points to another entity, like the external key of a SQL table.
+    // It should also contains wich entity is the external key pointing to.
+    externalID?: string;
+    externalEntiyy?: Entity;
     // If it is a variable with Enumerator values, here all the possible values should be set.
     options?: string[];
     // This variable should be visible on the editor?
