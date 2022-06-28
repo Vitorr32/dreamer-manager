@@ -6,8 +6,8 @@ import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
 import { EntitySelect } from '../entity/EntitySelect.component';
-import { VariableSelect } from '../entity/VariableSelect.component';
-import { VariableValueInput } from '../entity/VariableValueInput.component';
+import { VariableSelect } from '../variables/VariableSelect.component';
+import { VariableValueInput } from '../variables/VariableValueInput.component';
 interface IProps {
     modifier: Modifier;
     onEntityChange: (entity: Entity) => void;
@@ -24,11 +24,11 @@ export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChang
             <EntitySelect entity={modifier.modifiedEntityVariable?.entity} onEntityChange={onEntityChange} />
 
             {/* VARIABLE SELECT */}
-            <VariableSelect
+            {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.entity && modifier.modifiedEntityVariable.entity !== Entity.NONE && <VariableSelect
                 entity={modifier.modifiedEntityVariable?.entity}
                 entityVariableKey={modifier.modifiedEntityVariable.variableKey}
                 onVariableChange={(variable: EntityVariable) => onVariableChange('variableKey', variable.key)}
-            />
+            />}
 
             {/* VARIABLE INPUT */}
             {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.variableKey && (

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { EntityVariable, VariableOperator } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EntitySelect } from './EntitySelect.component';
-import { VariableSelect } from './VariableSelect.component';
-import { VariableValueInput } from './VariableValueInput.component';
-import { VariableValueOperator } from './VariableValueOperator.component';
+import { VariableSelect } from '../variables/VariableSelect.component';
+import { VariableValueOperator } from '../variables/VariableValueOperator.component';
+import { VariableValueInput } from '../variables/VariableValueInput.component';
 
 interface IProps {
     entity: Entity;

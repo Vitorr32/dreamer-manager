@@ -4,11 +4,10 @@ import { Condition } from '../../models/base/Condition.model';
 import { ConditionInitiator } from '../../models/enums/ConditionInitiator.enum';
 import { ArrowDropDown } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 
 interface IProps {
     condition: Condition;
-    onChange: (condition: Condition) => void;
+    onChange: (conditionInitiator: ConditionInitiator) => void;
 }
 
 export function ConditionInitiatorSelect({ condition, onChange }: IProps) {
@@ -17,11 +16,7 @@ export function ConditionInitiatorSelect({ condition, onChange }: IProps) {
 
     const onItemSelected = (initiator: ConditionInitiator) => {
         setAnchorEl(null);
-
-        const newCondition = new Condition();
-        newCondition.initiator = initiator;
-
-        onChange(newCondition);
+        onChange(initiator);
     };
 
     return (

@@ -259,9 +259,6 @@ export const en_US = {
             condition: {
                 initiator: {
                     entity_filter: 'Entity',
-                    trait: 'Trait',
-                    event_flag: 'Event Flag',
-                    location: 'Location',
                     time: 'Time',
                     relationship: 'Relationship',
                 },
@@ -275,24 +272,6 @@ export const en_US = {
                     global: 'Global variable',
                 },
                 selector: {
-                    numeric: {
-                        bigger_than: 'bigger than',
-                        smaller_than: 'smaller than',
-                        bigger_than_target: 'bigger than target',
-                        smaller_than_target: 'smaller than target',
-                        between: 'between',
-                        exactly: 'exactly',
-                    },
-                    trait: {
-                        has: 'Has',
-                        dont: "Don't",
-                    },
-                    event: {
-                        triggered: 'Triggered',
-                        not_triggered: 'Not Triggered',
-                        flagged: 'Flagged',
-                        not_flagged: 'Not Flagged',
-                    },
                     location: {
                         of_type: 'The location type',
                         to_of_type: 'Moving to a location of type',

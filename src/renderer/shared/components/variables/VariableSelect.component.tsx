@@ -27,11 +27,12 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange }: 
         <FormControl fullWidth>
             <InputLabel>{t('interface.editor.modifier.input_label_variable')}</InputLabel>
             <Select value={entityVariableKey} label={t('interface.editor.modifier.input_label_variable')} onChange={(e) => onVariableChange(entityVariables[e.target.value])}>
-                {Object.keys(entityVariables).map((variableID) => (
-                    <MenuItem key={variableID} value={variableID}>
-                        {t(entityVariables[variableID].displayName)}
-                    </MenuItem>
-                ))}
+                {entityVariables &&
+                    Object.keys(entityVariables).map((variableID) => (
+                        <MenuItem key={variableID} value={variableID}>
+                            {t(entityVariables[variableID].displayName)}
+                        </MenuItem>
+                    ))}
             </Select>
         </FormControl>
     );

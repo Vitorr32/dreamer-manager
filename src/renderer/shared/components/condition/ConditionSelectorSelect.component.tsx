@@ -1,9 +1,10 @@
 import { Button, List, ListItem, ListItemText, Menu } from '@mui/material';
 import React from 'react';
-import { Condition, EntitySelector, EventFlagSelector, LocationSelector, NumericSelector, TimeSelector, TraitSelector } from '../../../shared/models/base/Condition.model';
+import { Condition, EntitySelector, TimeSelector } from '../../../shared/models/base/Condition.model';
 import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
 import { ArrowDropDown } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { Base } from 'renderer/shared/models/enums/Base.enum';
 
 interface IProps {
     condition: Condition;
@@ -29,17 +30,6 @@ export function ConditionSelectorSelect(props: IProps) {
         switch (condition.initiator) {
             case ConditionInitiator.ENTITY_FILTERING:
                 enumType = EntitySelector;
-            case ConditionInitiator.RELATIONSHIP:
-                enumType = NumericSelector;
-                break;
-            case ConditionInitiator.TRAIT:
-                enumType = TraitSelector;
-                break;
-            case ConditionInitiator.EVENT_FLAGGED:
-                enumType = EventFlagSelector;
-                break;
-            case ConditionInitiator.LOCATION:
-                enumType = LocationSelector;
                 break;
             case ConditionInitiator.TIME:
                 enumType = TimeSelector;
@@ -63,7 +53,7 @@ export function ConditionSelectorSelect(props: IProps) {
     return props.condition.initiator !== ConditionInitiator.UNDEFINED ? (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}>
-                {props.condition.selector !== NumericSelector.UNDEFINED ? t(props.condition.selector as string) : t('interface.editor.condition.selector')}
+                {props.condition.selector !== Base.UNDEFINED ? t(props.condition.selector as string) : t('interface.editor.condition.selector')}
             </Button>
             <Menu id="condition-initiator-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
                 <List component="nav" aria-labelledby="nested-list-subheader">

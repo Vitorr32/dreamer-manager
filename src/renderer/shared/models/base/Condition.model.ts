@@ -1,20 +1,7 @@
 import { ConditionInitiator } from '../enums/ConditionInitiator.enum';
 import { ConditionHealthCheckRepository } from '../metadata/ConditionHealth.metadata';
 import { Feedback } from './ConditionFeedback';
-import { ConditionEntityFilter, EntityFilter } from './EntityVariableValue.model';
-
-// export enum ConditionAgent {
-//     UNDEFINED = 'model.undefined',
-
-//     SELF = 'model.condition.selector.agent.self',
-//     TARGET = 'model.condition.selector.agent.target',
-//     SPECIFIC = 'model.condition.selector.agent.specific',
-//     SELF_TARGET = 'model.condition.selector.agent.self_target',
-//     SELF_SPECIFIC = 'model.condition.selector.agent.self_specific',
-//     SPECIFIC_SPECIFIC = 'model.condition.selector.agent.specific_specific',
-//     PLAYER = 'model.condition.selector.agent.player',
-//     GLOBAL = 'model.condition.selector.agent.global',
-// }
+import { ConditionEntityFilter } from './EntityVariableValue.model';
 
 export enum Agent {
     UNDEFINED = 'model.undefined',
@@ -33,14 +20,6 @@ export enum EntitySelector {
     ANY_SATISFY_FILTER = 'sadasda',
     NONE_SATISFY_FILTER = 'asdasd',
     X_SATISFY_FILTER = 'sdasdasdasdd',
-}
-
-export enum LocationSelector {
-    UNDEFINED = 'model.undefined',
-
-    IS_AT_LOCATION_OF_TYPE = 'model.condition.selector.location.of_type',
-    IS_MOVING_TO_LOCATION_OF_TYPE = 'model.condition.selector.location.to_of_type',
-    IS_AT_LOCATION_OF_TYPE_WITH_TARGET = 'model.condition.selector.location.of_type_with',
 }
 
 export enum TimeSelector {
@@ -74,7 +53,6 @@ export class Condition {
         Relationship: Up to 4 parameters [Character ID, Relationship Attribute, First Input, Second Input]
     */
     public parameters: number[] | string[];
-    public targets: string[];
 
     //Verify the health of the condition metadata, not if the condition actually evaluates to true or false with in-game attributes.
     public EvaluateConditionHealth(): Feedback {
@@ -96,6 +74,5 @@ export class Condition {
         this.activeAgent = Agent.UNDEFINED;
         this.passiveAgent = Agent.UNDEFINED;
         this.parameters = [];
-        this.targets = [];
     }
 }
