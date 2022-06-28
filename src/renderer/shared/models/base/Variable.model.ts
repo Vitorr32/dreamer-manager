@@ -4,12 +4,12 @@ import { Entity } from './Entity.model';
 export enum VariableType {
     TEXT,
     NUMBER,
-    ID_LIST,
     PERCENTAGE_OR_MULTIPLIER,
     ENUMERATOR,
     DATE,
     FILE_PATH,
     EXTERNAL_KEY,
+    EXTERNAL_KEY_LIST,
 }
 
 export enum VariableOperator {
@@ -32,7 +32,7 @@ export interface EntityVariable {
     displayName: string;
     // The type defines what operations and values are accepted to the variable.
     type: VariableType;
-    // If it is a variable with type External Key, it means it points to another entity, like the external key of a SQL table.
+    // If it is a variable with type External Key or External List, it means it points to another entity, like the external key of a SQL table.
     // It should also contains wich entity is the external key pointing to.
     externalID?: string;
     externalEntiyy?: Entity;
