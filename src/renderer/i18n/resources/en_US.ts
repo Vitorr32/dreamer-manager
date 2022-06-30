@@ -254,6 +254,7 @@ export const en_US = {
                     age: 'Age',
                     ethnicity: 'Ethnicity',
                     gender: 'Gender',
+                    flags: 'Event Flags',
                 },
             },
             condition: {
@@ -331,6 +332,7 @@ export const en_US = {
             },
             entity: {
                 actors: 'Actors',
+                traits: 'Traits',
                 characters: 'Characters',
                 player: 'Player',
                 staff: 'Staff',
@@ -338,6 +340,9 @@ export const en_US = {
                 companies: 'Companies',
                 locations: 'Locations',
                 nations: 'Nations',
+                filter: {
+                    input_label_operator: 'Operator',
+                },
             },
             variable: {
                 operator: {

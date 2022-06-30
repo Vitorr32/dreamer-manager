@@ -4,6 +4,7 @@ import { Trait } from './Trait.model';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomVariables, Variables, VariableType } from './Variable.model';
 import { Kinship } from './Kinship.model';
+import { Entity } from '../enums/Entities.enum';
 
 export enum Gender {
     MALE = 'male',
@@ -49,6 +50,14 @@ export const CharacterEntityVariables: Variables = {
         displayName: 'model.character.variables.gender',
         type: VariableType.ENUMERATOR,
         options: Object.values(Gender).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    flags: {
+        key: 'flags',
+        displayName: 'model.character.variables.flags',
+        type: VariableType.EXTERNAL_KEY_LIST,
+        externalEntity: Entity.TRAITS,
         read: true,
         edit: true,
     },

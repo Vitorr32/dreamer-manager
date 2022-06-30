@@ -60,6 +60,9 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                         />
                     </LocalizationProvider>
                 );
+            case VariableType.EXTERNAL_KEY:
+            case VariableType.EXTERNAL_KEY_LIST:
+            //TODO: Create input field which autocompletes with the external entity
             default:
                 return null;
         }

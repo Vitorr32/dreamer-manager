@@ -19,14 +19,14 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
             case VariableType.TEXT:
             case VariableType.DATE:
             default:
-                return [];
+                return Object.values(VariableOperator).map((operator) => operator);
         }
     };
 
     return (
         <FormControl fullWidth>
-            <InputLabel>{t('interface.editor.modifier.input_label_value_change')}</InputLabel>
-            <Select value={variableOperator} label={t('interface.editor.modifier.input_label_value_change')} onChange={(e) => onOperatorChange(e.target.value)}>
+            <InputLabel>{t('model.entity.filter.input_label_operator')}</InputLabel>
+            <Select value={variableOperator} label={t('model.entity.filter.input_label_operator')} onChange={(e) => onOperatorChange(e.target.value)}>
                 {getOperatorsOfVariableType(variable.type).map((option, index) => (
                     <MenuItem key={`entity_var_${index}`} value={option}>
                         {t(option)}

@@ -1,6 +1,7 @@
 export enum Entity {
     NONE = 'model.undefined',
     ACTORS = 'model.entity.actors',
+    TRAITS = 'model.entity.traits',
     CHARACTERS = 'model.entity.characters',
     PLAYER = 'model.entity.player',
     STAFF = 'model.entity.staff',

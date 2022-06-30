@@ -53,7 +53,7 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange }: IP
     };
 
     return (
-        <Box className="">
+        <Box className="yolo">
             {/* ENTITY SELECT */}
             <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} />
 

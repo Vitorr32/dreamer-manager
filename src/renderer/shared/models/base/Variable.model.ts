@@ -34,7 +34,6 @@ export interface EntityVariable {
     type: VariableType;
     // If it is a variable with type External Key or External List, it means it points to another entity, like the external key of a SQL table.
     // It should also contains wich entity is the external key pointing to.
-    externalID?: string;
     externalEntity?: Entity;
     // If it is a variable with Enumerator values, here all the possible values should be set.
     options?: string[];

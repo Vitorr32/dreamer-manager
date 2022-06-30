@@ -50,8 +50,6 @@ export function ConditionSelectorSelect(props: IProps) {
             });
     };
 
-    console.log(props.condition);
-
     return props.condition.initiator !== ConditionInitiator.UNDEFINED ? (
         <React.Fragment>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={(event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)}>
