@@ -8,7 +8,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
-import { ConditionAgentSelect } from './ConditionAgentSelect.component';
 import { ConditionLineSummary } from '../summary/ConditionLineSummary.component';
 import { TimeSelect } from './TimeSelect.component';
 import { ConditionEntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
@@ -38,7 +37,6 @@ export function ConditionLineWithEntity({ conditionLine, index, onChange, onRemo
         if (newCondition.initiator === ConditionInitiator.ENTITY_FILTERING) {
             newCondition.entityFilter = {
                 ...DEFAULT_ENTITY_FILTER,
-                selector: EntitySelector.UNDEFINED,
                 hasTarget: false,
                 targetFilter: [],
             };
@@ -83,15 +81,6 @@ export function ConditionLineWithEntity({ conditionLine, index, onChange, onRemo
         }
     };
 
-    const renderActiveAgent = (condition: Condition): React.ReactElement | null => {
-        //Not nescessary to set the actor in case of time initiator since it's the world date
-        if (condition.initiator === ConditionInitiator.TIME) {
-            return null;
-        }
-
-        return <ConditionAgentSelect condition={condition} activeAgent onChange={onSubComponentChangeOfCondition} />;
-    };
-
     const renderSelectorTools = (condition: Condition): React.ReactElement | null => {
         switch (condition.selector) {
             case TimeSelector.IS_AFTER_DATE:
@@ -112,8 +101,6 @@ export function ConditionLineWithEntity({ conditionLine, index, onChange, onRemo
                     <ConditionInitiatorSelect condition={conditionLine} onChange={onConditionInitiatorChange} />
 
                     <ConditionSelectorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
-
-                    {renderActiveAgent(conditionLine)}
 
                     {renderInitiatorTool(conditionLine)}
 

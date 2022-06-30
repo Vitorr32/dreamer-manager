@@ -1,25 +1,26 @@
+import { Base } from '../enums/Base.enum';
 import { ConditionInitiator } from '../enums/ConditionInitiator.enum';
 import { ConditionHealthCheckRepository } from '../metadata/ConditionHealth.metadata';
 import { Feedback } from './ConditionFeedback';
 import { ConditionEntityFilter } from './EntityVariableValue.model';
 
-export enum Agent {
-    UNDEFINED = 'model.undefined',
+// export enum Agent {
+//     UNDEFINED = 'model.undefined',
 
-    SELF = 'model.condition.agent.self',
-    PRODUCER = 'model.condition.agent.producer',
-    INTERACTED = 'model.condition.agent.interacted',
-    SPECIFIC_CHARACTER = 'model.condition.agent.specific_character',
-    TUTOR = 'model.condition.agent.tutor',
-    GLOBAL = 'model.condition.agent.global',
-}
+//     SELF = 'model.condition.agent.self',
+//     PRODUCER = 'model.condition.agent.producer',
+//     INTERACTED = 'model.condition.agent.interacted',
+//     SPECIFIC_CHARACTER = 'model.condition.agent.specific_character',
+//     TUTOR = 'model.condition.agent.tutor',
+//     GLOBAL = 'model.condition.agent.global',
+// }
 
 export enum EntitySelector {
     UNDEFINED = 'model.undefined',
 
-    ANY_SATISFY_FILTER = 'sadasda',
-    NONE_SATISFY_FILTER = 'asdasd',
-    X_SATISFY_FILTER = 'sdasdasdasdd',
+    ANY_SATISFY_FILTER = 'model.condition.selector.entity.any_true',
+    NONE_SATISFY_FILTER = 'model.condition.selector.entity.all_false',
+    X_SATISFY_FILTER = 'model.condition.selector.entity.number_x_true',
 }
 
 export enum TimeSelector {
@@ -37,8 +38,6 @@ export enum TimeSelector {
 
 export class Condition {
     public initiator: ConditionInitiator;
-    public activeAgent: Agent;
-    public passiveAgent: Agent;
     //A number representing any of the selectors of the individual Initiator
     public selector: string;
     public entityFilter: ConditionEntityFilter;
@@ -71,8 +70,7 @@ export class Condition {
 
     constructor() {
         this.initiator = ConditionInitiator.UNDEFINED;
-        this.activeAgent = Agent.UNDEFINED;
-        this.passiveAgent = Agent.UNDEFINED;
+        this.selector = Base.UNDEFINED;
         this.parameters = [];
     }
 }

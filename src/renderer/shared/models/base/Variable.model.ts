@@ -1,5 +1,5 @@
+import { Entity } from '../enums/Entities.enum';
 import { Attribute } from './Attribute.model';
-import { Entity } from './Entity.model';
 
 export enum VariableType {
     TEXT,
@@ -35,7 +35,7 @@ export interface EntityVariable {
     // If it is a variable with type External Key or External List, it means it points to another entity, like the external key of a SQL table.
     // It should also contains wich entity is the external key pointing to.
     externalID?: string;
-    externalEntiyy?: Entity;
+    externalEntity?: Entity;
     // If it is a variable with Enumerator values, here all the possible values should be set.
     options?: string[];
     // This variable should be visible on the editor?

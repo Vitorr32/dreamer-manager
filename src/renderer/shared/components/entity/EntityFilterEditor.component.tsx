@@ -13,9 +13,10 @@ import { VariableValueInput } from '../variables/VariableValueInput.component';
 interface IProps {
     entityFilter: EntityFilter;
     onFilterChange: (entityFilter: EntityFilter) => void;
+    lockEntitySelection?: boolean;
 }
 
-export function EntityFilterEditor({ entityFilter, onFilterChange }: IProps) {
+export function EntityFilterEditor({ entityFilter, onFilterChange, lockEntitySelection = false }: IProps) {
     const { t } = useTranslation();
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
 
@@ -35,7 +36,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange }: IProps) {
     return (
         <Box className="">
             {/* ENTITY SELECT */}
-            <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} />
+            <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} disabled={lockEntitySelection} />
 
             {/* VARIABLE SELECT */}
             {entityFilter.entity !== Entity.NONE && (

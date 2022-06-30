@@ -272,6 +272,11 @@ export const en_US = {
                     global: 'Global variable',
                 },
                 selector: {
+                    entity: {
+                        any_true: 'Any {{entity}} satisfy the filter',
+                        all_false: 'No {{entity}} satisfy the filter',
+                        number_x_true: 'An specific number satisfy the filter',
+                    },
                     location: {
                         of_type: 'The location type',
                         to_of_type: 'Moving to a location of type',

@@ -1,7 +1,7 @@
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Agent, Condition, TimeSelector } from 'renderer/shared/models/base/Condition.model';
+import { Condition, TimeSelector } from 'renderer/shared/models/base/Condition.model';
 import { ConditionInitiator } from 'renderer/shared/models/enums/ConditionInitiator.enum';
 import { RootState } from 'renderer/redux/store';
 import { useSelector } from 'react-redux';
@@ -18,21 +18,21 @@ export function ConditionLineSummary({ condition, worldSnapshot }: IProps) {
 
     const database = useSelector((state: RootState) => state.database);
 
-    const getAgentString = (agent: Agent, worldSnapshot: any): string => {
-        //TODO: Get the agent name from the worldSnapshot when actualy in-game summary
-        switch (agent) {
-            case Agent.SELF:
-                return t('summary.agent.unknown_self');
-            case Agent.INTERACTED:
-                return t('summary.agent.unknown_interacted');
-            case Agent.PRODUCER:
-                return t('summary.agent.unknown_producer');
-            case Agent.TUTOR:
-                return t('summary.agent.unknown_tutor');
-            default:
-                return '';
-        }
-    };
+    // const getAgentString = (agent: Agent, worldSnapshot: any): string => {
+    //     //TODO: Get the agent name from the worldSnapshot when actualy in-game summary
+    //     switch (agent) {
+    //         case Agent.SELF:
+    //             return t('summary.agent.unknown_self');
+    //         case Agent.INTERACTED:
+    //             return t('summary.agent.unknown_interacted');
+    //         case Agent.PRODUCER:
+    //             return t('summary.agent.unknown_producer');
+    //         case Agent.TUTOR:
+    //             return t('summary.agent.unknown_tutor');
+    //         default:
+    //             return '';
+    //     }
+    // };
 
     const getNameFromDatabase = (line: Condition) => {
         switch (line.initiator) {
@@ -82,8 +82,6 @@ export function ConditionLineSummary({ condition, worldSnapshot }: IProps) {
 
     const renderConditionLineSentence = (line: Condition, worldSnapshot: any): string => {
         return t(getSummaryForSelector(line), {
-            activeAgent: getAgentString(line.activeAgent, worldSnapshot),
-            passiveAgent: getAgentString(line.passiveAgent, worldSnapshot),
             variable: getNameFromDatabase(line),
             parameter: getTreatedParameterValue(line.parameters?.[0], line),
             lowerValue: line.parameters?.[0] || t('summary.common.defaultValue'),

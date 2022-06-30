@@ -13,7 +13,6 @@ export interface EntityFilter extends EntityVariableValue {
 }
 
 export interface ConditionEntityFilter extends EntityFilter {
-    selector: EntitySelector;
     hasTarget: boolean;
     targetFilter: EntityFilter[];
 }

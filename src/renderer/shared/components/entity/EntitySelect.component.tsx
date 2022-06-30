@@ -5,15 +5,21 @@ import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 interface IProps {
     entity: Entity;
     onEntityChange: (entity: Entity) => void;
+    disabled?: boolean;
 }
 
-export function EntitySelect({ entity, onEntityChange }: IProps) {
+export function EntitySelect({ entity, onEntityChange, disabled }: IProps) {
     const { t } = useTranslation();
 
     return (
         <FormControl fullWidth>
             <InputLabel>{t('interface.editor.modifier.input_label_entity')}</InputLabel>
-            <Select value={entity || Entity.NONE} label={t('interface.editor.modifier.input_label_entity')} onChange={(e) => onEntityChange(e.target.value as Entity)}>
+            <Select
+                value={entity || Entity.NONE}
+                disabled={disabled}
+                label={t('interface.editor.modifier.input_label_entity')}
+                onChange={(e) => onEntityChange(e.target.value as Entity)}
+            >
                 {Object.values(Entity).map((entity) => (
                     <MenuItem key={entity} value={entity}>
                         {t(entity)}

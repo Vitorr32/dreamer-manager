@@ -10,6 +10,8 @@ import { VariableSelect } from '../variables/VariableSelect.component';
 import { VariableValueOperator } from '../variables/VariableValueOperator.component';
 import { VariableValueInput } from '../variables/VariableValueInput.component';
 import { Checkbox, FormControlLabel } from '@mui/material';
+import { EntityFilterEditor } from './EntityFilterEditor.component';
+import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 
 interface IProps {
     entityFilter: ConditionEntityFilter;
@@ -29,10 +31,25 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange }: IP
             setSelectedVariable(GetVariablesOfEntity(entityFilter.entity)[newValue]);
         } else if (key === 'entity') {
             setSelectedVariable(null);
+        } else if (key === 'hasTarget') {
+            //If the hasTarget checkbox is toggled, and the value is true, continue to configure the new filter using the external key entity as base.
+            onHasTargetCheckboxToggle(newValue);
         }
 
         updatedFilter[key] = newValue;
         onFilterChange(updatedFilter);
+    };
+
+    const onHasTargetCheckboxToggle = (hasTarget: boolean) => {
+        if (hasTarget) {
+            setExternalEntityFilters({
+                ...DEFAULT_ENTITY_FILTER,
+                entity: selectedVariable.externalEntity,
+            });
+            return;
+        }
+
+        setExternalEntityFilters(null);
     };
 
     return (
@@ -63,16 +80,14 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange }: IP
                 <VariableValueInput variable={selectedVariable} variableValue={entityFilter.value} onVariableValueChange={(value) => onFilterChanged('value', value)} />
             )}
 
-            {selectedVariable && selectedVariable.type === VariableType.EXTERNAL_KEY && (
+            {selectedVariable && (selectedVariable.type === VariableType.EXTERNAL_KEY || selectedVariable.type === VariableType.EXTERNAL_KEY_LIST) && (
                 <FormControlLabel
                     control={<Checkbox checked={entityFilter.hasTarget || false} onChange={(event) => onFilterChanged('hasTarget', event.target.checked)} />}
                     label="Label"
                 />
             )}
 
-            {
-                // entityFilter.hasTarget &&
-            }
+            {entityFilter.hasTarget && <EntityFilterEditor entityFilter={externalEntityFilters} onFilterChange={setExternalEntityFilters} lockEntitySelection />}
         </Box>
     );
 }
