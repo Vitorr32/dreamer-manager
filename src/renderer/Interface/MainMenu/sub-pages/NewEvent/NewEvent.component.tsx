@@ -33,6 +33,7 @@ import { RootState } from 'renderer/redux/store';
 import { EventTreeRender } from './EventTreeRender.component';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 import { EffectOriginType } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 
 interface IProps {}
 
@@ -299,7 +300,10 @@ export function NewEvent({}: IProps) {
                                 options={{
                                     effectOriginType: EffectOriginType.EVENT,
                                     effectOriginID: currentEvent.id,
-                                    specifiedActors: currentEvent.actors,
+                                    specifiedEntities: {
+                                        [Entity.ACTORS]: currentEvent.actors,
+                                        [Entity.FLAGS]: currentEvent.flags,
+                                    },
                                     allowConditionTree: true,
                                 }}
                             />

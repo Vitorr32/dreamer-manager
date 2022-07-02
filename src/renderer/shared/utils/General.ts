@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
+import { store } from 'renderer/redux/store';
 import { Actor } from '../models/base/Actor.model';
 import { Character } from '../models/base/Character.model';
 import { Variables } from '../models/base/Variable.model';
@@ -33,5 +34,17 @@ export function GetVariablesOfEntity(entity: Entity): Variables {
             return World.getEntityVariables();
         default:
             return null;
+    }
+}
+
+export function GetEntitiesOfEntity(entity: Entity): any[] {
+    switch (entity) {
+        case Entity.CHARACTERS:
+            return store.getState().database.characters;
+        case Entity.FLAGS:
+            return store.getState().database.flags;
+        default:
+            console.error('Searched for unknown entity: ' + entity);
+            return [];
     }
 }

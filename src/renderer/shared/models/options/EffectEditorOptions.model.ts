@@ -1,5 +1,5 @@
-import { Actor } from '../base/Event.model';
 import { ModifierType, ModifierTypeSection } from '../base/Modifier';
+import { Entity } from '../enums/Entities.enum';
 
 export enum EffectOriginType {
     TRAIT,
@@ -8,7 +8,9 @@ export enum EffectOriginType {
 
 export interface EffectEditorOptions {
     isEventEffect?: boolean;
-    specifiedActors?: Actor[];
+    specifiedEntities?: {
+        [key in Entity]?: any[];
+    };
     filteredTypes?: ModifierTypeSection[];
     filteredModifiers?: {
         [key in ModifierTypeSection]: ModifierType;

@@ -2,6 +2,7 @@ export enum Entity {
     NONE = 'model.undefined',
     ACTORS = 'model.entity.actors',
     TRAITS = 'model.entity.traits',
+    FLAGS = 'model.entity.flags',
     CHARACTERS = 'model.entity.characters',
     PLAYER = 'model.entity.player',
     STAFF = 'model.entity.staff',

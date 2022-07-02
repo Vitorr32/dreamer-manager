@@ -13,6 +13,8 @@ export interface EntityFilter extends EntityVariableValue {
 }
 
 export interface ConditionEntityFilter extends EntityFilter {
-    hasTarget: boolean;
-    targetFilter: EntityFilter[];
+    isFilteringExternalKey: boolean;
+    externalEntityFilter: EntityFilter[];
+    isComparingEntities: boolean;
+    comparingEntityFilter: EntityFilter[];
 }

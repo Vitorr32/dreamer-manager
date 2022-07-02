@@ -66,6 +66,11 @@ export const en_US = {
                     time_datepicker_label: 'Pick the date',
                     add_condition_label: 'Add Condition',
                 },
+                entity: {
+                    input_label_operator: 'Operator',
+                    input_label_external_filter: 'Filter External Key',
+                    input_label_comparison: 'Compare to Another Entity',
+                },
                 actor: {
                     input_label_selection: 'Actor Selection',
                     option_actor_all: 'All Actors',
@@ -334,15 +339,13 @@ export const en_US = {
                 actors: 'Actors',
                 traits: 'Traits',
                 characters: 'Characters',
+                flags: 'Event Flags',
                 player: 'Player',
                 staff: 'Staff',
                 agency: 'Agencies',
                 companies: 'Companies',
                 locations: 'Locations',
                 nations: 'Nations',
-                filter: {
-                    input_label_operator: 'Operator',
-                },
             },
             variable: {
                 operator: {

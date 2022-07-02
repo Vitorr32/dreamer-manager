@@ -9,6 +9,7 @@ import { Trait } from '../../shared/models/base/Trait.model';
 interface GameLoopState {
     isLoadingDatabase: boolean;
     loadProgress: number;
+    characters: Character[];
     traits: Trait[];
     attributes: Attribute[];
     events: Event[];
@@ -25,6 +26,7 @@ interface GameLoopState {
 const initialState: GameLoopState = {
     isLoadingDatabase: false,
     loadProgress: 0,
+    characters: [],
     traits: [],
     attributes: [],
     events: [],

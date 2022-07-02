@@ -1,5 +1,5 @@
 import React from 'react';
-import { Condition, EntitySelector, TimeSelector } from '../../models/base/Condition.model';
+import { Condition, TimeSelector } from '../../models/base/Condition.model';
 import { ConditionInitiator } from '../../models/enums/ConditionInitiator.enum';
 import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
 import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
@@ -37,8 +37,10 @@ export function ConditionLineWithEntity({ conditionLine, index, onChange, onRemo
         if (newCondition.initiator === ConditionInitiator.ENTITY_FILTERING) {
             newCondition.entityFilter = {
                 ...DEFAULT_ENTITY_FILTER,
-                hasTarget: false,
-                targetFilter: [],
+                isFilteringExternalKey: false,
+                externalEntityFilter: [],
+                isComparingEntities: false,
+                comparingEntityFilter: [],
             };
         } else {
             newCondition.entityFilter = null;
@@ -65,7 +67,9 @@ export function ConditionLineWithEntity({ conditionLine, index, onChange, onRemo
     const renderInitiatorTool = (condition: Condition): React.ReactElement | null => {
         switch (condition.initiator) {
             case ConditionInitiator.ENTITY_FILTERING:
-                return <ConditionEntityFilterEditor entityFilter={condition.entityFilter} onFilterChange={(filter) => onEntityFilterChange(filter, index)} />;
+                return (
+                    <ConditionEntityFilterEditor entityFilter={condition.entityFilter} onFilterChange={(filter) => onEntityFilterChange(filter, index)} options={options} />
+                );
             // Change attribute_range/status_range into entity filter
             // Take into consideration following cases: If any character charisma is at least 50
             // If character X has 50 Charisma

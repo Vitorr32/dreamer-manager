@@ -57,7 +57,7 @@ export const CharacterEntityVariables: Variables = {
         key: 'flags',
         displayName: 'model.character.variables.flags',
         type: VariableType.EXTERNAL_KEY_LIST,
-        externalEntity: Entity.TRAITS,
+        externalEntity: Entity.FLAGS,
         read: true,
         edit: true,
     },

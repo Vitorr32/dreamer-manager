@@ -25,7 +25,7 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
 
     return (
         <FormControl fullWidth>
-            <InputLabel>{t('model.entity.filter.input_label_operator')}</InputLabel>
+            <InputLabel>{t('interface.editor.entity.input_label_operator')}</InputLabel>
             <Select value={variableOperator} label={t('model.entity.filter.input_label_operator')} onChange={(e) => onOperatorChange(e.target.value)}>
                 {getOperatorsOfVariableType(variable.type).map((option, index) => (
                     <MenuItem key={`entity_var_${index}`} value={option}>

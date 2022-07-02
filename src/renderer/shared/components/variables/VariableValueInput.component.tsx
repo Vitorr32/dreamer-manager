@@ -1,17 +1,21 @@
 import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { DATE_ONLY_DAY_FORMAT } from 'renderer/shared/Constants';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
+import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { GetEntitiesOfEntity } from 'renderer/shared/utils/General';
 
 interface IProps {
     variable: EntityVariable;
     variableValue: any;
     onVariableValueChange: (value: any) => void;
+    options?: EffectEditorOptions;
 }
 
-export function VariableValueInput({ variable, variableValue, onVariableValueChange }: IProps) {
+export function VariableValueInput({ variable, variableValue, onVariableValueChange, options }: IProps) {
     const { t } = useTranslation();
 
     const getInputOfVariableType = (type: VariableType): JSX.Element | null => {
@@ -62,10 +66,26 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 );
             case VariableType.EXTERNAL_KEY:
             case VariableType.EXTERNAL_KEY_LIST:
-            //TODO: Create input field which autocompletes with the external entity
+                return (
+                    <Autocomplete
+                        id="combo-box-demo"
+                        options={getSuggestionsForAutocompleteOfEntity(variable.externalEntity)}
+                        renderInput={(params) => <TextField {...params} label={t(variable.externalEntity)} />}
+                    />
+                );
             default:
                 return null;
         }
+    };
+
+    const getSuggestionsForAutocompleteOfEntity = (entity: Entity): any[] => {
+        const allEntities = GetEntitiesOfEntity(entity);
+
+        if (options && options.specifiedEntities && options.specifiedEntities[entity]) {
+            allEntities.push(...options.specifiedEntities[entity]);
+        }
+
+        return allEntities.map((singularEntity) => ({ label: singularEntity.displayName, id: singularEntity.id, data: singularEntity }));
     };
 
     return getInputOfVariableType(variable.type);

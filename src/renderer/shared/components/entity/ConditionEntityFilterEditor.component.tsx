@@ -12,35 +12,40 @@ import { VariableValueInput } from '../variables/VariableValueInput.component';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { EntityFilterEditor } from './EntityFilterEditor.component';
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
+import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 
 interface IProps {
     entityFilter: ConditionEntityFilter;
     onFilterChange: (entityFilter: ConditionEntityFilter) => void;
+    options: EffectEditorOptions;
 }
 
-export function ConditionEntityFilterEditor({ entityFilter, onFilterChange }: IProps) {
+export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, options }: IProps) {
     const { t } = useTranslation();
 
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
     const [externalEntityFilters, setExternalEntityFilters] = useState<EntityFilter>();
+    const [comparingEntityFilters, setComparingEntityFilters] = useState<EntityFilter>();
 
-    const onFilterChanged = (key: 'entity' | 'variableKey' | 'value' | 'operator' | 'hasTarget' | 'targetFilter', newValue: any) => {
+    const onFilterChanged = (key: 'entity' | 'variableKey' | 'value' | 'operator' | 'isFilteringExternalKey' | 'isComparingEntities', newValue: any) => {
         const updatedFilter = CopyClassInstance(entityFilter);
 
         if (key === 'variableKey') {
             setSelectedVariable(GetVariablesOfEntity(entityFilter.entity)[newValue]);
         } else if (key === 'entity') {
             setSelectedVariable(null);
-        } else if (key === 'hasTarget') {
-            //If the hasTarget checkbox is toggled, and the value is true, continue to configure the new filter using the external key entity as base.
-            onHasTargetCheckboxToggle(newValue);
+        } else if (key === 'isFilteringExternalKey') {
+            //If the isFilteringExternalKey checkbox is toggled, and the value is true, continue to configure the new filter using the external key entity as base.
+            onExternalEntityCheckboxToggle(newValue);
+        } else if (key === 'isComparingEntities') {
+            onComparingEntitiesCheckboxToggle(newValue);
         }
 
         updatedFilter[key] = newValue;
         onFilterChange(updatedFilter);
     };
 
-    const onHasTargetCheckboxToggle = (hasTarget: boolean) => {
+    const onExternalEntityCheckboxToggle = (hasTarget: boolean) => {
         if (hasTarget) {
             setExternalEntityFilters({
                 ...DEFAULT_ENTITY_FILTER,
@@ -50,6 +55,18 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange }: IP
         }
 
         setExternalEntityFilters(null);
+    };
+
+    const onComparingEntitiesCheckboxToggle = (hasTarget: boolean) => {
+        if (hasTarget) {
+            setComparingEntityFilters({
+                ...DEFAULT_ENTITY_FILTER,
+                entity: entityFilter.entity,
+            });
+            return;
+        }
+
+        setComparingEntityFilters(null);
     };
 
     return (
@@ -67,7 +84,7 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange }: IP
             )}
 
             {/* OPERATOR SELECT */}
-            {selectedVariable && (
+            {selectedVariable && !entityFilter.isFilteringExternalKey && (
                 <VariableValueOperator
                     variable={selectedVariable}
                     variableOperator={entityFilter.operator}
@@ -76,18 +93,43 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange }: IP
             )}
 
             {/* VARIABLE INPUT */}
-            {selectedVariable && (
-                <VariableValueInput variable={selectedVariable} variableValue={entityFilter.value} onVariableValueChange={(value) => onFilterChanged('value', value)} />
-            )}
-
-            {selectedVariable && (selectedVariable.type === VariableType.EXTERNAL_KEY || selectedVariable.type === VariableType.EXTERNAL_KEY_LIST) && (
-                <FormControlLabel
-                    control={<Checkbox checked={entityFilter.hasTarget || false} onChange={(event) => onFilterChanged('hasTarget', event.target.checked)} />}
-                    label="Label"
+            {selectedVariable && !entityFilter.isFilteringExternalKey && (
+                <VariableValueInput
+                    variable={selectedVariable}
+                    variableValue={entityFilter.value}
+                    onVariableValueChange={(value) => onFilterChanged('value', value)}
+                    options={options}
                 />
             )}
 
-            {entityFilter.hasTarget && <EntityFilterEditor entityFilter={externalEntityFilters} onFilterChange={setExternalEntityFilters} lockEntitySelection />}
+            {/* TOGGLE EXTERNAL ENTITY FILTER */}
+            {selectedVariable && (selectedVariable.type === VariableType.EXTERNAL_KEY || selectedVariable.type === VariableType.EXTERNAL_KEY_LIST) && (
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={entityFilter.isFilteringExternalKey || false}
+                            onChange={(event) => onFilterChanged('isFilteringExternalKey', event.target.checked)}
+                        />
+                    }
+                    label={t('interface.editor.entity.input_label_external_filter') as string}
+                />
+            )}
+
+            {/* EXTERNAL ENTITY FILTER */}
+            {entityFilter.isFilteringExternalKey && <EntityFilterEditor entityFilter={externalEntityFilters} onFilterChange={setExternalEntityFilters} lockEntitySelection />}
+
+            {/* TOGGLE ENTITY COMPARISON */}
+            {selectedVariable && (
+                <FormControlLabel
+                    control={
+                        <Checkbox checked={entityFilter.isComparingEntities || false} onChange={(event) => onFilterChanged('isComparingEntities', event.target.checked)} />
+                    }
+                    label={t('interface.editor.entity.input_label_comparison') as string}
+                />
+            )}
+
+            {/* ENTITY COMPARISON FILTER */}
+            {entityFilter.isComparingEntities && <EntityFilterEditor entityFilter={comparingEntityFilters} onFilterChange={setComparingEntityFilters} lockEntitySelection />}
         </Box>
     );
 }
