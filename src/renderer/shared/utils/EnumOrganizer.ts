@@ -9,7 +9,7 @@ export function GetModifierTypesOfSection(section: ModifierTypeSection, filtered
         case ModifierTypeSection.ENTITY_MODIFICATION:
             return [ModifierType.MODIFY_ENTITY_VARIABLE];
         case ModifierTypeSection.EVENT_SECTION:
-            return [ModifierType.MODIFY_EVENT_FLAG_ADD, ModifierType.MODIFY_EVENT_FLAG_REMOVE, ModifierType.MODIFY_EVENT_TRIGGER];
+            return [ModifierType.MODIFY_EVENT_FLAG_ADD, ModifierType.MODIFY_EVENT_FLAG_REMOVE, ModifierType.MODIFY_TRIGGER_EVENT];
         case ModifierTypeSection.RELATIONSHIP_SECTION:
             return [
                 ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY,

@@ -68,7 +68,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
             case VariableType.EXTERNAL_KEY_LIST:
                 return (
                     <Autocomplete
-                        id="combo-box-demo"
+                        freeSolo
                         options={getSuggestionsForAutocompleteOfEntity(variable.externalEntity)}
                         renderInput={(params) => <TextField {...params} label={t(variable.externalEntity)} />}
                     />

@@ -1,22 +1,14 @@
-import React from 'react';
-import { Condition, NumericSelector, TimeSelector, TraitSelector, LocationSelector, EventFlagSelector } from '../../../shared/models/base/Condition.model';
-import { ConditionInitiator } from '../../../shared/models/enums/ConditionInitiator.enum';
-import { FlagSelectionButton } from '../buttons/FlagSelectionButton';
-import { ConditionInitiatorSelect } from './ConditionInitiatorSelect.component';
+import { Condition, EntitySelector } from '../../models/base/Condition.model';
 import { ConditionSelectorSelect } from './ConditionSelectorSelect.component';
-import { NumericSelectorParameterInput } from './NumericSelector.component';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRightSharp';
 import CloseIcon from '@mui/icons-material/Close';
-import { TraitSelectionButton } from '../buttons/TraitSelectionButton';
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
-import { ConditionAgentSelect } from './ConditionAgentSelect.component';
 import { ConditionLineSummary } from '../summary/ConditionLineSummary.component';
-import { RelationshipSelect } from './RelationshipSelect';
-import { TimeSelect } from './TimeSelect.component';
-import { LocationTypeSelect } from './LocationTypeSelect';
-import { EntityFilterEditor } from '../entity/EntityFilterEditor.component';
+import { ConditionEntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
+import { ConditionEntityFilterEditor } from '../entity/ConditionEntityFilterEditor.component';
 
 interface IProps {
     conditionLine: Condition;
@@ -33,96 +25,11 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
         onChange(index, condition);
     };
 
-    const onTargetChange = (values: string[]): void => {
-        const newCondition = Object.assign({}, conditionLine);
+    const onEntityFilterChange = (filter: ConditionEntityFilter, index: number): void => {
+        const newCondition = CopyClassInstance(conditionLine);
 
-        newCondition.targets = values;
-
+        newCondition.entityFilter = filter;
         onChange(index, newCondition);
-    };
-
-    const onParameterChange = (value: number | string, returnData: { index: number } = { index: 0 }): void => {
-        const newCondition = Object.assign({}, conditionLine);
-
-        newCondition.parameters[returnData.index] = value;
-
-        onChange(index, newCondition);
-    };
-
-    const renderInitiatorTool = (condition: Condition): React.ReactElement | null => {
-        switch (condition.initiator) {
-            case ConditionInitiator.TRAIT:
-                return <TraitSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
-            case ConditionInitiator.ENTITY_FILTERING:
-            // return <EntityFilterEditor entityFilter={condition.entityFilter} onFilterChange={} />;
-            // Change attribute_range/status_range into entity filter
-            // Take into consideration following cases: If any character charisma is at least 50
-            // If character X has 50 Charisma
-            // If character X has Flag Y
-            // return <EntityFilter entity={}/>
-            // case ConditionInitiator.ATTRIBUTE_RANGE:
-            //     return <AttributeSelectionButton displayIDs={condition.targets} onChange={onTargetChange} />;
-            // case ConditionInitiator.STATUS_RANGE:
-            //     return <StaticStatusSelectionButton condition={condition} onChange={onTargetChange} />;
-            case ConditionInitiator.RELATIONSHIP:
-                return <RelationshipSelect condition={condition} onChange={onTargetChange} />;
-            case ConditionInitiator.EVENT_FLAGGED:
-                return (
-                    <FlagSelectionButton
-                        displayIDs={condition.targets}
-                        onChange={onTargetChange}
-                        global={condition.selector === EventFlagSelector.TRIGGERED || condition.selector === EventFlagSelector.NOT_TRIGGERED}
-                    />
-                );
-            //Following initiators does not need selection tools, or they are specific to one selector
-            case ConditionInitiator.TIME:
-            case ConditionInitiator.LOCATION:
-            default:
-                return null;
-        }
-    };
-
-    const renderActiveAgent = (condition: Condition): React.ReactElement | null => {
-        //Not nescessary to set the actor in case of time initiator since it's the world date
-        if (condition.initiator === ConditionInitiator.TIME || condition.initiator === ConditionInitiator.EVENT_FLAGGED || condition.initiator === ConditionInitiator.TRAIT) {
-            return null;
-        }
-
-        return <ConditionAgentSelect condition={condition} activeAgent onChange={onSubComponentChangeOfCondition} />;
-    };
-
-    const renderSelectorTools = (condition: Condition): React.ReactElement | null => {
-        switch (condition.selector) {
-            case NumericSelector.BIGGER_THAN:
-            case NumericSelector.SMALLER_THAN:
-            case NumericSelector.EXACTLY:
-                return <NumericSelectorParameterInput range={false} condition={condition} onChange={onParameterChange} />;
-            case NumericSelector.BETWEEN:
-                return <NumericSelectorParameterInput range={true} condition={condition} onChange={onParameterChange} />;
-            case NumericSelector.BIGGER_THAN_TARGET:
-            case NumericSelector.SMALLER_THAN_TARGET:
-            case EventFlagSelector.FLAGGED:
-            case EventFlagSelector.NOT_FLAGGED:
-            case TraitSelector.HAS:
-            case TraitSelector.DONT:
-                return <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
-            case TimeSelector.IS_AFTER_DATE:
-            case TimeSelector.IS_AT_DATE:
-            case TimeSelector.IS_BEFORE_DATE:
-                return <TimeSelect condition={condition} onChange={onParameterChange} />;
-            case LocationSelector.IS_AT_LOCATION_OF_TYPE:
-            case LocationSelector.IS_MOVING_TO_LOCATION_OF_TYPE:
-                return <LocationTypeSelect condition={condition} onChange={onParameterChange} />;
-            case LocationSelector.IS_AT_LOCATION_OF_TYPE_WITH_TARGET:
-                return (
-                    <>
-                        <LocationTypeSelect condition={condition} onChange={onParameterChange} />;
-                        <ConditionAgentSelect condition={condition} onChange={onSubComponentChangeOfCondition} />;
-                    </>
-                );
-            default:
-                return null;
-        }
     };
 
     return (
@@ -131,15 +38,15 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
 
             <Box className="condition-line__wrapper">
                 <Box className="condition-line__input-wrapper">
-                    <ConditionInitiatorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
-
                     <ConditionSelectorSelect condition={conditionLine} onChange={onSubComponentChangeOfCondition} />
 
-                    {renderActiveAgent(conditionLine)}
-
-                    {renderInitiatorTool(conditionLine)}
-
-                    {renderSelectorTools(conditionLine)}
+                    {conditionLine.selector && conditionLine.selector !== EntitySelector.UNDEFINED && (
+                        <ConditionEntityFilterEditor
+                            entityFilter={conditionLine.entityFilter}
+                            onFilterChange={(filter) => onEntityFilterChange(filter, index)}
+                            options={options}
+                        />
+                    )}
                 </Box>
 
                 <ConditionLineSummary condition={conditionLine} />

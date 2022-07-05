@@ -5,7 +5,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
-import { Modifier, ModifierTargetType, ModifierType } from 'renderer/shared/models/base/Modifier';
+import { Modifier, ModifierType } from 'renderer/shared/models/base/Modifier';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
@@ -48,16 +48,12 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
     const onTypeSubmitted = (type: ModifierType) => {
         const newModifier = Object.assign({}, modifier);
-        //Reset layout of inputs on change of type
-        if (modifier.type !== type) {
-            newModifier.modifiedWorldState = {};
-        }
 
         //Update the filters properties as needed by the modifier type.
         switch (type) {
             case ModifierType.MODIFY_ENTITY_VARIABLE:
                 newModifier.targetEntityFilter = DEFAULT_ENTITY_FILTER;
-                newModifier.receptorEntityFilter = null;
+                newModifier.originEntityFilter = null;
                 break;
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
@@ -65,11 +61,11 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
                 newModifier.targetEntityFilter = DEFAULT_ENTITY_FILTER;
-                newModifier.receptorEntityFilter = DEFAULT_ENTITY_FILTER;
+                newModifier.originEntityFilter = DEFAULT_ENTITY_FILTER;
                 break;
             default:
                 newModifier.targetEntityFilter = null;
-                newModifier.receptorEntityFilter = null;
+                newModifier.originEntityFilter = null;
                 break;
         }
 
@@ -77,33 +73,6 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
         setShowTypeModal(false);
         onChange(newModifier);
-    };
-
-    const onToolPickerSelection = (selection: string[], type: ModifierTargetType) => {
-        if (!selection) {
-            throw new Error('The selection is not empty but has no Identifier variable');
-        }
-
-        const newModifier = Object.assign({}, modifier);
-        newModifier.modifiedWorldState[type] = selection;
-
-        onChange(newModifier);
-    };
-
-    const renderModifierSelectionInput = (): React.ReactElement | null => {
-        switch (modifier.type) {
-            case ModifierType.MODIFY_TRAIT_GAIN:
-            case ModifierType.MODIFY_TRAIT_REMOVE:
-                return (
-                    <TraitSelectionButton
-                        displayIDs={modifier.modifiedWorldState?.traits}
-                        onChange={(value) => onToolPickerSelection(value, ModifierTargetType.TRAIT_ID)}
-                        multi
-                    />
-                );
-            default:
-                return null;
-        }
     };
 
     const renderEntityModifier = (): React.ReactElement | null => {
@@ -150,8 +119,6 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                 {renderEntityModifier()}
 
                 {renderTargetingSelection()}
-
-                {renderModifierSelectionInput()}
             </Box>
 
             <ModifierTypeDialog modifier={modifier} onTypeSelect={onTypeSubmitted} open={showTypeModal} onClose={() => setShowTypeModal(false)} options={options} />

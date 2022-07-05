@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { Condition } from '../../../shared/models/base/Condition.model';
 import { Box } from '@mui/system';
-import { ConditionLineWithEntity } from './ConditionLineWithEntity.component';
+import { ConditionLine } from './ConditionLine.component';
 
 interface IProps {
     conditionNode: Node;
@@ -110,7 +110,7 @@ export function ConditionNode({ conditionNode, index, depth, onChange, onRemoveS
             <Box className="node-children">
                 {conditionNode.conditions.map((conditionLine, index) => {
                     return (
-                        <ConditionLineWithEntity
+                        <ConditionLine
                             key={`condition_line_${depth}_${index}`}
                             index={index}
                             conditionLine={conditionLine}

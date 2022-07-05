@@ -1,19 +1,6 @@
-import { Base } from '../enums/Base.enum';
-import { ConditionInitiator } from '../enums/ConditionInitiator.enum';
-import { ConditionHealthCheckRepository } from '../metadata/ConditionHealth.metadata';
+import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { Feedback } from './ConditionFeedback';
 import { ConditionEntityFilter } from './EntityVariableValue.model';
-
-// export enum Agent {
-//     UNDEFINED = 'model.undefined',
-
-//     SELF = 'model.condition.agent.self',
-//     PRODUCER = 'model.condition.agent.producer',
-//     INTERACTED = 'model.condition.agent.interacted',
-//     SPECIFIC_CHARACTER = 'model.condition.agent.specific_character',
-//     TUTOR = 'model.condition.agent.tutor',
-//     GLOBAL = 'model.condition.agent.global',
-// }
 
 export enum EntitySelector {
     UNDEFINED = 'model.undefined',
@@ -37,9 +24,8 @@ export enum TimeSelector {
 }
 
 export class Condition {
-    public initiator: ConditionInitiator;
     //A number representing any of the selectors of the individual Initiator
-    public selector: string;
+    public selector: EntitySelector;
     public entityFilter: ConditionEntityFilter;
     /*
         Parameters will represent different values depending the type of initiator that the condition has
@@ -55,11 +41,7 @@ export class Condition {
 
     //Verify the health of the condition metadata, not if the condition actually evaluates to true or false with in-game attributes.
     public EvaluateConditionHealth(): Feedback {
-        if (ConditionHealthCheckRepository.hasOwnProperty(this.initiator)) {
-            return ConditionHealthCheckRepository[this.initiator](this);
-        } else {
-            return new Feedback(false, 'The condition needs to have an initiator');
-        }
+        return new Feedback(false, 'The condition needs to have an initiator');
     }
 
     //Verify the condition evaluation in game
@@ -69,8 +51,14 @@ export class Condition {
     }
 
     constructor() {
-        this.initiator = ConditionInitiator.UNDEFINED;
-        this.selector = Base.UNDEFINED;
+        this.selector = EntitySelector.UNDEFINED;
         this.parameters = [];
+        this.entityFilter = {
+            ...DEFAULT_ENTITY_FILTER,
+            isFilteringExternalKey: false,
+            externalEntityFilter: [],
+            isComparingEntities: false,
+            comparingEntityFilter: [],
+        };
     }
 }

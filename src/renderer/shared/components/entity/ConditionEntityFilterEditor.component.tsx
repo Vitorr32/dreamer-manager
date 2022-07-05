@@ -32,8 +32,11 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
 
         if (key === 'variableKey') {
             setSelectedVariable(GetVariablesOfEntity(entityFilter.entity)[newValue]);
+            updatedFilter.value = '';
         } else if (key === 'entity') {
             setSelectedVariable(null);
+            updatedFilter.variableKey = '';
+            updatedFilter.value = '';
         } else if (key === 'isFilteringExternalKey') {
             //If the isFilteringExternalKey checkbox is toggled, and the value is true, continue to configure the new filter using the external key entity as base.
             onExternalEntityCheckboxToggle(newValue);
@@ -70,7 +73,7 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
     };
 
     return (
-        <Box className="yolo">
+        <Box>
             {/* ENTITY SELECT */}
             <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} />
 
@@ -93,7 +96,7 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
             )}
 
             {/* VARIABLE INPUT */}
-            {selectedVariable && !entityFilter.isFilteringExternalKey && (
+            {selectedVariable && !entityFilter.isFilteringExternalKey && !entityFilter.isComparingEntities && (
                 <VariableValueInput
                     variable={selectedVariable}
                     variableValue={entityFilter.value}

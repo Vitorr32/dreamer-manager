@@ -68,7 +68,7 @@ export const en_US = {
                 },
                 entity: {
                     input_label_operator: 'Operator',
-                    input_label_external_filter: 'Filter External Key',
+                    input_label_external_filter: 'User External Entity Property as Filter',
                     input_label_comparison: 'Compare to Another Entity',
                 },
                 actor: {
@@ -92,6 +92,10 @@ export const en_US = {
                     input_label_variable: 'Entity Variable',
                     input_label_conditional: 'Conditional',
                     input_label_value_change: 'Modifier Value',
+                    targeting: {
+                        input_label_target_select : 'Target of Effect',
+                        input_label_origin_select : 'Creator of Effect'
+                    }
                 },
                 event: {
                     flag_heading: 'Event Flags',
@@ -263,11 +267,6 @@ export const en_US = {
                 },
             },
             condition: {
-                initiator: {
-                    entity_filter: 'Entity',
-                    time: 'Time',
-                    relationship: 'Relationship',
-                },
                 agent: {
                     self: 'Self',
                     producer: 'Producer',
@@ -279,8 +278,8 @@ export const en_US = {
                 },
                 selector: {
                     entity: {
-                        any_true: 'Any {{entity}} satisfy the filter',
-                        all_false: 'No {{entity}} satisfy the filter',
+                        any_true: 'Any entity satisfy the filter',
+                        all_false: 'No entity satisfy the filter',
                         number_x_true: 'An specific number satisfy the filter',
                     },
                     location: {
@@ -399,6 +398,11 @@ export const en_US = {
                     event: 'Event modifiers',
                     static: 'Character values modifier',
                 },
+                targeting : {
+                    protagonist: 'Main Character',
+                    self: 'This Character',
+
+                }
             },
             event: {
                 actor: 'Actor',

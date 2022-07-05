@@ -25,8 +25,11 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, lockEntitySel
 
         if (key === 'variableKey') {
             setSelectedVariable(GetVariablesOfEntity(entityFilter.entity)[newValue]);
+            updatedFilter.value = '';
         } else if (key === 'entity') {
             setSelectedVariable(null);
+            updatedFilter.variableKey = '';
+            updatedFilter.value = '';
         }
 
         updatedFilter[key] = newValue;

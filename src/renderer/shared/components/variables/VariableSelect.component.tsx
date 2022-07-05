@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, Variables } from 'renderer/shared/models/base/Variable.model';
@@ -23,17 +23,24 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange }: 
         }
     }, [entity]);
 
+    const getVariablesOfEntityAsSuggestions = (): any[] => {
+        return entityVariables
+            ? Object.keys(entityVariables).map((variableID) => {
+                  return {
+                      label: t(entityVariables[variableID].displayName),
+                      value: t(entityVariables[variableID].key),
+                      data: entityVariables[variableID],
+                  };
+              })
+            : [];
+    };
+
     return (
-        <FormControl fullWidth>
-            <InputLabel>{t('interface.editor.modifier.input_label_variable')}</InputLabel>
-            <Select value={entityVariableKey} label={t('interface.editor.modifier.input_label_variable')} onChange={(e) => onVariableChange(entityVariables[e.target.value])}>
-                {entityVariables &&
-                    Object.keys(entityVariables).map((variableID) => (
-                        <MenuItem key={variableID} value={variableID}>
-                            {t(entityVariables[variableID].displayName)}
-                        </MenuItem>
-                    ))}
-            </Select>
-        </FormControl>
+        <Autocomplete
+            options={getVariablesOfEntityAsSuggestions()}
+            renderInput={(params) => <TextField {...params} value={entityVariableKey} label={t('interface.editor.modifier.input_label_variable')} />}
+            onChange={(_, option: any) => onVariableChange(entityVariables[option.value])}
+            isOptionEqualToValue={(option, value) => option.value === value.value}
+        />
     );
 }
