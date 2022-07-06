@@ -93,9 +93,10 @@ export const en_US = {
                     input_label_conditional: 'Conditional',
                     input_label_value_change: 'Modifier Value',
                     targeting: {
-                        input_label_target_select : 'Target of Effect',
-                        input_label_origin_select : 'Creator of Effect'
-                    }
+                        input_label_target_select: 'Target of Effect',
+                        input_label_target_helper: 'Select which entity will receive the effect modifiers',
+                        input_label_origin_select: 'Creator of Effect',
+                    },
                 },
                 event: {
                     flag_heading: 'Event Flags',
@@ -398,11 +399,19 @@ export const en_US = {
                     event: 'Event modifiers',
                     static: 'Character values modifier',
                 },
-                targeting : {
+                targeting: {
                     protagonist: 'Main Character',
+                    allStudioDreamers: 'All Dreamers of Main Studio',
+                    allStudioStaff: 'All Staff of Main Studio',
+                    allStudioEmployees: 'Everyone on Main Studio',
+                    everyCharacter: 'All Characters',
                     self: 'This Character',
-
-                }
+                    selfProducer: "This Character's Producer",
+                    selfFriends: "This Characters's Friends",
+                    selfRivals: "This Character's Rivals",
+                    mainStudio: 'Main Studio',
+                    allActors: 'All Actors in the Event',
+                },
             },
             event: {
                 actor: 'Actor',

@@ -17,16 +17,27 @@ interface IProps {
     options?: EffectEditorOptions;
 }
 
-enum QuickTarget {
+enum ShortcutFilter {
+    //Character Entity Shortcuts
     PROTAGONIST = 'model.modifier.targeting.protagonist',
+    ALL_DREAMERS_OF_STUDIO = 'model.modifier.targeting.allStudioDreamers',
+    ALL_STAFF_OF_STUDIO = 'model.modifier.targeting.allStudioStaff',
+    EVERYONE_ON_STUDIO = 'model.modifier.targeting.allStudioEmployees',
+    EVERYONE = 'model.modifier.targeting.everyCharacter',
     SELF = 'model.modifier.targeting.self',
+    SELF_PRODUCER = 'model.modifier.targeting.selfProducer',
+    SELF_FRIENDS = 'model.modifier.targeting.selfFriends',
+    SELF_RIVALS = 'model.modifier.targeting.selfRivals',
+
+    MC_STUDIO = 'model.modifier.targeting.mainStudio',
+    ALL_ACTORS = 'model.modifier.targeting.allActors',
 }
 
 export function ModifierTargetSelection({ modifier, onModifierTargetChange, onModifierReceptorChange, options }: IProps) {
     const { t } = useTranslation();
     const { targetEntityFilter, originEntityFilter } = modifier;
 
-    const [quickTarget, setQuickTarget] = useState<QuickTarget>();
+    const [quickTarget, setQuickTarget] = useState<ShortcutFilter>();
 
     const onFilterChanged = (updatedEntity: EntityFilter, isTarget: boolean = true) => {
         const updatedFilter = CopyClassInstance(targetEntityFilter);
@@ -35,12 +46,40 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
         onModifierTargetChange(updatedFilter);
     };
 
-    const getShortcutTargets = () => {
-        const shortcuts: QuickTarget[] = [];
+    const getShortcutTargets = (): ShortcutFilter[] => {
+        const shortcuts: ShortcutFilter[] = [];
+        switch (modifier.modifiedEntityVariable.entity) {
+            case Entity.CHARACTERS:
+                shortcuts.push(
+                    ShortcutFilter.PROTAGONIST,
+                    ShortcutFilter.ALL_DREAMERS_OF_STUDIO,
+                    ShortcutFilter.ALL_STAFF_OF_STUDIO,
+                    ShortcutFilter.EVERYONE_ON_STUDIO,
+                    ShortcutFilter.EVERYONE
+                );
 
-        //TODO: Create a shortcut system that takes common targets and specified entities into consideration, use the entity being modified on the modifier as reference
+                if (options.effectOriginType === EffectOriginType.TRAIT) {
+                    shortcuts.push(ShortcutFilter.SELF, ShortcutFilter.SELF_PRODUCER);
+                }
 
-        switch (modifier) {
+                break;
+            case Entity.ACTORS:
+                shortcuts.push(ShortcutFilter.ALL_ACTORS);
+            default:
+                console.error('No entity selected, or uknown entity' + modifier.modifiedEntityVariable.entity);
+                break;
+        }
+
+        return shortcuts;
+    };
+
+    const onShortcutFilterSelected = (shortcut: ShortcutFilter) => {
+        switch (shortcut) {
+            case ShortcutFilter.EVERYONE:
+            // TODO: Make 'everyone' be a filter with just character age > 0
+            default:
+                console.error('No entity selected, or uknown entity' + modifier.modifiedEntityVariable.entity);
+                break;
         }
     };
 
@@ -48,10 +87,10 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
         <Box className="">
             TARGETTING
             <FormControl fullWidth>
-                <InputLabel>{t('interface.editor.modifier.input_label_value_change')}</InputLabel>
-                <Select value={quickTarget} label={t('interface.editor.modifier.input_label_value_change')} onChange={(e) => setQuickTarget(e.target.value as QuickTarget)}>
-                    {Object.values(QuickTarget).map((option, index) => (
-                        <MenuItem key={`entity_var_${index}`} value={option}>
+                <InputLabel>{t('interface.editor.modifier.targeting.input_label_target_select')}</InputLabel>
+                <Select value={quickTarget} onChange={(e) => setQuickTarget(e.target.value as ShortcutFilter)}>
+                    {getShortcutTargets().map((option, index) => (
+                        <MenuItem key={`shortcut_${index}`} value={option}>
                             {t(option)}
                         </MenuItem>
                     ))}
