@@ -1,7 +1,7 @@
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ConditionEntityFilter, EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { ExternalExpandedEntityFilter, EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { CopyClassInstance, GetVariablesOfEntity } from 'renderer/shared/utils/General';
@@ -15,8 +15,8 @@ import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 
 interface IProps {
-    entityFilter: ConditionEntityFilter;
-    onFilterChange: (entityFilter: ConditionEntityFilter) => void;
+    entityFilter: ExternalExpandedEntityFilter;
+    onFilterChange: (entityFilter: ExternalExpandedEntityFilter) => void;
     options: EffectEditorOptions;
 }
 

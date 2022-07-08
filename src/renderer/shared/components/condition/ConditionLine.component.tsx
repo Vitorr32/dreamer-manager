@@ -6,7 +6,7 @@ import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { ConditionLineSummary } from '../summary/ConditionLineSummary.component';
-import { ConditionEntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { ExternalExpandedEntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ConditionEntityFilterEditor } from '../entity/ConditionEntityFilterEditor.component';
 
@@ -25,7 +25,7 @@ export function ConditionLine({ conditionLine, index, onChange, onRemove, option
         onChange(index, condition);
     };
 
-    const onEntityFilterChange = (filter: ConditionEntityFilter, index: number): void => {
+    const onEntityFilterChange = (filter: ExternalExpandedEntityFilter, index: number): void => {
         const newCondition = CopyClassInstance(conditionLine);
 
         newCondition.entityFilter = filter;

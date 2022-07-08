@@ -1,6 +1,6 @@
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { Feedback } from './ConditionFeedback';
-import { ConditionEntityFilter } from './EntityVariableValue.model';
+import { ExternalExpandedEntityFilter } from './EntityVariableValue.model';
 
 export enum EntitySelector {
     UNDEFINED = 'model.undefined',
@@ -26,7 +26,7 @@ export enum TimeSelector {
 export class Condition {
     //A number representing any of the selectors of the individual Initiator
     public selector: EntitySelector;
-    public entityFilter: ConditionEntityFilter;
+    public entityFilter: ExternalExpandedEntityFilter;
     /*
         Parameters will represent different values depending the type of initiator that the condition has
         Status: Up to 3 parameters [Status Enumerator, First Input, Second Input]

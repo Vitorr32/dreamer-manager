@@ -227,6 +227,7 @@ export const en_US = {
         },
         model: {
             undefined: 'Undefined',
+            id: 'Identifier',
             attribute: {
                 category: {
                     basic: 'Basic',
@@ -247,6 +248,9 @@ export const en_US = {
                     characterID: 'Character',
                     id: 'ID',
                     alias: 'Alias',
+                    agency: 'Employee of Agency',
+                    isPlayer: 'Is Player Character',
+                    isStaff: 'Is Staff Character',
                 },
             },
             character: {

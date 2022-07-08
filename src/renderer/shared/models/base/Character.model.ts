@@ -61,7 +61,17 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: true,
     },
-    // age: { type: EntityVariable.NUMBER, read: true, edit: true },
+    agency: {
+        key: 'agency',
+        displayName: 'model.character.variables.agency',
+        type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.AGENCY,
+        read: true,
+        edit: true,
+    },
+    isPlayer: { key: 'isPlayer', displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: false },
+    isStaff: { key: 'isStaff', displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: true },
+
     // age: { type: EntityVariable.NUMBER, read: true, edit: true },
     // age: { type: EntityVariable.NUMBER, read: true, edit: true },
     // age: { type: EntityVariable.NUMBER, read: true, edit: true },
@@ -70,7 +80,6 @@ export const CharacterEntityVariables: Variables = {
 
 export class Character {
     private static _variables: Variables = CharacterEntityVariables;
-    //Absolute Basic values of the character, these will never change
     // ID Pattern : CHAR_*NUMBER*
     public id: string;
     public sprites: Sprite[];
@@ -79,8 +88,11 @@ export class Character {
     public nickname: string;
     public age: number;
     public birthday: Date;
-    //Modifiers that affects the relationships of this character, such as previous events or decisions, otherwise use default calculations
-    public relationshipsModifiers?: string[];
+
+    public isPlayer: boolean;
+    public isStaff: boolean;
+    //The character may be unemployed
+    public agency?: string;
 
     //Current state of the character attributes that should be serialized in case of save
     public baseMood: number = 50;
@@ -92,6 +104,7 @@ export class Character {
     public family: Kinship[] = [];
     public traits: Trait[] = [];
     public flags: Flag[] = [];
+    public relationshipsModifiers: string[] = [];
     //Custom variables should be added to the entity, and it's values should be saved on the customVariables property here.
     public customVariables: any;
 

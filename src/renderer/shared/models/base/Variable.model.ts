@@ -10,6 +10,7 @@ export enum VariableType {
     FILE_PATH,
     EXTERNAL_KEY,
     EXTERNAL_KEY_LIST,
+    BOOLEAN
 }
 
 export enum VariableOperator {
