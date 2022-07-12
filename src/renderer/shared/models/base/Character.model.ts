@@ -71,11 +71,6 @@ export const CharacterEntityVariables: Variables = {
     },
     isPlayer: { key: 'isPlayer', displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: false },
     isStaff: { key: 'isStaff', displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: true },
-
-    // age: { type: EntityVariable.NUMBER, read: true, edit: true },
-    // age: { type: EntityVariable.NUMBER, read: true, edit: true },
-    // age: { type: EntityVariable.NUMBER, read: true, edit: true },
-    // birth
 };
 
 export class Character {

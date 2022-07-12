@@ -1,52 +1,29 @@
-import { Button } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
+import { EntityFilterTree, FilterNode } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EntityFilterEditor } from './EntityFilterEditor.component';
+import { EntityFilterNode } from './EntityFilterNode.component';
 
 interface IProps {
-    entityFilters: EntityFilter[];
-    onFiltersChange: (entityFilters: EntityFilter[]) => void;
+    filterTree: EntityFilterTree;
+    onFilterTreeChange: (entityFilterTree: EntityFilterTree) => void;
 }
 
-export function CompositeEntityFilter({ entityFilters, onFiltersChange }: IProps) {
+export function CompositeEntityFilter({ filterTree, onFilterTreeChange }: IProps) {
     const { t } = useTranslation();
 
-    const onIndividualFilterChange = (updatedFilter: EntityFilter, index: number) => {
-        const updatedList = CopyClassInstance(entityFilters);
-
-        updatedList[index] = updatedFilter;
-        onFiltersChange(updatedList);
-    };
-
-    const onAddFilterToList = () => {
-        const updatedList = CopyClassInstance(entityFilters);
-
-        updatedList.push(DEFAULT_ENTITY_FILTER);
-        onFiltersChange(updatedList);
-    };
-
-    const onRemoveFilterFromList = (index: number) => {
-        const updatedList = CopyClassInstance(entityFilters);
-
-        updatedList.splice(index, 1);
-        onFiltersChange(updatedList);
+    const onRootFilterChange = (updatedRoot: FilterNode): void => {
+        //TODO: Update root
     };
 
     return (
-        <Box className="composite-entity-filter">
-            <Button onClick={onAddFilterToList}>ADD</Button>
-
-            {entityFilters.map((filter, index) => {
-                return (
-                    <Box key={`filter_${index}`}>
-                        <EntityFilterEditor entityFilter={filter} onFilterChange={(updatedFilter) => onIndividualFilterChange(updatedFilter, index)} />
-                        <Button onClick={() => onRemoveFilterFromList(index)}>X</Button>
-                    </Box>
-                );
-            })}
+        <Box>
+            <EntityFilterNode filterNode={filterTree.root} depth={-1} index={0} onFilterNodeChange={onRootFilterChange} />
         </Box>
     );
 }
