@@ -1,9 +1,10 @@
-import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, Variables } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
+import { v4 as uuidv4 } from 'uuid';
 
 interface IProps {
     entity: Entity;
@@ -35,9 +36,18 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange }: 
             : [];
     };
 
+    console.log(entityVariableKey);
+
     return (
         <Autocomplete
+            disablePortal
+            id={`autocomplete_${uuidv4()}`}
             options={getVariablesOfEntityAsSuggestions()}
+            renderOption={(props, option) => (
+                <li {...props} key={`autocomplete_option_${uuidv4()}`}>
+                    {option.label}
+                </li>
+            )}
             renderInput={(params) => <TextField {...params} value={entityVariableKey} label={t('interface.editor.modifier.input_label_variable')} />}
             onChange={(_, option: any) => onVariableChange(entityVariables[option.value])}
             isOptionEqualToValue={(option, value) => option.value === value.value}

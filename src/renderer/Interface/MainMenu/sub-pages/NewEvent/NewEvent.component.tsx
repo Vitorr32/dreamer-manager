@@ -209,10 +209,8 @@ export function NewEvent({}: IProps) {
 
         //TODO: Make the checks to see if all the event content is correct.
         if (false) {
-            console.log('Invalid');
             return;
         }
-        console.log('Valid');
 
         if (toSubmitVN) {
             //Copy temporary files into the game static files, then update the references on the objects to internal paths.

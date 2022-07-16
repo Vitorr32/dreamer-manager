@@ -44,6 +44,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, lockEntitySel
             {/* VARIABLE SELECT */}
             {entityFilter.entity !== Entity.NONE && (
                 <VariableSelect
+
                     entity={entityFilter.entity}
                     entityVariableKey={entityFilter.variableKey}
                     onVariableChange={(variable) => onFilterChanged('variableKey', variable.key)}

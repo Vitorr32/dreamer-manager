@@ -26,10 +26,8 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
         setLoading(true);
 
         if (!validateTrait(trait)) {
-            console.log('Invalid');
             return;
         }
-        console.log('Valid');
 
         const fileInfo = await GetFileInfoFromPath(ApplyFileProtocol(iconPath));
 

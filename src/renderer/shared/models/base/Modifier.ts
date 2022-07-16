@@ -1,6 +1,6 @@
-import { DEFAULT_ENTITY_FILTER, DEFAULT_EXTERNAL_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { Entity } from '../enums/Entities.enum';
-import { EntityVariableValue, ExternalExpandedEntityFilter } from './EntityVariableValue.model';
+import { EntityFilterTree } from './EntityFilterTree.model';
+import { EntityVariableValue } from './EntityVariableValue.model';
 
 export enum ModifierType {
     UNDEFINED = 'model.undefined',
@@ -28,8 +28,8 @@ export enum ModifierTypeSection {
 export class Modifier {
     public type: ModifierType;
     public modifiedEntityVariable: EntityVariableValue;
-    public targetEntityFilter: ExternalExpandedEntityFilter[];
-    public originEntityFilter?: ExternalExpandedEntityFilter[];
+    public targetEntityFilter: EntityFilterTree;
+    public originEntityFilter?: EntityFilterTree;
 
     constructor() {
         this.type = ModifierType.UNDEFINED;
@@ -38,6 +38,6 @@ export class Modifier {
             value: '',
             variableKey: '',
         };
-        this.targetEntityFilter = [DEFAULT_EXTERNAL_ENTITY_FILTER];
+        this.targetEntityFilter = new EntityFilterTree();
     }
 }

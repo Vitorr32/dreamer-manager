@@ -70,6 +70,9 @@ export const en_US = {
                     input_label_operator: 'Operator',
                     input_label_external_filter: 'User External Entity Property as Filter',
                     input_label_comparison: 'Compare to Another Entity',
+                    button_filter_add_filter: 'Add Filter to Node',
+                    button_filter_add_child: 'Add Child to Node',
+                    button_remove_filter: 'Removed Filter Node'
                 },
                 actor: {
                     input_label_selection: 'Actor Selection',
@@ -404,6 +407,7 @@ export const en_US = {
                     static: 'Character values modifier',
                 },
                 targeting: {
+                    specific_filter: 'Manually Create a Filter',
                     protagonist: 'Main Character',
                     allStudioDreamers: 'All Dreamers of Main Studio',
                     allStudioStaff: 'All Staff of Main Studio',

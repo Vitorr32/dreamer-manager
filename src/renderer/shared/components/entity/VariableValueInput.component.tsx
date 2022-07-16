@@ -52,7 +52,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                         <DesktopDatePicker
                             label={t('interface.editor.condition.time_datepicker_label')}
                             mask="__/__/____"
-                            onError={(reason) => console.log('*** VariableValueInput Error on Datepicker: ', reason)}
+                            onError={(reason) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
                             inputFormat={DATE_ONLY_DAY_FORMAT}
                             value={new Date(variableValue || '01/01/0001')}
                             onChange={(e) => onVariableValueChange(e.toDateString())}

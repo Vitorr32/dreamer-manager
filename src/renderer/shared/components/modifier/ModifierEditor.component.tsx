@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
+import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { Modifier, ModifierType } from 'renderer/shared/models/base/Modifier';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
@@ -33,16 +34,13 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
     const onEntityVariableChange = (key: 'variableKey' | 'value', value: any): void => {
         const newModifier = CopyClassInstance(modifier);
-
-        console.log('value', value);
-
         newModifier.modifiedEntityVariable[key] = value;
         onChange(newModifier);
     };
 
-    const onModifierFilteringChange = (target: 'targetEntityFilter' | 'receptorEntityFilter', filter: EntityFilter): void => {
+    const onModifierFilteringChange = (target: 'targetEntityFilter' | 'originEntityFilter', filterTree: EntityFilterTree): void => {
         const newModifier = CopyClassInstance(modifier);
-        newModifier[target] = filter;
+        newModifier[target] = filterTree;
         onChange(newModifier);
     };
 
@@ -52,7 +50,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         //Update the filters properties as needed by the modifier type.
         switch (type) {
             case ModifierType.MODIFY_ENTITY_VARIABLE:
-                newModifier.targetEntityFilter = DEFAULT_ENTITY_FILTER;
+                newModifier.targetEntityFilter = new EntityFilterTree();
                 newModifier.originEntityFilter = null;
                 break;
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
@@ -60,8 +58,8 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
             case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
-                newModifier.targetEntityFilter = DEFAULT_ENTITY_FILTER;
-                newModifier.originEntityFilter = DEFAULT_ENTITY_FILTER;
+                newModifier.targetEntityFilter = new EntityFilterTree();
+                newModifier.originEntityFilter = new EntityFilterTree();
                 break;
             default:
                 newModifier.targetEntityFilter = null;
@@ -95,7 +93,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                     <ModifierTargetSelection
                         modifier={modifier}
                         onModifierTargetChange={(filter) => onModifierFilteringChange('targetEntityFilter', filter)}
-                        onModifierReceptorChange={(filter) => onModifierFilteringChange('receptorEntityFilter', filter)}
+                        onModifierReceptorChange={(filter) => onModifierFilteringChange('originEntityFilter', filter)}
                         options={options}
                     />
                 );

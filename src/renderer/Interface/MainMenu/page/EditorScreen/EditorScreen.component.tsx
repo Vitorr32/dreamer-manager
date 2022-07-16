@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export function EditorScreen(_: any) {
-    console.log('Editor!');
-
     return (
         <menu>
             <Link to="/menu/edit/trait" >
