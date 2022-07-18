@@ -21,7 +21,7 @@ export function CompositeEntityFilter({ filterTree, onFilterTreeChange }: IProps
 
     return (
         <Box>
-            <EntityFilterNode filterNode={filterTree.root} depth={-1} index={0} onFilterNodeChange={onRootFilterChange} />
+            <EntityFilterNode filterNode={filterTree.root} index={0} isRoot={true} onFilterNodeChange={onRootFilterChange} />
         </Box>
     );
 }

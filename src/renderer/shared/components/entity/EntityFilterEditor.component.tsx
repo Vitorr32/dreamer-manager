@@ -1,5 +1,5 @@
 import { Box } from '@mui/system';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
@@ -44,7 +44,6 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, lockEntitySel
             {/* VARIABLE SELECT */}
             {entityFilter.entity !== Entity.NONE && (
                 <VariableSelect
-
                     entity={entityFilter.entity}
                     entityVariableKey={entityFilter.variableKey}
                     onVariableChange={(variable) => onFilterChanged('variableKey', variable.key)}

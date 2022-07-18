@@ -7,20 +7,20 @@ import { ExternalExpandedEntityFilter } from 'renderer/shared/models/base/Entity
 import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EntityFilterEditor } from './EntityFilterEditor.component';
-import { v4 as uuidv4 } from 'uuid';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 
 interface IProps {
     filterNode: FilterNode;
     index: number;
-    depth: number;
+    parentIndex?: number;
+    depth?: number;
     isRoot?: boolean;
     onFilterNodeChange: (entityFilterTree: FilterNode, indexOfNode: number) => void;
     onRemoveSelf?: (index: number) => void;
 }
 
-export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf, index, depth, isRoot = false }: IProps) {
+export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf, index, parentIndex = 0, depth = 0, isRoot = false }: IProps) {
     const { t } = useTranslation();
 
     const onLogicOperatorChange = (operator: LogicOperator): void => {
@@ -112,7 +112,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                 NODE FILTERS:
                 {filterNode.entityFilters.map((entityFilter, index) => {
                     return (
-                        <Box key={`entity_filter_${depth}_${index}_${uuidv4()}`} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Box key={`entity_filter_${depth}_${parentIndex}${index}`} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <EntityFilterEditor
                                 entityFilter={entityFilter}
                                 onFilterChange={(updatedFilter) => onNodeFilterChange({ ...DEFAULT_EXTERNAL_ENTITY_FILTER, ...updatedFilter }, index)}
@@ -130,7 +130,8 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                 {filterNode.children.map((entityFilter, index) => {
                     return (
                         <EntityFilterNode
-                            key={`filter_node_${depth}_${index}_${uuidv4()}`}
+                            key={`filter_node_${depth}_${parentIndex}${index}`}
+                            parentIndex={index}
                             depth={depth + 1}
                             index={index}
                             filterNode={entityFilter}
