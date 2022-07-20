@@ -1,11 +1,11 @@
-import { Entity } from './Entity.model';
+import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
 
 export const AgencyEntityVariables: Variables = {
     id: { key: 'id', displayName: 'model.id', type: VariableType.TEXT, read: true, edit: false },
 };
 
-export class Agency extends Entity {
+export class Agency extends EntityBase {
     _variables: Variables = AgencyEntityVariables;
 
     id: string;

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
 import { EffectEditorOptions, EffectOriginType } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { ExternalExpandedEntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { DynamicValue, ExternalExpandedEntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { DEFAULT_EXTERNAL_ENTITY_FILTER, PLAYER_AGENCY } from 'renderer/shared/Constants';
@@ -13,6 +13,9 @@ import { Character } from 'renderer/shared/models/base/Character.model';
 import { Agency } from 'renderer/shared/models/base/Agency.model';
 import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
+import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
+import { Actor } from 'renderer/shared/models/base/Actor.model';
+import { Relationship } from 'renderer/shared/models/base/Relationship.model';
 
 interface IProps {
     modifier: Modifier;
@@ -46,6 +49,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
     const { targetEntityFilter, originEntityFilter } = modifier;
 
     const [quickTarget, setQuickTarget] = useState<ShortcutFilter>(ShortcutFilter.UNDEFINED);
+    const [showFilterEditor, setFilterEditorVisibility] = useState<boolean>(false);
 
     const onFilterChanged = (updatedFilters: EntityFilterTree, isTarget: boolean = true) => {
         if (isTarget) {
@@ -82,7 +86,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
         return shortcuts;
     };
 
-    const onShortcutFilterSelected = (shortcut: ShortcutFilter, isTargetFilter: boolean = true) => {
+    const populateFilterWithSelectedShortcut = (shortcut: ShortcutFilter, isTargetFilter: boolean = true) => {
         const shortcutFilterTree: EntityFilterTree = new EntityFilterTree();
         switch (shortcut) {
             case ShortcutFilter.EVERYONE:
@@ -93,6 +97,8 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                 shortcutFilterTree.root.entityFilters[0].value = 0;
                 break;
             case ShortcutFilter.ALL_DREAMERS_OF_STUDIO:
+                shortcutFilterTree.root.logicOperator = LogicOperator.AND;
+
                 shortcutFilterTree.root.entityFilters[0].entity = Entity.CHARACTERS;
                 shortcutFilterTree.root.entityFilters[0].variableKey = Character.getEntityVariables()['agency'].key;
                 shortcutFilterTree.root.entityFilters[0].isFilteringExternalKey = true;
@@ -111,7 +117,9 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                 shortcutFilterTree.root.entityFilters[1].operator = VariableOperator.EQUALS_TO;
                 shortcutFilterTree.root.entityFilters[1].value = false;
                 break;
-            case ShortcutFilter.ALL_STAFF_OF_STUDIO: {
+            case ShortcutFilter.ALL_STAFF_OF_STUDIO:
+                shortcutFilterTree.root.logicOperator = LogicOperator.AND;
+
                 shortcutFilterTree.root.entityFilters[0].entity = Entity.CHARACTERS;
                 shortcutFilterTree.root.entityFilters[0].variableKey = Character.getEntityVariables()['agency'].key;
                 shortcutFilterTree.root.entityFilters[0].isFilteringExternalKey = true;
@@ -130,7 +138,100 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                 shortcutFilterTree.root.entityFilters[1].operator = VariableOperator.EQUALS_TO;
                 shortcutFilterTree.root.entityFilters[1].value = false;
                 break;
-            }
+            case ShortcutFilter.EVERYONE_ON_STUDIO:
+                shortcutFilterTree.root.entityFilters[0].entity = Entity.CHARACTERS;
+                shortcutFilterTree.root.entityFilters[0].variableKey = Character.getEntityVariables()['agency'].key;
+                shortcutFilterTree.root.entityFilters[0].isFilteringExternalKey = true;
+                shortcutFilterTree.root.entityFilters[0].externalEntityFilter = [
+                    {
+                        entity: Entity.AGENCY,
+                        variableKey: Agency.getEntityVariables()['id'].key,
+                        operator: VariableOperator.EQUALS_TO,
+                        value: PLAYER_AGENCY,
+                    },
+                ];
+                break;
+            case ShortcutFilter.ALL_ACTORS:
+                shortcutFilterTree.root.logicOperator = LogicOperator.OR;
+
+                if (options.specifiedEntities[Entity.ACTORS]) {
+                    shortcutFilterTree.root.entityFilters = options.specifiedEntities[Entity.ACTORS].map((actor: Actor) => {
+                        return {
+                            ...DEFAULT_EXTERNAL_ENTITY_FILTER,
+                            entity: Entity.ACTORS,
+                            variableKey: Actor.getEntityVariables()['id'].key,
+                            operator: VariableOperator.EQUALS_TO,
+                            value: actor.id,
+                        };
+                    });
+                } else {
+                    //TODO: Maybe put a feedback message on the front-end?
+                    console.error('Tried to select all actors when no such entity exists yet.');
+                }
+            case ShortcutFilter.PROTAGONIST:
+                shortcutFilterTree.root.entityFilters.push({
+                    ...DEFAULT_EXTERNAL_ENTITY_FILTER,
+                    entity: Entity.CHARACTERS,
+                    variableKey: Actor.getEntityVariables()['isPlayer'].key,
+                    operator: VariableOperator.EQUALS_TO,
+                    value: true,
+                });
+                break;
+            case ShortcutFilter.SELF:
+                shortcutFilterTree.root.entityFilters.push({
+                    ...DEFAULT_EXTERNAL_ENTITY_FILTER,
+                    entity: Entity.CHARACTERS,
+                    variableKey: Actor.getEntityVariables()['id'].key,
+                    operator: VariableOperator.EQUALS_TO,
+                    value: DynamicValue.SELF,
+                });
+            case ShortcutFilter.SELF_FRIENDS:
+                shortcutFilterTree.root.logicOperator = LogicOperator.AND;
+
+                //TODO: Think of a way to use the origin of the Relationship entity to do the SELF shortcuts
+
+                shortcutFilterTree.root.entityFilters.push(
+                    {
+                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
+                        entity: Entity.CHARACTERS,
+                        variableKey: Actor.getEntityVariables()['id'].key,
+                        operator: VariableOperator.EQUALS_TO,
+                        value: DynamicValue.SELF,
+                    },
+                    {
+                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
+                        entity: Entity.RELATIONSHIP,
+                        variableKey: Relationship.getEntityVariables()['favor'].key,
+                        operator: VariableOperator.EQUAL_OR_BIGGER_THAN,
+                        value: 50,
+                    }
+                );
+            case ShortcutFilter.SELF_RIVALS:
+                shortcutFilterTree.root.logicOperator = LogicOperator.AND;
+
+                shortcutFilterTree.root.entityFilters.push(
+                    {
+                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
+                        entity: Entity.CHARACTERS,
+                        variableKey: Actor.getEntityVariables()['id'].key,
+                        operator: VariableOperator.EQUALS_TO,
+                        value: DynamicValue.SELF,
+                    },
+                    {
+                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
+                        entity: Entity.RELATIONSHIP,
+                        variableKey: Relationship.getEntityVariables()['favor'].key,
+                        operator: VariableOperator.EQUAL_OR_SMALLER_THAN,
+                        value: 0,
+                    },
+                    {
+                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
+                        entity: Entity.RELATIONSHIP,
+                        variableKey: Relationship.getEntityVariables()['respect'].key,
+                        operator: VariableOperator.EQUAL_OR_BIGGER_THAN,
+                        value: 50,
+                    }
+                );
             default:
                 console.error('No entity selected, or uknown entity' + modifier.modifiedEntityVariable.entity);
                 break;
@@ -139,12 +240,28 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
         onFilterChanged(shortcutFilterTree, isTargetFilter);
     };
 
+    const onShortcutSelectChange = (shortcut: ShortcutFilter, isTargetFilter: boolean = true) => {
+        setQuickTarget(shortcut);
+
+        switch (shortcut) {
+            case ShortcutFilter.UNDEFINED:
+                setFilterEditorVisibility(false);
+                return;
+            case ShortcutFilter.SPECIFIC_FILTER:
+                setFilterEditorVisibility(true);
+                break;
+            default:
+                setFilterEditorVisibility(false);
+                populateFilterWithSelectedShortcut(shortcut, isTargetFilter);
+                break;
+        }
+    };
+
     return (
-        <Box className="">
-            TARGETTING
+        <Box className="target-selection">
             <FormControl fullWidth>
                 <InputLabel>{t('interface.editor.modifier.targeting.input_label_target_select')}</InputLabel>
-                <Select value={quickTarget === ShortcutFilter.UNDEFINED ? '' : quickTarget} onChange={(e) => setQuickTarget(e.target.value as ShortcutFilter)}>
+                <Select value={quickTarget === ShortcutFilter.UNDEFINED ? '' : quickTarget} onChange={(e) => onShortcutSelectChange(e.target.value as ShortcutFilter)}>
                     {getShortcutTargets().map((option, index) => (
                         <MenuItem key={`shortcut_${index}`} value={option}>
                             {t(option)}
@@ -153,6 +270,11 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                 </Select>
                 <FormHelperText>{t('interface.editor.event.flag_permanent_helper')}</FormHelperText>
             </FormControl>
+
+            {
+                !impliedReceptor
+            }
+
             <CompositeEntityFilter filterTree={targetEntityFilter} onFilterTreeChange={(filterTree) => onFilterChanged(filterTree)} />
         </Box>
     );

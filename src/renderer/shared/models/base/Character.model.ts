@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CustomVariables, Variables, VariableType } from './Variable.model';
 import { Kinship } from './Kinship.model';
 import { Entity } from '../enums/Entities.enum';
+import { EntityBase } from './Entity.model';
 
 export enum Gender {
     MALE = 'male',
@@ -73,8 +74,8 @@ export const CharacterEntityVariables: Variables = {
     isStaff: { key: 'isStaff', displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: true },
 };
 
-export class Character {
-    private static _variables: Variables = CharacterEntityVariables;
+export class Character extends EntityBase {
+    _variables: Variables = CharacterEntityVariables;
     // ID Pattern : CHAR_*NUMBER*
     public id: string;
     public sprites: Sprite[];
@@ -100,23 +101,15 @@ export class Character {
     public traits: Trait[] = [];
     public flags: Flag[] = [];
     public relationshipsModifiers: string[] = [];
-    //Custom variables should be added to the entity, and it's values should be saved on the customVariables property here.
-    public customVariables: any;
 
     constructor(id?: string, sprites?: Sprite[], name?: string, surname?: string, nickname?: string, birthday?: Date) {
+        super();
+
         this.id = id || `char_${uuidv4()}`;
         this.sprites = sprites || [];
         this.name = name || '';
         this.surname = surname || '';
         this.nickname = nickname || '';
         this.birthday = birthday;
-    }
-
-    static getEntityVariables(): Variables {
-        return this._variables;
-    }
-
-    static addCustomVariablesToEntity(customVariables: CustomVariables): void {
-        Object.keys(customVariables).forEach((key) => {});
     }
 }

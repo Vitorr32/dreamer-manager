@@ -72,7 +72,7 @@ export const en_US = {
                     input_label_comparison: 'Compare to Another Entity',
                     button_filter_add_filter: 'Add Filter to Node',
                     button_filter_add_child: 'Add Child to Node',
-                    button_remove_filter: 'Removed Filter Node'
+                    button_remove_filter: 'Removed Filter Node',
                 },
                 actor: {
                     input_label_selection: 'Actor Selection',
@@ -329,6 +329,8 @@ export const en_US = {
                     power: 'Power Dynamic',
                     attraction: 'Attractiveness',
                     respect: 'Respect',
+                    originChar: 'Opinion Holder',
+                    targetChar: 'Opinion Target',
                 },
             },
             trait: {
@@ -347,7 +349,7 @@ export const en_US = {
                 traits: 'Traits',
                 characters: 'Characters',
                 flags: 'Event Flags',
-                player: 'Player',
+                relationship: 'Relationship',
                 staff: 'Staff',
                 agency: 'Agencies',
                 companies: 'Companies',

@@ -1,8 +1,8 @@
-import { Entity } from './Entity.model';
+import { EntityBase } from './Entity.model';
 import { Variables } from './Variable.model';
 
 //All of the current save world metadat
-export class World extends Entity {
+export class World extends EntityBase {
     _variables: Variables = {};
 
     public date: number;

@@ -1,5 +1,5 @@
 import { ConditionTree } from './ConditionTree';
-import { Entity } from './Entity.model';
+import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -25,7 +25,7 @@ export const ActorEntityVariables: Variables = {
     },
 };
 
-export class Actor extends Entity {
+export class Actor extends EntityBase {
     _variables: Variables = ActorEntityVariables;
     //If this event actors are pooled on the moment that the event happens.
     actorType: ActorType;

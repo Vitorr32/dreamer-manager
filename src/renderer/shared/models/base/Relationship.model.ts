@@ -1,7 +1,6 @@
-import { Entity } from './Entity.model';
-import { EntityFilter } from './EntityVariableValue.model';
-import { Variables } from './Variable.model';
-import { v4 as uuidv4 } from 'uuid';
+import { Entity } from '../enums/Entities.enum';
+import { EntityBase } from './Entity.model';
+import { Variables, VariableType } from './Variable.model';
 
 export enum RelationshipParameter {
     UNDEFINED = 'model.undefined',
@@ -13,32 +12,46 @@ export enum RelationshipParameter {
     RESPECT = 'model.relationship.variable.respect',
 }
 
-export class RelationshipModifier extends Entity {
-    _variables: Variables = {};
+export const RelationshipEntityVariables: Variables = {
+    favor: { key: 'favor', displayName: 'model.relationship.variable.favor', type: VariableType.NUMBER, read: true, edit: true },
+    love: { key: 'love', displayName: 'model.relationship.variable.love', type: VariableType.NUMBER, read: true, edit: true },
+    power: { key: 'power', displayName: 'model.relationship.variable.power', type: VariableType.NUMBER, read: true, edit: true },
+    attraction: { key: 'attraction', displayName: 'model.relationship.variable.attraction', type: VariableType.NUMBER, read: true, edit: true },
+    respect: { key: 'respect', displayName: 'model.relationship.variable.respect', type: VariableType.NUMBER, read: true, edit: true },
+    originCharacter: {
+        key: 'originCharacter',
+        displayName: 'model.relationship.variables.originChar',
+        type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.CHARACTERS,
+        read: true,
+        edit: false,
+    },
+    targetCharacter: {
+        key: 'targetCharacter',
+        displayName: 'model.relationship.variables.targetChar',
+        type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.CHARACTERS,
+        read: true,
+        edit: false,
+    },
+};
 
-    id: string;
+//Relationship would be a read-only Entity that is not actually instantiated in game, since the Relationship Modifiers would be calculated in real time.
+export class Relationship extends EntityBase {
+    _variables: Variables = RelationshipEntityVariables;
+
+    favor: number;
+    love: number;
+    power: number;
+    attraction: number;
+    respect: number;
+
+    //As in, the character that holds the opinion (X respect for Y is 50, X would be the origin character)
     originCharacter: string;
-    receptorCharacters: EntityFilter;
-    //bothWays: If the value of the modifier should be applied on both relationship parameters of the origin and receptors
-    bothWays: boolean;
-    //inverse: If the value of the modifier should be applied inverted on the receptor character, so if the modifier is positive for the origin character, it's negative on the receptor
-    inverse: boolean;
-    displayName: string;
-    //If no inverse display name, use the normal display name
-    inverseDisplayName: string;
-    //If this value will never decay with time
-    permanent: boolean;
-    //How much this modifier decays every month, once it hits 0 it will be removed from the game state
-    monthlyDecay: number;
-    //Which relationship parameter is being modified
-    type: RelationshipParameter;
-    //The actual value that this modified will apply to the parameter
-    value: number;
+    //And this would be the character that "receives" the opinion (X respect for Y is 50, Y would be the target character).
+    targetCharacter: string;
 
-    constructor(originActorID: string) {
+    constructor() {
         super();
-
-        this.id = `rm_${uuidv4()}`;
-        this.originCharacter = originActorID || '';
     }
 }
