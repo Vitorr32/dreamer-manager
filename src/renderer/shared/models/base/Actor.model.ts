@@ -2,6 +2,7 @@ import { ConditionTree } from './ConditionTree';
 import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
 import { v4 as uuidv4 } from 'uuid';
+import { Entity } from '../enums/Entities.enum';
 
 export enum ActorType {
     PlAYER_CHARACTER = 'player',
@@ -13,7 +14,14 @@ export enum ActorType {
 export const ActorEntityVariables: Variables = {
     id: { key: 'id', displayName: 'model.actor.variables.id', type: VariableType.TEXT, read: true, edit: false },
     alias: { key: 'alias', displayName: 'model.actor.variables.alias', type: VariableType.TEXT, read: true, edit: true },
-    characterID: { key: 'characterID', displayName: 'model.actor.variables.characterID', type: VariableType.TEXT, read: true, edit: false },
+    characterID: {
+        key: 'characterID',
+        displayName: 'model.actor.variables.characterID',
+        type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.CHARACTERS,
+        read: true,
+        edit: false,
+    },
     spriteFilePath: { key: 'spriteFilePath', displayName: 'model.actor.variables.spritePath', type: VariableType.FILE_PATH, read: true, edit: true },
     ethnicity: {
         key: 'actorType',
@@ -26,7 +34,9 @@ export const ActorEntityVariables: Variables = {
 };
 
 export class Actor extends EntityBase {
-    _variables: Variables = ActorEntityVariables;
+    static get _variables() {
+        return ActorEntityVariables;
+    }
     //If this event actors are pooled on the moment that the event happens.
     actorType: ActorType;
     // Generic sprite path

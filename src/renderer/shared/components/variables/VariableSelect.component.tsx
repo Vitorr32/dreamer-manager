@@ -1,6 +1,7 @@
 import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Relationship } from 'renderer/shared/models/base/Relationship.model';
 import { EntityVariable, Variables } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
@@ -38,12 +39,13 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange }: 
 
     return entityVariableKey && !entityVariables ? null : (
         <Autocomplete
+            fullWidth
             options={getVariablesOfEntityAsSuggestions()}
             onChange={(_, option: any) => onVariableChange(entityVariables[option.value])}
             renderInput={(params) => <TextField {...params} value={entityVariableKey} label={t('interface.editor.modifier.input_label_variable')} />}
             renderOption={(props, option) => (
                 <li {...props} key={`autocomplete_option_${uuidv4()}`}>
-                    {option.label}
+                    {t(option.label)}
                 </li>
             )}
             isOptionEqualToValue={(option, value) => option.value === value.value}

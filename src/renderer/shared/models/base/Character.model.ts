@@ -75,7 +75,9 @@ export const CharacterEntityVariables: Variables = {
 };
 
 export class Character extends EntityBase {
-    _variables: Variables = CharacterEntityVariables;
+    static get _variables() {
+        return CharacterEntityVariables;
+    }
     // ID Pattern : CHAR_*NUMBER*
     public id: string;
     public sprites: Sprite[];

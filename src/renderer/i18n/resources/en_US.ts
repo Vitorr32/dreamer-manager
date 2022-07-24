@@ -95,6 +95,7 @@ export const en_US = {
                     input_label_variable: 'Entity Variable',
                     input_label_conditional: 'Conditional',
                     input_label_value_change: 'Modifier Value',
+                    modifier_editor_helper_text: 'Please select what entity variable will be modified by this modifier',
                     targeting: {
                         input_label_target_select: 'Target of Effect',
                         input_label_target_helper: 'Select which entity will receive the effect modifiers',
@@ -420,7 +421,7 @@ export const en_US = {
                     selfFriends: "This Characters's Friends",
                     selfRivals: "This Character's Rivals",
                     mainStudio: 'Main Studio',
-                    allActors: 'All Actors in the Event',
+                    allActors: 'All actors in this Event',
                 },
             },
             event: {

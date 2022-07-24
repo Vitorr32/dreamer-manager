@@ -3,7 +3,9 @@ import { Variables } from './Variable.model';
 
 //All of the current save world metadat
 export class World extends EntityBase {
-    _variables: Variables = {};
+    static get _variables() {
+        return {};
+    }
 
     public date: number;
     public triggeredFlags: string[];

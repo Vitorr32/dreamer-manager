@@ -1,11 +1,12 @@
 import { EntityBase } from './Entity.model';
 import { EntityFilter } from './EntityVariableValue.model';
-import { Variables } from './Variable.model';
 import { v4 as uuidv4 } from 'uuid';
 import { RelationshipParameter } from './Relationship.model';
 
 export class RelationshipModifier extends EntityBase {
-    _variables: Variables = {};
+    static get _variables() {
+        return {};
+    }
 
     id: string;
     originCharacter: string;

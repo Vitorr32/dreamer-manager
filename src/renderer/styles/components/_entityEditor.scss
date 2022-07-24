@@ -1,0 +1,9 @@
+.entity-editor {
+    display: flex;
+    column-gap: 10px;
+    width: 100%;
+
+    &__variable-select {
+        flex: 1;
+    }
+}

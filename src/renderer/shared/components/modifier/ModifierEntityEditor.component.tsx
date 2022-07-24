@@ -19,7 +19,7 @@ export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChang
     const { t } = useTranslation();
 
     return (
-        <Box>
+        <Box className="entity-editor">
             {/* ENTITY SELECT */}
             <EntitySelect entity={modifier.modifiedEntityVariable?.entity} onEntityChange={onEntityChange} />
 

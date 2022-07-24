@@ -1,5 +1,5 @@
 import { ArrowForward } from '@mui/icons-material';
-import { Button, Typography } from '@mui/material';
+import { Button, FormHelperText, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -73,14 +73,6 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         onChange(newModifier);
     };
 
-    const renderEntityModifier = (): React.ReactElement | null => {
-        if (modifier.type !== ModifierType.MODIFY_ENTITY_VARIABLE) {
-            return null;
-        }
-
-        return <ModifierEntityEditor modifier={modifier} onEntityChange={onEntityModifierChanged} onVariableChange={onEntityVariableChange} options={options} />;
-    };
-
     const renderTargetingSelection = (): React.ReactElement | null => {
         switch (modifier.type) {
             case ModifierType.MODIFY_ENTITY_VARIABLE:
@@ -114,7 +106,12 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                     {modifier.type === ModifierType.UNDEFINED ? t('interface.editor.modifier.select_type') : t(modifier.type)}
                 </Button>
 
-                {renderEntityModifier()}
+                {modifier.type === ModifierType.MODIFY_ENTITY_VARIABLE && (
+                    <>
+                        <FormHelperText>{t('interface.editor.modifier.modifier_editor_helper_text')}</FormHelperText>
+                        <ModifierEntityEditor modifier={modifier} onEntityChange={onEntityModifierChanged} onVariableChange={onEntityVariableChange} options={options} />
+                    </>
+                )}
 
                 {renderTargetingSelection()}
             </Box>

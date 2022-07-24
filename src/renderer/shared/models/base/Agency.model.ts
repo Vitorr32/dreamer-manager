@@ -6,7 +6,9 @@ export const AgencyEntityVariables: Variables = {
 };
 
 export class Agency extends EntityBase {
-    _variables: Variables = AgencyEntityVariables;
+    static get _variables() {
+        return AgencyEntityVariables;
+    }
 
     id: string;
     treasury: number;

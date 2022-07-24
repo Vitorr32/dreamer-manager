@@ -38,8 +38,17 @@ export const RelationshipEntityVariables: Variables = {
 
 //Relationship would be a read-only Entity that is not actually instantiated in game, since the Relationship Modifiers would be calculated in real time.
 export class Relationship extends EntityBase {
-    _variables: Variables = RelationshipEntityVariables;
+    static get _variables() {
+        return RelationshipEntityVariables;
+    }
 
+    /**
+     *  These five relationship variable are to be used on Entity filtering, so for example,
+     *  Any character that has Favor bigger than 50 with characters that are Caucasian would be:
+     *  originCharacter: Self
+     *  favor: 50
+     *  receptorCharacter: External Key, Ethnicity equals to Caucasian
+     * */
     favor: number;
     love: number;
     power: number;
