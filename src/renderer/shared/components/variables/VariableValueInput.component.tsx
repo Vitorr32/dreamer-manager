@@ -37,6 +37,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
             case VariableType.NUMBER:
                 return (
                     <TextField
+                        fullWidth
                         value={variableValue}
                         label={t('interface.editor.modifier.input_label_value_change')}
                         type="number"
@@ -48,19 +49,25 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 );
             case VariableType.TEXT:
                 return (
-                    <TextField value={variableValue} label={t('interface.editor.modifier.input_label_value_change')} onChange={(e) => onVariableValueChange(e.target.value)} />
+                    <TextField
+                        fullWidth
+                        value={variableValue}
+                        label={t('interface.editor.modifier.input_label_value_change')}
+                        onChange={(e) => onVariableValueChange(e.target.value)}
+                    />
                 );
             case VariableType.DATE:
                 return (
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DesktopDatePicker
+                            fullWidth
                             label={t('interface.editor.condition.time_datepicker_label')}
                             mask="__/__/____"
-                            onError={(reason) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
+                            onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
                             inputFormat={DATE_ONLY_DAY_FORMAT}
                             value={new Date(variableValue || '01/01/0001')}
-                            onChange={(e) => onVariableValueChange(e.toDateString())}
-                            renderInput={(params) => <TextField {...params} />}
+                            onChange={(e: any) => onVariableValueChange(e.toDateString())}
+                            renderInput={(params: any) => <TextField {...params} />}
                         />
                     </LocalizationProvider>
                 );
@@ -68,6 +75,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
             case VariableType.EXTERNAL_KEY_LIST:
                 return (
                     <Autocomplete
+                        fullWidth
                         freeSolo
                         options={getSuggestionsForAutocompleteOfEntity(variable.externalEntity)}
                         renderInput={(params) => <TextField {...params} label={t(variable.externalEntity)} />}

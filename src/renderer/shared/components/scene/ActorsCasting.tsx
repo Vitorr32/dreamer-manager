@@ -1,11 +1,12 @@
 import {
     Box,
     Button,
+    Dialog,
+    DialogContent,
     Divider,
     FormControl,
     FormControlLabel,
     FormHelperText,
-    FormLabel,
     List,
     ListItem,
     ListItemButton,
@@ -15,17 +16,17 @@ import {
     RadioGroup,
     TextField,
     Typography,
+    useTheme,
 } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { BACKGROUND_IMAGES_FOLDER, GENERIC_SPRITES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_ACTOR_SPRITE, SPRITES_FOLDER } from 'renderer/shared/Constants';
+import { GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE, SPRITES_FOLDER } from 'renderer/shared/Constants';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component';
-import { v4 as uuidv4 } from 'uuid';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
 import { Actor, ActorType } from 'renderer/shared/models/base/Actor.model';
@@ -41,6 +42,7 @@ const spriteGamePath = [SPRITES_FOLDER];
 
 export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathOfTempImages }: IProps) {
     const { t, i18n } = useTranslation();
+    const theme = useTheme();
 
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedActor, setSelectedActor] = useState<Actor>();
@@ -130,7 +132,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         switch (value) {
             case ActorType.DYNAMIC_TYPE:
                 newActor.characterID = null;
-            case ActorType.PlAYER_CHARACTER:
+            case ActorType.PLAYER_CHARACTER:
             case ActorType.GENERIC_TYPE:
                 newActor.characterID = null;
                 newActor.actorCastingCondition = null;
@@ -181,75 +183,69 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         setGalleryState(false);
     };
 
+    const getHelperTextForSelectedActorType = (actorType: ActorType): string => {
+        switch (actorType) {
+            case ActorType.PLAYER_CHARACTER:
+                return t('interface.editor.event.casting_actor_type_helper_player');
+            case ActorType.DYNAMIC_TYPE:
+                return t('interface.editor.event.casting_actor_type_helper_is_dynamic');
+            case ActorType.GENERIC_TYPE:
+                return t('interface.editor.event.casting_actor_type_helper_is_generic');
+            case ActorType.SPECIFIC_TYPE:
+                return t('interface.editor.event.casting_actor_type_helper_is_specific');
+            default:
+                return '';
+        }
+    };
+
     return (
         <>
             <Button onClick={toggleModal}>{t('interface.editor.event.navigate_casting')}</Button>
 
-            <Modal className="modal casting" open={modalOpen} onClose={toggleModal}>
-                <Box className="modal__wrapper modal__wrapper-large">
+            <Dialog className="casting" open={modalOpen} onClose={toggleModal} fullWidth maxWidth="xl">
+                <DialogContent className="casting__content">
                     <Button onClick={onCharacterAdded}>{t('interface.editor.event.add_actor')}</Button>
 
-                    <Box className="modal__content casting__content">
-                        <Box className="casting__actors">
-                            <List className="casting__actors-list">
-                                <ListItem disablePadding>
-                                    <ListItemText primary={t('interface.editor.event.casting_heading')} secondary={t('interface.editor.event.casting_sub_heading')} />
-                                </ListItem>
+                    <Box className="casting__actors">
+                        <List className="casting__actors-list">
+                            <ListItem disablePadding>
+                                <ListItemText primary={t('interface.editor.event.casting_heading')} secondary={t('interface.editor.event.casting_sub_heading')} />
+                            </ListItem>
 
-                                <Divider />
+                            <Divider />
 
-                                {event.actors?.map((actor, index) => {
-                                    const key = `actor_${index}`;
-                                    const actorName =
-                                        actor.actorType === ActorType.DYNAMIC_TYPE || actor.actorType === ActorType.GENERIC_TYPE
-                                            ? actor.alias
-                                            : actor.characterID
-                                            ? charactersDB[actor.characterID].name
-                                            : actor.alias;
+                            {event.actors?.map((actor, index) => {
+                                const key = `actor_${index}`;
+                                const actorName =
+                                    actor.actorType === ActorType.DYNAMIC_TYPE || actor.actorType === ActorType.GENERIC_TYPE
+                                        ? actor.alias
+                                        : actor.characterID
+                                        ? charactersDB[actor.characterID].name
+                                        : actor.alias;
 
-                                    return (
-                                        <ListItemButton key={key} selected={selectedActor === actor} onClick={() => onActorSelected(actor, index)}>
-                                            <ListItemText primary={actorName} />
-                                        </ListItemButton>
-                                    );
-                                })}
-                            </List>
-                        </Box>
+                                return (
+                                    <ListItemButton key={key} selected={selectedActor === actor} onClick={() => onActorSelected(actor, index)}>
+                                        <ListItemText primary={actorName} />
+                                    </ListItemButton>
+                                );
+                            })}
+                        </List>
 
                         {selectedActor && (
-                            <Box className="casting__details">
+                            <Box className="casting__actors-details">
                                 <Typography variant="h4">{t('interface.editor.event.casting_actor_heading')}</Typography>
 
                                 <FormControl component="fieldset" variant="standard">
-                                    <FormLabel component="legend">{t('interface.editor.event.casting_actor_type_heading')}</FormLabel>
                                     <RadioGroup
                                         defaultValue={ActorType.GENERIC_TYPE}
                                         onChange={(event) => onActorTypeChange(selectedActor, event.target.value as any, selectedActorIndex)}
                                     >
-                                        <FormControlLabel
-                                            disabled={!event.actors.find((actor) => actor.actorType === ActorType.PlAYER_CHARACTER)}
-                                            control={<Radio />}
-                                            value={ActorType.PlAYER_CHARACTER}
-                                            label={t('interface.editor.event.casting_player') as string}
-                                        />
-                                        <FormControlLabel
-                                            control={<Radio />}
-                                            value={ActorType.GENERIC_TYPE}
-                                            label={t('interface.editor.event.casting_is_generic') as string}
-                                        />
-                                        <FormControlLabel
-                                            control={<Radio />}
-                                            value={ActorType.DYNAMIC_TYPE}
-                                            label={t('interface.editor.event.casting_is_dynamic') as string}
-                                        />
-                                        <FormControlLabel
-                                            control={<Radio />}
-                                            value={ActorType.SPECIFIC_TYPE}
-                                            label={t('interface.editor.event.casting_is_specific') as string}
-                                        />
+                                        {Object.values(ActorType).map((actorType) => (
+                                            <FormControlLabel control={<Radio />} value={actorType} label={t(actorType)} />
+                                        ))}
                                     </RadioGroup>
 
-                                    <FormHelperText>{t('interface.editor.event.casting_actor_type_helper')}</FormHelperText>
+                                    <FormHelperText>{getHelperTextForSelectedActorType(selectedActor.actorType)}</FormHelperText>
                                 </FormControl>
 
                                 {(selectedActor.actorType === ActorType.DYNAMIC_TYPE || selectedActor.actorType === ActorType.GENERIC_TYPE) && (
@@ -262,6 +258,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                                     />
                                 )}
 
+                                {/* TODO: Select the character associated to this actor */}
                                 {selectedActor.actorType === ActorType.SPECIFIC_TYPE && <></>}
 
                                 {selectedActor.actorType === ActorType.GENERIC_TYPE && (
@@ -317,8 +314,8 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                             </Box>
                         )}
                     </Box>
-                </Box>
-            </Modal>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }

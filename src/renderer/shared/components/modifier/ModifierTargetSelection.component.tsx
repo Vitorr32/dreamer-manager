@@ -60,7 +60,8 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
     };
 
     const getShortcutTargets = (): ShortcutFilter[] => {
-        const shortcuts: ShortcutFilter[] = [];
+        const shortcuts: ShortcutFilter[] = [ShortcutFilter.SPECIFIC_FILTER];
+
         switch (modifier.modifiedEntityVariable.entity) {
             case Entity.RELATIONSHIP:
             case Entity.CHARACTERS:
@@ -271,17 +272,19 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
     return (
         <Box className="target-selection">
             {modifier.modifiedEntityVariable.entity !== Entity.NONE && (
-                <FormControl fullWidth>
-                    <InputLabel>{t('interface.editor.modifier.targeting.input_label_target_select')}</InputLabel>
-                    <Select value={quickTarget === ShortcutFilter.UNDEFINED ? '' : quickTarget} onChange={(e) => onShortcutSelectChange(e.target.value as ShortcutFilter)}>
-                        {getShortcutTargets().map((option, index) => (
-                            <MenuItem key={`shortcut_${index}`} value={option}>
-                                {t(option)}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                <>
                     <FormHelperText>{t('interface.editor.modifier.targeting.input_label_target_helper')}</FormHelperText>
-                </FormControl>
+                    <FormControl fullWidth>
+                        <InputLabel>{t('interface.editor.modifier.targeting.input_label_target_select')}</InputLabel>
+                        <Select value={quickTarget === ShortcutFilter.UNDEFINED ? '' : quickTarget} onChange={(e) => onShortcutSelectChange(e.target.value as ShortcutFilter)}>
+                            {getShortcutTargets().map((option, index) => (
+                                <MenuItem key={`shortcut_${index}`} value={option}>
+                                    {t(option)}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </>
             )}
 
             {showFilterEditor && (

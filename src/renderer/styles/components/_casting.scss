@@ -1,9 +1,16 @@
 .casting {
-    &__content {
+    &__actors {
         display: flex;
-    }
+        height: calc(100% - 45px);
+        column-gap: 10px;
 
-    &__details {
-        width: 80%;
+        &-list {
+            width: 30%;
+        }
+
+        &-details {
+            width: 70%;
+            overflow: auto;
+        }
     }
 }

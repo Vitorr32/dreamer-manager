@@ -73,27 +73,6 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         onChange(newModifier);
     };
 
-    const renderTargetingSelection = (): React.ReactElement | null => {
-        switch (modifier.type) {
-            case ModifierType.MODIFY_ENTITY_VARIABLE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_ATTRACT_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAMILIARITY:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_FAVOR_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_POWER_VALUE:
-            case ModifierType.MODIFY_RELATIONSHIP_RELATION_RESPECT_VALUE:
-                return (
-                    <ModifierTargetSelection
-                        modifier={modifier}
-                        onModifierTargetChange={(filter) => onModifierFilteringChange('targetEntityFilter', filter)}
-                        onModifierReceptorChange={(filter) => onModifierFilteringChange('originEntityFilter', filter)}
-                        options={options}
-                    />
-                );
-            default:
-                return null;
-        }
-    };
-
     return (
         <Box className="modifier-editor" sx={{ bgcolor: 'background.default' }}>
             <Box className="modifier-editor__header">
@@ -113,7 +92,14 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                     </>
                 )}
 
-                {renderTargetingSelection()}
+                {modifier.type !== ModifierType.MODIFY_TRIGGER_EVENT && (
+                    <ModifierTargetSelection
+                        modifier={modifier}
+                        onModifierTargetChange={(filter) => onModifierFilteringChange('targetEntityFilter', filter)}
+                        onModifierReceptorChange={(filter) => onModifierFilteringChange('originEntityFilter', filter)}
+                        options={options}
+                    />
+                )}
             </Box>
 
             <ModifierTypeDialog modifier={modifier} onTypeSelect={onTypeSubmitted} open={showTypeModal} onClose={() => setShowTypeModal(false)} options={options} />

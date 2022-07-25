@@ -5,10 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { Entity } from '../enums/Entities.enum';
 
 export enum ActorType {
-    PlAYER_CHARACTER = 'player',
-    GENERIC_TYPE = 'generic',
-    DYNAMIC_TYPE = 'dynamic',
-    SPECIFIC_TYPE = 'specific',
+    PLAYER_CHARACTER = 'interface.editor.event.casting_player',
+    GENERIC_TYPE = 'interface.editor.event.casting_is_generic',
+    DYNAMIC_TYPE = 'interface.editor.event.casting_is_dynamic',
+    SPECIFIC_TYPE = 'interface.editor.event.casting_is_specific',
 }
 
 export const ActorEntityVariables: Variables = {
@@ -23,7 +23,7 @@ export const ActorEntityVariables: Variables = {
         edit: false,
     },
     spriteFilePath: { key: 'spriteFilePath', displayName: 'model.actor.variables.spritePath', type: VariableType.FILE_PATH, read: true, edit: true },
-    ethnicity: {
+    actorType: {
         key: 'actorType',
         displayName: 'model.actor.variables.type',
         type: VariableType.ENUMERATOR,

@@ -95,7 +95,8 @@ export const en_US = {
                     input_label_variable: 'Entity Variable',
                     input_label_conditional: 'Conditional',
                     input_label_value_change: 'Modifier Value',
-                    modifier_editor_helper_text: 'Please select what entity variable will be modified by this modifier',
+                    modifier_editor_helper_text:
+                        "Please select what entity variable will be modified by this modifier, select 'Manually Create a Filter' to create a new filter for the target",
                     targeting: {
                         input_label_target_select: 'Target of Effect',
                         input_label_target_helper: 'Select which entity will receive the effect modifiers',
@@ -122,12 +123,15 @@ export const en_US = {
                     casting_sub_heading: 'Here is the list of actors that are participating on this event',
                     casting_actor_heading: 'Configurations of the actor',
                     casting_actor_type_heading: 'Actor Type',
-                    casting_actor_type_helper:
-                        'Player Character is the fixed character of the player, with the name he choose at the start of the game. Generic actors are not associated with any actual character in-game, Dynamic actors are only known when the event actually triggers and finally the specific actors are directly identified by their ID',
                     casting_player: 'Is this actor the player character?',
+                    casting_actor_type_helper_player: 'Player Character is the fixed character of the player, with the name he choose at the start of the game',
                     casting_is_specific: 'Is this actor an specific character that already exists on the game files?',
+                    casting_actor_type_helper_is_specific: 'Specific actors are directly identified by their ID and already exist on the Characters database',
                     casting_is_dynamic: 'Is this actor dynamically pooled when the event starts?',
+                    casting_actor_type_helper_is_dynamic:
+                        'Dynamic actors are only known when the event actually trigger, so you need to set a character filter to pool the actor when the event is triggered',
                     casting_is_generic: 'Is this actor generic or a one-off appearance?',
+                    casting_actor_type_helper_is_generic: 'Generic actors are not associated with any actual character in-game, and are only exist on this event',
                     casting_alias: 'Alias',
                     casting_alias_helper: 'What alias will this actor be recognized with?',
                     casting_sprite: 'Actor Sprite',
@@ -160,7 +164,8 @@ export const en_US = {
                     scene_node_remove: 'Remove Node',
                     scene_node_copy: 'Copy Parent Node as Child',
                     scene_node_edit: 'Edit Node',
-                    add_link_condition: 'Link Connection Condition',
+                    add_link_condition: 'Add Condition for Proguession',
+                    remove_link_condition: 'Remove Condition for Proguession',
                     scene_link_choice_label: 'Choice Label',
                     scene_link_choice_helper: 'Label that will appear on the condition button when the player ends the parent scene and the transition is triggered.',
                     scene_link_normal_type_helper:

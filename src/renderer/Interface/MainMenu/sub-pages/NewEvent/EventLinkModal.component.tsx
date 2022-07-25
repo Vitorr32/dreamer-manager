@@ -30,6 +30,13 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
         onSceneConnectionChange(newConnection);
     };
 
+    const onRemoveConditionFromConnection = (): void => {
+        const newConnection = CopyClassInstance(sceneConnection);
+        newConnection.choiceCondition = null;
+
+        onSceneConnectionChange(newConnection);
+    };
+
     const onRenderTypeHelper = (currentType: ConnectionType): string => {
         switch (currentType) {
             case ConnectionType.NORMAL:
@@ -75,6 +82,16 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
         onSceneConnectionChange(newConnection);
     };
 
+    const shouldShowConditionTree = (): boolean => {
+        return sceneConnection && sceneConnection.type && !!sceneConnection.choiceCondition;
+    };
+
+    const shouldShowConditionButton = (): boolean => {
+        return sceneConnection?.type && sceneConnection.type !== ConnectionType.NORMAL;
+    };
+
+    console.log(sceneConnection);
+
     return (
         <Modal className="modal" open={open} onClose={onClose}>
             <Box
@@ -108,13 +125,14 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
                         />
                     )}
 
-                    {sceneConnection && sceneConnection.type && sceneConnection.type !== ConnectionType.NORMAL && sceneConnection.choiceCondition && (
-                        <Button onClick={onAddConditionToConnection}>{t('interface.editor.event.add_link_condition')}</Button>
+                    {shouldShowConditionButton() && (
+                        <Box>
+                            <Button onClick={onAddConditionToConnection}>{t('interface.editor.event.add_link_condition')}</Button>
+                            <Button onClick={onRemoveConditionFromConnection}>{t('interface.editor.event.remove_link_condition')}</Button>
+                        </Box>
                     )}
 
-                    {sceneConnection && !!sceneConnection.type && sceneConnection.type !== ConnectionType.NORMAL && (
-                        <ConditionTreeEditor conditionTree={sceneConnection?.choiceCondition} onChange={onConditionChanged} />
-                    )}
+                    {shouldShowConditionTree() && <ConditionTreeEditor conditionTree={sceneConnection?.choiceCondition} onChange={onConditionChanged} />}
                 </Box>
             </Box>
         </Modal>
