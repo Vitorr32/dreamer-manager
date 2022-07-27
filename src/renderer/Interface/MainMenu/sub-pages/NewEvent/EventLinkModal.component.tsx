@@ -128,7 +128,9 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
                     {shouldShowConditionButton() && (
                         <Box>
                             <Button onClick={onAddConditionToConnection}>{t('interface.editor.event.add_link_condition')}</Button>
-                            <Button onClick={onRemoveConditionFromConnection}>{t('interface.editor.event.remove_link_condition')}</Button>
+                            {sceneConnection?.choiceCondition && (
+                                <Button onClick={onRemoveConditionFromConnection}>{t('interface.editor.event.remove_link_condition')}</Button>
+                            )}
                         </Box>
                     )}
 

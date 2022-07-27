@@ -1,4 +1,5 @@
 import {
+    Autocomplete,
     Box,
     Button,
     Dialog,
@@ -22,7 +23,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE, SPRITES_FOLDER } from 'renderer/shared/Constants';
+import { GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE, PLAYER_CHARACTER, SPRITES_FOLDER } from 'renderer/shared/Constants';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
@@ -30,6 +31,7 @@ import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component'
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
 import { Actor, ActorType } from 'renderer/shared/models/base/Actor.model';
+import { Character } from 'renderer/shared/models/base/Character.model';
 
 interface IProps {
     event: Event;
@@ -82,7 +84,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
 
         const newActor: Actor = new Actor();
         newActor.actorType = ActorType.GENERIC_TYPE;
-        newActor.alias = `${t('model.event.actor')}_${editedEvent.actors?.length || 0}`;
+        newActor.alias = `${t('model.event.actor.type.generic')} ${editedEvent.actors?.length || 0}`;
         newActor.spriteFilePath = [GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE];
 
         if (editedEvent.actors) {
@@ -130,12 +132,33 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         const modifiedEvent = CopyClassInstance(event);
 
         switch (value) {
+            case ActorType.SPECIFIC_TYPE:
+                newActor.characterID = null;
+                newActor.actorCastingCondition = null;
+                newActor.spriteFilePath = [];
+
+                break;
             case ActorType.DYNAMIC_TYPE:
                 newActor.characterID = null;
+                newActor.alias = `${t('model.event.actor.type.dynamic')}_${event.actors?.length || 0}`;
+                break;
             case ActorType.PLAYER_CHARACTER:
+                newActor.characterID = null;
+                newActor.actorCastingCondition = null;
+                newActor.alias = t('interface.editor.event.casting_alias_main_character_temp');
+                newActor.characterID = PLAYER_CHARACTER;
+
+                if (event.actors.find((actor, iterIndex) => actor.actorType === ActorType.PLAYER_CHARACTER && iterIndex !== index)) {
+                    console.error("Can't have two main characters as different actors");
+                    return;
+                }
+
+                break;
             case ActorType.GENERIC_TYPE:
                 newActor.characterID = null;
                 newActor.actorCastingCondition = null;
+                newActor.alias = `${t('model.event.actor.type.generic')}_${event.actors?.length || 0}`;
+                break;
         }
 
         newActor.actorType = value;
@@ -198,6 +221,30 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         }
     };
 
+    const getCharactersInGameDatabase = (): { label: string; value: string }[] => {
+        return Object.values(charactersDB).map((character) => {
+            return {
+                label: `${character.name} ${character.nickname}`,
+                value: character.id,
+                data: character,
+            };
+        });
+    };
+
+    const onCharacterSelected = (character: Character, index: number) => {
+        const newActor = CopyClassInstance(selectedActor);
+        const modifiedEvent = CopyClassInstance(event);
+
+        newActor.alias = character.name;
+        newActor.characterID = character.id;
+        // newActor.spriteFilePath = character.sprites[0].path;
+        modifiedEvent.actors[index] = newActor;
+
+        onEventEdited(modifiedEvent);
+        setSelectedActor(newActor);
+        setSelectedActorIndex(index);
+    };
+
     return (
         <>
             <Button onClick={toggleModal}>{t('interface.editor.event.navigate_casting')}</Button>
@@ -217,7 +264,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                             {event.actors?.map((actor, index) => {
                                 const key = `actor_${index}`;
                                 const actorName =
-                                    actor.actorType === ActorType.DYNAMIC_TYPE || actor.actorType === ActorType.GENERIC_TYPE
+                                    actor.actorType === ActorType.PLAYER_CHARACTER || actor.actorType === ActorType.DYNAMIC_TYPE || actor.actorType === ActorType.GENERIC_TYPE
                                         ? actor.alias
                                         : actor.characterID
                                         ? charactersDB[actor.characterID].name
@@ -237,11 +284,12 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
 
                                 <FormControl component="fieldset" variant="standard">
                                     <RadioGroup
+                                        value={selectedActor.actorType}
                                         defaultValue={ActorType.GENERIC_TYPE}
                                         onChange={(event) => onActorTypeChange(selectedActor, event.target.value as any, selectedActorIndex)}
                                     >
                                         {Object.values(ActorType).map((actorType) => (
-                                            <FormControlLabel control={<Radio />} value={actorType} label={t(actorType)} />
+                                            <FormControlLabel key={`actor_type_${actorType}`} control={<Radio />} value={actorType} label={t(actorType)} />
                                         ))}
                                     </RadioGroup>
 
@@ -259,7 +307,15 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                                 )}
 
                                 {/* TODO: Select the character associated to this actor */}
-                                {selectedActor.actorType === ActorType.SPECIFIC_TYPE && <></>}
+                                {selectedActor.actorType === ActorType.SPECIFIC_TYPE && (
+                                    <Autocomplete
+                                        fullWidth
+                                        options={getCharactersInGameDatabase()}
+                                        onChange={(_, option: any) => onCharacterSelected(option.data, selectedActorIndex)}
+                                        renderInput={(params) => <TextField {...params} label={t('interface.editor.modifier.input_label_variable')} />}
+                                        isOptionEqualToValue={(option, value) => option.value === value.value}
+                                    />
+                                )}
 
                                 {selectedActor.actorType === ActorType.GENERIC_TYPE && (
                                     <Box className="basic-info__image-input">

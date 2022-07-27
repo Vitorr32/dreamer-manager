@@ -134,6 +134,7 @@ export const en_US = {
                     casting_actor_type_helper_is_generic: 'Generic actors are not associated with any actual character in-game, and are only exist on this event',
                     casting_alias: 'Alias',
                     casting_alias_helper: 'What alias will this actor be recognized with?',
+                    casting_alias_main_character_temp: '<Main Character>',
                     casting_sprite: 'Actor Sprite',
                     casting_sprite_cta: 'Choose Generic Sprite',
                     casting_sprite_helper: 'The image used as sprite for the generic actor, It should have transparent background when necessary.',
@@ -430,7 +431,14 @@ export const en_US = {
                 },
             },
             event: {
-                actor: 'Actor',
+                actor: {
+                    type: {
+                        generic: 'Generic Actor',
+                        specific: 'Specific Actor',
+                        dynamic: 'Filtered Actor',
+                        mainCharacter: 'Main Character Actor',
+                    },
+                },
                 animation: {
                     type: {
                         idle: 'Idle',

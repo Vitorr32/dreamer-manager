@@ -45,11 +45,12 @@ export function EventTreeRender({
     parentNodeCopied,
     nodeRemoved,
     width = window.innerWidth - 100,
-    height = 500,
+    height = 300,
     margin = defaultMargin,
 }: IProps) {
-    const yMax = height - margin.top - margin.bottom;
-    const xMax = width - margin.left - margin.right;
+    const VISXHierarchy = visualNovel?.getVISXHierarchyOfVN();
+    const yMax = Math.max(height, VISXHierarchy?.depth * 150) - margin.top - margin.bottom;
+    const xMax = Math.max(width, VISXHierarchy?.height * 100) - margin.left - margin.right;
 
     const { containerBounds, TooltipInPortal } = useTooltipInPortal({ scroll: true, detectBounds: false });
     const { showTooltip, updateTooltip, hideTooltip, tooltipOpen, tooltipData, tooltipLeft = 0, tooltipTop = 0 } = useTooltip();
@@ -97,7 +98,7 @@ export function EventTreeRender({
         });
     };
 
-    if (visualNovel && visualNovel.getVISXHierarchyOfVN()) {
+    if (VISXHierarchy) {
         return (
             <Box onPointerMove={onCursorMoveInsideCanvas}>
                 <Zoom<SVGSVGElement> width={width} height={height} scaleXMin={1 / 32} scaleXMax={4} scaleYMin={1 / 32} scaleYMax={4} initialTransformMatrix={initialTransform}>
@@ -129,7 +130,7 @@ export function EventTreeRender({
                                         zoom.scale({ scaleX: 1.1, scaleY: 1.1, point });
                                     }}
                                 />
-                                <Tree<Scene> root={visualNovel.getVISXHierarchyOfVN()} size={[yMax, xMax]} className="event-tree">
+                                <Tree<Scene> root={VISXHierarchy} size={[yMax, xMax]} className="event-tree">
                                     {(tree) => (
                                         <Group top={margin.top} left={margin.left} transform={zoom.toString()}>
                                             {tree.links().map((link, i) => {

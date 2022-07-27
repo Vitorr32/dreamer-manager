@@ -15,6 +15,7 @@ export const START_DATE = new Date(972, 3, 15, 0, 0, 0, 0);
 export const END_DATE = new Date(1072, 1, 1, 0, 0, 0, 0);
 
 export const PLAYER_AGENCY = 'main_agency';
+export const PLAYER_CHARACTER = 'main_char_000';
 
 export const DEFAULT_ENTITY_FILTER: EntityFilter = {
     entity: Entity.NONE,
