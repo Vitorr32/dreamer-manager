@@ -6,6 +6,7 @@ import { Event } from '../models/base/Event.model';
 import { Trait } from '../models/base/Trait.model';
 
 export async function GameStartDatabaseLoad(): Promise<void> {
+    console.log("On GameStartDatabaseLoad")
     const loadedTraitsJSON: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(TRAIT_DATABASE_FOLDER);
 
     const loadedTraits: Trait[] = [];

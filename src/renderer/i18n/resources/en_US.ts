@@ -78,6 +78,10 @@ export const en_US = {
                     input_label_selection: 'Actor Selection',
                     option_actor_all: 'All Actors',
                 },
+                character: {
+                    title: 'Character Modifier',
+                    subtitle: 'Create/Modify the character to be added to the database',
+                },
                 modifier: {
                     title: 'Modifier Editor',
                     subtitle: 'What this effect modify on the game character?',

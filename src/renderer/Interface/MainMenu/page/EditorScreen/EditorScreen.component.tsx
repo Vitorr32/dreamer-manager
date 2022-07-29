@@ -10,6 +10,9 @@ export function EditorScreen(_: any) {
             <Link to="/menu/edit/event" >
                 <button>New Event</button>
             </Link>
+            <Link to="/menu/edit/character" >
+                <button>New Character</button>
+            </Link>
             <Link to="/menu" >
                 <button>Return Menu</button>
             </Link>

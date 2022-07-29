@@ -12,13 +12,9 @@ import '@fontsource/roboto';
 import './App.scss';
 import { NewEvent } from './Interface/MainMenu/sub-pages/NewEvent/NewEvent.component';
 import { EventEditor } from './Interface/MainMenu/sub-pages/EventEditor/EventEditor.component';
+import { CharacterEditorContainer } from './Interface/MainMenu/sub-pages/CharacterEditor/CharacterEditorContainer.component';
 
 export default function App() {
-    useEffect(() => {
-        store.dispatch(gameStartLoad());
-        GameStartDatabaseLoad();
-    }, []);
-
     const theme = createTheme({
         palette: {
             background: {
@@ -34,11 +30,12 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <MemoryRouter>
                 <Routes>
-                    <Route index element={<Navigate to="/menu/edit/event/new" />} />
+                    <Route index element={<Navigate to="/menu/edit/character/new" />} />
                     <Route path="/menu" element={<MainScreen />} />
                     <Route path="/menu/edit" element={<EditorScreen />} />
                     <Route path="/menu/edit/trait/*" element={<TraitEditor />} />
                     <Route path="/menu/edit/event/*" element={<EventEditor />} />
+                    <Route path="/menu/edit/character/*" element={<CharacterEditorContainer />} />
                 </Routes>
             </MemoryRouter>
         </ThemeProvider>

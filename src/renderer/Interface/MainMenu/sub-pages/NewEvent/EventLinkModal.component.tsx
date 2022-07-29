@@ -90,8 +90,6 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
         return sceneConnection?.type && sceneConnection.type !== ConnectionType.NORMAL;
     };
 
-    console.log(sceneConnection);
-
     return (
         <Modal className="modal" open={open} onClose={onClose}>
             <Box
