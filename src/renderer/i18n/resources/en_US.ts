@@ -81,6 +81,14 @@ export const en_US = {
                 character: {
                     title: 'Character Modifier',
                     subtitle: 'Create/Modify the character to be added to the database',
+                    input_label_first_name: 'First Name',
+                    input_label_nickname: 'Nickname',
+                    input_label_surname: 'Surname',
+                    input_helper_surname: 'Characters may be referred by their nickname instead of full name',
+                    character_picker_title: 'Game Characters',
+                    character_picker_label: 'Character',
+                    input_label_birthday: 'Birthday',
+
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -265,6 +273,7 @@ export const en_US = {
                     agency: 'Employee of Agency',
                     isPlayer: 'Is Player Character',
                     isStaff: 'Is Staff Character',
+                    isActive: 'Is Active'
                 },
             },
             character: {

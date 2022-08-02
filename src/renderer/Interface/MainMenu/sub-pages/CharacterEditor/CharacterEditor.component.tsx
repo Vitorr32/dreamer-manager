@@ -4,6 +4,11 @@ import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
+import { CharacterBasicInfoEditor } from './CharacterBasicInfoEditor.component';
+import { Character, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
+import { useSelector } from 'react-redux';
+import { RootState } from 'renderer/redux/store';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 const CharacterSteps = [
     { label: 'Select campaign settings', completed: false },
@@ -14,38 +19,56 @@ const CharacterSteps = [
 interface IProps {}
 
 export function CharacterEditor({}: IProps) {
-    const params = useParams();
     const { t, i18n } = useTranslation();
 
+    const params = useParams();
+    const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.characters);
+
+    const [currentCharacter, setCurrentCharacter] = useState<Character>();
     const [stepperIndex, setStepperIndex] = useState<number>(0);
 
     useEffect(() => {
         const IDParameter = params?.id;
 
         if (IDParameter) {
+            const toEditCharacter = mappedEntities[IDParameter];
+
+            setCurrentCharacter(toEditCharacter);
+        } else {
+            setCurrentCharacter(new Character());
         }
     }, []);
+
+    const onCharacterVariableUpdated = (key: CharacterVariablesKey, value: any) => {
+        const updatedCharacter = CopyClassInstance(currentCharacter);
+
+        updatedCharacter[key] = value;
+        setCurrentCharacter(updatedCharacter);
+    };
 
     const getStepperContent = (index: number): JSX.Element | null => {
         switch (index) {
             case 0:
-                return null;
-
+                return <CharacterBasicInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} />;
             default:
                 return null;
         }
     };
 
+    if (!currentCharacter) {
+        return null;
+    }
+
     return (
         <Box className="new-event">
             <Box component="header" className="new-event__header">
-                <Link to="/menu/edit">
+                <Link to="/menu/edit/character">
                     <Button color="primary">
                         <ArrowBackIcon />
                     </Button>
                 </Link>
 
-                <Typography variant="h5">{t('interface.editor.character.title')}</Typography>
+                <Typography variant="h5">{t('interface.editor.character.title') as string}</Typography>
 
                 <LanguageToggle />
             </Box>

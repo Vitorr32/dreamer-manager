@@ -6,6 +6,7 @@ import { CustomVariables, Variables, VariableType } from './Variable.model';
 import { Kinship } from './Kinship.model';
 import { Entity } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
+import { PaperDoll } from './Parperdoll.model';
 
 export enum Gender {
     MALE = 'male',
@@ -27,19 +28,38 @@ export enum Status {
     ENERGY = 'model.character.status.energy',
 }
 
-export interface Sprite {
-    path: string[];
+export enum Style {
+    CLASSIC,
+    NEW_WAVE,
+    PUNK,
+    GOTHIC,
+}
+
+export enum CharacterVariablesKey {
+    ID = 'id',
+    NAME = 'name',
+    SURNAME = 'surname',
+    NICKNAME = 'nickname',
+    BIRTHDAY = 'birthday',
+    AGE = 'age',
+    ETHNICITY = 'ethnicity',
+    GENDER = 'gender',
+    FLAGS = 'flags',
+    AGENCY = 'agency',
+    IS_PLAYER = 'isPlayer',
+    IS_STAFF = 'isStaff',
+    ACTIVE = 'isActive'
 }
 
 export const CharacterEntityVariables: Variables = {
-    id: { key: 'id', displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
-    name: { key: 'name', displayName: 'model.character.variables.name', type: VariableType.TEXT, read: true, edit: true },
-    surname: { key: 'surname', displayName: 'model.character.variables.surname', type: VariableType.TEXT, read: true, edit: true },
-    nickname: { key: 'nickname', displayName: 'model.character.variables.nickname', type: VariableType.TEXT, read: true, edit: true },
-    birthday: { key: 'birthday', displayName: 'model.character.variables.birthday', type: VariableType.DATE, read: true, edit: true },
-    age: { key: 'age', displayName: 'model.character.variables.age', type: VariableType.NUMBER, read: true, edit: true },
+    id: { key: CharacterVariablesKey.ID, displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
+    name: { key: CharacterVariablesKey.NAME, displayName: 'model.character.variables.name', type: VariableType.TEXT, read: true, edit: true },
+    surname: { key: CharacterVariablesKey.SURNAME, displayName: 'model.character.variables.surname', type: VariableType.TEXT, read: true, edit: true },
+    nickname: { key: CharacterVariablesKey.NICKNAME, displayName: 'model.character.variables.nickname', type: VariableType.TEXT, read: true, edit: true },
+    birthday: { key: CharacterVariablesKey.BIRTHDAY, displayName: 'model.character.variables.birthday', type: VariableType.DATE, read: true, edit: true },
+    age: { key: CharacterVariablesKey.AGE, displayName: 'model.character.variables.age', type: VariableType.NUMBER, read: true, edit: true },
     ethnicity: {
-        key: 'ethnicity',
+        key: CharacterVariablesKey.ETHNICITY,
         displayName: 'model.character.variables.ethnicity',
         type: VariableType.ENUMERATOR,
         options: Object.values(Ethnicity).map((value) => value),
@@ -47,7 +67,7 @@ export const CharacterEntityVariables: Variables = {
         edit: false,
     },
     gender: {
-        key: 'gender',
+        key: CharacterVariablesKey.GENDER,
         displayName: 'model.character.variables.gender',
         type: VariableType.ENUMERATOR,
         options: Object.values(Gender).map((value) => value),
@@ -55,7 +75,7 @@ export const CharacterEntityVariables: Variables = {
         edit: true,
     },
     flags: {
-        key: 'flags',
+        key: CharacterVariablesKey.FLAGS,
         displayName: 'model.character.variables.flags',
         type: VariableType.EXTERNAL_KEY_LIST,
         externalEntity: Entity.FLAGS,
@@ -63,15 +83,16 @@ export const CharacterEntityVariables: Variables = {
         edit: true,
     },
     agency: {
-        key: 'agency',
+        key: CharacterVariablesKey.AGENCY,
         displayName: 'model.character.variables.agency',
         type: VariableType.EXTERNAL_KEY,
         externalEntity: Entity.AGENCY,
         read: true,
         edit: true,
     },
-    isPlayer: { key: 'isPlayer', displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: false },
-    isStaff: { key: 'isStaff', displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: true },
+    isPlayer: { key: CharacterVariablesKey.IS_PLAYER, displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: false },
+    isStaff: { key: CharacterVariablesKey.IS_STAFF, displayName: 'model.character.variables.isStaff', type: VariableType.BOOLEAN, read: true, edit: true },
+    isActive: { key: CharacterVariablesKey.ACTIVE, displayName: 'model.character.variables.isActive', type: VariableType.BOOLEAN, read: true, edit: true },
 };
 
 export class Character extends EntityBase {
@@ -80,12 +101,14 @@ export class Character extends EntityBase {
     }
     // ID Pattern : CHAR_*NUMBER*
     public id: string;
-    public sprites: Sprite[];
     public name: string;
     public surname: string;
     public nickname: string;
     public age: number;
     public birthday: Date;
+    public paperDoll: PaperDoll;
+    // If this character is available if they have the correct age, otherwise they will only appear after a event effect.
+    public isActive: boolean;
 
     public isPlayer: boolean;
     public isStaff: boolean;
@@ -101,10 +124,11 @@ export class Character extends EntityBase {
     public gender: Gender = Gender.FEMALE;
     public family: Kinship[] = [];
     public traits: Trait[] = [];
-    public flags: Flag[] = [];
+    public flags: string[] = [];
+    public sprites: string[] = [];
     public relationshipsModifiers: string[] = [];
 
-    constructor(id?: string, sprites?: Sprite[], name?: string, surname?: string, nickname?: string, birthday?: Date) {
+    constructor(id?: string, sprites?: string[], name?: string, surname?: string, nickname?: string, birthday?: Date) {
         super();
 
         this.id = id || `char_${uuidv4()}`;
