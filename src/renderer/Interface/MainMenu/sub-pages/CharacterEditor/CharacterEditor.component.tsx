@@ -40,7 +40,7 @@ export function CharacterEditor({}: IProps) {
     }, []);
 
     const onCharacterVariableUpdated = (key: CharacterVariablesKey, value: any) => {
-        const updatedCharacter = CopyClassInstance(currentCharacter);
+        const updatedCharacter: any = CopyClassInstance(currentCharacter);
 
         updatedCharacter[key] = value;
         setCurrentCharacter(updatedCharacter);

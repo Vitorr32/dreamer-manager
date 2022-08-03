@@ -1,10 +1,11 @@
-import { Box, TextField } from '@mui/material';
+import { Box, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { useParams } from 'react-router-dom';
 import { Character, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
-import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
 import { DATE_ONLY_DAY_FORMAT } from 'renderer/shared/Constants';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { Nation } from 'renderer/shared/models/enums/Nation.enum';
 
 interface IProps {
     character: Character;
@@ -43,7 +44,6 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
             <Box className="char-basic-info-editor__status">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DesktopDatePicker
-                        fullWidth
                         label={t('interface.editor.character.input_label_birthday')}
                         mask="__/__/____"
                         onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
@@ -53,6 +53,28 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                         renderInput={(params: any) => <TextField {...params} />}
                     />
                 </LocalizationProvider>
+
+                <FormControl>
+                    <FormControlLabel control={<Checkbox checked={character.isActive} />} label={t('interface.editor.character.input_label_active')} />
+                    <FormHelperText>{t('interface.editor.character.input_helper_active')}</FormHelperText>
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel>{t('interface.editor.character.input_label_nationality')}</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={character.nationality}
+                        label={t('interface.editor.character.input_label_nationality')}
+                        onChange={(ev) => onChange(CharacterVariablesKey.NATIONALITY, ev.target.value)}
+                    >
+                        {Object.values(Nation).map((nation) => (
+                            <MenuItem key={`nationality_${nation}`} value={nation}>
+                                {t(nation)}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Box>
         </Box>
     );

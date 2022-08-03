@@ -7,6 +7,7 @@ import { Kinship } from './Kinship.model';
 import { Entity } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
 import { PaperDoll } from './Parperdoll.model';
+import { Nation } from '../enums/Nation.enum';
 
 export enum Gender {
     MALE = 'male',
@@ -48,7 +49,8 @@ export enum CharacterVariablesKey {
     AGENCY = 'agency',
     IS_PLAYER = 'isPlayer',
     IS_STAFF = 'isStaff',
-    ACTIVE = 'isActive'
+    ACTIVE = 'isActive',
+    NATIONALITY = 'nationality'
 }
 
 export const CharacterEntityVariables: Variables = {
@@ -90,6 +92,14 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: true,
     },
+    nationality: {
+        key: CharacterVariablesKey.NATIONALITY,
+        displayName: 'model.character.variables.nationality',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(Nation).map((value) => value),
+        read: true,
+        edit: false,
+    },
     isPlayer: { key: CharacterVariablesKey.IS_PLAYER, displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: false },
     isStaff: { key: CharacterVariablesKey.IS_STAFF, displayName: 'model.character.variables.isStaff', type: VariableType.BOOLEAN, read: true, edit: true },
     isActive: { key: CharacterVariablesKey.ACTIVE, displayName: 'model.character.variables.isActive', type: VariableType.BOOLEAN, read: true, edit: true },
@@ -109,6 +119,7 @@ export class Character extends EntityBase {
     public paperDoll: PaperDoll;
     // If this character is available if they have the correct age, otherwise they will only appear after a event effect.
     public isActive: boolean;
+    public nationality: Nation;
 
     public isPlayer: boolean;
     public isStaff: boolean;
