@@ -64,10 +64,33 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={character.nationality}
+                        value={character.nationality || ''}
                         label={t('interface.editor.character.input_label_nationality')}
                         onChange={(ev) => onChange(CharacterVariablesKey.NATIONALITY, ev.target.value)}
                     >
+                        <MenuItem disabled value="">
+                            {t('interface.editor.character.input_placeholder_nationality')}
+                        </MenuItem>
+                        {Object.values(Nation).map((nation) => (
+                            <MenuItem key={`nationality_${nation}`} value={nation}>
+                                {t(nation)}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel>{t('interface.editor.character.input_label_nationality')}</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={character.nationality || ''}
+                        label={t('interface.editor.character.input_label_nationality')}
+                        onChange={(ev) => onChange(CharacterVariablesKey.NATIONALITY, ev.target.value)}
+                    >
+                        <MenuItem disabled value="">
+                            {t('interface.editor.character.input_placeholder_nationality')}
+                        </MenuItem>
                         {Object.values(Nation).map((nation) => (
                             <MenuItem key={`nationality_${nation}`} value={nation}>
                                 {t(nation)}

@@ -90,8 +90,9 @@ export const en_US = {
                     input_label_birthday: 'Birthday',
                     input_label_active: 'Is Active?',
                     input_helper_active:
-                        'If this character is active when it reaches the minimum recruitment age. After that it will be findable by scouts on the current staying region, otherwise it will only be activated by events effects',
-                    input_label_nationality: 'Nation of Birth'
+                        'If this character is "Active" it will be recruitable by scouts on the current staying region, otherwise it will only be activated by events effects',
+                    input_label_nationality: 'Nation of Birth',
+                    input_placeholder_nationality: 'Select a Nation',
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -251,8 +252,8 @@ export const en_US = {
             },
         },
         model: {
+            unknown: 'Unknown',
             undefined: 'Undefined',
-            id: 'Identifier',
             attribute: {
                 category: {
                     basic: 'Basic',
@@ -277,7 +278,7 @@ export const en_US = {
                     isPlayer: 'Is Player Character',
                     isStaff: 'Is Staff Character',
                     isActive: 'Is Active',
-                    nationality: 'Nationality'
+                    nationality: 'Nationality',
                 },
             },
             character: {
@@ -374,8 +375,7 @@ export const en_US = {
                     elbe: 'Elbean Commonwealth',
                     rhine: 'Confederation of the Rhine',
                     wakoku: 'Wakoku Republic',
-
-                }
+                },
             },
             entity: {
                 actors: 'Actors',

@@ -6,11 +6,13 @@ export enum VariableType {
     NUMBER,
     PERCENTAGE_OR_MULTIPLIER,
     ENUMERATOR,
+    ENUMERATOR_LIST,
     DATE,
     FILE_PATH,
     EXTERNAL_KEY,
     EXTERNAL_KEY_LIST,
-    BOOLEAN
+    BOOLEAN,
+    EFFECTS_LIST,
 }
 
 export enum VariableOperator {
