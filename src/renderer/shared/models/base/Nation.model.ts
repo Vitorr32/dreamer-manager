@@ -3,6 +3,15 @@ import { Effect } from './Effect.model';
 import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
 
+export enum LevelOfDevelopment {
+    PRIMITIVE,
+    PRE_INDUSTRIAL_REVOLUTION,
+    EARLY_INDUSTRIALIZATION,
+    INDUSTRIAL_SOCIETY,
+    PRE_LA_GRANDE_GUERRE_SOCIETY,
+    POST_INDUSTRIAL_SOCIETY,
+}
+
 export enum NationVariablesKey {
     ID = 'id',
     NAME = 'name',
@@ -41,4 +50,6 @@ export class Nation extends EntityBase {
 
     population: number;
     effects: Effect[] = [];
+
+    levelOfDevelopment: LevelOfDevelopment;
 }

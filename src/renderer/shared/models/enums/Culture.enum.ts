@@ -1,4 +1,5 @@
 export enum Culture {
-    WAKOKU,
-    GERMANIA,
+    WAKOKU = 'model.character.culture.wakoku',
+    GERMANIA = 'model.character.culture.germania',
+    LECHIA = 'model.character.culture.lechia',
 }

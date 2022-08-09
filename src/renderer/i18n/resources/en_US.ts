@@ -282,6 +282,11 @@ export const en_US = {
                 },
             },
             character: {
+                culture: {
+                    wakoku: 'Wakokuan',
+                    germania: 'Germanian',
+                    lechia: 'Lechian',
+                },
                 status: {
                     energy: 'Energy',
                     stress: 'Stress',
@@ -370,6 +375,17 @@ export const en_US = {
                 },
             },
             nation: {
+                government: {
+                    representative_democracy: 'Representative Democracy',
+                    presidential_republic: 'Presidential Republic',
+                    military_junta: 'Military Junta',
+                    plutocracy: 'Plutocracy',
+                    technocracy: 'Technocracy',
+                    theocracy: 'Theocracy',
+                    absolute_monarchy: 'Absolute Monarchy',
+                    constitutional_monarchy: 'Constitutional Monarchy',
+                    anarchy: 'Anarchy',
+                },
                 base: {
                     danube: 'Kingdom of Danube',
                     elbe: 'Elbean Commonwealth',

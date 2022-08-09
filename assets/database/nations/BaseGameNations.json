@@ -1,6 +1,42 @@
 [
     {
         "id": "base_wakoku",
-        "government": ""
+        "government": "model.nation.government.representative_democracy",
+        "primaryCulture": "model.character.culture.wakoku",
+        "secondaryCultures": [],
+        "populationDistribution": [100],
+        "population": 46605000
+    },
+    {
+        "id": "base_elbe",
+        "government": "model.nation.government.military_junta",
+        "primaryCulture": "model.character.culture.germania",
+        "secondaryCultures": [],
+        "populationDistribution": [100],
+        "population": 17609178
+    },
+    {
+        "id": "base_rhine",
+        "government": "model.nation.government.constitutional_monarchy",
+        "primaryCulture": "model.character.culture.germania",
+        "secondaryCultures": [],
+        "populationDistribution": [100],
+        "population": 27609178
+    },
+    {
+        "id": "base_danube",
+        "government": "model.nation.government.PLUTOCRACY",
+        "primaryCulture": "model.character.culture.germania",
+        "secondaryCultures": [],
+        "populationDistribution": [100],
+        "population": 25643567
+    },
+    {
+        "id": "base_lechia",
+        "government": "model.nation.government.military_junta",
+        "primaryCulture": "model.character.culture.lechia",
+        "secondaryCultures": ["model.character.culture.germania"],
+        "populationDistribution": [80, 20],
+        "population": 20547000
     }
 ]
