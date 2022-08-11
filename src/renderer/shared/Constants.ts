@@ -49,6 +49,8 @@ export const GENERIC_SPRITES_FOLDER = 'generic';
 export const BACKGROUND_IMAGES_FOLDER = 'background';
 export const EVENT_BACKGROUND_IMAGES_FOLDER = 'event';
 export const ATTRIBUTES_DATABASE_FOLDER = 'attributes';
+export const NATIONS_DATABASE_FOLDER = 'nations';
+export const CITIES_DATABASE_FOLDER = 'cities';
 export const EVENT_DATABASE_FOLDER = 'events';
 
 ///////////////////////////////

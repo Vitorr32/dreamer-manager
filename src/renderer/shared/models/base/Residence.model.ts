@@ -1,4 +1,3 @@
-import { Nation } from '../enums/Nation.enum';
 import { City } from './City.model';
 
 export enum Affluency {
@@ -14,8 +13,8 @@ export enum Affluency {
 }
 
 export class Residence {
-    public nation: Nation;
-    public city: City;
+    public nation: string;
+    public city: string;
 
     public affluency: Affluency;
 }

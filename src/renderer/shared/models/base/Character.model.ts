@@ -1,13 +1,10 @@
-import { Attribute } from './Attribute.model';
-import { Flag } from './Event.model';
 import { Trait } from './Trait.model';
 import { v4 as uuidv4 } from 'uuid';
-import { CustomVariables, Variables, VariableType } from './Variable.model';
+import { Variables, VariableType } from './Variable.model';
 import { Kinship } from './Kinship.model';
 import { Entity } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
 import { PaperDoll } from './Parperdoll.model';
-import { Nation } from '../enums/Nation.enum';
 
 export enum Gender {
     MALE = 'male',
@@ -50,7 +47,7 @@ export enum CharacterVariablesKey {
     IS_PLAYER = 'isPlayer',
     IS_STAFF = 'isStaff',
     ACTIVE = 'isActive',
-    NATIONALITY = 'nationality'
+    NATIONALITY = 'nationality',
 }
 
 export const CharacterEntityVariables: Variables = {
@@ -95,8 +92,7 @@ export const CharacterEntityVariables: Variables = {
     nationality: {
         key: CharacterVariablesKey.NATIONALITY,
         displayName: 'model.character.variables.nationality',
-        type: VariableType.ENUMERATOR,
-        options: Object.values(Nation).map((value) => value),
+        type: VariableType.EXTERNAL_KEY,
         read: true,
         edit: false,
     },
@@ -119,7 +115,8 @@ export class Character extends EntityBase {
     public paperDoll: PaperDoll;
     // If this character is available if they have the correct age, otherwise they will only appear after a event effect.
     public isActive: boolean;
-    public nationality: Nation;
+    // The id of the Nation that this character has citizenship.
+    public nationality: string;
 
     public isPlayer: boolean;
     public isStaff: boolean;

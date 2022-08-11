@@ -1,0 +1,11 @@
+[
+    {
+        "id": "base_berlin",
+        "name": "model.city.base.berlin",
+        "government": "model.nation.government.representative_democracy",
+        "primaryCulture": "model.character.culture.wakoku",
+        "secondaryCultures": [],
+        "populationDistribution": [100],
+        "population": 46605000
+    }
+]

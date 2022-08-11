@@ -2,8 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { ATTRIBUTES_DATABASE_FOLDER, EVENT_DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { Character } from 'renderer/shared/models/base/Character.model';
+import { City } from 'renderer/shared/models/base/City.model';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
+import { Nation } from 'renderer/shared/models/base/Nation.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
+import { Assets } from 'renderer/shared/models/enums/Assets.enum';
 import { Trait } from '../../shared/models/base/Trait.model';
 
 interface GameLoopState {
@@ -14,12 +17,16 @@ interface GameLoopState {
     attributes: Attribute[];
     events: Event[];
     flags: Flag[];
+    nations: Nation[];
+    cities: City[];
     mappedDatabase: {
         attributes: { [id: string]: Attribute };
         traits: { [id: string]: Trait };
         events: { [id: string]: Event };
         flags: { [id: string]: Flag };
         characters: { [id: string]: Character };
+        nations: { [id: string]: Nation };
+        cities: { [id: string]: City };
     };
 }
 
@@ -31,12 +38,16 @@ const initialState: GameLoopState = {
     attributes: [],
     events: [],
     flags: [],
+    nations: [],
+    cities: [],
     mappedDatabase: {
         attributes: {},
         traits: {},
         events: {},
         flags: {},
         characters: {},
+        nations: {},
+        cities: {},
     },
 };
 
@@ -48,20 +59,31 @@ export const databaseSlice = createSlice({
             state,
             action: {
                 type: string;
-                payload: { value: any[]; key: string; progress: number };
+                payload: { value: any[]; key: number; progress: number };
             }
         ) => {
             switch (action.payload.key) {
-                case TRAIT_DATABASE_FOLDER:
+                case Assets.NATIONS:
+                    state.nations = action.payload.value;
+                    state.nations.forEach((nation) => {
+                        if (state.mappedDatabase.nations[nation.id]) {
+                            throw new Error('A nation with id ' + nation.id + ' is duplicated');
+                        }
+
+                        state.mappedDatabase.nations[nation.id] = nation;
+                    });
+                    break;
+                case Assets.TRAITS:
                     state.traits = action.payload.value;
                     state.traits.forEach((trait) => {
                         if (state.mappedDatabase.traits[trait.id]) {
                             throw new Error('A trait with id ' + trait.id + ' is duplicated');
                         }
-                        return (state.mappedDatabase.traits[trait.id] = trait);
+
+                        state.mappedDatabase.traits[trait.id] = trait;
                     });
                     break;
-                case ATTRIBUTES_DATABASE_FOLDER:
+                case Assets.ATTRIBUTES:
                     state.attributes = action.payload.value;
                     state.attributes.forEach((attr) => {
                         if (state.mappedDatabase.attributes[attr.id]) {
@@ -70,26 +92,39 @@ export const databaseSlice = createSlice({
                         return (state.mappedDatabase.attributes[attr.id] = attr);
                     });
                     break;
-                case EVENT_DATABASE_FOLDER:
+                case Assets.CITIES:
+                    state.cities = action.payload.value;
+                    state.cities.forEach((city) => {
+                        if (state.mappedDatabase.cities[city.id]) {
+                            throw new Error('A city with id ' + city.id + ' is duplicated');
+                        }
+
+                        state.mappedDatabase.cities[city.id] = city;
+                    });
+                    break;
+                case Assets.EVENTS:
                     state.events = action.payload.value;
                     state.events.forEach((event) => {
                         if (state.mappedDatabase.events[event.id]) {
                             throw new Error('A Event with id ' + event.id + ' is duplicated');
                         }
 
-                        state.flags.push(...event.flags);
-                        event.flags.forEach((flag) => {
-                            if (state.mappedDatabase.flags[flag.id]) {
-                                throw new Error('A Flag with id ' + event.id + ' is duplicated');
-                            }
+                        if (event.flags) {
+                            state.flags.push(...event.flags);
+                            event.flags.forEach((flag) => {
+                                if (state.mappedDatabase.flags[flag.id]) {
+                                    throw new Error('A Flag with id ' + event.id + ' is duplicated');
+                                }
 
-                            state.mappedDatabase.flags[flag.id] = flag;
-                        });
+                                state.mappedDatabase.flags[flag.id] = flag;
+                            });
+                        }
 
                         //Map the visual novel data to a newly created instance using the prototype.
                         event.visualNovel = Object.assign(Object.create(VisualNovel.prototype), event.visualNovel);
                         state.mappedDatabase.events[event.id] = event;
                     });
+                    break;
                 default:
                     console.error('Unknown load update: ' + action.payload.key);
             }

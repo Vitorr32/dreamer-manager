@@ -5,7 +5,8 @@ import { Character, CharacterVariablesKey } from 'renderer/shared/models/base/Ch
 import { DATE_ONLY_DAY_FORMAT } from 'renderer/shared/Constants';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Nation } from 'renderer/shared/models/enums/Nation.enum';
+import { useSelector } from 'react-redux';
+import { RootState } from 'renderer/redux/store';
 
 interface IProps {
     character: Character;
@@ -15,6 +16,9 @@ interface IProps {
 export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
     const params = useParams();
     const { t, i18n } = useTranslation();
+
+    const nations = useSelector((state: RootState) => state.database.nations);
+    const cities = useSelector((state: RootState) => state.database.cities);
 
     return (
         <Box className="char-basic-info-editor">
@@ -71,9 +75,9 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                         <MenuItem disabled value="">
                             {t('interface.editor.character.input_placeholder_nationality')}
                         </MenuItem>
-                        {Object.values(Nation).map((nation) => (
-                            <MenuItem key={`nationality_${nation}`} value={nation}>
-                                {t(nation)}
+                        {nations.map((nation) => (
+                            <MenuItem key={nation.id} value={nation.id}>
+                                {t(nation.name)}
                             </MenuItem>
                         ))}
                     </Select>
@@ -91,9 +95,9 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                         <MenuItem disabled value="">
                             {t('interface.editor.character.input_placeholder_nationality')}
                         </MenuItem>
-                        {Object.values(Nation).map((nation) => (
-                            <MenuItem key={`nationality_${nation}`} value={nation}>
-                                {t(nation)}
+                        {cities.map((city) => (
+                            <MenuItem key={city.id} value={city.id}>
+                                {t(city.name)}
                             </MenuItem>
                         ))}
                     </Select>

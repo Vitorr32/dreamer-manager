@@ -391,6 +391,12 @@ export const en_US = {
                     elbe: 'Elbean Commonwealth',
                     rhine: 'Confederation of the Rhine',
                     wakoku: 'Wakoku Republic',
+                    lechia: 'Lechian Confederation',
+                },
+            },
+            city: {
+                base: {
+                    berlin: 'Berlin',
                 },
             },
             entity: {
