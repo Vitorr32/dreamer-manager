@@ -1,7 +1,7 @@
 [
     {
         "id": "base_wakoku",
-        "name": "model.nation.base.danube",
+        "name": "model.nation.base.wakoku",
         "government": "model.nation.government.representative_democracy",
         "primaryCulture": "model.character.culture.wakoku",
         "secondaryCultures": [],

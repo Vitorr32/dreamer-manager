@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ATTRIBUTES_DATABASE_FOLDER, EVENT_DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { Character } from 'renderer/shared/models/base/Character.model';
 import { City } from 'renderer/shared/models/base/City.model';
@@ -9,7 +8,7 @@ import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { Assets } from 'renderer/shared/models/enums/Assets.enum';
 import { Trait } from '../../shared/models/base/Trait.model';
 
-interface GameLoopState {
+interface Database {
     isLoadingDatabase: boolean;
     loadProgress: number;
     characters: Character[];
@@ -30,7 +29,7 @@ interface GameLoopState {
     };
 }
 
-const initialState: GameLoopState = {
+const initialState: Database = {
     isLoadingDatabase: false,
     loadProgress: 0,
     characters: [],

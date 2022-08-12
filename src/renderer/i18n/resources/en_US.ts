@@ -87,12 +87,25 @@ export const en_US = {
                     input_helper_surname: 'Characters may be referred by their nickname instead of full name',
                     character_picker_title: 'Game Characters',
                     character_picker_label: 'Character',
+                    section_title_basic_info: 'Character Basic Info',
+                    section_title_living_conditions: 'Living Conditions',
                     input_label_birthday: 'Birthday',
+                    input_label_staff: 'Is Staff?',
+                    input_helper_staff: 'Is this character a Staff character? otherwise it will be considered a Dreamer candidate.',
+                    input_label_gender: 'Gender',
+                    input_placeholder_gender: 'Select a Gender',
+                    input_helper_gender: 'Select a gender for the character, do note that this is only available if the character is a Staff, as all Dreamers are female',
                     input_label_active: 'Is Active?',
                     input_helper_active:
                         'If this character is "Active" it will be recruitable by scouts on the current staying region, otherwise it will only be activated by events effects',
                     input_label_nationality: 'Nation of Birth',
                     input_placeholder_nationality: 'Select a Nation',
+                    input_label_hometown: 'Hometown',
+                    input_placeholder_hometown: 'Select a City',
+                    input_label_residence: 'Place of Residence',
+                    input_placeholder_residence: 'Select a City',
+                    input_label_affluency: 'Standard of Living',
+                    input_placeholder_affluency: 'Select Character Wealth',
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -279,6 +292,7 @@ export const en_US = {
                     isStaff: 'Is Staff Character',
                     isActive: 'Is Active',
                     nationality: 'Nationality',
+                    hometown: 'Hometown',
                 },
             },
             character: {
@@ -292,6 +306,17 @@ export const en_US = {
                     stress: 'Stress',
                     mood: 'Mood',
                 },
+                affluency: {
+                    destitute: 'Destitute',
+                    very_poor: 'Very Poor',
+                    poor: 'Poor',
+                    middle_class: 'Middle Class',
+                    upper_middle_class: 'Upper Middle Class',
+                    rich: 'Rich',
+                    prosperous: 'Prosperous',
+                    luxurious: 'Luxurious',
+                    nobility: 'Nobility',
+                },
                 variables: {
                     id: 'ID',
                     name: 'First Name',
@@ -302,6 +327,8 @@ export const en_US = {
                     ethnicity: 'Ethnicity',
                     gender: 'Gender',
                     flags: 'Event Flags',
+                    residence_location: 'Residence Location',
+                    affluency: 'Affluency',
                 },
             },
             condition: {
@@ -396,7 +423,8 @@ export const en_US = {
             },
             city: {
                 base: {
-                    berlin: 'Berlin',
+                    hamburg: 'Hamburg',
+                    gifu: 'Gifu',
                 },
             },
             entity: {

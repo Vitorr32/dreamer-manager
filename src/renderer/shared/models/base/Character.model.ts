@@ -11,6 +11,18 @@ export enum Gender {
     FEMALE = 'female',
 }
 
+export enum Affluency {
+    DESTITUTE = 'model.character.affluency.destitute',
+    VERY_POOR = 'model.character.affluency.very_poor',
+    POOR = 'model.character.affluency.poor',
+    MIDDLE_CLASS = 'model.character.affluency.middle_class',
+    UPPER_MIDDLE_CLASS = 'model.character.affluency.upper_middle_class',
+    RICH = 'model.character.affluency.rich',
+    PROSPEROUS = 'model.character.affluency.prosperous',
+    LUXURIOUS = 'model.character.affluency.luxurious',
+    NOBILITY = 'model.character.affluency.nobility',
+}
+
 export enum Ethnicity {
     CAUCASIAN = 'caucasian',
     INDIAN = 'indian',
@@ -48,6 +60,9 @@ export enum CharacterVariablesKey {
     IS_STAFF = 'isStaff',
     ACTIVE = 'isActive',
     NATIONALITY = 'nationality',
+    HOMETOWN = 'hometown',
+    RESIDENCE_LOCATION = 'residenceLocation',
+    AFFLUENCY = 'standardOfLiving',
 }
 
 export const CharacterEntityVariables: Variables = {
@@ -96,6 +111,28 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: false,
     },
+    hometown: {
+        key: CharacterVariablesKey.HOMETOWN,
+        displayName: 'model.character.variables.hometown',
+        type: VariableType.EXTERNAL_KEY,
+        read: true,
+        edit: false,
+    },
+    residenceLocation: {
+        key: CharacterVariablesKey.RESIDENCE_LOCATION,
+        displayName: 'model.character.variables.residence_location',
+        type: VariableType.EXTERNAL_KEY,
+        read: true,
+        edit: true,
+    },
+    affluency: {
+        key: CharacterVariablesKey.AFFLUENCY,
+        displayName: 'model.character.variables.affluency',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(Affluency).map((value) => value),
+        read: true,
+        edit: true,
+    },
     isPlayer: { key: CharacterVariablesKey.IS_PLAYER, displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: false },
     isStaff: { key: CharacterVariablesKey.IS_STAFF, displayName: 'model.character.variables.isStaff', type: VariableType.BOOLEAN, read: true, edit: true },
     isActive: { key: CharacterVariablesKey.ACTIVE, displayName: 'model.character.variables.isActive', type: VariableType.BOOLEAN, read: true, edit: true },
@@ -117,16 +154,17 @@ export class Character extends EntityBase {
     public isActive: boolean;
     // The id of the Nation that this character has citizenship.
     public nationality: string;
+    // The id of City where this character was born and raised.
+    public hometown: string;
+    // The id of the the City where the character currently lives in
+    public residenceLocation: string;
+    // How wealth is the standard of living of this character.
+    public standardOfLiving: Affluency;
 
     public isPlayer: boolean;
     public isStaff: boolean;
     //The character may be unemployed
     public agency?: string;
-
-    //Current state of the character attributes that should be serialized in case of save
-    public baseMood: number = 50;
-    public baseStress: number = 0;
-    public baseEnergy: number = 100;
 
     public ethnicity: Ethnicity = Ethnicity.CAUCASIAN;
     public gender: Gender = Gender.FEMALE;

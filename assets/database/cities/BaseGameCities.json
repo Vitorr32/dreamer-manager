@@ -1,11 +1,18 @@
 [
     {
-        "id": "base_berlin",
-        "name": "model.city.base.berlin",
-        "government": "model.nation.government.representative_democracy",
-        "primaryCulture": "model.character.culture.wakoku",
-        "secondaryCultures": [],
-        "populationDistribution": [100],
-        "population": 46605000
+        "id": "base_hamburg",
+        "name": "model.city.base.hamburg",
+        "hdi": 0.73,
+        "populationPercentOfNation": 5.78,
+        "country": "base_elbe",
+        "capital": true
+    },
+    {
+        "id": "base_gifu",
+        "name": "model.city.base.gifu",
+        "hdi": 0.92,
+        "populationPercentOfNation": 8.43,
+        "country": "base_wakoku",
+        "capital": true
     }
 ]

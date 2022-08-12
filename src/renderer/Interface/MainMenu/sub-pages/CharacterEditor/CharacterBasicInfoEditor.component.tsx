@@ -1,12 +1,12 @@
-import { Box, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { Character, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
+import { Affluency, Character, CharacterVariablesKey, Gender } from 'renderer/shared/models/base/Character.model';
 import { DATE_ONLY_DAY_FORMAT } from 'renderer/shared/Constants';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
+import { useAppSelector } from 'renderer/redux/hooks';
 
 interface IProps {
     character: Character;
@@ -17,35 +17,42 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
     const params = useParams();
     const { t, i18n } = useTranslation();
 
-    const nations = useSelector((state: RootState) => state.database.nations);
-    const cities = useSelector((state: RootState) => state.database.cities);
+    const nations = useAppSelector((state: RootState) => state.database.nations);
+    const cities = useAppSelector((state: RootState) => state.database.cities);
+
+    const getCitiesFromNations = (nationID: string) => {
+        return cities.filter((city) => city.country === nationID);
+    };
+
+    console.log('current character', character);
 
     return (
         <Box className="char-basic-info-editor">
-            <Box className="char-basic-info-editor__names">
-                <TextField
-                    label={t('interface.editor.character.input_label_first_name')}
-                    required
-                    value={character.name}
-                    onChange={(ev) => onChange(CharacterVariablesKey.NAME, ev.target.value)}
-                    variant="outlined"
-                />
-                <TextField
-                    label={t('interface.editor.character.input_label_nickname')}
-                    value={character.nickname}
-                    onChange={(ev) => onChange(CharacterVariablesKey.NICKNAME, ev.target.value)}
-                    variant="outlined"
-                />
-                <TextField
-                    label={t('interface.editor.character.input_label_surname')}
-                    required
-                    value={character.surname}
-                    onChange={(ev) => onChange(CharacterVariablesKey.SURNAME, ev.target.value)}
-                    variant="outlined"
-                />
-            </Box>
+            <Box className="char-basic-info-editor__subsection-status">
+                <Typography>{t('interface.editor.character.section_title_basic_info')}</Typography>
+                <Box className="char-basic-info-editor__names">
+                    <TextField
+                        label={t('interface.editor.character.input_label_first_name')}
+                        required
+                        value={character.name}
+                        onChange={(ev) => onChange(CharacterVariablesKey.NAME, ev.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        label={t('interface.editor.character.input_label_nickname')}
+                        value={character.nickname}
+                        onChange={(ev) => onChange(CharacterVariablesKey.NICKNAME, ev.target.value)}
+                        variant="outlined"
+                    />
+                    <TextField
+                        label={t('interface.editor.character.input_label_surname')}
+                        required
+                        value={character.surname}
+                        onChange={(ev) => onChange(CharacterVariablesKey.SURNAME, ev.target.value)}
+                        variant="outlined"
+                    />
+                </Box>
 
-            <Box className="char-basic-info-editor__status">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DesktopDatePicker
                         label={t('interface.editor.character.input_label_birthday')}
@@ -59,15 +66,8 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                 </LocalizationProvider>
 
                 <FormControl>
-                    <FormControlLabel control={<Checkbox checked={character.isActive} />} label={t('interface.editor.character.input_label_active')} />
-                    <FormHelperText>{t('interface.editor.character.input_helper_active')}</FormHelperText>
-                </FormControl>
-
-                <FormControl>
                     <InputLabel>{t('interface.editor.character.input_label_nationality')}</InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
                         value={character.nationality || ''}
                         label={t('interface.editor.character.input_label_nationality')}
                         onChange={(ev) => onChange(CharacterVariablesKey.NATIONALITY, ev.target.value)}
@@ -84,20 +84,95 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                 </FormControl>
 
                 <FormControl>
-                    <InputLabel>{t('interface.editor.character.input_label_nationality')}</InputLabel>
+                    <InputLabel>{t('interface.editor.character.input_label_hometown')}</InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={character.nationality || ''}
-                        label={t('interface.editor.character.input_label_nationality')}
-                        onChange={(ev) => onChange(CharacterVariablesKey.NATIONALITY, ev.target.value)}
+                        value={character.hometown || ''}
+                        label={t('interface.editor.character.input_label_hometown')}
+                        onChange={(ev) => onChange(CharacterVariablesKey.HOMETOWN, ev.target.value)}
                     >
                         <MenuItem disabled value="">
-                            {t('interface.editor.character.input_placeholder_nationality')}
+                            {t('interface.editor.character.input_placeholder_hometown')}
+                        </MenuItem>
+                        {getCitiesFromNations(character.nationality).map((city) => (
+                            <MenuItem key={city.id} value={city.id}>
+                                {t(city.name)}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl>
+                    <FormControlLabel
+                        control={<Checkbox checked={character.isStaff} onChange={(ev) => onChange(CharacterVariablesKey.IS_STAFF, ev.target.checked)} />}
+                        label={t('interface.editor.character.input_label_staff')}
+                    />
+                    <FormHelperText>{t('interface.editor.character.input_helper_staff')}</FormHelperText>
+                </FormControl>
+
+                {character.isStaff && (
+                    <FormControl>
+                        <InputLabel>{t('interface.editor.character.input_label_gender')}</InputLabel>
+                        <Select
+                            value={character.gender || ''}
+                            label={t('interface.editor.character.input_label_gender')}
+                            onChange={(ev) => onChange(CharacterVariablesKey.GENDER, ev.target.value)}
+                        >
+                            <MenuItem disabled value="">
+                                {t('interface.editor.character.input_placeholder_gender')}
+                            </MenuItem>
+                            {Object.values(Gender).map((gender) => (
+                                <MenuItem key={`gender_${gender}`} value={gender}>
+                                    {t(gender)}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <FormHelperText>{t('interface.editor.character.input_helper_gender')}</FormHelperText>
+                    </FormControl>
+                )}
+
+                <FormControl>
+                    <FormControlLabel
+                        control={<Checkbox checked={character.isActive} onChange={(ev) => onChange(CharacterVariablesKey.ACTIVE, ev.target.checked)} />}
+                        label={t('interface.editor.character.input_label_active')}
+                    />
+                    <FormHelperText>{t('interface.editor.character.input_helper_active')}</FormHelperText>
+                </FormControl>
+            </Box>
+
+            <Box className="char-basic-info-editor__subsection-living-standard">
+                <Typography>{t('interface.editor.character.section_title_living_conditions')}</Typography>
+
+                <FormControl>
+                    <InputLabel>{t('interface.editor.character.input_label_residence')}</InputLabel>
+                    <Select
+                        value={character.residenceLocation || ''}
+                        label={t('interface.editor.character.input_label_residence')}
+                        onChange={(ev) => onChange(CharacterVariablesKey.RESIDENCE_LOCATION, ev.target.value)}
+                    >
+                        <MenuItem disabled value="">
+                            {t('interface.editor.character.input_placeholder_residence')}
                         </MenuItem>
                         {cities.map((city) => (
                             <MenuItem key={city.id} value={city.id}>
                                 {t(city.name)}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel>{t('interface.editor.character.input_label_affluency')}</InputLabel>
+                    <Select
+                        value={character.standardOfLiving || ''}
+                        label={t('interface.editor.character.input_label_affluency')}
+                        onChange={(ev) => onChange(CharacterVariablesKey.AFFLUENCY, ev.target.value)}
+                    >
+                        <MenuItem disabled value="">
+                            {t('interface.editor.character.input_placeholder_affluency')}
+                        </MenuItem>
+                        {Object.values(Affluency).map((affluency) => (
+                            <MenuItem key={`affluency_${affluency}`} value={affluency}>
+                                {t(affluency)}
                             </MenuItem>
                         ))}
                     </Select>
