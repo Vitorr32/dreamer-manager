@@ -9,7 +9,7 @@ import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { DEFAULT_EXTERNAL_ENTITY_FILTER, PLAYER_AGENCY } from 'renderer/shared/Constants';
 import { VariableOperator } from 'renderer/shared/models/base/Variable.model';
-import { Character } from 'renderer/shared/models/base/Character.model';
+import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
 import { Agency } from 'renderer/shared/models/base/Agency.model';
 import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
@@ -115,9 +115,9 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
 
                 shortcutFilterTree.root.entityFilters.push(DEFAULT_EXTERNAL_ENTITY_FILTER);
                 shortcutFilterTree.root.entityFilters[1].entity = Entity.CHARACTERS;
-                shortcutFilterTree.root.entityFilters[1].variableKey = Character.getEntityVariables()['isStaff'].key;
+                shortcutFilterTree.root.entityFilters[1].variableKey = Character.getEntityVariables()[CharacterVariablesKey.TYPE].key;
                 shortcutFilterTree.root.entityFilters[1].operator = VariableOperator.EQUALS_TO;
-                shortcutFilterTree.root.entityFilters[1].value = false;
+                shortcutFilterTree.root.entityFilters[1].value = CharacterType.STAFF;
                 break;
             case ShortcutFilter.ALL_STAFF_OF_STUDIO:
                 shortcutFilterTree.root.logicOperator = LogicOperator.AND;
@@ -136,9 +136,9 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
 
                 shortcutFilterTree.root.entityFilters.push(DEFAULT_EXTERNAL_ENTITY_FILTER);
                 shortcutFilterTree.root.entityFilters[1].entity = Entity.CHARACTERS;
-                shortcutFilterTree.root.entityFilters[1].variableKey = Character.getEntityVariables()['isStaff'].key;
+                shortcutFilterTree.root.entityFilters[1].variableKey = Character.getEntityVariables()[CharacterVariablesKey.TYPE].key;
                 shortcutFilterTree.root.entityFilters[1].operator = VariableOperator.EQUALS_TO;
-                shortcutFilterTree.root.entityFilters[1].value = false;
+                shortcutFilterTree.root.entityFilters[1].value = CharacterType.STAFF;
                 break;
             case ShortcutFilter.EVERYONE_ON_STUDIO:
                 shortcutFilterTree.root.entityFilters[0].entity = Entity.CHARACTERS;

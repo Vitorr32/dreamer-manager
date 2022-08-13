@@ -23,6 +23,24 @@ export enum Affluency {
     NOBILITY = 'model.character.affluency.nobility',
 }
 
+export enum CharacterType {
+    STAFF = 'model.character.type.staff',
+    ACTIVE_DREAMER = 'model.character.type.active_dreamer',
+    RETIRED_DREAMER = 'model.character.type.retired_dreamer',
+}
+
+export enum FamilySituation {
+    SUPPORTIVE = 'model.character.family.supportive',
+    STABLE = 'model.character.family.stable',
+    UNSTABLE = 'model.character.family.unstable',
+    ORPHAN = 'model.character.family.orphan',
+    WAR_ORPHAN = 'model.character.family.war_orphan',
+    WIDOWER = 'model.character.family.widower',
+    WIDOW = 'model.character.family.widow',
+    WAR_WIDOW = 'model.character.family.war_widow',
+    DIVORCED = 'model.character.family.divorced',
+}
+
 export enum Ethnicity {
     CAUCASIAN = 'caucasian',
     INDIAN = 'indian',
@@ -57,12 +75,13 @@ export enum CharacterVariablesKey {
     FLAGS = 'flags',
     AGENCY = 'agency',
     IS_PLAYER = 'isPlayer',
-    IS_STAFF = 'isStaff',
+    TYPE = 'type',
     ACTIVE = 'isActive',
     NATIONALITY = 'nationality',
     HOMETOWN = 'hometown',
     RESIDENCE_LOCATION = 'residenceLocation',
     AFFLUENCY = 'standardOfLiving',
+    FAMILY_SITUATION = 'familySituation',
 }
 
 export const CharacterEntityVariables: Variables = {
@@ -133,8 +152,23 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: true,
     },
+    type: {
+        key: CharacterVariablesKey.TYPE,
+        displayName: 'model.character.variables.type',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(CharacterType).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    family: {
+        key: CharacterVariablesKey.FAMILY_SITUATION,
+        displayName: 'model.character.variables.family',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(FamilySituation).map((value) => value),
+        read: true,
+        edit: true,
+    },
     isPlayer: { key: CharacterVariablesKey.IS_PLAYER, displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: false },
-    isStaff: { key: CharacterVariablesKey.IS_STAFF, displayName: 'model.character.variables.isStaff', type: VariableType.BOOLEAN, read: true, edit: true },
     isActive: { key: CharacterVariablesKey.ACTIVE, displayName: 'model.character.variables.isActive', type: VariableType.BOOLEAN, read: true, edit: true },
 };
 
@@ -160,9 +194,11 @@ export class Character extends EntityBase {
     public residenceLocation: string;
     // How wealth is the standard of living of this character.
     public standardOfLiving: Affluency;
+    // Family situation that can influence traits and traumas
+    public familySituation: FamilySituation;
+    public type: CharacterType;
 
     public isPlayer: boolean;
-    public isStaff: boolean;
     //The character may be unemployed
     public agency?: string;
 

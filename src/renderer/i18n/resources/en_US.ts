@@ -90,8 +90,9 @@ export const en_US = {
                     section_title_basic_info: 'Character Basic Info',
                     section_title_living_conditions: 'Living Conditions',
                     input_label_birthday: 'Birthday',
-                    input_label_staff: 'Is Staff?',
-                    input_helper_staff: 'Is this character a Staff character? otherwise it will be considered a Dreamer candidate.',
+                    input_label_type: 'Character Type',
+                    input_placeholder_type: 'Select a Type',
+                    input_helper_type: 'Is this character a Staff character? otherwise it will be considered a Dreamer candidate.',
                     input_label_gender: 'Gender',
                     input_placeholder_gender: 'Select a Gender',
                     input_helper_gender: 'Select a gender for the character, do note that this is only available if the character is a Staff, as all Dreamers are female',
@@ -106,6 +107,10 @@ export const en_US = {
                     input_placeholder_residence: 'Select a City',
                     input_label_affluency: 'Standard of Living',
                     input_placeholder_affluency: 'Select Character Wealth',
+                    input_label_family: 'Family Situation',
+                    input_placeholder_family: 'Select Family Situation',
+                    input_helper_family:
+                        'Family situation will influence in events, traits available and traumas that this character may have or develop if they are not adults yet.',
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -289,13 +294,17 @@ export const en_US = {
                     alias: 'Alias',
                     agency: 'Employee of Agency',
                     isPlayer: 'Is Player Character',
-                    isStaff: 'Is Staff Character',
                     isActive: 'Is Active',
                     nationality: 'Nationality',
                     hometown: 'Hometown',
                 },
             },
             character: {
+                type: {
+                    staff: 'Staff',
+                    active_dreamer: 'Dreamer',
+                    retired_dreamer: 'Retired Dreamer',
+                },
                 culture: {
                     wakoku: 'Wakokuan',
                     germania: 'Germanian',
@@ -317,6 +326,17 @@ export const en_US = {
                     luxurious: 'Luxurious',
                     nobility: 'Nobility',
                 },
+                family: {
+                    supportive: 'Supportive',
+                    orphan: 'Orphan',
+                    war_orphan: 'War Orphan',
+                    stable: 'Stable',
+                    unstable: 'Unstable',
+                    widower: 'Widowed Father',
+                    widow: 'Widowed Mother',
+                    war_widow: 'Mother Widowed from War',
+                    divorced: 'Divorced',
+                },
                 variables: {
                     id: 'ID',
                     name: 'First Name',
@@ -329,6 +349,7 @@ export const en_US = {
                     flags: 'Event Flags',
                     residence_location: 'Residence Location',
                     affluency: 'Affluency',
+                    family: 'Family Situation',
                 },
             },
             condition: {
