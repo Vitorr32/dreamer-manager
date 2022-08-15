@@ -9,18 +9,18 @@ import { Character, CharacterVariablesKey } from 'renderer/shared/models/base/Ch
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-
-const CharacterSteps = [
-    { label: 'Select campaign settings', completed: false },
-    { label: 'Select campaign settings', completed: false },
-    { label: 'Select campaign settings', completed: false },
-];
+import { CharacterAdvancedInfoEditor } from './CharacterAdvancedInfoEditor.component';
 
 interface IProps {}
 
 export function CharacterEditor({}: IProps) {
     const { t, i18n } = useTranslation();
 
+    const CharacterSteps = [
+        { label: t('interface.editor.character.step_basic_info'), completed: false },
+        { label: t('interface.editor.character.step_specific_info'), completed: false },
+        { label: t('interface.editor.character.step_sprite_info'), completed: false },
+    ];
     const params = useParams();
     const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.characters);
 
@@ -50,6 +50,8 @@ export function CharacterEditor({}: IProps) {
         switch (index) {
             case 0:
                 return <CharacterBasicInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} />;
+            case 1:
+                return <CharacterAdvancedInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} />;
             default:
                 return null;
         }

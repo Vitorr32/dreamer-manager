@@ -1,7 +1,6 @@
 import { Trait } from './Trait.model';
 import { v4 as uuidv4 } from 'uuid';
 import { Variables, VariableType } from './Variable.model';
-import { Kinship } from './Kinship.model';
 import { Entity } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
 import { PaperDoll } from './Parperdoll.model';
@@ -196,6 +195,7 @@ export class Character extends EntityBase {
     public standardOfLiving: Affluency;
     // Family situation that can influence traits and traumas
     public familySituation: FamilySituation;
+    // The type of character, currently it can be a Staff, Dreamer or a Retired Dreamer (That can be a staff)
     public type: CharacterType;
 
     public isPlayer: boolean;
@@ -204,7 +204,6 @@ export class Character extends EntityBase {
 
     public ethnicity: Ethnicity = Ethnicity.CAUCASIAN;
     public gender: Gender = Gender.FEMALE;
-    public family: Kinship[] = [];
     public traits: Trait[] = [];
     public flags: string[] = [];
     public sprites: string[] = [];

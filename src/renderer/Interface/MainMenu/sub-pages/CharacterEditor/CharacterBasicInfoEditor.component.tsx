@@ -53,6 +53,25 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                     />
                 </Box>
 
+                <FormControl>
+                    <InputLabel>{t('interface.editor.character.input_label_type')}</InputLabel>
+                    <Select
+                        value={character.hometown || ''}
+                        label={t('interface.editor.character.input_label_type')}
+                        onChange={(ev) => onChange(CharacterVariablesKey.TYPE, ev.target.value)}
+                    >
+                        <MenuItem disabled value="">
+                            {t('interface.editor.character.input_placeholder_type')}
+                        </MenuItem>
+                        {Object.values(CharacterType).map((enumValue) => (
+                            <MenuItem key={enumValue} value={enumValue}>
+                                {t(enumValue)}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <FormHelperText>{t('interface.editor.character.input_helper_type')}</FormHelperText>
+                </FormControl>
+
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DesktopDatePicker
                         label={t('interface.editor.character.input_label_birthday')}
@@ -99,25 +118,6 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                             </MenuItem>
                         ))}
                     </Select>
-                </FormControl>
-
-                <FormControl>
-                    <InputLabel>{t('interface.editor.character.input_label_type')}</InputLabel>
-                    <Select
-                        value={character.hometown || ''}
-                        label={t('interface.editor.character.input_label_type')}
-                        onChange={(ev) => onChange(CharacterVariablesKey.TYPE, ev.target.value)}
-                    >
-                        <MenuItem disabled value="">
-                            {t('interface.editor.character.input_placeholder_type')}
-                        </MenuItem>
-                        {Object.values(CharacterType).map((enumValue) => (
-                            <MenuItem key={enumValue} value={enumValue}>
-                                {t(enumValue)}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                    <FormHelperText>{t('interface.editor.character.input_helper_type')}</FormHelperText>
                 </FormControl>
 
                 {character.type === CharacterType.STAFF && (
@@ -169,43 +169,6 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                             </MenuItem>
                         ))}
                     </Select>
-                </FormControl>
-
-                <FormControl>
-                    <InputLabel>{t('interface.editor.character.input_label_affluency')}</InputLabel>
-                    <Select
-                        value={character.standardOfLiving || ''}
-                        label={t('interface.editor.character.input_label_affluency')}
-                        onChange={(ev) => onChange(CharacterVariablesKey.AFFLUENCY, ev.target.value)}
-                    >
-                        <MenuItem disabled value="">
-                            {t('interface.editor.character.input_placeholder_affluency')}
-                        </MenuItem>
-                        {Object.values(Affluency).map((affluency) => (
-                            <MenuItem key={`affluency_${affluency}`} value={affluency}>
-                                {t(affluency)}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl>
-                    <InputLabel>{t('interface.editor.character.input_label_family')}</InputLabel>
-                    <Select
-                        value={character.standardOfLiving || ''}
-                        label={t('interface.editor.character.input_label_family')}
-                        onChange={(ev) => onChange(CharacterVariablesKey.FAMILY_SITUATION, ev.target.value)}
-                    >
-                        <MenuItem disabled value="">
-                            {t('interface.editor.character.input_placeholder_family')}
-                        </MenuItem>
-                        {Object.values(FamilySituation).map((enumValue) => (
-                            <MenuItem key={enumValue} value={enumValue}>
-                                {t(enumValue)}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                    <FormHelperText>{t('interface.editor.character.input_helper_family')}</FormHelperText>
                 </FormControl>
             </Box>
         </Box>

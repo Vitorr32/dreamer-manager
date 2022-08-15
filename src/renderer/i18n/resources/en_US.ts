@@ -87,6 +87,9 @@ export const en_US = {
                     input_helper_surname: 'Characters may be referred by their nickname instead of full name',
                     character_picker_title: 'Game Characters',
                     character_picker_label: 'Character',
+                    step_basic_info: 'Character Basic Info',
+                    step_specific_info: 'Character Advanced Info',
+                    step_sprite_info: 'Character Paper Doll',
                     section_title_basic_info: 'Character Basic Info',
                     section_title_living_conditions: 'Living Conditions',
                     input_label_birthday: 'Birthday',
@@ -278,6 +281,7 @@ export const en_US = {
                     sun: 'Sunlight',
                     moon: 'Moonlight',
                     star: 'Starlight',
+                    staff: 'Staff',
                 },
                 growth: {
                     technical: 'Technical',

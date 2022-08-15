@@ -1,0 +1,65 @@
+[
+    {
+        "id": "staff_attr_0",
+        "name": "Human Resources Management",
+        "description": "How capable is this character at HR management, scheduling, leading and getting the best performance from his employees",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_1",
+        "name": "Technical and Maintenance",
+        "description": "How capable is this character at ",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_2",
+        "name": "Negotiation",
+        "description": "How capable is this character at convincing, persuasion, contract negotiations and maintaining good business relations",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_3",
+        "name": "Negotiation",
+        "description": "How capable is this character at convincing, persuasion, contract negotiations and maintaining good business relations",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_4",
+        "name": "Potential Recognition",
+        "description": "How capable is this character recognizing future talent of Dreamers, and how long it would take to achieve it.",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_5",
+        "name": "Ability Recognition",
+        "description": "How capable is this character recognizing current skills of Dreamers, and how it may develop on the close future.",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_6",
+        "name": "Sunlight Skill",
+        "description": "How capable is this character at Sunlight instruction and training",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_7",
+        "name": "Starlight Skill",
+        "description": "How capable is this character at Starlight instruction and training",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_8",
+        "name": "Moonlight Skill",
+        "description": "How capable is this character at Moonlight instruction and training",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
+    }
+]
