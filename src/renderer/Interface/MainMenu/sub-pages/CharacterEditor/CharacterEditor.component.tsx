@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { CharacterAdvancedInfoEditor } from './CharacterAdvancedInfoEditor.component';
+import { Dreamer } from 'renderer/shared/models/base/Dreamer.model';
 
 interface IProps {}
 
@@ -24,7 +25,7 @@ export function CharacterEditor({}: IProps) {
     const params = useParams();
     const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.characters);
 
-    const [currentCharacter, setCurrentCharacter] = useState<Character>();
+    const [currentCharacter, setCurrentCharacter] = useState<Dreamer | Character>();
     const [stepperIndex, setStepperIndex] = useState<number>(0);
 
     useEffect(() => {

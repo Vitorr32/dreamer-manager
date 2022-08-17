@@ -9,6 +9,7 @@ export enum Entity {
     AGENCY = 'model.entity.agency',
     COMPANIES = 'model.entity.companies',
     LOCATIONS = 'model.entity.locations',
+    CITIES = 'model.entity.cities',
     NATIONS = 'model.entity.nations',
     WORLD_STATE = 'model.entity.world',
 }

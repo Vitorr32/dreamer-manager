@@ -39,9 +39,9 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
         }
 
         const submittedTrait = Object.assign({}, trait);
-        submittedTrait.spriteName = fileInfo?.fullName;
+        submittedTrait.spritePath = fileInfo?.fullName;
 
-        InsertIconInAssets(RemoveFileProtocol(iconPath), [ICONS_FOLDER, TRAIT_DATABASE_FOLDER], submittedTrait.spriteName);
+        InsertIconInAssets(RemoveFileProtocol(iconPath), [ICONS_FOLDER, TRAIT_DATABASE_FOLDER], submittedTrait.spritePath);
         InsertJSONFileAsDatabase([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], BASE_TRAIT_FILE, submittedTrait);
 
         setLoading(false);
@@ -63,7 +63,7 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
     return (
         <Box className="trait-review">
             <Box className="trait-review__basic">
-                <img className="trait-review__icon" src={iconPath || trait.spriteName} alt={`${trait.id}_icon`} />
+                <img className="trait-review__icon" src={iconPath || trait.spritePath} alt={`${trait.id}_icon`} />
                 <Box className="trait-review__field">
                     <Typography variant="overline">{t('interface.editor.trait.id_label')}</Typography>
                     <Typography>{trait.id}</Typography>

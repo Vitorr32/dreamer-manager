@@ -61,5 +61,12 @@
         "description": "How capable is this character at Moonlight instruction and training",
         "hidden": false,
         "category": "model.attribute.category.staff"
+    },
+    {
+        "id": "staff_attr_9",
+        "name": "Music Knowledge",
+        "description": "How capable is this character at composing, understanding and evaluate music",
+        "hidden": false,
+        "category": "model.attribute.category.staff"
     }
 ]

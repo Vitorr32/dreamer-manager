@@ -5,10 +5,10 @@ export type Channels = 'ipc-example';
 contextBridge.exposeInMainWorld('electron', {
     fileSystem: {
         getFileFromResources(path: string[] = []) {
-            return ipcRenderer.invoke('get-file', path);
+            return ipcRenderer.invoke('get-file', { path: path });
         },
         getFilesFromResources(path: string[] = []) {
-            return ipcRenderer.invoke('get-files', path);
+            return ipcRenderer.invoke('get-files', { path: path });
         },
         getFilesFromResourcesDatabase(folderPath = '') {
             return ipcRenderer.invoke('get-db-files', ['database', folderPath]);

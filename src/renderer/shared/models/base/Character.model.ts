@@ -81,6 +81,7 @@ export enum CharacterVariablesKey {
     RESIDENCE_LOCATION = 'residenceLocation',
     AFFLUENCY = 'standardOfLiving',
     FAMILY_SITUATION = 'familySituation',
+    TRAITS = 'traits',
 }
 
 export const CharacterEntityVariables: Variables = {
@@ -126,6 +127,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.NATIONALITY,
         displayName: 'model.character.variables.nationality',
         type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.NATIONS,
         read: true,
         edit: false,
     },
@@ -133,6 +135,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.HOMETOWN,
         displayName: 'model.character.variables.hometown',
         type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.CITIES,
         read: true,
         edit: false,
     },
@@ -140,6 +143,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.RESIDENCE_LOCATION,
         displayName: 'model.character.variables.residence_location',
         type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.CITIES,
         read: true,
         edit: true,
     },
@@ -169,6 +173,14 @@ export const CharacterEntityVariables: Variables = {
     },
     isPlayer: { key: CharacterVariablesKey.IS_PLAYER, displayName: 'model.character.variables.isPlayer', type: VariableType.BOOLEAN, read: true, edit: false },
     isActive: { key: CharacterVariablesKey.ACTIVE, displayName: 'model.character.variables.isActive', type: VariableType.BOOLEAN, read: true, edit: true },
+    traits: {
+        key: CharacterVariablesKey.TRAITS,
+        displayName: 'model.character.variables.nationality',
+        type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.TRAITS,
+        read: true,
+        edit: false,
+    },
 };
 
 export class Character extends EntityBase {
@@ -204,7 +216,7 @@ export class Character extends EntityBase {
 
     public ethnicity: Ethnicity = Ethnicity.CAUCASIAN;
     public gender: Gender = Gender.FEMALE;
-    public traits: Trait[] = [];
+    public traits: string[] = [];
     public flags: string[] = [];
     public sprites: string[] = [];
     public relationshipsModifiers: string[] = [];

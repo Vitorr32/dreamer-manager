@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Affluency, Character, CharacterType, CharacterVariablesKey, FamilySituation, Gender } from 'renderer/shared/models/base/Character.model';
@@ -7,14 +7,16 @@ import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
+import { Dreamer } from 'renderer/shared/models/base/Dreamer.model';
+import { TraitList } from 'renderer/shared/components/character/TraitList.component';
 
 interface IProps {
-    character: Character;
+    character: Dreamer | Character;
     onChange: (key: CharacterVariablesKey, value: any) => void;
 }
 
 export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
-    const params = useParams();
+    const theme = useTheme();
     const { t, i18n } = useTranslation();
 
     const nations = useAppSelector((state: RootState) => state.database.nations);
@@ -24,13 +26,12 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
         return cities.filter((city) => city.country === nationID);
     };
 
-    console.log('current character', character);
-
     return (
         <Box className="char-basic-info-editor">
-            <Box className="char-basic-info-editor__subsection-status">
+            <Box className="char-basic-info-editor__subsection-status" sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography>{t('interface.editor.character.section_title_basic_info')}</Typography>
-                <Box className="char-basic-info-editor__names">
+
+                <Box className="char-basic-info-editor__names" sx={{ display: 'flex', columnGap: '20px' }}>
                     <TextField
                         label={t('interface.editor.character.input_label_first_name')}
                         required
@@ -53,7 +54,7 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                     />
                 </Box>
 
-                <FormControl>
+                <FormControl sx={{ marginTop: '20px' }}>
                     <InputLabel>{t('interface.editor.character.input_label_type')}</InputLabel>
                     <Select
                         value={character.hometown || ''}
@@ -80,11 +81,11 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                         inputFormat={DATE_ONLY_DAY_FORMAT}
                         value={new Date(character.birthday || '01/01/0001')}
                         onChange={(e: any) => onChange(CharacterVariablesKey.BIRTHDAY, e.toDateString())}
-                        renderInput={(params: any) => <TextField {...params} />}
+                        renderInput={(params: any) => <TextField {...params} sx={{ marginTop: '20px' }} />}
                     />
                 </LocalizationProvider>
 
-                <FormControl>
+                <FormControl sx={{ marginTop: '20px' }}>
                     <InputLabel>{t('interface.editor.character.input_label_nationality')}</InputLabel>
                     <Select
                         value={character.nationality || ''}
@@ -102,11 +103,12 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                     </Select>
                 </FormControl>
 
-                <FormControl>
-                    <InputLabel>{t('interface.editor.character.input_label_hometown')}</InputLabel>
+                <FormControl sx={{ marginTop: '20px' }}>
+                    <InputLabel>{t(`interface.editor.character.${character.nationality ? 'input_label_hometown' : 'input_placeholder_hometown_disabled'}`)}</InputLabel>
                     <Select
+                        disabled={!character.nationality}
                         value={character.hometown || ''}
-                        label={t('interface.editor.character.input_label_hometown')}
+                        label={t(`interface.editor.character.${character.nationality ? 'input_label_hometown' : 'input_placeholder_hometown_disabled'}`)}
                         onChange={(ev) => onChange(CharacterVariablesKey.HOMETOWN, ev.target.value)}
                     >
                         <MenuItem disabled value="">
@@ -121,7 +123,7 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                 </FormControl>
 
                 {character.type === CharacterType.STAFF && (
-                    <FormControl>
+                    <FormControl sx={{ marginTop: '20px' }}>
                         <InputLabel>{t('interface.editor.character.input_label_gender')}</InputLabel>
                         <Select
                             value={character.gender || ''}
@@ -141,19 +143,15 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                     </FormControl>
                 )}
 
-                <FormControl>
+                <FormControl sx={{ marginTop: '20px' }}>
                     <FormControlLabel
                         control={<Checkbox checked={character.isActive} onChange={(ev) => onChange(CharacterVariablesKey.ACTIVE, ev.target.checked)} />}
                         label={t('interface.editor.character.input_label_active')}
                     />
                     <FormHelperText>{t('interface.editor.character.input_helper_active')}</FormHelperText>
                 </FormControl>
-            </Box>
 
-            <Box className="char-basic-info-editor__subsection-living-standard">
-                <Typography>{t('interface.editor.character.section_title_living_conditions')}</Typography>
-
-                <FormControl>
+                <FormControl sx={{ marginTop: '20px' }}>
                     <InputLabel>{t('interface.editor.character.input_label_residence')}</InputLabel>
                     <Select
                         value={character.residenceLocation || ''}
@@ -170,6 +168,11 @@ export function CharacterBasicInfoEditor({ character, onChange }: IProps) {
                         ))}
                     </Select>
                 </FormControl>
+
+                <Box sx={{ marginTop: '20px', position: 'relative' }}>
+                    <TraitList traitList={character.traits} readOnly={false} onChange={(traits) => onChange(CharacterVariablesKey.TRAITS, traits)} />
+                    <FormHelperText>{t('interface.editor.character.trait_list_helper')}</FormHelperText>
+                </Box>
             </Box>
         </Box>
     );

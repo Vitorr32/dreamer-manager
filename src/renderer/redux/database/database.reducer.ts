@@ -73,7 +73,9 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case Assets.TRAITS:
-                    state.traits = action.payload.value;
+                    const traits = action.payload.value.map((rawTraitData) => Object.assign(Object.create(Trait.prototype), rawTraitData));
+
+                    state.traits = traits;
                     state.traits.forEach((trait) => {
                         if (state.mappedDatabase.traits[trait.id]) {
                             throw new Error('A trait with id ' + trait.id + ' is duplicated');

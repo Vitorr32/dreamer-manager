@@ -23,12 +23,21 @@ export function TraitPicker({ multi, onSelection, showTool }: IProps) {
     const [filtered, setFiltered] = useState<Trait[]>([]);
 
     useEffect(() => {
-        setFiltered(filterListByQuery(query));
+        if (query) {
+            setFiltered(filterListByQuery(query));
+        } else {
+            setFiltered(valueList);
+        }
     }, [query]);
 
     const filterListByQuery = (query: string): Trait[] => {
         return valueList
-            .filter((value) => value.id?.includes(query) || value.getName(i18n.language)?.toLowerCase().includes(query) || value.getDescription(i18n.language)?.toLowerCase().includes(query))
+            .filter(
+                (value) =>
+                    value.id?.includes(query) ||
+                    value.getName(i18n.language)?.toLowerCase().includes(query) ||
+                    value.getDescription(i18n.language)?.toLowerCase().includes(query)
+            )
             .sort((a: Trait, b: Trait) => a.getName(i18n.language).localeCompare(b.getName(i18n.language)));
     };
 

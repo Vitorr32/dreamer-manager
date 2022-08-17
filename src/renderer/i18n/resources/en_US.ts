@@ -101,10 +101,11 @@ export const en_US = {
                     input_helper_gender: 'Select a gender for the character, do note that this is only available if the character is a Staff, as all Dreamers are female',
                     input_label_active: 'Is Active?',
                     input_helper_active:
-                        'If this character is "Active" it will be recruitable by scouts on the current staying region, otherwise it will only be activated by events effects',
+                        'If this character is "Active" it will be recruitable by scouts or employable as a staff on the current city of residence, otherwise it will only be activated by events effects',
                     input_label_nationality: 'Nation of Birth',
                     input_placeholder_nationality: 'Select a Nation',
                     input_label_hometown: 'Hometown',
+                    input_placeholder_hometown_disabled: 'Select a Nationality First',
                     input_placeholder_hometown: 'Select a City',
                     input_label_residence: 'Place of Residence',
                     input_placeholder_residence: 'Select a City',
@@ -113,7 +114,9 @@ export const en_US = {
                     input_label_family: 'Family Situation',
                     input_placeholder_family: 'Select Family Situation',
                     input_helper_family:
-                        'Family situation will influence in events, traits available and traumas that this character may have or develop if they are not adults yet.',
+                        'Family situation will influence in events, traits available and traumas that this dreamer may have or develop if they are not adults yet.',
+                    trait_list_label: 'Character Traits',
+                    trait_list_helper: ''
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -355,6 +358,9 @@ export const en_US = {
                     affluency: 'Affluency',
                     family: 'Family Situation',
                 },
+                attributes: {
+
+                }
             },
             condition: {
                 agent: {
