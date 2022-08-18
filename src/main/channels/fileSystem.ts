@@ -2,10 +2,9 @@ import { ipcMain, app } from 'electron';
 import path from 'path';
 import fs from 'fs';
 
-ipcMain.handle('get-file', async (_, args: string[]) => {
+ipcMain.handle('get-file', async (_, args: { path: string[] }) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
-    const ASSET_PATH = path.join(RESOURCES_PATH, ...args);
-
+    const ASSET_PATH = path.join(RESOURCES_PATH, ...args.path);
     try {
         return { path: ASSET_PATH, buffer: fs.readFileSync(ASSET_PATH).toString() };
     } catch (e) {

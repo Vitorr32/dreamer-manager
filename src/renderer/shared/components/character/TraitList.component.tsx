@@ -1,13 +1,12 @@
-import { Avatar, Card, Fab, Stack, Typography, useTheme } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Card, Fab, Stack, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
-import { GetFileFromResources } from 'renderer/shared/utils/StringOperations';
-import { ICONS, TRAITS } from 'renderer/shared/Constants';
 import { TraitPicker } from '../tools/TraitPicker';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
+import { TraitViewer } from './TraitViewer.component';
+import { useState } from 'react';
 
 interface IProps {
     traitList: string[];
@@ -20,20 +19,7 @@ export function TraitList({ traitList, readOnly = true, onChange }: IProps) {
     const traits = useAppSelector((state: RootState) => state.database.mappedDatabase.traits);
 
     const { t, i18n } = useTranslation();
-    const [iconList, setIconList] = React.useState<{ [key: string]: string }>({});
-    const [isTraitPickerOpen, setTraitPickerState] = React.useState<boolean>(false);
-
-    useEffect(() => {
-        const iconList: { [key: string]: string } = {};
-
-        traitList.map(async (traitID) => {
-            iconList[traitID] = await GetFileFromResources([ICONS, TRAITS, traits[traitID].spriteName]).then((result) => result.path);
-        });
-
-        console.log('traitList', traitList);
-        console.log('iconList', iconList);
-        setIconList(iconList);
-    }, [traits]);
+    const [isTraitPickerOpen, setTraitPickerState] = useState<boolean>(false);
 
     const onAddTraitClick = (): void => {
         setTraitPickerState(true);
@@ -44,8 +30,6 @@ export function TraitList({ traitList, readOnly = true, onChange }: IProps) {
             setTraitPickerState(false);
             return;
         }
-
-        console.log('values', values);
 
         onChange(values.map((value) => value.id));
         setTraitPickerState(false);
@@ -61,7 +45,7 @@ export function TraitList({ traitList, readOnly = true, onChange }: IProps) {
             </Typography>
             <Stack className="trait-list" direction="row" spacing={2}>
                 {traitList.map((traitID) => (
-                    <Avatar key={`trait_${traitID}`} alt={traits[traitID].getName(i18n.language)} src={iconList[traitID]} sx={{ width: 56, height: 56 }} />
+                    <TraitViewer key={`trait_${traitID}`} trait={traits[traitID]} />
                 ))}
 
                 {!readOnly && (
@@ -71,7 +55,7 @@ export function TraitList({ traitList, readOnly = true, onChange }: IProps) {
                 )}
             </Stack>
 
-            {<TraitPicker onSelection={onValueSelected} showTool={isTraitPickerOpen} multi />}
+            <TraitPicker onSelection={onValueSelected} showTool={isTraitPickerOpen} multi />
         </Card>
     );
 }

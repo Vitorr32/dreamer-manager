@@ -11,6 +11,8 @@ import { useAppSelector } from 'renderer/redux/hooks';
 interface IProps {
     character: Character;
     onChange: (key: CharacterVariablesKey, value: any) => void;
+    onNextStep: () => void;
+    onPreviousStep: () => void;
 }
 
 export function CharacterAdvancedInfoEditor({ character, onChange }: IProps) {

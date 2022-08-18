@@ -4,6 +4,4 @@ export class Dreamer extends Character {
     attributes: {
         [attributeID: string]: number;
     };
-
-
 }

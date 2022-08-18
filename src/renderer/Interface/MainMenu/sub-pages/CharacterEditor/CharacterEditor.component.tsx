@@ -50,12 +50,22 @@ export function CharacterEditor({}: IProps) {
     const getStepperContent = (index: number): JSX.Element | null => {
         switch (index) {
             case 0:
-                return <CharacterBasicInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} />;
+                return <CharacterBasicInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} onNextStep={onNextStep} />;
             case 1:
-                return <CharacterAdvancedInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} />;
+                return (
+                    <CharacterAdvancedInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} onNextStep={onNextStep} onPreviousStep={onPreviousStep} />
+                );
             default:
                 return null;
         }
+    };
+
+    const onNextStep = (): void => {
+        setStepperIndex(stepperIndex + 1);
+    };
+
+    const onPreviousStep = (): void => {
+        setStepperIndex(stepperIndex - 1);
     };
 
     if (!currentCharacter) {

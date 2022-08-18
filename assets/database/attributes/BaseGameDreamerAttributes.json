@@ -1,46 +1,46 @@
 [
     {
-        "id": "attr_0",
+        "id": "intelligence",
         "name": "Intelligence",
-        "description": "The inate capacity of this character to learn and understand complex subjects and concepts, Inteligent characters are capable of learning and retaining skills way easier",
+        "description": "The innate capacity of this character to learn and understand complex subjects and concepts, Intelligent characters are capable of learning and retaining skills way easier",
         "hidden": false,
         "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.basic"
     },
     {
-        "id": "attr_1",
+        "id": "physical_condition",
         "name": "Physical Condition",
-        "description": "The inate physical condition of this character, important for active chracters that need to do a lot of work",
+        "description": "The innate physical condition of this character, important for active characters that need to do a lot of work",
         "hidden": false,
         "growth": "model.attribute.growth.physical",
         "category": "model.attribute.category.basic"
     },
     {
-        "id": "attr_2",
-        "name": "Attractiviness",
-        "description": "The inate beauty of this character appearance, important for characters that focus on seduction and makes all aspects of life a little easier",
+        "id": "attractiveness",
+        "name": "Attractiveness",
+        "description": "The innate beauty of this character appearance, important for characters that focus on seduction and makes all aspects of life a little easier",
         "hidden": false,
         "growth": "model.attribute.growth.physical",
         "category": "model.attribute.category.basic"
     },
     {
-        "id": "attr_3",
+        "id": "charisma",
         "name": "Charisma",
-        "description": "The inate force of this character personality, charismatic characters can get they way in interactions way easier, and are in general way more entertaining to talk to",
+        "description": "The innate force of this character personality, charismatic characters can get they way in interactions way easier, and are in general way more entertaining to talk to",
         "hidden": false,
         "growth": "model.attribute.growth.physical",
         "category": "model.attribute.category.mental"
     },
     {
-        "id": "attr_4",
+        "id": "willpower",
         "name": "Willpower",
-        "description": "The inate mental fortitude of this character when facing adversity. Important for any character that has to deal with the stress of fame and responsibility",
+        "description": "The innate mental fortitude of this character when facing adversity. Important for any character that has to deal with the stress of fame and responsibility",
         "hidden": false,
         "growth": "model.attribute.growth.physical",
         "category": "model.attribute.category.mental"
     },
     {
-        "id": "attr_5",
+        "id": "singing",
         "name": "Singing",
         "description": "The capacity of the character to sing including breathing techiniques, posture, articulation, projection and more singing techinique aspects.",
         "hidden": false,
@@ -48,7 +48,7 @@
         "category": "model.attribute.category.sun"
     },
     {
-        "id": "attr_6",
+        "id": "dancing",
         "name": "Dancing",
         "description": "The capacity of the character to dance, including technique, equilibrium, expressiviness and rhythm.",
         "hidden": false,
@@ -56,7 +56,7 @@
         "category": "model.attribute.category.sun"
     },
     {
-        "id": "attr_7",
+        "id": "coordination",
         "name": "Coordination",
         "description": "The capacity of the character to get and mantain sharpness of a group formation during a performance with his peers.",
         "hidden": false,
@@ -64,7 +64,7 @@
         "category": "model.attribute.category.sun"
     },
     {
-        "id": "attr_8",
+        "id": "improvisation",
         "name": "Improvisation",
         "description": "The capacity of the character to recover from unexpected situations or even give better results by going in a unexpected direction with his performance.",
         "hidden": false,
@@ -72,7 +72,7 @@
         "category": "model.attribute.category.sun"
     },
     {
-        "id": "attr_9",
+        "id": "composure",
         "name": "Composure",
         "description": "The capacity of the character deal with unconfortable situations when dealing with his peers, fans or journalists.",
         "hidden": false,
@@ -80,7 +80,7 @@
         "category": "model.attribute.category.sun"
     },
     {
-        "id": "attr_10",
+        "id": "memorization",
         "name": "Memorization",
         "description": "The capacity of the character to memorize lines, songs and dance steps in small time, characters will low memorization take more time to nail a song than normal.",
         "hidden": false,
@@ -88,7 +88,7 @@
         "category": "model.attribute.category.sun"
     },
     {
-        "id": "attr_11",
+        "id": "bravery",
         "name": "Bravery",
         "description": "The capacity of the character to put himself in situations that may be awkward or harmfull to ones image without fear of being judged, particulary important for creative and unusual actors and musicians.",
         "hidden": false,
@@ -96,7 +96,7 @@
         "category": "model.attribute.category.star"
     },
     {
-        "id": "attr_12",
+        "id": "creativity",
         "name": "Creativity",
         "description": "The capacity of the character to take different approaches and experiment, particulary important to musicians and ententainers that want to mark their names in history .",
         "hidden": false,
@@ -104,15 +104,15 @@
         "category": "model.attribute.category.star"
     },
     {
-        "id": "attr_13",
-        "name": "Expresivity",
+        "id": "expressivity",
+        "name": "Expressivity",
         "description": "How capable is the character at expressing several emotions trough his voice, manneirisms and body expression, particulary important for actors.",
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.star"
     },
     {
-        "id": "attr_14",
+        "id": "acting",
         "name": "Acting",
         "description": "How well the character is able to act by having a highly developed capacity of understand the charcter, world and emotions of a story. The most important attribute of a actor.",
         "hidden": false,
@@ -120,7 +120,7 @@
         "category": "model.attribute.category.star"
     },
     {
-        "id": "attr_15",
+        "id": "lyricism",
         "name": "Lyricism",
         "description": "How capable the character is in expressing art in a beautiful or imaginative way, be it as lyrics, poems or simple talks. Very important for artits that write they own songs",
         "hidden": false,
@@ -128,7 +128,7 @@
         "category": "model.attribute.category.star"
     },
     {
-        "id": "attr_16",
+        "id": "seduction",
         "name": "Seduction",
         "description": "How capable is the character to get what it wants by using his charms, sweet words and empty promises. Very important to escorts",
         "hidden": false,
@@ -136,7 +136,7 @@
         "category": "model.attribute.category.moon"
     },
     {
-        "id": "attr_17",
+        "id": "entertainment",
         "name": "Entertainment",
         "description": "How capable is the character entertain other people by maintaing intersting conversations, quick wits and funny personality. Important for entertainers",
         "hidden": false,
@@ -144,7 +144,7 @@
         "category": "model.attribute.category.moon"
     },
     {
-        "id": "attr_18",
+        "id": "persuasion",
         "name": "Persuasion",
         "description": "Persuasion is the ability of a character to get what it wants with the minimun hassle in exchange, Important to all social interactions.",
         "hidden": false,
@@ -152,7 +152,7 @@
         "category": "model.attribute.category.moon"
     },
     {
-        "id": "attr_19",
+        "id": "elegancy",
         "name": "Elegancy",
         "description": "Elegancy is how well mannered the character is in high society situations, highly elegant characters are able to create a feeling of superiority over everyone they interact with.",
         "hidden": false,
@@ -160,7 +160,7 @@
         "category": "model.attribute.category.moon"
     },
     {
-        "id": "attr_20",
+        "id": "empathy",
         "name": "Empathy",
         "description": "Empathy determines how capable the character is at creating connections with other people and understanding them in a phsycological level.",
         "hidden": false,
