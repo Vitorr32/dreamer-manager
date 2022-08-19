@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 import { CharacterBasicInfoEditor } from './CharacterBasicInfoEditor.component';
-import { Character, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
+import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { CharacterAdvancedInfoEditor } from './CharacterAdvancedInfoEditor.component';
 import { Dreamer } from 'renderer/shared/models/base/Dreamer.model';
+import { DreamerInfoEditor } from './DreamerInfoEditor.component';
 
 interface IProps {}
 
@@ -52,9 +52,17 @@ export function CharacterEditor({}: IProps) {
             case 0:
                 return <CharacterBasicInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} onNextStep={onNextStep} />;
             case 1:
-                return (
-                    <CharacterAdvancedInfoEditor onChange={onCharacterVariableUpdated} character={currentCharacter} onNextStep={onNextStep} onPreviousStep={onPreviousStep} />
-                );
+                switch (currentCharacter.type) {
+                    case CharacterType.ACTIVE_DREAMER:
+                        return (
+                            <DreamerInfoEditor
+                                onChange={onCharacterVariableUpdated}
+                                dreamer={currentCharacter as Dreamer}
+                                onNextStep={onNextStep}
+                                onPreviousStep={onPreviousStep}
+                            />
+                        );
+                }
             default:
                 return null;
         }

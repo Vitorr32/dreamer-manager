@@ -13,6 +13,7 @@ export enum VariableType {
     EXTERNAL_KEY_LIST,
     BOOLEAN,
     EFFECTS_LIST,
+    DYNAMIC_ATTRIBUTE,
 }
 
 export enum VariableOperator {
@@ -36,7 +37,7 @@ export interface EntityVariable {
     // The type defines what operations and values are accepted to the variable.
     type: VariableType;
     // If it is a variable with type External Key or External List, it means it points to another entity, like the external key of a SQL table.
-    // It should also contains wich entity is the external key pointing to.
+    // It should also contains which entity is the external key pointing to.
     externalEntity?: Entity;
     // If it is a variable with Enumerator values, here all the possible values should be set.
     options?: string[];
@@ -51,15 +52,4 @@ export interface Variables {
 }
 
 //TODO: How to make the custom variable to be dynamically added to the game trough mod import?
-export interface CustomVariables extends Variables {
-    [key: string]: {
-        key: string;
-        displayName: string;
-        type: VariableType;
-        associatedID?: string;
-        options?: string[];
-        read: boolean;
-        edit: boolean;
-        customVariableData: Attribute;
-    };
-}
+export interface CustomVariables extends Variables {}

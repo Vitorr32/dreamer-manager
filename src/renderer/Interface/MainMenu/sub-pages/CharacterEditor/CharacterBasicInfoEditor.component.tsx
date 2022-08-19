@@ -56,7 +56,7 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
             <FormControl sx={{ marginTop: '20px' }}>
                 <InputLabel>{t('interface.editor.character.input_label_type')}</InputLabel>
                 <Select
-                    value={character.hometown || ''}
+                    value={character.type || ''}
                     label={t('interface.editor.character.input_label_type')}
                     onChange={(ev) => onChange(CharacterVariablesKey.TYPE, ev.target.value)}
                 >
@@ -76,12 +76,15 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
                 <DesktopDatePicker
                     label={t('interface.editor.character.input_label_birthday')}
                     mask="__/__/____"
+                    minDate={new Date(1560, 0, 0)}
+                    maxDate={new Date(1700, 12, 30)}
                     onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
                     inputFormat={DATE_ONLY_DAY_FORMAT}
-                    value={new Date(character.birthday || '01/01/0001')}
+                    value={new Date(character.birthday || '01/01/1560')}
                     onChange={(e: any) => onChange(CharacterVariablesKey.BIRTHDAY, e.toDateString())}
                     renderInput={(params: any) => <TextField {...params} sx={{ marginTop: '20px' }} />}
                 />
+                <FormHelperText>{t('interface.editor.character.input_helper_birthday')}</FormHelperText>
             </LocalizationProvider>
 
             <FormControl sx={{ marginTop: '20px' }}>
@@ -144,7 +147,7 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
 
             <FormControl sx={{ marginTop: '20px' }}>
                 <FormControlLabel
-                    control={<Checkbox checked={character.isActive} onChange={(ev) => onChange(CharacterVariablesKey.ACTIVE, ev.target.checked)} />}
+                    control={<Checkbox checked={character.isActive || false} onChange={(ev) => onChange(CharacterVariablesKey.ACTIVE, ev.target.checked)} />}
                     label={t('interface.editor.character.input_label_active')}
                 />
                 <FormHelperText>{t('interface.editor.character.input_helper_active')}</FormHelperText>

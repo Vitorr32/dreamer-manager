@@ -2,15 +2,15 @@
     {
         "id": "intelligence",
         "name": "Intelligence",
-        "description": "The innate capacity of this character to learn and understand complex subjects and concepts, Intelligent characters are capable of learning and retaining skills way easier",
+        "description": "The innate capacity of this character to learn and understand complex subjects and concepts, Intelligent characters are capable of learning and retaining mental skills way easier",
         "hidden": false,
         "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.basic"
     },
     {
-        "id": "physical_condition",
+        "id": "physicalCondition",
         "name": "Physical Condition",
-        "description": "The innate physical condition of this character, important for active characters that need to do a lot of work",
+        "description": "The innate physical condition of this character, important for active characters that need to do a lot of work and to resist fatigue, Fit characters are able to learn and retain physical skills way easier",
         "hidden": false,
         "growth": "model.attribute.growth.physical",
         "category": "model.attribute.category.basic"

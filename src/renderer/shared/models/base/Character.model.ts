@@ -10,34 +10,22 @@ export enum Gender {
     FEMALE = 'female',
 }
 
-export enum Affluency {
-    DESTITUTE = 'model.character.affluency.destitute',
-    VERY_POOR = 'model.character.affluency.very_poor',
-    POOR = 'model.character.affluency.poor',
-    MIDDLE_CLASS = 'model.character.affluency.middle_class',
-    UPPER_MIDDLE_CLASS = 'model.character.affluency.upper_middle_class',
-    RICH = 'model.character.affluency.rich',
-    PROSPEROUS = 'model.character.affluency.prosperous',
-    LUXURIOUS = 'model.character.affluency.luxurious',
-    NOBILITY = 'model.character.affluency.nobility',
+export enum Affluence {
+    DESTITUTE = 'model.character.affluence.destitute',
+    VERY_POOR = 'model.character.affluence.very_poor',
+    POOR = 'model.character.affluence.poor',
+    MIDDLE_CLASS = 'model.character.affluence.middle_class',
+    UPPER_MIDDLE_CLASS = 'model.character.affluence.upper_middle_class',
+    RICH = 'model.character.affluence.rich',
+    PROSPEROUS = 'model.character.affluence.prosperous',
+    LUXURIOUS = 'model.character.affluence.luxurious',
+    NOBILITY = 'model.character.affluence.nobility',
 }
 
 export enum CharacterType {
     STAFF = 'model.character.type.staff',
     ACTIVE_DREAMER = 'model.character.type.active_dreamer',
     RETIRED_DREAMER = 'model.character.type.retired_dreamer',
-}
-
-export enum FamilySituation {
-    SUPPORTIVE = 'model.character.family.supportive',
-    STABLE = 'model.character.family.stable',
-    UNSTABLE = 'model.character.family.unstable',
-    ORPHAN = 'model.character.family.orphan',
-    WAR_ORPHAN = 'model.character.family.war_orphan',
-    WIDOWER = 'model.character.family.widower',
-    WIDOW = 'model.character.family.widow',
-    WAR_WIDOW = 'model.character.family.war_widow',
-    DIVORCED = 'model.character.family.divorced',
 }
 
 export enum Ethnicity {
@@ -79,7 +67,7 @@ export enum CharacterVariablesKey {
     NATIONALITY = 'nationality',
     HOMETOWN = 'hometown',
     RESIDENCE_LOCATION = 'residenceLocation',
-    AFFLUENCY = 'standardOfLiving',
+    AFFLUENCE = 'standardOfLiving',
     FAMILY_SITUATION = 'familySituation',
     TRAITS = 'traits',
 }
@@ -147,11 +135,11 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: true,
     },
-    affluency: {
-        key: CharacterVariablesKey.AFFLUENCY,
-        displayName: 'model.character.variables.affluency',
+    affluence: {
+        key: CharacterVariablesKey.AFFLUENCE,
+        displayName: 'model.character.variables.affluence',
         type: VariableType.ENUMERATOR,
-        options: Object.values(Affluency).map((value) => value),
+        options: Object.values(Affluence).map((value) => value),
         read: true,
         edit: true,
     },
@@ -160,14 +148,6 @@ export const CharacterEntityVariables: Variables = {
         displayName: 'model.character.variables.type',
         type: VariableType.ENUMERATOR,
         options: Object.values(CharacterType).map((value) => value),
-        read: true,
-        edit: true,
-    },
-    family: {
-        key: CharacterVariablesKey.FAMILY_SITUATION,
-        displayName: 'model.character.variables.family',
-        type: VariableType.ENUMERATOR,
-        options: Object.values(FamilySituation).map((value) => value),
         read: true,
         edit: true,
     },
@@ -204,9 +184,7 @@ export class Character extends EntityBase {
     // The id of the the City where the character currently lives in
     public residenceLocation: string;
     // How wealth is the standard of living of this character.
-    public standardOfLiving: Affluency;
-    // Family situation that can influence traits and traumas
-    public familySituation: FamilySituation;
+    public standardOfLiving: Affluence;
     // The type of character, currently it can be a Staff, Dreamer or a Retired Dreamer (That can be a staff)
     public type: CharacterType;
 
