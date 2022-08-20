@@ -15,6 +15,7 @@ export enum FamilySituation {
 
 export enum DreamerVariablesKey {
     FAMILY_SITUATION = 'familySituation',
+    ABILITY_POTENTIAL = 'abilityPotential',
     //Keys for dynamic attributes should be the same as their ID on the Database.
     INTELLIGENCE = 'intelligence',
     PHYSICAL_CONDITION = 'physicalCondition',
@@ -47,6 +48,13 @@ export const DreamerEntityVariables: Variables = {
         options: Object.values(FamilySituation).map((value) => value),
         read: true,
         edit: true,
+    },
+    [DreamerVariablesKey.ABILITY_POTENTIAL]: {
+        key: DreamerVariablesKey.ABILITY_POTENTIAL,
+        displayName: 'model.dreamer.variables.potential',
+        type: VariableType.NUMBER,
+        read: true,
+        edit: false,
     },
     [DreamerVariablesKey.INTELLIGENCE]: {
         key: DreamerVariablesKey.INTELLIGENCE,
@@ -203,6 +211,8 @@ export class Dreamer extends Character {
     }
     // Family situation that can influence traits and traumas
     public familySituation: FamilySituation;
+    // A number, from 50 (Very Bad) to 200 (Perfect) that is distributed between all the dreamers skills trough training and growing up.
+    public abilityPotential: number;
     //Dynamic Attributes of a Dreamer, they can grow and decrease over time and with events.
     public intelligence: number;
     public physicalCondition: number;

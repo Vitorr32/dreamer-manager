@@ -68,7 +68,6 @@ export enum CharacterVariablesKey {
     HOMETOWN = 'hometown',
     RESIDENCE_LOCATION = 'residenceLocation',
     AFFLUENCE = 'standardOfLiving',
-    FAMILY_SITUATION = 'familySituation',
     TRAITS = 'traits',
 }
 
