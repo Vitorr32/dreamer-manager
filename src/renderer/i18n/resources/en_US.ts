@@ -122,7 +122,7 @@ export const en_US = {
                         'Family situation will influence in events, traits available and traumas that this dreamer may have or develop if they are not adults yet.',
                     input_label_potential: 'Individual Ability Potential',
                     input_helper_potential:
-                        'The ability potential is the maximum sum of all attributes that this dreamer has, when it reaches it maximum, the dreamer can only increases they skill by decreasing others',
+                        'The ability potential is the maximum sum of all attributes that this dreamer has, when it reaches it maximum, the dreamer can only increases they skill by decreasing others.\n Event the best Dreamers are not capable of being perfect in everything',
                     potential_very_weak: 'Incompetent Dreamer',
                     potential_weak: 'Inept Dreamer',
                     potential_below_average: 'Amateur Dreamer',

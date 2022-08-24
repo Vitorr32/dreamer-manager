@@ -85,12 +85,15 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case Assets.ATTRIBUTES:
-                    state.attributes = action.payload.value;
+                    const attrs = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(Attribute.prototype), rawAttributeData));
+
+                    state.attributes = attrs;
                     state.attributes.forEach((attr) => {
                         if (state.mappedDatabase.attributes[attr.id]) {
                             throw new Error('A attribute with id ' + attr.id + ' is duplicated');
                         }
-                        return (state.mappedDatabase.attributes[attr.id] = attr);
+
+                        state.mappedDatabase.attributes[attr.id] = attr;
                     });
                     break;
                 case Assets.CITIES:

@@ -1,168 +1,252 @@
 [
     {
         "id": "intelligence",
-        "name": "Intelligence",
-        "description": "The innate capacity of this character to learn and understand complex subjects and concepts, Intelligent characters are capable of learning and retaining mental skills way easier",
+        "localization": {
+            "en_US": {
+                "name": "Intelligence",
+                "description": "The innate capacity of this character to learn and understand complex subjects and concepts, Intelligent characters are capable of learning and retaining mental skills way easier"
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.basic"
     },
     {
         "id": "physicalCondition",
-        "name": "Physical Condition",
-        "description": "The innate physical condition of this character, important for active characters that need to do a lot of work and to resist fatigue, Fit characters are able to learn and retain physical skills way easier",
+        "localization": {
+            "en_US": {
+                "name": "Physical Condition",
+                "description": "The innate physical condition of this character, important for active characters that need to do a lot of work and to resist fatigue, Fit characters are able to learn and retain physical skills way easier"
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.physical",
         "category": "model.attribute.category.basic"
     },
     {
         "id": "attractiveness",
-        "name": "Attractiveness",
-        "description": "The innate beauty of this character appearance, important for characters that focus on seduction and makes all aspects of life a little easier",
+        "localization": {
+            "en_US": {
+                "name": "Attractiveness",
+                "description": "The innate beauty of this character appearance, important for characters that focus on seduction and makes all aspects of life a little easier"
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.physical",
         "category": "model.attribute.category.basic"
     },
     {
         "id": "charisma",
-        "name": "Charisma",
-        "description": "The innate force of this character personality, charismatic characters can get they way in interactions way easier, and are in general way more entertaining to talk to",
+        "localization": {
+            "en_US": {
+                "name": "Charisma",
+                "description": "The innate force of this character personality, charismatic characters can get they way in interactions way easier, and are in general way more entertaining to talk to"
+            }
+        },
         "hidden": false,
-        "growth": "model.attribute.growth.physical",
-        "category": "model.attribute.category.mental"
+        "growth": "model.attribute.growth.mental",
+        "category": "model.attribute.category.basic"
     },
     {
         "id": "willpower",
-        "name": "Willpower",
-        "description": "The innate mental fortitude of this character when facing adversity. Important for any character that has to deal with the stress of fame and responsibility",
+        "localization": {
+            "en_US": {
+                "name": "Willpower",
+                "description": "The innate mental fortitude of this character when facing adversity. Important for any character that has to deal with the stress of fame and responsibility"
+            }
+        },
         "hidden": false,
-        "growth": "model.attribute.growth.physical",
-        "category": "model.attribute.category.mental"
+        "growth": "model.attribute.growth.mental",
+        "category": "model.attribute.category.basic"
     },
     {
         "id": "singing",
-        "name": "Singing",
-        "description": "The capacity of the character to sing including breathing techiniques, posture, articulation, projection and more singing techinique aspects.",
+        "localization": {
+            "en_US": {
+                "name": "Singing",
+                "description": "The capacity of the character to sing including breathing techiniques, posture, articulation, projection and more singing techinique aspects."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.sun"
     },
     {
         "id": "dancing",
-        "name": "Dancing",
-        "description": "The capacity of the character to dance, including technique, equilibrium, expressiviness and rhythm.",
+        "localization": {
+            "en_US": {
+                "name": "Dancing",
+                "description": "The capacity of the character to dance, including technique, equilibrium, expressiviness and rhythm."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.sun"
     },
     {
         "id": "coordination",
-        "name": "Coordination",
-        "description": "The capacity of the character to get and mantain sharpness of a group formation during a performance with his peers.",
+        "localization": {
+            "en_US": {
+                "name": "Coordination",
+                "description": "The capacity of the character to get and mantain sharpness of a group formation during a performance with his peers."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.sun"
     },
     {
         "id": "improvisation",
-        "name": "Improvisation",
-        "description": "The capacity of the character to recover from unexpected situations or even give better results by going in a unexpected direction with his performance.",
+        "localization": {
+            "en_US": {
+                "name": "Improvisation",
+                "description": "The capacity of the character to recover from unexpected situations or even give better results by going in a unexpected direction with his performance."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.sun"
     },
     {
         "id": "composure",
-        "name": "Composure",
-        "description": "The capacity of the character deal with unconfortable situations when dealing with his peers, fans or journalists.",
+        "localization": {
+            "en_US": {
+                "name": "Composure",
+                "description": "The capacity of the character deal with unconfortable situations when dealing with his peers, fans or journalists."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.sun"
     },
     {
         "id": "memorization",
-        "name": "Memorization",
-        "description": "The capacity of the character to memorize lines, songs and dance steps in small time, characters will low memorization take more time to nail a song than normal.",
+        "localization": {
+            "en_US": {
+                "name": "Memorization",
+                "description": "The capacity of the character to memorize lines, songs and dance steps in small time, characters will low memorization take more time to nail a song than normal."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.sun"
     },
     {
         "id": "bravery",
-        "name": "Bravery",
-        "description": "The capacity of the character to put himself in situations that may be awkward or harmfull to ones image without fear of being judged, particulary important for creative and unusual actors and musicians.",
+        "localization": {
+            "en_US": {
+                "name": "Bravery",
+                "description": "The capacity of the character to put himself in situations that may be awkward or harmfull to ones image without fear of being judged, particulary important for creative and unusual actors and musicians."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.star"
     },
     {
         "id": "creativity",
-        "name": "Creativity",
-        "description": "The capacity of the character to take different approaches and experiment, particulary important to musicians and ententainers that want to mark their names in history .",
+        "localization": {
+            "en_US": {
+                "name": "Creativity",
+                "description": "The capacity of the character to take different approaches and experiment, particulary important to musicians and ententainers that want to mark their names in history ."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.star"
     },
     {
         "id": "expressivity",
-        "name": "Expressivity",
-        "description": "How capable is the character at expressing several emotions trough his voice, manneirisms and body expression, particulary important for actors.",
+        "localization": {
+            "en_US": {
+                "name": "Expressivity",
+                "description": "How capable is the character at expressing several emotions trough his voice, manneirisms and body expression, particulary important for actors."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.star"
     },
     {
         "id": "acting",
-        "name": "Acting",
-        "description": "How well the character is able to act by having a highly developed capacity of understand the charcter, world and emotions of a story. The most important attribute of a actor.",
+        "localization": {
+            "en_US": {
+                "name": "Acting",
+                "description": "How well the character is able to act by having a highly developed capacity of understand the charcter, world and emotions of a story. The most important attribute of a actor."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.star"
     },
     {
         "id": "lyricism",
-        "name": "Lyricism",
-        "description": "How capable the character is in expressing art in a beautiful or imaginative way, be it as lyrics, poems or simple talks. Very important for artits that write they own songs",
+        "localization": {
+            "en_US": {
+                "name": "Lyricism",
+                "description": "How capable the character is in expressing art in a beautiful or imaginative way, be it as lyrics, poems or simple talks. Very important for artits that write they own songs"
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.star"
     },
     {
         "id": "seduction",
-        "name": "Seduction",
-        "description": "How capable is the character to get what it wants by using his charms, sweet words and empty promises. Very important to escorts",
+        "localization": {
+            "en_US": {
+                "name": "Seduction",
+                "description": "How capable is the character to get what it wants by using his charms, sweet words and empty promises. Very important to escorts"
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.moon"
     },
     {
         "id": "entertainment",
-        "name": "Entertainment",
-        "description": "How capable is the character entertain other people by maintaing intersting conversations, quick wits and funny personality. Important for entertainers",
+        "localization": {
+            "en_US": {
+                "name": "Entertainment",
+                "description": "How capable is the character entertain other people by maintaing intersting conversations, quick wits and funny personality. Important for entertainers"
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.moon"
     },
     {
         "id": "persuasion",
-        "name": "Persuasion",
-        "description": "Persuasion is the ability of a character to get what it wants with the minimun hassle in exchange, Important to all social interactions.",
+        "localization": {
+            "en_US": {
+                "name": "Persuasion",
+                "description": "Persuasion is the ability of a character to get what it wants with the minimun hassle in exchange, Important to all social interactions."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.moon"
     },
     {
         "id": "elegancy",
-        "name": "Elegancy",
-        "description": "Elegancy is how well mannered the character is in high society situations, highly elegant characters are able to create a feeling of superiority over everyone they interact with.",
+        "localization": {
+            "en_US": {
+                "name": "Elegancy",
+                "description": "Elegancy is how well mannered the character is in high society situations, highly elegant characters are able to create a feeling of superiority over everyone they interact with."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
         "category": "model.attribute.category.moon"
     },
     {
         "id": "empathy",
-        "name": "Empathy",
-        "description": "Empathy determines how capable the character is at creating connections with other people and understanding them in a phsycological level.",
+        "localization": {
+            "en_US": {
+                "name": "Empathy",
+                "description": "Empathy determines how capable the character is at creating connections with other people and understanding them in a phsycological level."
+            }
+        },
         "hidden": false,
         "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.moon"
