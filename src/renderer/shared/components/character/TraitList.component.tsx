@@ -36,10 +36,10 @@ export function TraitList({ traitList, readOnly = true, onChange }: IProps) {
     };
 
     return (
-        <Card variant="outlined" sx={{ background: 'transparent', padding: '10px' }}>
+        <Card variant="outlined" sx={{ padding: '10px' }}>
             <Typography
                 variant="caption"
-                sx={{ position: 'absolute', top: '0', left: '10px', padding: '0 10px', background: theme.palette.background.default, transform: 'translateY(-50%)' }}
+                sx={{ position: 'absolute', top: '0', left: '10px', padding: '0 10px', backgroundColor: 'background.default', transform: 'translateY(-50%)' }}
             >
                 {t('interface.editor.character.trait_list_label')}
             </Typography>
@@ -49,7 +49,7 @@ export function TraitList({ traitList, readOnly = true, onChange }: IProps) {
                 ))}
 
                 {!readOnly && (
-                    <Fab color="primary" aria-label="add" onClick={onAddTraitClick}>
+                    <Fab color="default" aria-label="add" onClick={onAddTraitClick}>
                         <AddIcon />
                     </Fab>
                 )}

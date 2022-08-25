@@ -45,7 +45,7 @@
         },
         "hidden": false,
         "growth": "model.attribute.growth.mental",
-        "category": "model.attribute.category.basic"
+        "category": "model.attribute.category.sun"
     },
     {
         "id": "willpower",
@@ -93,6 +93,66 @@
         },
         "hidden": false,
         "growth": "model.attribute.growth.technical",
+        "category": "model.attribute.category.sun"
+    },
+    {
+        "id": "leadership",
+        "localization": {
+            "en_US": {
+                "name": "Leadership",
+                "description": "The capacity of the character to lead his peers effectively."
+            }
+        },
+        "hidden": false,
+        "growth": "model.attribute.growth.mental",
+        "category": "model.attribute.category.sun"
+    },
+    {
+        "id": "teamwork",
+        "localization": {
+            "en_US": {
+                "name": "Teamwork",
+                "description": "Teamworks indicates how easy is for this character to engage with his teammates and get positive interactions with them."
+            }
+        },
+        "hidden": false,
+        "growth": "model.attribute.growth.mental",
+        "category": "model.attribute.category.sun"
+    },
+    {
+        "id": "stamina",
+        "localization": {
+            "en_US": {
+                "name": "Stamina",
+                "description": "Indicates how long this character can perform at maximum capacity during events"
+            }
+        },
+        "hidden": false,
+        "growth": "model.attribute.growth.physical",
+        "category": "model.attribute.category.sun"
+    },
+    {
+        "id": "fitness",
+        "localization": {
+            "en_US": {
+                "name": "Fitness",
+                "description": "Fit characters are more resistant to injuries and can recover quickly from the ones that they do get, while unfit character are more injury prone and take more time to recover they full ability"
+            }
+        },
+        "hidden": false,
+        "growth": "model.attribute.growth.physical",
+        "category": "model.attribute.category.sun"
+    },
+    {
+        "id": "concentration",
+        "localization": {
+            "en_US": {
+                "name": "Concentration",
+                "description": "The general attention span of this character and his capacity to focus on his current activity without getting distracted"
+            }
+        },
+        "hidden": false,
+        "growth": "model.attribute.growth.mental",
         "category": "model.attribute.category.sun"
     },
     {

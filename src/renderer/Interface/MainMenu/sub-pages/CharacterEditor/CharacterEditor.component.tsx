@@ -1,4 +1,4 @@
-import { Box, Button, Step, StepButton, Stepper, Typography } from '@mui/material';
+import { Box, Button, Paper, Step, StepButton, Stepper, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { Dreamer } from 'renderer/shared/models/base/Dreamer.model';
+import { Dreamer, DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
 import { DreamerInfoEditor } from './DreamerInfoEditor.component';
 
 interface IProps {}
@@ -40,7 +40,7 @@ export function CharacterEditor({}: IProps) {
         }
     }, []);
 
-    const onCharacterVariableUpdated = (key: CharacterVariablesKey, value: any) => {
+    const onCharacterVariableUpdated = (key: CharacterVariablesKey | DreamerVariablesKey, value: any) => {
         const updatedCharacter: any = CopyClassInstance(currentCharacter);
 
         updatedCharacter[key] = value;
@@ -81,8 +81,8 @@ export function CharacterEditor({}: IProps) {
     }
 
     return (
-        <Box className="new-event">
-            <Box component="header" className="new-event__header">
+        <Box sx={{ backgroundColor: 'background.default' }}>
+            <Paper sx={{ display: 'flex', columnGap: '20px', padding: '20px', alignItems: 'center' }} elevation={2}>
                 <Link to="/menu/edit/character">
                     <Button color="primary">
                         <ArrowBackIcon />
@@ -92,9 +92,9 @@ export function CharacterEditor({}: IProps) {
                 <Typography variant="h5">{t('interface.editor.character.title') as string}</Typography>
 
                 <LanguageToggle />
-            </Box>
+            </Paper>
 
-            <Box className="new-event__content-header">
+            <Box sx={{ padding: '20px' }}>
                 <Stepper nonLinear activeStep={stepperIndex}>
                     {CharacterSteps.map((characterStep, index) => {
                         return (

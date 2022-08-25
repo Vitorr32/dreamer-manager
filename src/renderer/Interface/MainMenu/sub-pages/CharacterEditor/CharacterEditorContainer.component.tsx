@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
@@ -24,18 +24,16 @@ export function CharacterEditorContainer() {
             <Route
                 path="/"
                 element={
-                    <>
-                        <main id="trait-editor-page">
-                            <div className="menu-wrapper">
-                                <Link to="/menu/edit">
-                                    <button>Return Menu</button>
-                                </Link>
-                                <Link to="new">
-                                    <button>New Character</button>
-                                </Link>
-                                <Button onClick={() => setStateOfEntityPickerModal(true)}>Edit Character</Button>
-                            </div>
-                        </main>
+                    <Box>
+                        <div className="menu-wrapper">
+                            <Link to="/menu/edit">
+                                <button>Return Menu</button>
+                            </Link>
+                            <Link to="new">
+                                <button>New Character</button>
+                            </Link>
+                            <Button onClick={() => setStateOfEntityPickerModal(true)}>Edit Character</Button>
+                        </div>
 
                         <EntityPicker
                             open={stateOfEntityPickerModal}
@@ -46,7 +44,7 @@ export function CharacterEditorContainer() {
                             onClose={() => setStateOfEntityPickerModal(false)}
                             onSelected={onCharacterSelected}
                         />
-                    </>
+                    </Box>
                 }
             />
         </Routes>

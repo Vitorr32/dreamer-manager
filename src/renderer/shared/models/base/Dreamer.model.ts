@@ -24,6 +24,10 @@ export enum DreamerVariablesKey {
     WILLPOWER = 'willpower',
     SINGING = 'singing',
     DANCING = 'dancing',
+    STAMINA = 'stamina',
+    FITNESS = 'fitness',
+    LEADERSHIP = 'leadership',
+    TEAMWORK = 'teamwork',
     COORDINATION = 'coordination',
     IMPROVISATION = 'improvisation',
     COMPOSURE = 'composure',
@@ -203,6 +207,34 @@ export const DreamerEntityVariables: Variables = {
         read: true,
         edit: true,
     },
+    [DreamerVariablesKey.STAMINA]: {
+        key: DreamerVariablesKey.STAMINA,
+        displayName: 'model.dreamer.variables.stamina',
+        type: VariableType.DYNAMIC_ATTRIBUTE,
+        read: true,
+        edit: true,
+    },
+    [DreamerVariablesKey.TEAMWORK]: {
+        key: DreamerVariablesKey.TEAMWORK,
+        displayName: 'model.dreamer.variables.teamwork',
+        type: VariableType.DYNAMIC_ATTRIBUTE,
+        read: true,
+        edit: true,
+    },
+    [DreamerVariablesKey.LEADERSHIP]: {
+        key: DreamerVariablesKey.LEADERSHIP,
+        displayName: 'model.dreamer.variables.leadership',
+        type: VariableType.DYNAMIC_ATTRIBUTE,
+        read: true,
+        edit: true,
+    },
+    [DreamerVariablesKey.FITNESS]: {
+        key: DreamerVariablesKey.FITNESS,
+        displayName: 'model.dreamer.variables.fitness',
+        type: VariableType.DYNAMIC_ATTRIBUTE,
+        read: true,
+        edit: true,
+    },
 };
 
 export class Dreamer extends Character {
@@ -235,4 +267,8 @@ export class Dreamer extends Character {
     public persuasion: number;
     public elegancy: number;
     public empathy: number;
+    public leadership: number;
+    public fitness: number;
+    public teamwork: number;
+    public stamina: number;
 }

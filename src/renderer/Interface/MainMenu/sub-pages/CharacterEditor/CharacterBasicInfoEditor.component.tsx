@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography, useTheme } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, Stack, TextField, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Character, CharacterType, CharacterVariablesKey, Gender } from 'renderer/shared/models/base/Character.model';
 import { DATE_ONLY_DAY_FORMAT } from 'renderer/shared/Constants';
@@ -27,10 +27,8 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
     };
 
     return (
-        <Box className="char-basic-info-editor" sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography>{t('interface.editor.character.section_title_basic_info')}</Typography>
-
-            <Box className="char-basic-info-editor__names" sx={{ display: 'flex', columnGap: '20px' }}>
+        <Stack direction="column">
+            <Box sx={{ display: 'flex', columnGap: '20px' }}>
                 <TextField
                     label={t('interface.editor.character.input_label_first_name')}
                     required
@@ -148,7 +146,11 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
             <FormControl sx={{ marginTop: '20px' }}>
                 <FormControlLabel
                     control={<Checkbox checked={character.isActive || false} onChange={(ev) => onChange(CharacterVariablesKey.ACTIVE, ev.target.checked)} />}
-                    label={t('interface.editor.character.input_label_active')}
+                    label={
+                        <Typography variant="caption" sx={{ color: 'text.primary' }}>
+                            {t('interface.editor.character.input_label_active')}
+                        </Typography>
+                    }
                 />
                 <FormHelperText>{t('interface.editor.character.input_helper_active')}</FormHelperText>
             </FormControl>
@@ -179,6 +181,6 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
             <Button variant="contained" disabled={!character.type} sx={{ marginLeft: 'auto', display: 'inline-block', marginTop: '20px' }} onClick={onNextStep}>
                 Next Step
             </Button>
-        </Box>
+        </Stack>
     );
 }

@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Chip, Stack, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
@@ -26,12 +26,12 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
     };
 
     return (
-        <Box className="dreamer-attribute-viewer" sx={{ display: 'grid' }}>
+        <Box className="dreamer-attribute-viewer">
             {/* BASIC ATTRIBUTES */}
             <Stack spacing={2} direction={'column'}>
                 {getAttributeFromCategory(Category.BASIC).map((attribute) => (
                     <AttributeTooltip key={`attr_tooltip_${attribute.id}`} attribute={attribute}>
-                        <Box key={`attr_info_${attribute.id}`} className="dreamer-attribute-viewer__attribute" sx={{ display: 'flex' }}>
+                        <Box key={`attr_info_${attribute.id}`} className="dreamer-attribute-viewer__attribute">
                             <Typography>{attribute.getName(i18n.language)}</Typography>
                             <Typography>{(dreamer as any)[attribute.id]}</Typography>
                         </Box>
@@ -40,22 +40,22 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
             </Stack>
 
             {/* SUNLIGHT ATTRIBUTES */}
-            <Stack spacing={2} direction={'column'}>
+            <Stack spacing={2} direction={'column'} sx={{ borderTop: '1px solid black' }}>
                 {getAttributeFromCategory(Category.SUNLIGHT).map((attribute) => (
                     <AttributeTooltip key={`attr_tooltip_${attribute.id}`} attribute={attribute}>
-                        <Box key={`attr_info_${attribute.id}`} className="dreamer-attribute-viewer__attribute" sx={{ display: 'flex' }}>
-                            <Typography>{attribute.getName(i18n.language)}</Typography>
-                            <Typography>{(dreamer as any)[attribute.id]}</Typography>
+                        <Box key={`attr_info_${attribute.id}`} className="dreamer-attribute-viewer__attribute">
+                            <Typography className="dreamer-attribute-viewer__attribute-name">{attribute.getName(i18n.language)}</Typography>
+                            <Chip className="dreamer-attribute-viewer__attribute-value" label={(dreamer as any)[attribute.id] || 20} />
                         </Box>
                     </AttributeTooltip>
                 ))}
             </Stack>
 
             {/* STARLIGHT ATTRIBUTES */}
-            <Stack spacing={2} direction={'column'}>
+            <Stack spacing={2} direction={'column'} sx={{ borderTop: '1px solid black' }}>
                 {getAttributeFromCategory(Category.STARLIGHT).map((attribute) => (
                     <AttributeTooltip key={`attr_tooltip_${attribute.id}`} attribute={attribute}>
-                        <Box key={`attr_info_${attribute.id}`} className="dreamer-attribute-viewer__attribute" sx={{ display: 'flex' }}>
+                        <Box key={`attr_info_${attribute.id}`} className="dreamer-attribute-viewer__attribute">
                             <Typography>{attribute.getName(i18n.language)}</Typography>
                             <Typography>{(dreamer as any)[attribute.id]}</Typography>
                         </Box>
@@ -64,10 +64,10 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
             </Stack>
 
             {/* MOONLIGHT ATTRIBUTES */}
-            <Stack spacing={2} direction={'column'}>
-                {getAttributeFromCategory(Category.STARLIGHT).map((attribute) => (
+            <Stack spacing={2} direction={'column'} sx={{ borderTop: '1px solid black' }}>
+                {getAttributeFromCategory(Category.MOONLIGHT).map((attribute) => (
                     <AttributeTooltip key={`attr_tooltip_${attribute.id}`} attribute={attribute}>
-                        <Box key={`attr_info_${attribute.id}`} className="dreamer-attribute-viewer__attribute" sx={{ display: 'flex' }}>
+                        <Box key={`attr_info_${attribute.id}`} className="dreamer-attribute-viewer__attribute">
                             <Typography>{attribute.getName(i18n.language)}</Typography>
                             <Typography>{(dreamer as any)[attribute.id]}</Typography>
                         </Box>

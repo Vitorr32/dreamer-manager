@@ -12,14 +12,18 @@ import { CharacterEditorContainer } from './Interface/MainMenu/sub-pages/Charact
 export default function App() {
     const theme = createTheme({
         palette: {
+            mode: 'dark',
             background: {
-                default: 'whitesmoke',
+                default: '#160923',
+                paper: '#1f122c',
             },
         },
         typography: {
             fontSize: 18,
         },
     });
+
+    console.log(theme);
 
     return (
         <ThemeProvider theme={theme}>
