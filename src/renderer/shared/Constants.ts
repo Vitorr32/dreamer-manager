@@ -38,6 +38,9 @@ export const LANGUAGE_NAME: { [key: string]: string } = {
     pt_BR: 'Português Brasileiro',
 };
 
+// GAMEPLAY CONSTANTS
+export const MAXIMUM_DREAMER_POTENTIAL = 200;
+
 ///////////////////////////////
 //RESOURCES FOLDER NAME
 export const DATABASE_FOLDER = 'database';

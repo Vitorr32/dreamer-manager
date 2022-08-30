@@ -265,29 +265,59 @@ export class Dreamer extends Character {
     // A number, from 50 (Very Bad) to 200 (Perfect) that is distributed between all the dreamers skills trough training and growing up.
     public abilityPotential: number;
     //Dynamic Attributes of a Dreamer, they can grow and decrease over time and with events.
-    public intelligence: number;
-    public physicalCondition: number;
-    public attractiveness: number;
-    public charisma: number;
-    public willpower: number;
-    public singing: number;
-    public dancing: number;
-    public coordination: number;
-    public improvisation: number;
-    public composure: number;
-    public memorization: number;
-    public bravery: number;
-    public creativity: number;
-    public expressivity: number;
-    public acting: number;
-    public lyricism: number;
-    public seduction: number;
-    public entertainment: number;
-    public persuasion: number;
-    public elegancy: number;
-    public empathy: number;
-    public leadership: number;
-    public fitness: number;
-    public teamwork: number;
-    public stamina: number;
+    public intelligence: number = 0;
+    public physicalCondition: number = 0;
+    public attractiveness: number = 0;
+    public charisma: number = 0;
+    public willpower: number = 0;
+    public singing: number = 0;
+    public dancing: number = 0;
+    public coordination: number = 0;
+    public improvisation: number = 0;
+    public composure: number = 0;
+    public memorization: number = 0;
+    public bravery: number = 0;
+    public creativity: number = 0;
+    public expressivity: number = 0;
+    public acting: number = 0;
+    public lyricism: number = 0;
+    public seduction: number = 0;
+    public entertainment: number = 0;
+    public persuasion: number = 0;
+    public elegancy: number = 0;
+    public empathy: number = 0;
+    public leadership: number = 0;
+    public fitness: number = 0;
+    public teamwork: number = 0;
+    public stamina: number = 0;
+
+    public getCurrentAbility = () => {
+        return (
+            this.intelligence +
+            this.physicalCondition +
+            this.attractiveness +
+            this.charisma +
+            this.willpower +
+            this.singing +
+            this.dancing +
+            this.coordination +
+            this.improvisation +
+            this.composure +
+            this.memorization +
+            this.bravery +
+            this.creativity +
+            this.expressivity +
+            this.acting +
+            this.lyricism +
+            this.seduction +
+            this.entertainment +
+            this.persuasion +
+            this.elegancy +
+            this.empathy +
+            this.leadership +
+            this.fitness +
+            this.teamwork +
+            this.stamina
+        );
+    };
 }

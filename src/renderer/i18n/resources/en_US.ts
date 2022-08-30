@@ -136,6 +136,9 @@ export const en_US = {
                     potential_high: 'Professional Dreamer',
                     potential_very_high: 'Talented Dreamer',
                     potential_ultimate: 'Legendary Dreamer',
+                    potential_to_distribute: 'Remaining Points {{value.ability}}',
+                    potential_to_distribute_helper:
+                        "The potential points can be distributed in any way into the Dreamer attributes, but they can't surpass the Dreamer potential value, you can also not distribute all points to let the Dreamer open for further training during the game runtime",
                 },
                 modifier: {
                     title: 'Modifier Editor',

@@ -1,4 +1,4 @@
-import { Box, Chip, Paper, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Chip, Paper, Stack, TextField, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
@@ -10,6 +10,7 @@ import SunlightIcon from '@mui/icons-material/Brightness7';
 import StarlightIcon from '@mui/icons-material/AutoAwesome';
 import NightsIcon from '@mui/icons-material/NightsStay';
 import BasicIcon from '@mui/icons-material/Person';
+import { useState } from 'react';
 
 interface IProps {
     dreamer: Dreamer;
@@ -21,6 +22,7 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
     const theme = useTheme();
 
     const { t, i18n } = useTranslation();
+    const [editingAttribute, setAttributeBeingEdited] = useState<string>();
 
     const attributeList = useAppSelector((state: RootState) => state.database.attributes);
     const attributes = useAppSelector((state: RootState) => state.database.mappedDatabase.attributes);
@@ -32,9 +34,29 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
     const getIndividualAttributeViewer = (attribute: Attribute) => {
         return (
             <AttributeTooltip key={`attr_tooltip_${attribute.id}`} attribute={attribute}>
-                <Paper key={`attr_info_${attribute.id}`} sx={{ display: 'inline-flex', padding: '5px', borderRadius: '10px' }}>
+                <Paper key={`attr_info_${attribute.id}`} sx={{ display: 'inline-flex', padding: '5px 20px', borderRadius: '10px' }}>
                     <Typography sx={{ color: 'text.primary' }}>{attribute.getName(i18n.language)}</Typography>
-                    <Chip sx={{ marginLeft: '10px' }} label={(dreamer as any)[attribute.id] || 20} />
+                    <Chip
+                        sx={{ marginLeft: 'auto', alignSelf: 'flex-end' }}
+                        label={
+                            <input
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    width: '20px',
+                                    textAlign: 'center',
+                                    color: theme.palette.text.primary,
+                                    cursor: 'pointer',
+                                    outline: 'none',
+                                }}
+                                value={(dreamer as any)[attribute.id] || ''}
+                                disabled={attribute.id !== editingAttribute && !editable}
+                                onClick={(_) => (editable ? setAttributeBeingEdited(attribute.id) : null)}
+                                onChange={(ev) => onChange(attribute.id as DreamerVariablesKey, parseInt(ev.target.value))}
+                                pattern="[0-9]*"
+                            />
+                        }
+                    />
                 </Paper>
             </AttributeTooltip>
         );
@@ -48,14 +70,13 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
                 direction={'column'}
                 sx={{
                     padding: '10px',
-                    border: `2px solid ${theme.palette.background.paper}`,
                     borderRadius: '10px',
-                    gridColumnStart: '0',
-                    gridColumnEnd: '1',
+                    gridColumnStart: '1',
+                    gridColumnEnd: '2',
                     gridRowStart: 'span 2',
                 }}
             >
-                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="body1">
+                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center', padding: '5px 0' }} variant="body1">
                     {t('model.attribute.category.sun')}
                     <SunlightIcon sx={{ marginLeft: '10px' }} />
                 </Typography>
@@ -68,14 +89,13 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
                 direction={'column'}
                 sx={{
                     padding: '10px',
-                    border: `2px solid ${theme.palette.background.paper}`,
                     borderRadius: '10px',
-                    gridColumnStart: '1',
-                    gridColumnEnd: '2',
+                    gridColumnStart: '2',
+                    gridColumnEnd: '3',
                     gridRowStart: 'span 1',
                 }}
             >
-                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="body1">
+                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center', padding: '5px 0' }} variant="body1">
                     {t('model.attribute.category.star')}
                     <StarlightIcon sx={{ marginLeft: '10px' }} />
                 </Typography>
@@ -88,14 +108,13 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
                 direction={'column'}
                 sx={{
                     padding: '10px',
-                    border: `2px solid ${theme.palette.background.paper}`,
                     borderRadius: '10px',
-                    gridColumnStart: '1',
-                    gridColumnEnd: '2',
+                    gridColumnStart: '2',
+                    gridColumnEnd: '3',
                     gridRowStart: '1',
                 }}
             >
-                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="body1">
+                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center', padding: '5px 0' }} variant="body1">
                     {t('model.attribute.category.moon')}
                     <NightsIcon sx={{ marginLeft: '10px' }} />
                 </Typography>
@@ -108,15 +127,14 @@ export function DreamerAttributeViewer({ dreamer, editable = false, onChange }: 
                 direction={'column'}
                 sx={{
                     padding: '10px',
-                    border: `2px solid ${theme.palette.background.paper}`,
                     borderRadius: '10px',
-                    gridColumnStart: '2',
-                    gridColumnEnd: '3',
+                    gridColumnStart: '3',
+                    gridColumnEnd: '4',
                     gridRowStart: '0',
                     gridRowEnd: '2',
                 }}
             >
-                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="body1">
+                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center', padding: '5px 0' }} variant="body1">
                     {t('model.attribute.category.basic')}
                     <BasicIcon sx={{ marginLeft: '10px' }} />
                 </Typography>

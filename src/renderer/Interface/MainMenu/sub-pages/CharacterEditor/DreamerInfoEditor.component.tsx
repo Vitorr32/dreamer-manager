@@ -1,8 +1,11 @@
 import { Box, FormControl, FormHelperText, InputAdornment, InputLabel, MenuItem, Select, Slider, Stack, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { DreamerAttributeViewer } from 'renderer/shared/components/character/DreamerAttributeViewer.component';
+import { MAXIMUM_DREAMER_POTENTIAL } from 'renderer/shared/Constants';
 import { Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
     dreamer: Dreamer;
@@ -13,7 +16,11 @@ interface IProps {
 
 export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
     const params = useParams();
+
+    console.log(dreamer);
+
     const { t, i18n } = useTranslation();
+    const [isDreamerAttributesOverTheCap, setDreamerAttributeStatus] = useState<boolean>(false);
 
     const getPotentialLabel = (potential: number): string => {
         if (potential >= 190) {
@@ -30,6 +37,14 @@ export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
             return t('interface.editor.dreamer.potential_weak');
         }
         return t('interface.editor.dreamer.potential_very_weak');
+    };
+
+    const onAttributeChange = (attributeKey: string, value: number) => {
+        const modifiedDreamer = CopyClassInstance(dreamer);
+        const roundedValue = Math.min(20, Math.max(0, value));
+
+        modifiedDreamer[attributeKey] = roundedValue;
+        setDreamerAttributeStatus(modifiedDreamer.getCurrentAbility() > MAXIMUM_DREAMER_POTENTIAL);
     };
 
     return (
@@ -87,7 +102,11 @@ export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
                 <Typography variant="caption">{getPotentialLabel(dreamer.abilityPotential)}</Typography>
             </Stack>
 
-            <DreamerAttributeViewer dreamer={dreamer} />
+            <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
+                <Typography variant="h5">{t('interface.editor.dreamer.potential_to_distribute', { ability: dreamer.getCurrentAbility() })}</Typography>
+                <FormHelperText>{t('interface.editor.dreamer.potential_to_distribute_helper')}</FormHelperText>
+                <DreamerAttributeViewer dreamer={dreamer} editable onChange={onAttributeChange} />
+            </Stack>
         </Box>
     );
 }
