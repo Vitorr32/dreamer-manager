@@ -1,4 +1,19 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, Stack, TextField, Typography, useTheme } from '@mui/material';
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography,
+    useTheme,
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Character, CharacterType, CharacterVariablesKey, Gender } from 'renderer/shared/models/base/Character.model';
 import { DATE_ONLY_DAY_FORMAT } from 'renderer/shared/Constants';
@@ -50,6 +65,17 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
                     variant="outlined"
                 />
             </Box>
+
+            <TextField
+                label={t('interface.editor.character.input_label_height')}
+                helperText={t('interface.editor.character.input_helper_height')}
+                sx={{ marginTop: '20px' }}
+                required
+                value={character.height}
+                InputProps={{
+                    endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                }}
+            />
 
             <FormControl sx={{ marginTop: '20px' }}>
                 <InputLabel>{t('interface.editor.character.input_label_type')}</InputLabel>

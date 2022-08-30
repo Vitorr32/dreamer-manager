@@ -69,6 +69,7 @@ export enum CharacterVariablesKey {
     RESIDENCE_LOCATION = 'residenceLocation',
     AFFLUENCE = 'standardOfLiving',
     TRAITS = 'traits',
+    HEIGHT = 'height',
 }
 
 export const CharacterEntityVariables: Variables = {
@@ -160,6 +161,13 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: false,
     },
+    [CharacterVariablesKey.HEIGHT]: {
+        key: CharacterVariablesKey.HEIGHT,
+        displayName: 'model.character.variables.height',
+        type: VariableType.NUMBER,
+        read: true,
+        edit: true,
+    },
 };
 
 export class Character extends EntityBase {
@@ -186,6 +194,8 @@ export class Character extends EntityBase {
     public standardOfLiving: Affluence;
     // The type of character, currently it can be a Staff, Dreamer or a Retired Dreamer (That can be a staff)
     public type: CharacterType;
+
+    public height: number;
 
     public isPlayer: boolean;
     //The character may be unemployed

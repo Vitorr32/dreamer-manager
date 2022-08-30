@@ -42,6 +42,8 @@ export enum DreamerVariablesKey {
     PERSUASION = 'persuasion',
     ELEGANCY = 'elegancy',
     EMPATHY = 'empathy',
+    WEIGHT = 'weight',
+    FAT_PERCENTAGE = 'fatPercentage',
 }
 
 export const DreamerEntityVariables: Variables = {
@@ -235,6 +237,20 @@ export const DreamerEntityVariables: Variables = {
         read: true,
         edit: true,
     },
+    [DreamerVariablesKey.WEIGHT]: {
+        key: DreamerVariablesKey.WEIGHT,
+        displayName: 'model.character.variables.weight',
+        type: VariableType.NUMBER,
+        read: true,
+        edit: true,
+    },
+    [DreamerVariablesKey.FAT_PERCENTAGE]: {
+        key: DreamerVariablesKey.FAT_PERCENTAGE,
+        displayName: 'model.character.dreamer.weight',
+        type: VariableType.NUMBER,
+        read: true,
+        edit: true,
+    },
 };
 
 export class Dreamer extends Character {
@@ -243,6 +259,9 @@ export class Dreamer extends Character {
     }
     // Family situation that can influence traits and traumas
     public familySituation: FamilySituation;
+
+    public weight: number;
+    public fatPercentage: number;
     // A number, from 50 (Very Bad) to 200 (Perfect) that is distributed between all the dreamers skills trough training and growing up.
     public abilityPotential: number;
     //Dynamic Attributes of a Dreamer, they can grow and decrease over time and with events.

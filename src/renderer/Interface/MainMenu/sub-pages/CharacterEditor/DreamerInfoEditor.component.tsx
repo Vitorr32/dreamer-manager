@@ -1,4 +1,4 @@
-import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Slider, Stack, Typography } from '@mui/material';
+import { Box, FormControl, FormHelperText, InputAdornment, InputLabel, MenuItem, Select, Slider, Stack, TextField, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { DreamerAttributeViewer } from 'renderer/shared/components/character/DreamerAttributeViewer.component';
@@ -52,6 +52,26 @@ export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
                 </Select>
                 <FormHelperText>{t('interface.editor.dreamer.input_helper_family')}</FormHelperText>
             </FormControl>
+
+            <TextField
+                label={t('interface.editor.character.input_label_weight')}
+                helperText={t('interface.editor.character.input_helper_weight')}
+                sx={{ marginTop: '20px' }}
+                value={dreamer.weight}
+                InputProps={{
+                    endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+                }}
+            />
+
+            <TextField
+                label={t('interface.editor.character.input_label_fat')}
+                helperText={t('interface.editor.character.input_helper_fat')}
+                sx={{ marginTop: '20px' }}
+                value={dreamer.fatPercentage}
+                InputProps={{
+                    endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                }}
+            />
 
             <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
                 <Typography variant="h5">{t('interface.editor.dreamer.input_label_potential')}</Typography>

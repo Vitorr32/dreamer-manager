@@ -81,7 +81,7 @@ export function CharacterEditor({}: IProps) {
     }
 
     return (
-        <Box sx={{ backgroundColor: 'background.default' }}>
+        <Box sx={{ backgroundColor: 'background.default', padding: '20px' }}>
             <Paper sx={{ display: 'flex', columnGap: '20px', padding: '20px', alignItems: 'center' }} elevation={2}>
                 <Link to="/menu/edit/character">
                     <Button color="primary">
