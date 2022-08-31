@@ -42,12 +42,10 @@ export function CharacterEditor({}: IProps) {
 
     const onCharacterVariableUpdated = (key: CharacterVariablesKey | DreamerVariablesKey, value: any) => {
         if (key === CharacterVariablesKey.TYPE && value === CharacterType.ACTIVE_DREAMER) {
-            const convertedToDreamer = Object.assign(Object.create(Dreamer.prototype), currentCharacter);
+            const convertedToDreamer = Object.assign(new Dreamer(), currentCharacter);
 
             convertedToDreamer[key] = value;
             setCurrentCharacter(convertedToDreamer);
-
-            console.log(convertedToDreamer);
             return;
         }
 

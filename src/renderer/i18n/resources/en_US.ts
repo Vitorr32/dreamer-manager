@@ -128,7 +128,7 @@ export const en_US = {
                         'Family situation will influence in events, traits available and traumas that this dreamer may have or develop if they are not adults yet.',
                     input_label_potential: 'Individual Ability Potential',
                     input_helper_potential:
-                        'The ability potential is the maximum sum of all attributes that this dreamer has, when it reaches it maximum, the dreamer can only increases they skill by decreasing others.\n Event the best Dreamers are not capable of being perfect in everything',
+                        'The ability potential is the maximum sum of all attributes that this dreamer has, when it reaches it maximum, the dreamer can only increases they skill by decreasing others, even the best Dreamers are not capable of being perfect in everything',
                     potential_very_weak: 'Incompetent Dreamer',
                     potential_weak: 'Inept Dreamer',
                     potential_below_average: 'Amateur Dreamer',
@@ -136,7 +136,8 @@ export const en_US = {
                     potential_high: 'Professional Dreamer',
                     potential_very_high: 'Talented Dreamer',
                     potential_ultimate: 'Legendary Dreamer',
-                    potential_to_distribute: 'Remaining Points {{value.ability}}',
+                    potential_to_distribute: 'Remaining Points {{ability}}',
+                    potential_fully_distributed: 'You allocated more points that this Dreamer has potential to have!',
                     potential_to_distribute_helper:
                         "The potential points can be distributed in any way into the Dreamer attributes, but they can't surpass the Dreamer potential value, you can also not distribute all points to let the Dreamer open for further training during the game runtime",
                 },

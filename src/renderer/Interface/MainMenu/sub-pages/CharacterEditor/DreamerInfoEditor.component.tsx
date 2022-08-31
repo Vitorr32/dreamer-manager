@@ -1,15 +1,17 @@
-import { Box, FormControl, FormHelperText, InputAdornment, InputLabel, MenuItem, Select, Slider, Stack, TextField, Typography } from '@mui/material';
+import { Box, FormControl, FormHelperText, InputAdornment, InputLabel, MenuItem, Select, Slider, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { DreamerAttributeViewer } from 'renderer/shared/components/character/DreamerAttributeViewer.component';
 import { MAXIMUM_DREAMER_POTENTIAL } from 'renderer/shared/Constants';
+import { CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
 import { Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
+import ErrorIcon from '@mui/icons-material/ErrorOutline';
 
 interface IProps {
     dreamer: Dreamer;
-    onChange: (key: DreamerVariablesKey, value: any) => void;
+    onChange: (key: CharacterVariablesKey | DreamerVariablesKey, value: any) => void;
     onNextStep: () => void;
     onPreviousStep: () => void;
 }
@@ -17,10 +19,7 @@ interface IProps {
 export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
     const params = useParams();
 
-    console.log(dreamer);
-
     const { t, i18n } = useTranslation();
-    const [isDreamerAttributesOverTheCap, setDreamerAttributeStatus] = useState<boolean>(false);
 
     const getPotentialLabel = (potential: number): string => {
         if (potential >= 190) {
@@ -39,12 +38,16 @@ export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
         return t('interface.editor.dreamer.potential_very_weak');
     };
 
-    const onAttributeChange = (attributeKey: string, value: number) => {
-        const modifiedDreamer = CopyClassInstance(dreamer);
+    const onAttributeChange = (attributeKey: CharacterVariablesKey | DreamerVariablesKey, value: any) => {
+        const modifiedDreamer: Dreamer = CopyClassInstance(dreamer);
         const roundedValue = Math.min(20, Math.max(0, value));
-
         modifiedDreamer[attributeKey] = roundedValue;
-        setDreamerAttributeStatus(modifiedDreamer.getCurrentAbility() > MAXIMUM_DREAMER_POTENTIAL);
+
+        onChange(attributeKey, roundedValue);
+    };
+
+    const isAttributeOverTheCap = (): boolean => {
+        return dreamer.getCurrentAbility() > dreamer.abilityPotential;
     };
 
     return (
@@ -96,16 +99,25 @@ export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
                     max={200}
                     sx={{ width: '400px' }}
                     valueLabelDisplay="auto"
-                    value={dreamer.abilityPotential || 50}
+                    value={dreamer.abilityPotential}
                     onChange={(ev: any) => onChange(DreamerVariablesKey.ABILITY_POTENTIAL, ev.target.value)}
                 />
-                <Typography variant="caption">{getPotentialLabel(dreamer.abilityPotential)}</Typography>
+                <Typography sx={{ color: 'text.primary' }} variant="caption">
+                    {getPotentialLabel(dreamer.abilityPotential)}
+                </Typography>
             </Stack>
 
             <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
-                <Typography variant="h5">{t('interface.editor.dreamer.potential_to_distribute', { ability: dreamer.getCurrentAbility() })}</Typography>
+                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="h5">
+                    {t('interface.editor.dreamer.potential_to_distribute', { ability: Math.max(dreamer.abilityPotential - dreamer.getCurrentAbility(), 0) })}
+                    {isAttributeOverTheCap() && (
+                        <Tooltip title={t('interface.editor.dreamer.potential_fully_distributed')}>
+                            <ErrorIcon sx={{ marginLeft: '5px' }} />
+                        </Tooltip>
+                    )}
+                </Typography>
                 <FormHelperText>{t('interface.editor.dreamer.potential_to_distribute_helper')}</FormHelperText>
-                <DreamerAttributeViewer dreamer={dreamer} editable onChange={onAttributeChange} />
+                <DreamerAttributeViewer dreamer={dreamer} editable hasError={isAttributeOverTheCap()} onChange={onAttributeChange} />
             </Stack>
         </Box>
     );

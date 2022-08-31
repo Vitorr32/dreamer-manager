@@ -263,7 +263,7 @@ export class Dreamer extends Character {
     public weight: number;
     public fatPercentage: number;
     // A number, from 50 (Very Bad) to 200 (Perfect) that is distributed between all the dreamers skills trough training and growing up.
-    public abilityPotential: number;
+    public abilityPotential: number = 50;
     //Dynamic Attributes of a Dreamer, they can grow and decrease over time and with events.
     public intelligence: number = 0;
     public physicalCondition: number = 0;
@@ -291,33 +291,33 @@ export class Dreamer extends Character {
     public teamwork: number = 0;
     public stamina: number = 0;
 
-    public getCurrentAbility = () => {
+    public getCurrentAbility(): number {
         return (
-            this.intelligence +
-            this.physicalCondition +
-            this.attractiveness +
-            this.charisma +
-            this.willpower +
-            this.singing +
-            this.dancing +
-            this.coordination +
-            this.improvisation +
-            this.composure +
-            this.memorization +
-            this.bravery +
-            this.creativity +
-            this.expressivity +
-            this.acting +
-            this.lyricism +
-            this.seduction +
-            this.entertainment +
-            this.persuasion +
-            this.elegancy +
-            this.empathy +
-            this.leadership +
-            this.fitness +
-            this.teamwork +
-            this.stamina
+            (this.intelligence || 0) +
+            (this.physicalCondition || 0) +
+            (this.attractiveness || 0) +
+            (this.charisma || 0) +
+            (this.willpower || 0) +
+            (this.singing || 0) +
+            (this.dancing || 0) +
+            (this.coordination || 0) +
+            (this.improvisation || 0) +
+            (this.composure || 0) +
+            (this.memorization || 0) +
+            (this.bravery || 0) +
+            (this.creativity || 0) +
+            (this.expressivity || 0) +
+            (this.acting || 0) +
+            (this.lyricism || 0) +
+            (this.seduction || 0) +
+            (this.entertainment || 0) +
+            (this.persuasion || 0) +
+            (this.elegancy || 0) +
+            (this.empathy || 0) +
+            (this.leadership || 0) +
+            (this.fitness || 0) +
+            (this.teamwork || 0) +
+            (this.stamina || 0)
         );
-    };
+    }
 }
