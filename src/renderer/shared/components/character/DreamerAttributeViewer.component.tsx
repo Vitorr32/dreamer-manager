@@ -36,7 +36,7 @@ export function DreamerAttributeViewer({ dreamer, editable = false, hasError = f
         return (
             <AttributeTooltip key={`attr_tooltip_${attribute.id}`} attribute={attribute}>
                 <Paper key={`attr_info_${attribute.id}`} sx={{ display: 'inline-flex', padding: '5px 20px', borderRadius: '10px' }}>
-                    <Typography sx={{ color: 'text.primary' }}>{attribute.getName(i18n.language)}</Typography>
+                    <Typography sx={{ color: 'text.primary', paddingRight: '10px' }}>{attribute.getName(i18n.language)}</Typography>
                     <Chip
                         sx={{ marginLeft: 'auto', alignSelf: 'flex-end', border: hasError ? `1px solid ${theme.palette.error.main}` : `1px solid transparent` }}
                         label={

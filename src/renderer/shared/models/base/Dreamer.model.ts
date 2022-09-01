@@ -13,9 +13,33 @@ export enum FamilySituation {
     DIVORCED = 'model.dreamer.family.divorced',
 }
 
+export enum CareerPath {
+    DREAMER = 'model.dreamer.career_path.dreamer',
+    MODEL = 'model.dreamer.career_path.model',
+    ACTRESS = 'model.dreamer.career_path.actress',
+    MUSICAL_BAND = 'model.dreamer.career_path.band',
+    MUSICAL_SOLO = 'model.dreamer.career_path.solo',
+    ENTERTAINER = 'model.dreamer.career_path.entertainer',
+}
+
+export enum CareerObjective {
+    SEARCHING = 'model.dreamer.objective.searching',
+    PERFECT_DREAMER = 'model.dreamer.objective.perfect_dreamer',
+    SUCCESSFUL_DREAMER = 'model.dreamer.objective.successful_dreamer',
+    SUCCESSFUL_ACTRESS = 'model.dreamer.objective.successful_actress',
+    SUCCESSFUL_SINGER = 'model.dreamer.objective.successful_singer',
+    SUCCESSFUL_BAND = 'model.dreamer.objective.successful_band',
+    SUCCESSFUL_ENTERTAINER = 'model.dreamer.objective.successful_entertainer',
+    RAG_TO_RICHES = 'model.dreamer.objective.rag_to_riches',
+    WORLDWIDE_REPUTATION = 'model.dreamer.objective.worldwide_reputation',
+}
+
 export enum DreamerVariablesKey {
     FAMILY_SITUATION = 'familySituation',
     ABILITY_POTENTIAL = 'abilityPotential',
+    DREAMER_OBJECTIVE = 'dreamerObjective',
+    PREFERRED_PATH = 'preferredCareerPath',
+    DISLIKED_PATH = 'dislikedCareerPath',
     //Keys for dynamic attributes should be the same as their ID on the Database.
     INTELLIGENCE = 'intelligence',
     PHYSICAL_CONDITION = 'physicalCondition',
@@ -31,6 +55,7 @@ export enum DreamerVariablesKey {
     COORDINATION = 'coordination',
     IMPROVISATION = 'improvisation',
     COMPOSURE = 'composure',
+    CONCENTRATION = 'concentration',
     MEMORIZATION = 'memorization',
     BRAVERY = 'bravery',
     CREATIVITY = 'creativity',
@@ -52,6 +77,30 @@ export const DreamerEntityVariables: Variables = {
         displayName: 'model.dreamer.variables.family',
         type: VariableType.ENUMERATOR,
         options: Object.values(FamilySituation).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    [DreamerVariablesKey.DREAMER_OBJECTIVE]: {
+        key: DreamerVariablesKey.DREAMER_OBJECTIVE,
+        displayName: 'model.dreamer.variables.objective',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(CareerObjective).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    [DreamerVariablesKey.PREFERRED_PATH]: {
+        key: DreamerVariablesKey.PREFERRED_PATH,
+        displayName: 'model.dreamer.variables.preferred_paths',
+        type: VariableType.ENUMERATOR_LIST,
+        options: Object.values(CareerPath).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    [DreamerVariablesKey.DISLIKED_PATH]: {
+        key: DreamerVariablesKey.DREAMER_OBJECTIVE,
+        displayName: 'model.dreamer.variables.disliked_paths',
+        type: VariableType.ENUMERATOR_LIST,
+        options: Object.values(CareerPath).map((value) => value),
         read: true,
         edit: true,
     },
@@ -79,6 +128,13 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.ATTRACTIVENESS]: {
         key: DreamerVariablesKey.ATTRACTIVENESS,
         displayName: 'model.dreamer.variables.attractiveness',
+        type: VariableType.DYNAMIC_ATTRIBUTE,
+        read: true,
+        edit: true,
+    },
+    [DreamerVariablesKey.CONCENTRATION]: {
+        key: DreamerVariablesKey.CONCENTRATION,
+        displayName: 'model.dreamer.variables.concentration',
         type: VariableType.DYNAMIC_ATTRIBUTE,
         read: true,
         edit: true,
@@ -264,6 +320,9 @@ export class Dreamer extends Character {
     public fatPercentage: number;
     // A number, from 50 (Very Bad) to 200 (Perfect) that is distributed between all the dreamers skills trough training and growing up.
     public abilityPotential: number = 50;
+    public dreamerObjective: CareerObjective;
+    public preferredCareerPath: CareerPath[] = [];
+    public dislikedCareerPath: CareerPath[] = [];
     //Dynamic Attributes of a Dreamer, they can grow and decrease over time and with events.
     public intelligence: number = 0;
     public physicalCondition: number = 0;
@@ -273,6 +332,7 @@ export class Dreamer extends Character {
     public singing: number = 0;
     public dancing: number = 0;
     public coordination: number = 0;
+    public concentration: number = 0;
     public improvisation: number = 0;
     public composure: number = 0;
     public memorization: number = 0;
@@ -301,6 +361,7 @@ export class Dreamer extends Character {
             (this.singing || 0) +
             (this.dancing || 0) +
             (this.coordination || 0) +
+            (this.concentration || 0) +
             (this.improvisation || 0) +
             (this.composure || 0) +
             (this.memorization || 0) +

@@ -11,6 +11,7 @@ import { RootState } from 'renderer/redux/store';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { Dreamer, DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
 import { DreamerInfoEditor } from './DreamerInfoEditor.component';
+import { CharacterPaperDollEditor } from './CharacterPaperdollEditor.component';
 
 interface IProps {}
 
@@ -71,6 +72,9 @@ export function CharacterEditor({}: IProps) {
                             />
                         );
                 }
+
+            case 2:
+                return <CharacterPaperDollEditor character={currentCharacter} onChange={onCharacterVariableUpdated} onPreviousStep={onPreviousStep} />;
             default:
                 return null;
         }

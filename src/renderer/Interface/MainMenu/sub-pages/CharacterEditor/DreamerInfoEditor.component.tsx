@@ -1,11 +1,11 @@
-import { Box, FormControl, FormHelperText, InputAdornment, InputLabel, MenuItem, Select, Slider, Stack, TextField, Tooltip, Typography } from '@mui/material';
+import { Box, Button, FormControl, FormHelperText, InputAdornment, InputLabel, MenuItem, Select, Slider, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { DreamerAttributeViewer } from 'renderer/shared/components/character/DreamerAttributeViewer.component';
 import { MAXIMUM_DREAMER_POTENTIAL } from 'renderer/shared/Constants';
 import { CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
-import { Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
+import { CareerObjective, Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 
@@ -16,7 +16,7 @@ interface IProps {
     onPreviousStep: () => void;
 }
 
-export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
+export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousStep }: IProps) {
     const params = useParams();
 
     const { t, i18n } = useTranslation();
@@ -63,6 +63,25 @@ export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
                         {t('interface.editor.dreamer.input_placeholder_family')}
                     </MenuItem>
                     {Object.values(FamilySituation).map((enumValue) => (
+                        <MenuItem key={enumValue} value={enumValue}>
+                            {t(enumValue)}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText>{t('interface.editor.dreamer.input_helper_family')}</FormHelperText>
+            </FormControl>
+
+            <FormControl>
+                <InputLabel>{t('interface.editor.dreamer.input_label_objective')}</InputLabel>
+                <Select
+                    value={dreamer.dreamerObjective || ''}
+                    label={t('interface.editor.dreamer.input_label_objective')}
+                    onChange={(ev) => onChange(DreamerVariablesKey.FAMILY_SITUATION, ev.target.value)}
+                >
+                    <MenuItem disabled value="">
+                        {t('interface.editor.dreamer.input_placeholder_objective')}
+                    </MenuItem>
+                    {Object.values(CareerObjective).map((enumValue) => (
                         <MenuItem key={enumValue} value={enumValue}>
                             {t(enumValue)}
                         </MenuItem>
@@ -118,6 +137,16 @@ export function DreamerInfoEditor({ dreamer, onChange }: IProps) {
                 </Typography>
                 <FormHelperText>{t('interface.editor.dreamer.potential_to_distribute_helper')}</FormHelperText>
                 <DreamerAttributeViewer dreamer={dreamer} editable hasError={isAttributeOverTheCap()} onChange={onAttributeChange} />
+            </Stack>
+
+            <Stack spacing={2} direction="row" justifyContent="end" sx={{ marginTop: '20px' }}>
+                <Button variant="contained" onClick={onPreviousStep}>
+                    {t('interface.commons.previous')}
+                </Button>
+
+                <Button variant="contained" disabled={isAttributeOverTheCap()} onClick={onNextStep}>
+                    {t('interface.commons.next')}
+                </Button>
             </Stack>
         </Box>
     );
