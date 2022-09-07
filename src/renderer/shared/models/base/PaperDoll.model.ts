@@ -1,4 +1,7 @@
 import { Ethnicity, Style } from './Character.model';
+import { v4 as uuidv4 } from 'uuid';
+import { EntityBase } from './Entity.model';
+
 /**
  * Paper Dolls are the pre-generated sprites of the generated characters of the game, they are subdivided in the following sections, and when together form a full
  * Character sprites:
@@ -15,7 +18,8 @@ import { Ethnicity, Style } from './Character.model';
  * Each one of these sections has variants, such as skin color for skin pieces. Eye format for different ethinicities and so on.
  */
 
-export class PaperDoll {
+export class PaperDoll extends EntityBase {
+    id: string;
     isCustom: boolean;
 
     hairPiece: HairPiece;
@@ -29,9 +33,15 @@ export class PaperDoll {
     fullBodyClothing: FullBodyClothingPiece;
 
     customFilePath: string[];
+
+    constructor(id?: string) {
+        super();
+
+        this.id = id || `paper_doll_${uuidv4()}`;
+    }
 }
 
-export class PaperPiece {
+export class PaperPiece extends EntityBase {
     id: string;
     filePath: string[];
     editable: boolean;
@@ -41,6 +51,12 @@ export class HairPiece extends PaperPiece {
     style: Style;
     color: string;
     editable = true;
+
+    constructor(id?: string) {
+        super();
+
+        this.id = id || `hair_piece_${uuidv4()}`;
+    }
 }
 
 export class FaceSetPieces {
@@ -90,8 +106,8 @@ export class FullBodyClothingPiece extends PaperPiece {
 }
 
 export enum Emotion {
-    NEUTRAL,
+    NEUTRAL = 'model.paper_doll.emotion.neutral',
 
-    HAPPY,
-    SCARED, //...TODO
+    HAPPY = 'model.paper_doll.emotion.happy',
+    SCARED = 'model.paper_doll.emotion.very_happy', //...TODO
 }

@@ -70,6 +70,7 @@ export enum CharacterVariablesKey {
     AFFLUENCE = 'standardOfLiving',
     TRAITS = 'traits',
     HEIGHT = 'height',
+    PAPER_DOLL = 'paperDoll',
 }
 
 export const CharacterEntityVariables: Variables = {
@@ -165,6 +166,14 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.HEIGHT,
         displayName: 'model.character.variables.height',
         type: VariableType.NUMBER,
+        read: true,
+        edit: true,
+    },
+    [CharacterVariablesKey.PAPER_DOLL]: {
+        key: CharacterVariablesKey.PAPER_DOLL,
+        displayName: 'model.character.variables.paperDoll',
+        type: VariableType.EXTERNAL_KEY,
+        externalEntity: Entity.PAPER_DOLL,
         read: true,
         edit: true,
     },

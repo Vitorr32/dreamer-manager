@@ -36,6 +36,8 @@ export interface EntityVariable {
     displayName: string;
     // The type defines what operations and values are accepted to the variable.
     type: VariableType;
+    // This takes into consideration if the variable is a property of a variable object
+    containedWithin?: string | null;
     // If it is a variable with type External Key or External List, it means it points to another entity, like the external key of a SQL table.
     // It should also contains which entity is the external key pointing to.
     externalEntity?: Entity;

@@ -25,33 +25,36 @@ import { Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/m
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import { PaperDollViewer } from 'renderer/shared/components/character/PaperDollViewer.component';
+import { PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
 
 interface IProps {
-    character: Character;
+    paperDoll: PaperDoll;
     onChange: (key: CharacterVariablesKey | DreamerVariablesKey, value: any) => void;
     onPreviousStep: () => void;
 }
 
-export function CharacterPaperDollEditor({ character, onChange, onPreviousStep }: IProps) {
+export function CharacterPaperDollEditor({ paperDoll, onChange, onPreviousStep }: IProps) {
     const params = useParams();
 
     const { t, i18n } = useTranslation();
 
+    const onPaperDollChange = () => {};
+
     return (
         <Stack spacing={4} direction="column">
-            {/* <FormControl>
+            <FormControl>
                 <FormControlLabel
-                    control={<Checkbox checked={character.paperDoll.isCustom || false} onChange={(ev) => onChange(CharacterVariablesKey.ACTIVE, ev.target.checked)} />}
+                    control={<Checkbox checked={paperDoll.isCustom || false} onChange={(ev) => onChange(CharacterVariablesKey.PAPER_DOLL, ev.target.checked)} />}
                     label={
                         <Typography variant="caption" sx={{ color: 'text.primary' }}>
-                            {t('interface.editor.character.input_label_active')}
+                            {t('interface.editor.paper_doll.input_label_is_custom')}
                         </Typography>
                     }
                 />
-                <FormHelperText>{t('interface.editor.character.input_helper_active')}</FormHelperText>
-            </FormControl> */}
+                <FormHelperText>{t('interface.editor.paper_doll.input_helper_is_custom')}</FormHelperText>
+            </FormControl>
 
-            <PaperDollViewer paperDoll={character.paperDoll} editable />
+            <PaperDollViewer paperDoll={paperDoll} editable />
             {/* <FormControl>
                 <InputLabel>{t('interface.editor.dreamer.input_label_family')}</InputLabel>
                 <Select
@@ -70,6 +73,10 @@ export function CharacterPaperDollEditor({ character, onChange, onPreviousStep }
                 </Select>
                 <FormHelperText>{t('interface.editor.dreamer.input_helper_family')}</FormHelperText>
             </FormControl> */}
+
+            <Button variant="contained" onClick={onPreviousStep}>
+                {t('interface.commons.previous')}
+            </Button>
         </Stack>
     );
 }

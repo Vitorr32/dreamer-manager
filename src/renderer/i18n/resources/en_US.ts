@@ -150,6 +150,11 @@ export const en_US = {
                     potential_to_distribute_helper:
                         "The potential points can be distributed in any way into the Dreamer attributes, but they can't surpass the Dreamer potential value, you can also not distribute all points to let the Dreamer open for further training during the game runtime",
                 },
+                paper_doll: {
+                    input_label_is_custom: 'Is Custom',
+                    input_helper_is_custom:
+                        'By checking this option, you will be able to choose your own files for the sprites of this character, otherwise you may use the paper doll system to create the sprite of this character',
+                },
                 modifier: {
                     title: 'Modifier Editor',
                     subtitle: 'What this effect modify on the game character?',
@@ -378,6 +383,7 @@ export const en_US = {
                     residence_location: 'Residence Location',
                     affluence: 'Affluence',
                     height: 'Height',
+                    paperDoll: 'Paper Doll/Sprites',
                 },
                 attributes: {},
             },
@@ -446,6 +452,17 @@ export const en_US = {
                     empathy: 'Empathy',
                     weight: 'Weight',
                     fat_percentage: 'Fat Percentage',
+                },
+            },
+            paper_doll: {
+                emotion: {
+                    neutral: 'Neutral/Normal',
+                    happy: 'Happy',
+                    very_happy: 'Blissful',
+                    sad: 'Sad',
+                    depressed: 'Depressed',
+                    angry: 'Angry',
+                    furious: 'Furious',
                 },
             },
             condition: {
@@ -546,6 +563,7 @@ export const en_US = {
             },
             entity: {
                 actors: 'Actors',
+                paperDoll: 'Paper Doll',
                 traits: 'Traits',
                 characters: 'Characters',
                 flags: 'Event Flags',
