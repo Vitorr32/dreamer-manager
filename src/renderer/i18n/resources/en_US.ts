@@ -128,6 +128,11 @@ export const en_US = {
                     input_placeholder_objective: 'Select the Dreamer Objective',
                     input_helper_objective:
                         'The objective of the dreamer is the final thing they are striving for when entering your agency, if they feel they are not getting closer to the objective they may feel stagnated and unhappy',
+                    input_label_preferred_jobs: 'Preferred Jobs (Multiple)',
+                    input_label_disliked_jobs: 'Disliked Jobs (Multiple)',
+                    input_placeholder_jobs: 'Select Career Paths',
+                    input_helper_jobs:
+                        'Each Dreamer has preferences about which type of job they are willing to take, most of them want avoid salacious jobs, while others would be pleased to do it. Participating in work in the preferred job makes a Dreamer happier while working in a disliked are greatly increases stress gain. If a career path is neither liked or disliked, there is no effects',
                     input_helper_family:
                         'Family situation will influence in events, traits available and traumas that this dreamer may have or develop if they are not adults yet.',
                     input_label_potential: 'Individual Ability Potential',

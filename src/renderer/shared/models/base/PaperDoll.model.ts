@@ -4,7 +4,7 @@ import { Ethnicity, Style } from './Character.model';
  * Character sprites:
  *
  * Hair/Hairstyle = Has color, Form, Style and Ethnicity variants;
- * Face = Has form, emotion and ethnicity variant;
+ * Face = Has form, emotion, color (eye color) and ethnicity variant;
  * Body = Has form, color (skin tone), size, emotion, and ethnicity variant; And it's the position base of the entire sprite
  * Upper Clothing = Has form and style variant
  * Lower Clothing = Has form and style variant;
@@ -27,6 +27,8 @@ export class PaperDoll {
     upperClothing: UpperClothingPiece;
     lowerClothing: LowerClothingPiece;
     fullBodyClothing: FullBodyClothingPiece;
+
+    customFilePath: string[];
 }
 
 export class PaperPiece {
@@ -49,6 +51,7 @@ export class FaceSetPieces {
 
 export class FacePiece extends PaperPiece {
     neutralEmotion?: FacePiece;
+    color: string;
     emotion: Emotion;
     ethnicity: Ethnicity;
     editable = false;

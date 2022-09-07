@@ -72,7 +72,6 @@ export function CharacterEditor({}: IProps) {
                             />
                         );
                 }
-
             case 2:
                 return <CharacterPaperDollEditor character={currentCharacter} onChange={onCharacterVariableUpdated} onPreviousStep={onPreviousStep} />;
             default:

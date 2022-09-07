@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { DreamerAttributeViewer } from 'renderer/shared/components/character/DreamerAttributeViewer.component';
 import { MAXIMUM_DREAMER_POTENTIAL } from 'renderer/shared/Constants';
 import { CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
-import { CareerObjective, Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
+import { CareerObjective, CareerPath, Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 
@@ -87,7 +87,46 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
                         </MenuItem>
                     ))}
                 </Select>
-                <FormHelperText>{t('interface.editor.dreamer.input_helper_family')}</FormHelperText>
+                <FormHelperText>{t('interface.editor.dreamer.input_helper_objective')}</FormHelperText>
+            </FormControl>
+
+            <FormControl>
+                <InputLabel>{t('interface.editor.dreamer.input_label_preferred_jobs')}</InputLabel>
+                <Select
+                    value={dreamer.preferredCareerPath || []}
+                    multiple
+                    label={t('interface.editor.dreamer.input_label_preferred_jobs')}
+                    onChange={(ev) => onChange(DreamerVariablesKey.PREFERRED_PATH, ev.target.value)}
+                >
+                    <MenuItem disabled value="">
+                        {t('interface.editor.dreamer.input_placeholder_jobs')}
+                    </MenuItem>
+                    {Object.values(CareerPath).map((enumValue) => (
+                        <MenuItem key={enumValue} value={enumValue}>
+                            {t(enumValue)}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <FormControl>
+                <InputLabel>{t('interface.editor.dreamer.input_label_disliked_jobs')}</InputLabel>
+                <Select
+                    value={dreamer.dislikedCareerPath || []}
+                    multiple
+                    label={t('interface.editor.dreamer.input_label_disliked_jobs')}
+                    onChange={(ev) => onChange(DreamerVariablesKey.DISLIKED_PATH, ev.target.value)}
+                >
+                    <MenuItem disabled value="">
+                        {t('interface.editor.dreamer.input_placeholder_jobs')}
+                    </MenuItem>
+                    {Object.values(CareerPath).map((enumValue) => (
+                        <MenuItem key={enumValue} value={enumValue}>
+                            {t(enumValue)}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText>{t('interface.editor.dreamer.input_helper_jobs')}</FormHelperText>
             </FormControl>
 
             <TextField

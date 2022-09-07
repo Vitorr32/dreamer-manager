@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Variables, VariableType } from './Variable.model';
 import { Entity } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
-import { PaperDoll } from './Parperdoll.model';
+import { PaperDoll } from './PaperDoll.model';
 
 export enum Gender {
     MALE = 'male',
