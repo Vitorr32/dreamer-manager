@@ -154,6 +154,7 @@ export const en_US = {
                     input_label_is_custom: 'Is Custom',
                     input_helper_is_custom:
                         'By checking this option, you will be able to choose your own files for the sprites of this character, otherwise you may use the paper doll system to create the sprite of this character',
+                    input_label_emotion: 'Current Paper Doll Emotion',
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -455,6 +456,11 @@ export const en_US = {
                 },
             },
             paper_doll: {
+                style: {
+                    conservative: 'Conservative',
+                    punk: 'Punk',
+                    gothic: 'Gothic',
+                },
                 emotion: {
                     neutral: 'Neutral/Normal',
                     happy: 'Happy',
@@ -463,6 +469,21 @@ export const en_US = {
                     depressed: 'Depressed',
                     angry: 'Angry',
                     furious: 'Furious',
+                },
+                variables: {
+                    is_custom: 'Custom',
+                    upper_underwear: 'Bra',
+                    lower_underwear: 'Panties',
+                    upper_clothing: 'Top',
+                    lower_clothing: 'Bottom',
+                    full_body_clothing: 'Dress',
+                },
+            },
+            paper_piece: {
+                variables: {
+                    file_path: 'File Path',
+                    style: 'Style',
+                    color: 'Color',
                 },
             },
             condition: {
@@ -564,6 +585,7 @@ export const en_US = {
             entity: {
                 actors: 'Actors',
                 paperDoll: 'Paper Doll',
+                paperPiece: 'Paper Piece',
                 traits: 'Traits',
                 characters: 'Characters',
                 flags: 'Event Flags',

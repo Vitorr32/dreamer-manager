@@ -1,6 +1,6 @@
-import { Ethnicity, Style } from './Character.model';
 import { v4 as uuidv4 } from 'uuid';
 import { EntityBase } from './Entity.model';
+import { Variables, VariableType } from './Variable.model';
 
 /**
  * Paper Dolls are the pre-generated sprites of the generated characters of the game, they are subdivided in the following sections, and when together form a full
@@ -8,7 +8,7 @@ import { EntityBase } from './Entity.model';
  *
  * Hair/Hairstyle = Has color, Form, Style and Ethnicity variants;
  * Face = Has form, emotion, color (eye color) and ethnicity variant;
- * Body = Has form, color (skin tone), size, emotion, and ethnicity variant; And it's the position base of the entire sprite
+ * Body = Has form, color (skin tone), weight, emotion; And it's the position base of the entire sprite
  * Upper Clothing = Has form and style variant
  * Lower Clothing = Has form and style variant;
  * Full body Clothing = Has form and style variant;
@@ -18,91 +18,89 @@ import { EntityBase } from './Entity.model';
  * Each one of these sections has variants, such as skin color for skin pieces. Eye format for different ethinicities and so on.
  */
 
+type DollPieces = {
+    [key in Emotion]: {
+        hairPiece: string;
+        facePiece: string;
+        bodyPiece: string;
+        customFilePath?: string[];
+    };
+};
+
+export enum PaperDollVariablesKey {
+    ID = 'id',
+    IS_CUSTOM = 'isCustom',
+    UPPER_UNDERWEAR = 'upperUnderwear',
+    LOWER_UNDERWEAR = 'lowerUnderwear',
+    UPPER_CLOTHING = 'upperClothing',
+    LOWER_CLOTHING = 'lowerClothing',
+    FULL_BODY_CLOTHING = 'fullBodyClothing',
+}
+
+export const PaperDollEntityVariables: Variables = {
+    [PaperDollVariablesKey.ID]: { key: PaperDollVariablesKey.ID, displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
+    [PaperDollVariablesKey.IS_CUSTOM]: {
+        key: PaperDollVariablesKey.IS_CUSTOM,
+        displayName: 'model.paper_doll.variables.is_custom',
+        type: VariableType.BOOLEAN,
+        read: true,
+        edit: true,
+    },
+    [PaperDollVariablesKey.UPPER_UNDERWEAR]: {
+        key: PaperDollVariablesKey.UPPER_UNDERWEAR,
+        displayName: 'model.paper_doll.variables.upper_underwear',
+        type: VariableType.EXTERNAL_KEY,
+        read: true,
+        edit: true,
+    },
+    [PaperDollVariablesKey.LOWER_UNDERWEAR]: {
+        key: PaperDollVariablesKey.LOWER_UNDERWEAR,
+        displayName: 'model.paper_doll.variables.lower_underwear',
+        type: VariableType.EXTERNAL_KEY,
+        read: true,
+        edit: true,
+    },
+    [PaperDollVariablesKey.UPPER_CLOTHING]: {
+        key: PaperDollVariablesKey.UPPER_CLOTHING,
+        displayName: 'model.paper_doll.variables.upper_clothing',
+        type: VariableType.EXTERNAL_KEY,
+        read: true,
+        edit: true,
+    },
+    [PaperDollVariablesKey.LOWER_CLOTHING]: {
+        key: PaperDollVariablesKey.LOWER_CLOTHING,
+        displayName: 'model.paper_doll.variables.lower_clothing',
+        type: VariableType.EXTERNAL_KEY,
+        read: true,
+        edit: true,
+    },
+    [PaperDollVariablesKey.FULL_BODY_CLOTHING]: {
+        key: PaperDollVariablesKey.FULL_BODY_CLOTHING,
+        displayName: 'model.paper_doll.variables.full_body_clothing',
+        type: VariableType.EXTERNAL_KEY,
+        read: true,
+        edit: true,
+    },
+};
+
 export class PaperDoll extends EntityBase {
     id: string;
     isCustom: boolean;
 
-    hairPiece: HairPiece;
-    faceSetPieces: FaceSetPieces;
-    bodyPiece: BodyPiece;
+    //The hair/face/body piece of the paper doll are subdivided based on their emotions
+    emotions: DollPieces;
 
-    upperUnderwear: UpperUnderwearPiece;
-    lowerUnderwear: LowerUnderwearPiece;
-    upperClothing: UpperClothingPiece;
-    lowerClothing: LowerClothingPiece;
-    fullBodyClothing: FullBodyClothingPiece;
-
-    customFilePath: string[];
+    upperUnderwear: string;
+    lowerUnderwear: string;
+    upperClothing: string;
+    lowerClothing: string;
+    fullBodyClothing: string;
 
     constructor(id?: string) {
         super();
 
         this.id = id || `paper_doll_${uuidv4()}`;
     }
-}
-
-export class PaperPiece extends EntityBase {
-    id: string;
-    filePath: string[];
-    editable: boolean;
-}
-
-export class HairPiece extends PaperPiece {
-    style: Style;
-    color: string;
-    editable = true;
-
-    constructor(id?: string) {
-        super();
-
-        this.id = id || `hair_piece_${uuidv4()}`;
-    }
-}
-
-export class FaceSetPieces {
-    baseEmotion: FacePiece;
-
-    otherEmotions: { [key in Emotion]: FacePiece };
-}
-
-export class FacePiece extends PaperPiece {
-    neutralEmotion?: FacePiece;
-    color: string;
-    emotion: Emotion;
-    ethnicity: Ethnicity;
-    editable = false;
-}
-
-export class BodyPiece extends PaperPiece {
-    color: string;
-    size: number;
-    ethnicity: Ethnicity;
-    editable = true; //May get Fatter/Skinner
-}
-
-export class UpperUnderwearPiece extends PaperPiece {
-    style: Style;
-    editable = true;
-}
-
-export class LowerUnderwearPiece extends PaperPiece {
-    style: Style;
-    editable = true;
-}
-
-export class UpperClothingPiece extends PaperPiece {
-    style: Style;
-    editable = true;
-}
-
-export class LowerClothingPiece extends PaperPiece {
-    style: Style;
-    editable = true;
-}
-
-export class FullBodyClothingPiece extends PaperPiece {
-    style: Style;
-    editable = true;
 }
 
 export enum Emotion {

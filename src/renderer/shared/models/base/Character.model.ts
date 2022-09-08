@@ -44,10 +44,9 @@ export enum Status {
 }
 
 export enum Style {
-    CLASSIC,
-    NEW_WAVE,
-    PUNK,
-    GOTHIC,
+    CLASSIC = 'model.paper_doll.style.conservative',
+    PUNK = 'model.paper_doll.style.punk',
+    GOTHIC = 'model.paper_doll.style.gothic',
 }
 
 export enum CharacterVariablesKey {

@@ -5,6 +5,7 @@ export enum Entity {
     FLAGS = 'model.entity.flags',
     CHARACTERS = 'model.entity.characters',
     PAPER_DOLL = 'model.entity.paperDoll',
+    PAPER_PIECE = 'model.entity.paperPiece',
     RELATIONSHIP = 'model.entity.relationship',
     STAFF = 'model.entity.staff',
     AGENCY = 'model.entity.agency',
