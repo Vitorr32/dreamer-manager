@@ -12,7 +12,7 @@ interface IProps {
 
 export function PaperDollViewer({ paperDoll, editable = false, fullBody = false }: IProps) {
     const theme = useTheme();
-    const traits = useAppSelector((state: RootState) => state.database.mappedDatabase.traits);
+    const paperPieces = useAppSelector((state: RootState) => state.database.paperPieces);
 
     const { t, i18n } = useTranslation();
 

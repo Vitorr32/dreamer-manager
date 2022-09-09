@@ -4,6 +4,7 @@ import { Character } from 'renderer/shared/models/base/Character.model';
 import { City } from 'renderer/shared/models/base/City.model';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { Nation } from 'renderer/shared/models/base/Nation.model';
+import { PaperPiece } from 'renderer/shared/models/base/PaperPiece.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { Assets } from 'renderer/shared/models/enums/Assets.enum';
 import { Trait } from '../../shared/models/base/Trait.model';
@@ -18,12 +19,14 @@ interface Database {
     flags: Flag[];
     nations: Nation[];
     cities: City[];
+    paperPieces: PaperPiece[];
     mappedDatabase: {
         attributes: { [id: string]: Attribute };
         traits: { [id: string]: Trait };
         events: { [id: string]: Event };
         flags: { [id: string]: Flag };
         characters: { [id: string]: Character };
+        paperPieces: { [id: string]: PaperPiece };
         nations: { [id: string]: Nation };
         cities: { [id: string]: City };
     };
@@ -39,12 +42,14 @@ const initialState: Database = {
     flags: [],
     nations: [],
     cities: [],
+    paperPieces: [],
     mappedDatabase: {
         attributes: {},
         traits: {},
         events: {},
         flags: {},
         characters: {},
+        paperPieces: {},
         nations: {},
         cities: {},
     },

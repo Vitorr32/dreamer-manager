@@ -17,7 +17,6 @@ import { Variables, VariableType } from './Variable.model';
  *
  * Each one of these sections has variants, such as skin color for skin pieces. Eye format for different ethinicities and so on.
  */
-
 type DollPieces = {
     [key in Emotion]: {
         hairPiece: string;

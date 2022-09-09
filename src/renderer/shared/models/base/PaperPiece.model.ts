@@ -1,18 +1,29 @@
-import { Ethnicity, Style } from './Character.model';
+import { BodyType, Ethnicity, Style } from './Character.model';
 import { EntityBase } from './Entity.model';
 import { Emotion } from './PaperDoll.model';
 import { Variables, VariableType } from './Variable.model';
 import { v4 as uuidv4 } from 'uuid';
 
+export enum PieceType {
+    HAIR = 'model.paper_piece.type.hair',
+    FACE = 'model.paper_piece.type.face',
+    BODY = 'model.paper_piece.type.body',
+    UPPER_UNDERWEAR = 'model.paper_piece.type.upper_underwear',
+    LOWER_UNDERWEAR = 'model.paper_piece.type.lower_underwear',
+    UPPER_CLOTHING = 'model.paper_piece.type.upper_clothing',
+    LOWER_CLOTHING = 'model.paper_piece.type.lower_clothing',
+    FULL_BODY_CLOTHING = 'model.paper_piece.type.full_body_clothing',
+}
+
 export enum PaperPieceVariablesKey {
     ID = 'id',
     FILE_PATH = 'filePath',
+    TYPE = 'type',
     STYLE = 'style',
     COLOR = 'color',
-    LOWER_UNDERWEAR = 'lowerUnderwear',
-    UPPER_CLOTHING = 'upperClothing',
-    LOWER_CLOTHING = 'lowerClothing',
-    FULL_BODY_CLOTHING = 'fullBodyClothing',
+    EMOTION = 'emotion',
+    ETHNICITY = 'ethnicity',
+    BODY_TYPE = 'bodyType',
 }
 
 export const PaperPieceEntityVariables: Variables = {
@@ -33,6 +44,30 @@ export const PaperPieceEntityVariables: Variables = {
         edit: true,
     },
     [PaperPieceVariablesKey.COLOR]: { key: PaperPieceVariablesKey.COLOR, displayName: 'model.paper_piece.variables.color', type: VariableType.TEXT, read: true, edit: true },
+    [PaperPieceVariablesKey.EMOTION]: {
+        key: PaperPieceVariablesKey.EMOTION,
+        displayName: 'model.paper_piece.variables.emotion',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(Emotion).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    [PaperPieceVariablesKey.ETHNICITY]: {
+        key: PaperPieceVariablesKey.ETHNICITY,
+        displayName: 'model.paper_piece.variables.ethnicity',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(Ethnicity).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    [PaperPieceVariablesKey.TYPE]: {
+        key: PaperPieceVariablesKey.TYPE,
+        displayName: 'model.paper_piece.variables.type',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(PieceType).map((value) => value),
+        read: true,
+        edit: true,
+    },
 };
 
 export class PaperPiece extends EntityBase {
@@ -42,11 +77,13 @@ export class PaperPiece extends EntityBase {
 
     id: string;
     filePath: string[];
+    type: PieceType;
 }
 
 export class HairPiece extends PaperPiece {
     style: Style;
     color: string;
+    type = PieceType.HAIR;
 
     constructor(id?: string) {
         super();
@@ -56,11 +93,11 @@ export class HairPiece extends PaperPiece {
 }
 
 export class FacePiece extends PaperPiece {
-    neutralEmotion?: FacePiece;
     color: string;
     emotion: Emotion;
     ethnicity: Ethnicity;
-    weight: number;
+    bodyType: BodyType;
+    type = PieceType.FACE;
 
     constructor(id?: string) {
         super();
@@ -71,7 +108,8 @@ export class FacePiece extends PaperPiece {
 
 export class BodyPiece extends PaperPiece {
     color: string;
-    weight: number;
+    bodyType: BodyType;
+    type = PieceType.BODY;
 
     constructor(id?: string) {
         super();
@@ -82,7 +120,7 @@ export class BodyPiece extends PaperPiece {
 
 export class UpperUnderwearPiece extends PaperPiece {
     style: Style;
-    editable = true;
+    type = PieceType.UPPER_UNDERWEAR;
 
     constructor(id?: string) {
         super();
@@ -93,7 +131,7 @@ export class UpperUnderwearPiece extends PaperPiece {
 
 export class LowerUnderwearPiece extends PaperPiece {
     style: Style;
-    editable = true;
+    type = PieceType.LOWER_UNDERWEAR;
 
     constructor(id?: string) {
         super();
@@ -104,7 +142,7 @@ export class LowerUnderwearPiece extends PaperPiece {
 
 export class UpperClothingPiece extends PaperPiece {
     style: Style;
-    editable = true;
+    type = PieceType.UPPER_CLOTHING;
 
     constructor(id?: string) {
         super();
@@ -115,7 +153,7 @@ export class UpperClothingPiece extends PaperPiece {
 
 export class LowerClothingPiece extends PaperPiece {
     style: Style;
-    editable = true;
+    type = PieceType.LOWER_CLOTHING;
 
     constructor(id?: string) {
         super();
@@ -126,7 +164,7 @@ export class LowerClothingPiece extends PaperPiece {
 
 export class FullBodyClothingPiece extends PaperPiece {
     style: Style;
-    editable = true;
+    type = PieceType.FULL_BODY_CLOTHING;
 
     constructor(id?: string) {
         super();

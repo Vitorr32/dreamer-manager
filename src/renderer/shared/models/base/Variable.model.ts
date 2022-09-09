@@ -43,6 +43,9 @@ export interface EntityVariable {
     externalEntity?: Entity;
     // If it is a variable with Enumerator values, here all the possible values should be set.
     options?: string[];
+    // If it is a number variable that has limits, what is the minimum and maximum values? otherwise any value can be set
+    max?: number;
+    min?: number;
     // This variable should be visible on the editor?
     read: boolean;
     // This variable is editable trough modifiers?

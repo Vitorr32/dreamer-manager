@@ -1,4 +1,4 @@
-import { Character, CharacterEntityVariables } from './Character.model';
+import { BodyType, Character, CharacterEntityVariables } from './Character.model';
 import { Variables, VariableType } from './Variable.model';
 
 export enum FamilySituation {
@@ -108,6 +108,8 @@ export const DreamerEntityVariables: Variables = {
         key: DreamerVariablesKey.ABILITY_POTENTIAL,
         displayName: 'model.dreamer.variables.potential',
         type: VariableType.NUMBER,
+        max: 20,
+        min: 1,
         read: true,
         edit: false,
     },
@@ -115,195 +117,251 @@ export const DreamerEntityVariables: Variables = {
         key: DreamerVariablesKey.INTELLIGENCE,
         displayName: 'model.dreamer.variables.intelligence',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.PHYSICAL_CONDITION]: {
         key: DreamerVariablesKey.PHYSICAL_CONDITION,
         displayName: 'model.dreamer.variables.physical_condition',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.ATTRACTIVENESS]: {
         key: DreamerVariablesKey.ATTRACTIVENESS,
         displayName: 'model.dreamer.variables.attractiveness',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.CONCENTRATION]: {
         key: DreamerVariablesKey.CONCENTRATION,
         displayName: 'model.dreamer.variables.concentration',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.CHARISMA]: {
         key: DreamerVariablesKey.CHARISMA,
         displayName: 'model.dreamer.variables.charisma',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.WILLPOWER]: {
         key: DreamerVariablesKey.WILLPOWER,
         displayName: 'model.dreamer.variables.willpower',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.SINGING]: {
         key: DreamerVariablesKey.SINGING,
         displayName: 'model.dreamer.variables.singing',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.DANCING]: {
         key: DreamerVariablesKey.DANCING,
         displayName: 'model.dreamer.variables.dancing',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.COORDINATION]: {
         key: DreamerVariablesKey.COORDINATION,
         displayName: 'model.dreamer.variables.coordination',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.IMPROVISATION]: {
         key: DreamerVariablesKey.IMPROVISATION,
         displayName: 'model.dreamer.variables.improvisation',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.COMPOSURE]: {
         key: DreamerVariablesKey.COMPOSURE,
         displayName: 'model.dreamer.variables.composure',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.MEMORIZATION]: {
         key: DreamerVariablesKey.MEMORIZATION,
         displayName: 'model.dreamer.variables.memorization',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.BRAVERY]: {
         key: DreamerVariablesKey.BRAVERY,
         displayName: 'model.dreamer.variables.bravery',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.CREATIVITY]: {
         key: DreamerVariablesKey.CREATIVITY,
         displayName: 'model.dreamer.variables.creativity',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.EXPRESSIVITY]: {
         key: DreamerVariablesKey.EXPRESSIVITY,
         displayName: 'model.dreamer.variables.expressivity',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.ACTING]: {
         key: DreamerVariablesKey.ACTING,
         displayName: 'model.dreamer.variables.acting',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.LYRICISM]: {
         key: DreamerVariablesKey.LYRICISM,
         displayName: 'model.dreamer.variables.lyricism',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.SEDUCTION]: {
         key: DreamerVariablesKey.SEDUCTION,
         displayName: 'model.dreamer.variables.seduction',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.ENTERTAINMENT]: {
         key: DreamerVariablesKey.ENTERTAINMENT,
         displayName: 'model.dreamer.variables.entertainment',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.PERSUASION]: {
         key: DreamerVariablesKey.PERSUASION,
         displayName: 'model.dreamer.variables.persuasion',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.ELEGANCY]: {
         key: DreamerVariablesKey.ELEGANCY,
         displayName: 'model.dreamer.variables.elegancy',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.EMPATHY]: {
         key: DreamerVariablesKey.EMPATHY,
         displayName: 'model.dreamer.variables.empathy',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.STAMINA]: {
         key: DreamerVariablesKey.STAMINA,
         displayName: 'model.dreamer.variables.stamina',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.TEAMWORK]: {
         key: DreamerVariablesKey.TEAMWORK,
         displayName: 'model.dreamer.variables.teamwork',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.LEADERSHIP]: {
         key: DreamerVariablesKey.LEADERSHIP,
         displayName: 'model.dreamer.variables.leadership',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.FITNESS]: {
         key: DreamerVariablesKey.FITNESS,
         displayName: 'model.dreamer.variables.fitness',
         type: VariableType.DYNAMIC_ATTRIBUTE,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.WEIGHT]: {
         key: DreamerVariablesKey.WEIGHT,
         displayName: 'model.character.variables.weight',
         type: VariableType.NUMBER,
+        max: 20,
+        min: 1,
         read: true,
-        edit: true,
+        edit: false,
     },
     [DreamerVariablesKey.FAT_PERCENTAGE]: {
         key: DreamerVariablesKey.FAT_PERCENTAGE,
         displayName: 'model.character.dreamer.weight',
         type: VariableType.NUMBER,
+        max: 50,
+        min: 1,
         read: true,
         edit: true,
     },
@@ -324,32 +382,32 @@ export class Dreamer extends Character {
     public preferredCareerPath: CareerPath[] = [];
     public dislikedCareerPath: CareerPath[] = [];
     //Dynamic Attributes of a Dreamer, they can grow and decrease over time and with events.
-    public intelligence: number = 0;
-    public physicalCondition: number = 0;
-    public attractiveness: number = 0;
-    public charisma: number = 0;
-    public willpower: number = 0;
-    public singing: number = 0;
-    public dancing: number = 0;
-    public coordination: number = 0;
-    public concentration: number = 0;
-    public improvisation: number = 0;
-    public composure: number = 0;
-    public memorization: number = 0;
-    public bravery: number = 0;
-    public creativity: number = 0;
-    public expressivity: number = 0;
-    public acting: number = 0;
-    public lyricism: number = 0;
-    public seduction: number = 0;
-    public entertainment: number = 0;
-    public persuasion: number = 0;
-    public elegancy: number = 0;
-    public empathy: number = 0;
-    public leadership: number = 0;
-    public fitness: number = 0;
-    public teamwork: number = 0;
-    public stamina: number = 0;
+    public intelligence: number = 1;
+    public physicalCondition: number = 1;
+    public attractiveness: number = 1;
+    public charisma: number = 1;
+    public willpower: number = 1;
+    public singing: number = 1;
+    public dancing: number = 1;
+    public coordination: number = 1;
+    public concentration: number = 1;
+    public improvisation: number = 1;
+    public composure: number = 1;
+    public memorization: number = 1;
+    public bravery: number = 1;
+    public creativity: number = 1;
+    public expressivity: number = 1;
+    public acting: number = 1;
+    public lyricism: number = 1;
+    public seduction: number = 1;
+    public entertainment: number = 1;
+    public persuasion: number = 1;
+    public elegancy: number = 1;
+    public empathy: number = 1;
+    public leadership: number = 1;
+    public fitness: number = 1;
+    public teamwork: number = 1;
+    public stamina: number = 1;
 
     public getCurrentAbility(): number {
         return (
@@ -381,4 +439,26 @@ export class Dreamer extends Character {
             (this.stamina || 0)
         );
     }
+
+    public calculateBodyType = (): BodyType => {
+        const bmi = this.weight / ((this.height / 100) ^ 2);
+
+        if (bmi < 19 && this.fatPercentage < 5) {
+            return BodyType.ANOREXIC;
+        } else if (bmi < 19 && this.fatPercentage < 10) {
+            return BodyType.SKINNY;
+        } else if (bmi < 19) {
+            return BodyType.UNDERWEIGHT;
+        } else if (bmi < 25 && this.fatPercentage < 20) {
+            return BodyType.FIT;
+        } else if (bmi < 25) {
+            return BodyType.AVERAGE;
+        } else if (this.fatPercentage < 20) {
+            return BodyType.MUSCULAR;
+        } else if (this.fatPercentage < 30) {
+            return BodyType.OVERWEIGHT;
+        } else {
+            return BodyType.OBESE;
+        }
+    };
 }

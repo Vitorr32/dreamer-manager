@@ -371,6 +371,16 @@ export const en_US = {
                     luxurious: 'Luxurious',
                     nobility: 'Nobility',
                 },
+                body_type: {
+                    anorexic: 'Anorexic',
+                    skinny: 'Skinny',
+                    underweight: 'Underweight',
+                    average: 'Average',
+                    overweight: 'Overweight',
+                    obese: 'Obese',
+                    fit: 'Fit',
+                    muscular: 'Muscular',
+                },
                 variables: {
                     id: 'ID',
                     name: 'First Name',
@@ -385,6 +395,7 @@ export const en_US = {
                     affluence: 'Affluence',
                     height: 'Height',
                     paperDoll: 'Paper Doll/Sprites',
+                    bodyType: 'Body Type',
                 },
                 attributes: {},
             },
@@ -480,10 +491,23 @@ export const en_US = {
                 },
             },
             paper_piece: {
+                type: {
+                    hair: 'Hair',
+                    face: 'Face',
+                    body: 'Body',
+                    upper_underwear: 'Upper Underwear',
+                    lower_underwear: 'Lower Underwear',
+                    upper_clothing: 'Upper Clothing',
+                    lower_clothing: 'Lower Clothing',
+                    full_body_clothing: 'Full Body',
+                },
                 variables: {
                     file_path: 'File Path',
+                    type: 'Type',
                     style: 'Style',
                     color: 'Color',
+                    emotion: 'Emotion',
+                    ethnicity: 'Ethnicity',
                 },
             },
             condition: {

@@ -49,6 +49,17 @@ export enum Style {
     GOTHIC = 'model.paper_doll.style.gothic',
 }
 
+export enum BodyType {
+    ANOREXIC = 'model.character.body_type.anorexic',
+    SKINNY = 'model.character.body_type.skinny',
+    UNDERWEIGHT = 'model.character.body_type.underweight',
+    AVERAGE = 'model.character.body_type.average',
+    OVERWEIGHT = 'model.character.body_type.overweight',
+    OBESE = 'model.character.body_type.obese',
+    FIT = 'model.character.body_type.fit',
+    MUSCULAR = 'model.character.body_type.muscular',
+}
+
 export enum CharacterVariablesKey {
     ID = 'id',
     NAME = 'name',
@@ -70,6 +81,7 @@ export enum CharacterVariablesKey {
     TRAITS = 'traits',
     HEIGHT = 'height',
     PAPER_DOLL = 'paperDoll',
+    BODY_TYPE = 'bodyType',
 }
 
 export const CharacterEntityVariables: Variables = {
@@ -176,6 +188,14 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: true,
     },
+    [CharacterVariablesKey.BODY_TYPE]: {
+        key: CharacterVariablesKey.BODY_TYPE,
+        displayName: 'model.character.variables.bodyType',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(BodyType).map((value) => value),
+        read: true,
+        edit: false,
+    },
 };
 
 export class Character extends EntityBase {
@@ -204,6 +224,8 @@ export class Character extends EntityBase {
     public type: CharacterType;
 
     public height: number;
+
+    public bodyType: BodyType;
 
     public isPlayer: boolean;
     //The character may be unemployed
