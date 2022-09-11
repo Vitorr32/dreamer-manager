@@ -26,6 +26,7 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import { PaperDollViewer } from 'renderer/shared/components/character/PaperDollViewer.component';
 import { Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
+import { PiecesSelector } from 'renderer/shared/components/character/PiecesSelector.component';
 
 interface IProps {
     paperDoll?: PaperDoll;
@@ -45,6 +46,8 @@ export function CharacterPaperDollEditor({ paperDoll, onChange, onPreviousStep }
             setCurrentPaperDoll(paperDoll);
         }
     }, []);
+
+    const onFilteredChange = () => {};
 
     const onPaperDollChange = () => {};
 
@@ -72,6 +75,8 @@ export function CharacterPaperDollEditor({ paperDoll, onChange, onPreviousStep }
                     ))}
                 </Select>
             </FormControl>
+
+            <PiecesSelector onFilterChange={onFilteredChange} />
 
             <PaperDollViewer paperDoll={paperDoll} editable />
             {/* <FormControl>

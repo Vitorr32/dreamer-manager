@@ -38,7 +38,7 @@ export const PaperPieceEntityVariables: Variables = {
     [PaperPieceVariablesKey.STYLE]: {
         key: PaperPieceVariablesKey.STYLE,
         displayName: 'model.paper_piece.variables.style',
-        type: VariableType.ENUMERATOR,
+        type: VariableType.ENUMERATOR_LIST,
         options: Object.values(Style).map((value) => value),
         read: true,
         edit: true,
@@ -47,7 +47,7 @@ export const PaperPieceEntityVariables: Variables = {
     [PaperPieceVariablesKey.EMOTION]: {
         key: PaperPieceVariablesKey.EMOTION,
         displayName: 'model.paper_piece.variables.emotion',
-        type: VariableType.ENUMERATOR,
+        type: VariableType.ENUMERATOR_LIST,
         options: Object.values(Emotion).map((value) => value),
         read: true,
         edit: true,
@@ -77,11 +77,13 @@ export class PaperPiece extends EntityBase {
 
     id: string;
     filePath: string[];
+    //The absolute path of the file in the computer, this is determined on the first load of the game at runtime
+    absolutePath?: string;
     type: PieceType;
 }
 
 export class HairPiece extends PaperPiece {
-    style: Style;
+    style: Style[];
     color: string;
     type = PieceType.HAIR;
 
@@ -94,7 +96,7 @@ export class HairPiece extends PaperPiece {
 
 export class FacePiece extends PaperPiece {
     color: string;
-    emotion: Emotion;
+    emotion: Emotion[];
     ethnicity: Ethnicity;
     bodyType: BodyType;
     type = PieceType.FACE;
@@ -119,7 +121,7 @@ export class BodyPiece extends PaperPiece {
 }
 
 export class UpperUnderwearPiece extends PaperPiece {
-    style: Style;
+    style: Style[];
     type = PieceType.UPPER_UNDERWEAR;
 
     constructor(id?: string) {
@@ -130,7 +132,7 @@ export class UpperUnderwearPiece extends PaperPiece {
 }
 
 export class LowerUnderwearPiece extends PaperPiece {
-    style: Style;
+    style: Style[];
     type = PieceType.LOWER_UNDERWEAR;
 
     constructor(id?: string) {
@@ -141,7 +143,7 @@ export class LowerUnderwearPiece extends PaperPiece {
 }
 
 export class UpperClothingPiece extends PaperPiece {
-    style: Style;
+    style: Style[];
     type = PieceType.UPPER_CLOTHING;
 
     constructor(id?: string) {
@@ -152,7 +154,7 @@ export class UpperClothingPiece extends PaperPiece {
 }
 
 export class LowerClothingPiece extends PaperPiece {
-    style: Style;
+    style: Style[];
     type = PieceType.LOWER_CLOTHING;
 
     constructor(id?: string) {
@@ -163,7 +165,7 @@ export class LowerClothingPiece extends PaperPiece {
 }
 
 export class FullBodyClothingPiece extends PaperPiece {
-    style: Style;
+    style: Style[];
     type = PieceType.FULL_BODY_CLOTHING;
 
     constructor(id?: string) {

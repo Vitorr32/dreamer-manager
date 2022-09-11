@@ -155,6 +155,7 @@ export const en_US = {
                     input_helper_is_custom:
                         'By checking this option, you will be able to choose your own files for the sprites of this character, otherwise you may use the paper doll system to create the sprite of this character',
                     input_label_emotion: 'Current Paper Doll Emotion',
+                    input_label_filters: 'Paper Pieces Filters',
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -467,6 +468,13 @@ export const en_US = {
                 },
             },
             paper_doll: {
+                filters: {
+                    emotion: 'Emotions',
+                    style: 'Style',
+                    type: 'Type',
+                    ethnicity: 'Ethnicity',
+                    body_type: 'Body Type',
+                },
                 style: {
                     conservative: 'Conservative',
                     punk: 'Punk',
