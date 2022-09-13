@@ -55,6 +55,7 @@ export const ATTRIBUTES_DATABASE_FOLDER = 'attributes';
 export const NATIONS_DATABASE_FOLDER = 'nations';
 export const CITIES_DATABASE_FOLDER = 'cities';
 export const EVENT_DATABASE_FOLDER = 'events';
+export const PAPER_PIECES_FOLDER = 'pieces';
 
 ///////////////////////////////
 //BASE GAME FILES

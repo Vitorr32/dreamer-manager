@@ -19,7 +19,7 @@ export function TraitViewer({ trait }: IProps) {
 
     useEffect(() => {
         const getIconPath = async () => {
-            return await GetFileFromResources([ICONS, TRAITS, trait.spriteName]).then((result) => result.path);
+            return await GetFileFromResources(trait.iconPath).then((result) => result.path);
         };
 
         getIconPath()

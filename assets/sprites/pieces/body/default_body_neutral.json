@@ -1,0 +1,8 @@
+{
+    "id": "default_body_neutral",
+    "fileName": "default_body_neutral",
+    "filePath": ["sprites", "body", "default_body_neutral.png"],
+    "type": "model.paper_piece.type.body",
+    "color": "red",
+    "bodyType": "model.character.body_type.average"
+}

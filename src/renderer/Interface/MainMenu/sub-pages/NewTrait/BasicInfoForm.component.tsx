@@ -24,8 +24,8 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
                 return;
             }
 
-            if (trait.spriteName) {
-                const file = await GetFileFromResources([ICONS, TRAITS, trait.spriteName]);
+            if (trait.iconPath) {
+                const file = await GetFileFromResources(trait.iconPath);
                 setTempImage(file.path);
             } else {
                 //Get the placeholder icon for trait

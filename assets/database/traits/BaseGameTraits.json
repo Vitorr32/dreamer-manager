@@ -3,7 +3,7 @@
         "id": "trait_0",
         "effects": [],
         "traitType": "Normal",
-        "spriteName": "trait_placeholder.png",
+        "iconPath": ["icons", "traits", "trait_placeholder.png"],
         "localization": {
             "en_US": {
                 "name": "Explorer",

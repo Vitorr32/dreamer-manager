@@ -76,6 +76,7 @@ export class PaperPiece extends EntityBase {
     }
 
     id: string;
+    fileName: string;
     filePath: string[];
     //The absolute path of the file in the computer, this is determined on the first load of the game at runtime
     absolutePath?: string;
