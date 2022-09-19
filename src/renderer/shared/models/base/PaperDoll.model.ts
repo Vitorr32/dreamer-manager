@@ -23,6 +23,7 @@ type DollPieces = {
         facePiece: string;
         bodyPiece: string;
         customFilePath?: string[];
+        customFileAbsolutePath?: string;
     };
 };
 
@@ -35,6 +36,8 @@ export enum PaperDollVariablesKey {
     LOWER_CLOTHING = 'lowerClothing',
     FULL_BODY_CLOTHING = 'fullBodyClothing',
 }
+
+export enum CLOTHING_STATE {}
 
 export const PaperDollEntityVariables: Variables = {
     [PaperDollVariablesKey.ID]: { key: PaperDollVariablesKey.ID, displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
@@ -99,6 +102,8 @@ export class PaperDoll extends EntityBase {
         super();
 
         this.id = id || `paper_doll_${uuidv4()}`;
+        this.isCustom = false;
+        this.emotions = {} as DollPieces;
     }
 }
 
@@ -106,5 +111,17 @@ export enum Emotion {
     NEUTRAL = 'model.paper_doll.emotion.neutral',
 
     HAPPY = 'model.paper_doll.emotion.happy',
-    SCARED = 'model.paper_doll.emotion.very_happy', //...TODO
+    EUPHORIC = 'model.paper_doll.emotion.euphoric',
+
+    SCARED = 'model.paper_doll.emotion.scared',
+    TERRIFIED = 'model.paper_doll.emotion.terrified',
+
+    SAD = 'model.paper_doll.emotion.sad',
+    DEPRESSED = 'model.paper_doll.emotion.depressed',
+
+    EMBARRASSED = 'model.paper_doll.emotion.embarrassed',
+    ASHAMED = 'model.paper_doll.emotion.ashamed',
+
+    ANNOYED = 'model.paper_doll.emotion.annoyed',
+    ANGRY = 'model.paper_doll.emotion.angry',
 }

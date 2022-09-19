@@ -1,0 +1,7 @@
+{
+    "id": "default_female_hair",
+    "fileName": "default_female_hair",
+    "filePath": ["sprites", "hair", "default_female_hair.png"],
+    "type": "model.paper_piece.type.hair",
+    "style": ["model.paper_doll.style.conservative"]
+}

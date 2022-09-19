@@ -1,0 +1,7 @@
+{
+    "id": "default_female_face",
+    "fileName": "default_female_face",
+    "filePath": ["sprites", "face", "default_female_face.png"],
+    "type": "model.paper_piece.type.face",
+    "emotion": "model.paper_doll.emotion.neutral"
+}

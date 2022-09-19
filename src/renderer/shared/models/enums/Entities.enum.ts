@@ -1,6 +1,8 @@
 export enum Entity {
     NONE = 'model.undefined',
     ACTORS = 'model.entity.actors',
+    ATTRIBUTES = 'model.entity.attributes',
+    EVENTS = 'model.entity.events',
     TRAITS = 'model.entity.traits',
     FLAGS = 'model.entity.flags',
     CHARACTERS = 'model.entity.characters',

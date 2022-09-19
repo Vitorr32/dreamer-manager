@@ -6,7 +6,7 @@ import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { Nation } from 'renderer/shared/models/base/Nation.model';
 import { PaperPiece } from 'renderer/shared/models/base/PaperPiece.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
-import { Assets } from 'renderer/shared/models/enums/Assets.enum';
+import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { Trait } from '../../shared/models/base/Trait.model';
 
 interface Database {
@@ -63,11 +63,11 @@ export const databaseSlice = createSlice({
             state,
             action: {
                 type: string;
-                payload: { value: any[]; key: number; progress: number };
+                payload: { value: any[]; key: Entity; progress: number };
             }
         ) => {
             switch (action.payload.key) {
-                case Assets.NATIONS:
+                case Entity.NATIONS:
                     state.nations = action.payload.value;
                     state.nations.forEach((nation) => {
                         if (state.mappedDatabase.nations[nation.id]) {
@@ -77,7 +77,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.nations[nation.id] = nation;
                     });
                     break;
-                case Assets.TRAITS:
+                case Entity.TRAITS:
                     const traits = action.payload.value.map((rawTraitData) => Object.assign(Object.create(Trait.prototype), rawTraitData));
 
                     state.traits = traits;
@@ -89,7 +89,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.traits[trait.id] = trait;
                     });
                     break;
-                case Assets.ATTRIBUTES:
+                case Entity.ATTRIBUTES:
                     const attrs = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(Attribute.prototype), rawAttributeData));
 
                     state.attributes = attrs;
@@ -101,7 +101,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.attributes[attr.id] = attr;
                     });
                     break;
-                case Assets.CITIES:
+                case Entity.CITIES:
                     state.cities = action.payload.value;
                     state.cities.forEach((city) => {
                         if (state.mappedDatabase.cities[city.id]) {
@@ -111,7 +111,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.cities[city.id] = city;
                     });
                     break;
-                case Assets.EVENTS:
+                case Entity.EVENTS:
                     state.events = action.payload.value;
                     state.events.forEach((event) => {
                         if (state.mappedDatabase.events[event.id]) {
@@ -132,6 +132,18 @@ export const databaseSlice = createSlice({
                         //Map the visual novel data to a newly created instance using the prototype.
                         event.visualNovel = Object.assign(Object.create(VisualNovel.prototype), event.visualNovel);
                         state.mappedDatabase.events[event.id] = event;
+                    });
+                    break;
+                case Entity.PAPER_PIECE:
+                    const entities = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(PaperPiece.prototype), rawAttributeData));
+
+                    state.paperPieces = entities;
+                    state.paperPieces.forEach((entity) => {
+                        if (state.mappedDatabase.paperPieces[entity.id]) {
+                            throw new Error('A Paper Piece with id ' + entity.id + ' is duplicated');
+                        }
+
+                        state.mappedDatabase.paperPieces[entity.id] = entity;
                     });
                     break;
                 default:

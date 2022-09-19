@@ -29,12 +29,13 @@ import { Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model'
 import { PiecesSelector } from 'renderer/shared/components/character/PiecesSelector.component';
 
 interface IProps {
+    character: Character;
     paperDoll?: PaperDoll;
     onChange: (key: CharacterVariablesKey | DreamerVariablesKey, value: any) => void;
     onPreviousStep: () => void;
 }
 
-export function CharacterPaperDollEditor({ paperDoll, onChange, onPreviousStep }: IProps) {
+export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPreviousStep }: IProps) {
     const params = useParams();
 
     const { t, i18n } = useTranslation();
@@ -78,7 +79,7 @@ export function CharacterPaperDollEditor({ paperDoll, onChange, onPreviousStep }
 
             <PiecesSelector onFilterChange={onFilteredChange} />
 
-            <PaperDollViewer paperDoll={paperDoll} editable />
+            <PaperDollViewer character={character} paperDoll={currentPaperDoll} emotion={currentEmotion} editable />
             {/* <FormControl>
                 <InputLabel>{t('interface.editor.dreamer.input_label_family')}</InputLabel>
                 <Select

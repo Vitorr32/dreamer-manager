@@ -156,6 +156,7 @@ export const en_US = {
                         'By checking this option, you will be able to choose your own files for the sprites of this character, otherwise you may use the paper doll system to create the sprite of this character',
                     input_label_emotion: 'Current Paper Doll Emotion',
                     input_label_filters: 'Paper Pieces Filters',
+                    input_label_custom_image: 'Choose Custom Image',
                 },
                 modifier: {
                     title: 'Modifier Editor',
@@ -616,6 +617,8 @@ export const en_US = {
             },
             entity: {
                 actors: 'Actors',
+                attributes: 'Attribute',
+                events: 'Event',
                 paperDoll: 'Paper Doll',
                 paperPiece: 'Paper Piece',
                 traits: 'Traits',

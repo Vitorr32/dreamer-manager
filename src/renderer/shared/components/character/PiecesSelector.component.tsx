@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
 import { PaperPiece, PieceType } from 'renderer/shared/models/base/PaperPiece.model';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BodyType, Ethnicity, Style } from 'renderer/shared/models/base/Character.model';
 import { Emotion } from 'renderer/shared/models/base/PaperDoll.model';
 
@@ -20,7 +20,7 @@ enum Filters {
     BODY_TYPE = 'model.paper_doll.filters.body_type',
 }
 
-export function PiecesSelector({ selectedPieces, onFilterChange }: IProps) {
+export function PiecesSelector({ selectedPieces = [], onFilterChange }: IProps) {
     const theme = useTheme();
     const paperPieces = useAppSelector((state: RootState) => state.database.paperPieces);
 
@@ -31,7 +31,22 @@ export function PiecesSelector({ selectedPieces, onFilterChange }: IProps) {
     const [currentBodyType, setBodyType] = useState<BodyType>();
     const [currentEthnicity, setEthnicity] = useState<Ethnicity>();
     const [currentEmotion, setEmotion] = useState<Emotion>();
-    const [currentPieces, setFilteredPieces] = useState<PaperPiece[]>();
+    const [currentPieces, setFilteredPieces] = useState<PaperPiece[]>([]);
+
+    useEffect(() => {
+        if (currentPieces.length === 0) {
+            resetFilteredPieces();
+        }
+    }, []);
+
+    const resetFilteredPieces = (): void => {
+        setFilteredPieces(paperPieces);
+        setType(null);
+        setStyle(null);
+        setBodyType(null);
+        setEthnicity(null);
+        setEmotion(null);
+    };
 
     const getAllFilterOptionsWithFilterType = () => {
         return [
@@ -56,7 +71,7 @@ export function PiecesSelector({ selectedPieces, onFilterChange }: IProps) {
 
             <Grid container>
                 {currentPieces.map((piece) => (
-                    <Grid item xs={4} sx={{ position: 'relative' }}>
+                    <Grid key={`piece_${piece.id}`} item xs={4} sx={{ position: 'relative', border: '2px solid transparent' }}>
                         <img style={{ width: '100%' }} src={piece.absolutePath} alt={piece.id} />
                         <Typography sx={{ position: 'absolute', bottom: '0', left: '0', padding: '5px' }} variant="caption">
                             {piece.id}

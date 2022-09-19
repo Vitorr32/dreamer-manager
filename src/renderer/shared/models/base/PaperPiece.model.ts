@@ -1,4 +1,4 @@
-import { BodyType, Ethnicity, Style } from './Character.model';
+import { BodyType, Ethnicity, Gender, Style } from './Character.model';
 import { EntityBase } from './Entity.model';
 import { Emotion } from './PaperDoll.model';
 import { Variables, VariableType } from './Variable.model';
@@ -15,6 +15,12 @@ export enum PieceType {
     FULL_BODY_CLOTHING = 'model.paper_piece.type.full_body_clothing',
 }
 
+export enum ClothingState {
+    NORMAL,
+    PARTIALLY_UNDRESSED,
+    UNDRESSED,
+}
+
 export enum PaperPieceVariablesKey {
     ID = 'id',
     FILE_PATH = 'filePath',
@@ -24,6 +30,7 @@ export enum PaperPieceVariablesKey {
     EMOTION = 'emotion',
     ETHNICITY = 'ethnicity',
     BODY_TYPE = 'bodyType',
+    GENDER = 'gender',
 }
 
 export const PaperPieceEntityVariables: Variables = {
@@ -68,6 +75,14 @@ export const PaperPieceEntityVariables: Variables = {
         read: true,
         edit: true,
     },
+    [PaperPieceVariablesKey.GENDER]: {
+        key: PaperPieceVariablesKey.GENDER,
+        displayName: 'model.paper_piece.variables.gender',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(Gender).map((value) => value),
+        read: true,
+        edit: true,
+    },
 };
 
 export class PaperPiece extends EntityBase {
@@ -81,6 +96,7 @@ export class PaperPiece extends EntityBase {
     //The absolute path of the file in the computer, this is determined on the first load of the game at runtime
     absolutePath?: string;
     type: PieceType;
+    gender: Gender;
 }
 
 export class HairPiece extends PaperPiece {
@@ -98,7 +114,7 @@ export class HairPiece extends PaperPiece {
 export class FacePiece extends PaperPiece {
     color: string;
     emotion: Emotion[];
-    ethnicity: Ethnicity;
+    ethnicity?: Ethnicity;
     bodyType: BodyType;
     type = PieceType.FACE;
 

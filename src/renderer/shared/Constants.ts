@@ -72,3 +72,6 @@ export const TRAITS = 'traits';
 export const PLACEHOLDER_TRAIT_ICON = 'trait_placeholder.png';
 export const PLACEHOLDER_EVENT_BACKGROUND = 'event_placeholder.png';
 export const PLACEHOLDER_ACTOR_SPRITE = 'male_0.png';
+export const PLACEHOLDER_PIECE_HAIR_FEMALE = 'default_female_body_neutral';
+export const PLACEHOLDER_PIECE_BODY_FEMALE = 'default_female_hair';
+export const PLACEHOLDER_PIECE_FACE_FEMALE = 'default_female_face';
