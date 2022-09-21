@@ -62,8 +62,9 @@ export function PiecesSelector({ selectedPieces = [], onFilterChange }: IProps) 
         <Stack direction="column">
             <Autocomplete
                 id="pieces-filter-tags"
+                multiple
                 options={getAllFilterOptionsWithFilterType()}
-                groupBy={(option) => option.filterType}
+                groupBy={(option) => t(option.filterType)}
                 getOptionLabel={(option) => (typeof option === 'string' ? option : t(option.value))}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label={t('interface.editor.paper_doll.input_label_filters')} />}

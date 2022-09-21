@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { DreamerAttributeViewer } from 'renderer/shared/components/character/DreamerAttributeViewer.component';
-import { MAXIMUM_DREAMER_POTENTIAL } from 'renderer/shared/Constants';
+import { MAXIMUM_DREAMER_POTENTIAL, MINIMUM_DREAMER_POTENTIAL } from 'renderer/shared/Constants';
 import { CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
 import { CareerObjective, CareerPath, Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
@@ -21,18 +21,22 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
 
     const { t, i18n } = useTranslation();
 
+    const percentOfMaximumPotential = (toCompare: number): number => {
+        return ((toCompare - MINIMUM_DREAMER_POTENTIAL) / (MAXIMUM_DREAMER_POTENTIAL - MINIMUM_DREAMER_POTENTIAL)) * 100;
+    };
+
     const getPotentialLabel = (potential: number): string => {
-        if (potential >= 190) {
+        if (percentOfMaximumPotential(potential) >= 90) {
             return t('interface.editor.dreamer.potential_ultimate');
-        } else if (potential >= 170) {
+        } else if (percentOfMaximumPotential(potential) >= 80) {
             return t('interface.editor.dreamer.potential_very_high');
-        } else if (potential >= 140) {
+        } else if (percentOfMaximumPotential(potential) >= 65) {
             return t('interface.editor.dreamer.potential_high');
-        } else if (potential >= 120) {
+        } else if (percentOfMaximumPotential(potential) >= 50) {
             return t('interface.editor.dreamer.potential_medium');
-        } else if (potential >= 100) {
+        } else if (percentOfMaximumPotential(potential) >= 35) {
             return t('interface.editor.dreamer.potential_below_average');
-        } else if (potential >= 80) {
+        } else if (percentOfMaximumPotential(potential) >= 20) {
             return t('interface.editor.dreamer.potential_weak');
         }
         return t('interface.editor.dreamer.potential_very_weak');
@@ -76,7 +80,7 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
                 <Select
                     value={dreamer.dreamerObjective || ''}
                     label={t('interface.editor.dreamer.input_label_objective')}
-                    onChange={(ev) => onChange(DreamerVariablesKey.FAMILY_SITUATION, ev.target.value)}
+                    onChange={(ev) => onChange(DreamerVariablesKey.DREAMER_OBJECTIVE, ev.target.value)}
                 >
                     <MenuItem disabled value="">
                         {t('interface.editor.dreamer.input_placeholder_objective')}
@@ -153,8 +157,8 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
                 <Typography variant="h5">{t('interface.editor.dreamer.input_label_potential')}</Typography>
                 <FormHelperText>{t('interface.editor.dreamer.input_helper_potential')}</FormHelperText>
                 <Slider
-                    min={50}
-                    max={200}
+                    min={MINIMUM_DREAMER_POTENTIAL}
+                    max={MAXIMUM_DREAMER_POTENTIAL}
                     sx={{ width: '400px' }}
                     valueLabelDisplay="auto"
                     value={dreamer.abilityPotential}

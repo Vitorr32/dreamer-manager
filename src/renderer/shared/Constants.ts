@@ -39,7 +39,8 @@ export const LANGUAGE_NAME: { [key: string]: string } = {
 };
 
 // GAMEPLAY CONSTANTS
-export const MAXIMUM_DREAMER_POTENTIAL = 200;
+export const MINIMUM_DREAMER_POTENTIAL = 50;
+export const MAXIMUM_DREAMER_POTENTIAL = 300;
 
 ///////////////////////////////
 //RESOURCES FOLDER NAME
@@ -75,3 +76,6 @@ export const PLACEHOLDER_ACTOR_SPRITE = 'male_0.png';
 export const PLACEHOLDER_PIECE_HAIR_FEMALE = 'default_female_body_neutral';
 export const PLACEHOLDER_PIECE_BODY_FEMALE = 'default_female_hair';
 export const PLACEHOLDER_PIECE_FACE_FEMALE = 'default_female_face';
+export const PLACEHOLDER_PIECE_HAIR_MALE = 'default_female_body_neutral';
+export const PLACEHOLDER_PIECE_BODY_MALE = 'default_female_hair';
+export const PLACEHOLDER_PIECE_FACE_MALE = 'default_female_face';

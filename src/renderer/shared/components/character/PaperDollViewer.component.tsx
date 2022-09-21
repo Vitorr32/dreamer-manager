@@ -2,11 +2,12 @@ import { Button, Stack, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
-import { Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
+import { DollPieces, Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
 import { Character } from 'renderer/shared/models/base/Character.model';
 import { PaperPiece, PieceType } from 'renderer/shared/models/base/PaperPiece.model';
 import { useState } from 'react';
 import { ApplyFileProtocol } from 'renderer/shared/utils/StringOperations';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface IProps {
     character: Character;
@@ -21,7 +22,7 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
     const paperPieces = useAppSelector((state: RootState) => state.database.mappedDatabase.paperPieces);
 
     const { t, i18n } = useTranslation();
-    const [tempImagePath, setTempImagePath] = useState<string>();
+    const [tempImagePath, setTempImagePath] = useState<{ [key in Emotion]: string }>();
 
     const getPieceOfTypeForEmotion = (paperDoll: PaperDoll, emotion: Emotion, pieceType: PieceType): PaperPiece => {
         const closestEmotion = getClosestEmotion(paperDoll, emotion);
@@ -49,19 +50,19 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
     const getClosestEmotion = (paperDoll: PaperDoll, emotion: Emotion): Emotion => {
         switch (emotion) {
             case Emotion.DEPRESSED:
-                return !!paperDoll.emotions[emotion] ? emotion : !!paperDoll.emotions[Emotion.SAD] ? Emotion.SAD : Emotion.NEUTRAL;
+                return Emotion.SAD;
             case Emotion.EUPHORIC:
-                return !!paperDoll.emotions[emotion] ? emotion : !!paperDoll.emotions[Emotion.HAPPY] ? Emotion.HAPPY : Emotion.NEUTRAL;
+                return Emotion.HAPPY;
             case Emotion.TERRIFIED:
-                return !!paperDoll.emotions[emotion] ? emotion : !!paperDoll.emotions[Emotion.SCARED] ? Emotion.SCARED : Emotion.NEUTRAL;
+                return Emotion.SCARED;
             case Emotion.ANGRY:
-                return !!paperDoll.emotions[emotion] ? emotion : !!paperDoll.emotions[Emotion.ANNOYED] ? Emotion.ANNOYED : Emotion.NEUTRAL;
+                return Emotion.ANNOYED;
             case Emotion.ASHAMED:
-                return !!paperDoll.emotions[emotion] ? emotion : !!paperDoll.emotions[Emotion.EMBARRASSED] ? Emotion.EMBARRASSED : Emotion.NEUTRAL;
+                return Emotion.EMBARRASSED;
             case Emotion.SAD:
             case Emotion.HAPPY:
-            case Emotion.ANNOYED:
             case Emotion.SCARED:
+            case Emotion.ANNOYED:
             case Emotion.EMBARRASSED:
                 return !!paperDoll.emotions[emotion] ? emotion : Emotion.NEUTRAL;
             default:
@@ -70,13 +71,27 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
     };
 
     const getCustomSprite = (paperDoll: PaperDoll, emotion: Emotion): string => {
-        const closestEmotion = getClosestEmotion(paperDoll, emotion);
+        while (true) {
+            if (tempImagePath && tempImagePath[emotion]) {
+                return tempImagePath[emotion];
+            }
 
-        return paperDoll.emotions[closestEmotion].customFileAbsolutePath;
+            if (paperDoll.emotions[emotion]) {
+                return paperDoll.emotions[emotion].customFileAbsolutePath;
+            }
+
+            emotion = getClosestEmotion(paperDoll, emotion);
+
+            if (emotion === Emotion.NEUTRAL) {
+                return tempImagePath?.[emotion] || paperDoll.emotions[emotion].customFileAbsolutePath;
+            }
+        }
+
+        return '';
     };
 
-    const onImageSelected = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-        if (event.target.files === null) {
+    const onImageSelected = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        if (event.target.files === null || event.target.files.length === 0) {
             return;
         }
 
@@ -86,25 +101,32 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
             files.push({ path: file.path, name: file.name });
         }
 
-        setTempImagePath(ApplyFileProtocol(files[0].path));
+        setTempImagePath({ ...tempImagePath, [emotion]: ApplyFileProtocol(files[0].path) });
     };
 
     return (
         <Stack direction="column">
-            {editable && (
+            {editable && paperDoll.isCustom && (
                 <Button variant="contained" component="label">
                     {t('interface.editor.paper_doll.input_label_custom_image')}
                     <input name="avatar" type="file" hidden onChange={onImageSelected} accept="image/*" />
                 </Button>
             )}
 
-            {paperDoll.isCustom && <img src={getCustomSprite(paperDoll, emotion)} />}
+            {paperDoll.isCustom && getCustomSprite(paperDoll, emotion) && (
+                <>
+                    <img src={getCustomSprite(paperDoll, emotion)} />
+                    <Button variant="contained" onClick={(_) => setTempImagePath({ ...tempImagePath, [emotion]: '' })}>
+                        <CloseIcon />
+                    </Button>
+                </>
+            )}
 
             {!paperDoll.isCustom && (
                 <>
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.BODY).absolutePath}></img>
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.HAIR).absolutePath}></img>
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.FACE).absolutePath}></img>
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.BODY)?.absolutePath}></img>
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.HAIR)?.absolutePath}></img>
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.FACE)?.absolutePath}></img>
                 </>
             )}
         </Stack>

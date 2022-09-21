@@ -1,31 +1,12 @@
-import {
-    Box,
-    Button,
-    Checkbox,
-    FormControl,
-    FormControlLabel,
-    FormHelperText,
-    InputAdornment,
-    InputLabel,
-    MenuItem,
-    Select,
-    Slider,
-    Stack,
-    TextField,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import { Button, Checkbox, FormControl, FormControlLabel, FormHelperText, Grid, InputLabel, MenuItem, Select, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { DreamerAttributeViewer } from 'renderer/shared/components/character/DreamerAttributeViewer.component';
-import { MAXIMUM_DREAMER_POTENTIAL } from 'renderer/shared/Constants';
-import { Character, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
-import { Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
+import { Character, CharacterVariablesKey, Gender } from 'renderer/shared/models/base/Character.model';
+import { DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import { PaperDollViewer } from 'renderer/shared/components/character/PaperDollViewer.component';
-import { Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
+import { Emotion, PaperDoll, PaperDollVariablesKey } from 'renderer/shared/models/base/PaperDoll.model';
 import { PiecesSelector } from 'renderer/shared/components/character/PiecesSelector.component';
 
 interface IProps {
@@ -40,23 +21,30 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
 
     const { t, i18n } = useTranslation();
     const [currentEmotion, setCurrentEmotion] = useState<Emotion>(Emotion.NEUTRAL);
-    const [currentPaperDoll, setCurrentPaperDoll] = useState<PaperDoll>(new PaperDoll());
+    const [currentPaperDoll, setCurrentPaperDoll] = useState<PaperDoll>(new PaperDoll(character.gender || Gender.FEMALE));
 
     useEffect(() => {
         if (paperDoll) {
             setCurrentPaperDoll(paperDoll);
         }
-    }, []);
+    }, [paperDoll]);
 
     const onFilteredChange = () => {};
 
-    const onPaperDollChange = () => {};
+    const onPaperDollChange = (variableKey: PaperDollVariablesKey, value: any) => {
+        const updatedDoll: any = CopyClassInstance(currentPaperDoll);
+
+        updatedDoll[variableKey] = value;
+        onChange(CharacterVariablesKey.PAPER_DOLL, updatedDoll);
+    };
 
     return (
         <Stack spacing={4} direction="column">
             <FormControl>
                 <FormControlLabel
-                    control={<Checkbox checked={currentPaperDoll.isCustom || false} onChange={(ev) => onChange(CharacterVariablesKey.PAPER_DOLL, ev.target.checked)} />}
+                    control={
+                        <Checkbox checked={currentPaperDoll.isCustom || false} onChange={(ev) => onPaperDollChange(PaperDollVariablesKey.IS_CUSTOM, ev.target.checked)} />
+                    }
                     label={
                         <Typography variant="caption" sx={{ color: 'text.primary' }}>
                             {t('interface.editor.paper_doll.input_label_is_custom')}
@@ -77,9 +65,18 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
                 </Select>
             </FormControl>
 
-            <PiecesSelector onFilterChange={onFilteredChange} />
+            <Grid container spacing={2} justifyContent={'center'}>
+                <Grid item xs={8}>
+                    <PaperDollViewer character={character} paperDoll={currentPaperDoll} emotion={currentEmotion} editable />
+                </Grid>
 
-            <PaperDollViewer character={character} paperDoll={currentPaperDoll} emotion={currentEmotion} editable />
+                {!character.paperDoll?.isCustom && (
+                    <Grid item xs={4}>
+                        <PiecesSelector onFilterChange={onFilteredChange} />
+                    </Grid>
+                )}
+            </Grid>
+
             {/* <FormControl>
                 <InputLabel>{t('interface.editor.dreamer.input_label_family')}</InputLabel>
                 <Select

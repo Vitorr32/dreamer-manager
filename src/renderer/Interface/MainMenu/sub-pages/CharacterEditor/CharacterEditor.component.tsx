@@ -11,7 +11,7 @@ import { RootState } from 'renderer/redux/store';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { Dreamer, DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
 import { DreamerInfoEditor } from './DreamerInfoEditor.component';
-import { CharacterPaperDollEditor } from './CharacterPaperdollEditor.component';
+import { CharacterPaperDollEditor } from './CharacterPaperDollEditor.component';
 
 interface IProps {}
 
@@ -71,9 +71,18 @@ export function CharacterEditor({}: IProps) {
                                 onPreviousStep={onPreviousStep}
                             />
                         );
+                    default:
+                        return null;
                 }
             case 2:
-                return <CharacterPaperDollEditor character={currentCharacter} onChange={onCharacterVariableUpdated} onPreviousStep={onPreviousStep} />;
+                return (
+                    <CharacterPaperDollEditor
+                        character={currentCharacter}
+                        paperDoll={currentCharacter.paperDoll}
+                        onChange={onCharacterVariableUpdated}
+                        onPreviousStep={onPreviousStep}
+                    />
+                );
             default:
                 return null;
         }
@@ -119,7 +128,7 @@ export function CharacterEditor({}: IProps) {
                 <Typography variant="subtitle2">{t('interface.editor.character.subtitle')}</Typography>
             </Box>
 
-            <Box component="main" className="new-event__content">
+            <Box component="main" sx={{ overflow: 'visible' }}>
                 {getStepperContent(stepperIndex)}
             </Box>
         </Box>

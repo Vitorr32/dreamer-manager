@@ -127,7 +127,7 @@ export const en_US = {
                     input_label_objective: 'Dreamer Objective',
                     input_placeholder_objective: 'Select the Dreamer Objective',
                     input_helper_objective:
-                        'The objective of the dreamer is the final thing they are striving for when entering your agency, if they feel they are not getting closer to the objective they may feel stagnated and unhappy',
+                        'The objective of the dreamer is the final thing they are striving for when entering your agency, if they feel they are not getting closer to the objective they may feel stagnated and unhappy. "Searching" means that the dreamer still does not have a objective in mind',
                     input_label_preferred_jobs: 'Preferred Jobs (Multiple)',
                     input_label_disliked_jobs: 'Disliked Jobs (Multiple)',
                     input_placeholder_jobs: 'Select Career Paths',
@@ -155,7 +155,7 @@ export const en_US = {
                     input_helper_is_custom:
                         'By checking this option, you will be able to choose your own files for the sprites of this character, otherwise you may use the paper doll system to create the sprite of this character',
                     input_label_emotion: 'Current Paper Doll Emotion',
-                    input_label_filters: 'Paper Pieces Filters',
+                    input_label_filters: 'Paper Pieces Tags',
                     input_label_custom_image: 'Choose Custom Image',
                 },
                 modifier: {

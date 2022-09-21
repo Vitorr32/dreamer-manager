@@ -1,5 +1,15 @@
+import {
+    PLACEHOLDER_PIECE_BODY_FEMALE,
+    PLACEHOLDER_PIECE_BODY_MALE,
+    PLACEHOLDER_PIECE_FACE_FEMALE,
+    PLACEHOLDER_PIECE_FACE_MALE,
+    PLACEHOLDER_PIECE_HAIR_FEMALE,
+    PLACEHOLDER_PIECE_HAIR_MALE,
+} from 'renderer/shared/Constants';
 import { v4 as uuidv4 } from 'uuid';
+import { Gender } from './Character.model';
 import { EntityBase } from './Entity.model';
+import { BodyPiece, FacePiece, HairPiece } from './PaperPiece.model';
 import { Variables, VariableType } from './Variable.model';
 
 /**
@@ -17,7 +27,7 @@ import { Variables, VariableType } from './Variable.model';
  *
  * Each one of these sections has variants, such as skin color for skin pieces. Eye format for different ethinicities and so on.
  */
-type DollPieces = {
+export type DollPieces = {
     [key in Emotion]: {
         hairPiece: string;
         facePiece: string;
@@ -98,12 +108,18 @@ export class PaperDoll extends EntityBase {
     lowerClothing: string;
     fullBodyClothing: string;
 
-    constructor(id?: string) {
+    constructor(gender: Gender, id?: string, baseBody?: BodyPiece, baseFace?: FacePiece, baseHair?: HairPiece) {
         super();
 
         this.id = id || `paper_doll_${uuidv4()}`;
         this.isCustom = false;
-        this.emotions = {} as DollPieces;
+        this.emotions = {
+            [Emotion.NEUTRAL]: {
+                hairPiece: baseHair || gender === Gender.FEMALE ? PLACEHOLDER_PIECE_HAIR_FEMALE : PLACEHOLDER_PIECE_HAIR_MALE,
+                bodyPiece: baseBody || gender === Gender.FEMALE ? PLACEHOLDER_PIECE_BODY_FEMALE : PLACEHOLDER_PIECE_BODY_MALE,
+                facePiece: baseFace || gender === Gender.FEMALE ? PLACEHOLDER_PIECE_FACE_FEMALE : PLACEHOLDER_PIECE_FACE_MALE,
+            },
+        } as DollPieces;
     }
 }
 
