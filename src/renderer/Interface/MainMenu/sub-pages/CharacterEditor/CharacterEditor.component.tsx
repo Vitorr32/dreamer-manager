@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Step, StepButton, Stepper, Typography } from '@mui/material';
+import { Box, Button, cardClasses, Paper, Step, StepButton, Stepper, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -28,6 +28,7 @@ export function CharacterEditor({}: IProps) {
 
     const [currentCharacter, setCurrentCharacter] = useState<Dreamer | Character>();
     const [stepperIndex, setStepperIndex] = useState<number>(0);
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         const IDParameter = params?.id;
@@ -96,6 +97,15 @@ export function CharacterEditor({}: IProps) {
         setStepperIndex(stepperIndex - 1);
     };
 
+    const onCharacterSubmit = (): void => {
+        if (currentCharacter) {
+        }
+
+        setLoading(true);
+    };
+
+    const validateCharacterVariables = (): void => {};
+
     if (!currentCharacter) {
         return null;
     }
@@ -119,7 +129,9 @@ export function CharacterEditor({}: IProps) {
                     {CharacterSteps.map((characterStep, index) => {
                         return (
                             <Step completed={characterStep.completed} key={`character_editor_step_${index}`}>
-                                <StepButton onClick={(_) => setStepperIndex(index)}>{characterStep.label}</StepButton>
+                                <StepButton onClick={(_) => (index === 0 || CharacterSteps[index - 1].completed ? setStepperIndex(index) : null)}>
+                                    {characterStep.label}
+                                </StepButton>
                             </Step>
                         );
                     })}

@@ -13,7 +13,15 @@ export const en_US = {
                 decrease: 'decrease',
                 language: 'Language',
             },
+            utils: {
+                date_format: 'MM/dd/yyyy',
+                full_date_format: 'MM/dd/yyyy HH:mm',
+            },
             editor: {
+                commons: {
+                    required: 'This field is required.',
+                    invalid_date: 'The date is in a invalid format, the expected format is MM/DD/YYYY (Month/Day/Year)',
+                },
                 trait: {
                     next_step: 'Next',
                     previous_step: 'Previous',
@@ -114,6 +122,16 @@ export const en_US = {
                     input_label_hometown: 'Hometown',
                     input_placeholder_hometown_disabled: 'Select a Nationality First',
                     input_placeholder_hometown: 'Select a City',
+                    input_label_ethnicity: 'Ethnicity',
+                    input_placeholder_ethnicity: 'Select a Ethnicity',
+                    input_helper_ethnicity: `The ethnicity indicates the physical appearance of the character`,
+                    input_label_culture: 'Culture',
+                    input_placeholder_culture: 'Select a Culture',
+                    input_helper_culture: `The culture of a character affects his religious inclinations, personal values, morals and objectives we may have, culture also can affect heavily how comfortable the character may be in foreign environments`,
+                    input_label_language: 'Languages',
+                    input_placeholder_language: 'Select the Languages',
+                    input_helper_language:
+                        'The list of the languages that this character knows, the main language of the culture will always be fluent, any others may have different levels of knowledge',
                     input_label_residence: 'Place of Residence',
                     input_placeholder_residence: 'Select a City',
                     input_label_affluence: 'Standard of Living',
@@ -391,6 +409,8 @@ export const en_US = {
                     birthday: 'Birthday',
                     age: 'Age',
                     ethnicity: 'Ethnicity',
+                    culture: 'Culture',
+                    language: 'Languages',
                     gender: 'Gender',
                     flags: 'Event Flags',
                     residence_location: 'Residence Location',

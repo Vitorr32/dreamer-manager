@@ -3,3 +3,11 @@ export enum Culture {
     GERMANIA = 'model.character.culture.germania',
     LECHIA = 'model.character.culture.lechia',
 }
+
+export enum LanguageDomination {
+    NO_EXPERIENCE = '',
+    BEGINNER = '',
+    INTERMEDIATE = '',
+    ADVANCED = '',
+    FLUENT = '',
+}

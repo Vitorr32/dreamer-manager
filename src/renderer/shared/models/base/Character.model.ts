@@ -4,6 +4,7 @@ import { Variables, VariableType } from './Variable.model';
 import { Entity } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
 import { PaperDoll } from './PaperDoll.model';
+import { Culture, LanguageDomination } from '../enums/Culture.enum';
 
 export enum Gender {
     MALE = 'male',
@@ -68,6 +69,8 @@ export enum CharacterVariablesKey {
     BIRTHDAY = 'birthday',
     AGE = 'age',
     ETHNICITY = 'ethnicity',
+    CULTURE = 'culture',
+    LANGUAGE = 'language',
     GENDER = 'gender',
     FLAGS = 'flags',
     AGENCY = 'agency',
@@ -84,6 +87,11 @@ export enum CharacterVariablesKey {
     BODY_TYPE = 'bodyType',
 }
 
+export type LanguageKnowledge = {
+    language: Culture;
+    domain: LanguageDomination;
+};
+
 export const CharacterEntityVariables: Variables = {
     id: { key: CharacterVariablesKey.ID, displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
     name: { key: CharacterVariablesKey.NAME, displayName: 'model.character.variables.name', type: VariableType.TEXT, read: true, edit: true },
@@ -98,6 +106,22 @@ export const CharacterEntityVariables: Variables = {
         options: Object.values(Ethnicity).map((value) => value),
         read: true,
         edit: false,
+    },
+    [CharacterVariablesKey.CULTURE]: {
+        key: CharacterVariablesKey.CULTURE,
+        displayName: 'model.character.variables.culture',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(Culture).map((value) => value),
+        read: true,
+        edit: true,
+    },
+    [CharacterVariablesKey.LANGUAGE]: {
+        key: CharacterVariablesKey.LANGUAGE,
+        displayName: 'model.character.variables.language',
+        type: VariableType.ENUMERATOR_LIST,
+        options: Object.values(Culture).map((value) => value),
+        read: true,
+        edit: true,
     },
     gender: {
         key: CharacterVariablesKey.GENDER,
@@ -231,8 +255,11 @@ export class Character extends EntityBase {
     //The character may be unemployed
     public agency?: string;
 
-    public ethnicity: Ethnicity = Ethnicity.CAUCASIAN;
+    public ethnicity: Ethnicity;
+    public culture: Culture;
+    public language: LanguageKnowledge[];
     public gender: Gender = Gender.FEMALE;
+
     public traits: string[] = [];
     public flags: string[] = [];
     public sprites: string[] = [];
