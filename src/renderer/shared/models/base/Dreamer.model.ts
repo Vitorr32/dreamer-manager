@@ -440,8 +440,18 @@ export class Dreamer extends Character {
         );
     }
 
-    public calculateBodyType = (): BodyType => {
-        const bmi = this.weight / ((this.height / 100) ^ 2);
+    public calculateBodyType(): BodyType {
+        if (!this.weight || !this.height || !this.fatPercentage) {
+            console.log('missingProperty');
+            return BodyType.UNDEFINED;
+        }
+
+        const heightInMeters = this.height / 100;
+        const bmi = this.weight / (heightInMeters * heightInMeters);
+
+        if (isNaN(bmi)) {
+            return BodyType.UNDEFINED;
+        }
 
         if (bmi < 19 && this.fatPercentage < 5) {
             return BodyType.ANOREXIC;
@@ -460,5 +470,5 @@ export class Dreamer extends Character {
         } else {
             return BodyType.OBESE;
         }
-    };
+    }
 }

@@ -14,9 +14,10 @@ interface IProps {
     paperDoll?: PaperDoll;
     onChange: (key: CharacterVariablesKey | DreamerVariablesKey, value: any) => void;
     onPreviousStep: () => void;
+    onNextStep: () => void;
 }
 
-export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPreviousStep }: IProps) {
+export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPreviousStep, onNextStep }: IProps) {
     const params = useParams();
 
     const { t, i18n } = useTranslation();
@@ -67,7 +68,13 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
 
             <Grid container spacing={2} justifyContent={'center'}>
                 <Grid item xs={8}>
-                    <PaperDollViewer character={character} paperDoll={currentPaperDoll} emotion={currentEmotion} editable />
+                    <PaperDollViewer
+                        character={character}
+                        paperDoll={currentPaperDoll}
+                        emotion={currentEmotion}
+                        editable
+                        onPaperDollChange={(updatedDoll) => onChange(CharacterVariablesKey.PAPER_DOLL, updatedDoll)}
+                    />
                 </Grid>
 
                 {!character.paperDoll?.isCustom && (
@@ -77,28 +84,15 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
                 )}
             </Grid>
 
-            {/* <FormControl>
-                <InputLabel>{t('interface.editor.dreamer.input_label_family')}</InputLabel>
-                <Select
-                    value={character || ''}
-                    label={t('interface.editor.dreamer.input_label_family')}
-                    onChange={(ev) => onChange(DreamerVariablesKey.FAMILY_SITUATION, ev.target.value)}
-                >
-                    <MenuItem disabled value="">
-                        {t('interface.editor.dreamer.input_placeholder_family')}
-                    </MenuItem>
-                    {Object.values(FamilySituation).map((enumValue) => (
-                        <MenuItem key={enumValue} value={enumValue}>
-                            {t(enumValue)}
-                        </MenuItem>
-                    ))}
-                </Select>
-                <FormHelperText>{t('interface.editor.dreamer.input_helper_family')}</FormHelperText>
-            </FormControl> */}
+            <Stack spacing={2} direction="row" justifyContent="end" sx={{ marginTop: '20px' }}>
+                <Button variant="contained" onClick={onPreviousStep}>
+                    {t('interface.commons.previous')}
+                </Button>
 
-            <Button variant="contained" onClick={onPreviousStep} sx={{ marginLeft: 'auto', display: 'inline-block', marginTop: '20px' }}>
-                {t('interface.commons.previous')}
-            </Button>
+                <Button variant="contained" onClick={onNextStep}>
+                    {t('interface.commons.save')}
+                </Button>
+            </Stack>
         </Stack>
     );
 }

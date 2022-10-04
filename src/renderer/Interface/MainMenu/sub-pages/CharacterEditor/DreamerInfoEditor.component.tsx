@@ -4,14 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { DreamerAttributeViewer } from 'renderer/shared/components/character/DreamerAttributeViewer.component';
 import { MAXIMUM_DREAMER_POTENTIAL, MINIMUM_DREAMER_POTENTIAL } from 'renderer/shared/Constants';
-import { CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
+import { BodyType, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
 import { CareerObjective, CareerPath, Dreamer, DreamerVariablesKey, FamilySituation } from 'renderer/shared/models/base/Dreamer.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 
 interface IProps {
     dreamer: Dreamer;
-    onChange: (key: CharacterVariablesKey | DreamerVariablesKey, value: any) => void;
+    onChange: (key: CharacterVariablesKey | DreamerVariablesKey, value: any, isNumberInput?: boolean) => void;
     onNextStep: () => void;
     onPreviousStep: () => void;
 }
@@ -52,6 +52,11 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
 
     const isAttributeOverTheCap = (): boolean => {
         return dreamer.getCurrentAbility() > dreamer.abilityPotential;
+    };
+
+    const getBodyTypeLabel = (): string => {
+        const bodyType = dreamer.calculateBodyType();
+        return t(bodyType === BodyType.UNDEFINED ? 'interface.editor.dreamer.body_type_error' : bodyType);
     };
 
     return (
@@ -138,6 +143,7 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
                 helperText={t('interface.editor.character.input_helper_weight')}
                 sx={{ marginTop: '20px' }}
                 value={dreamer.weight}
+                onChange={(ev: any) => onChange(DreamerVariablesKey.WEIGHT, ev.target.value, true)}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">kg</InputAdornment>,
                 }}
@@ -148,14 +154,20 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
                 helperText={t('interface.editor.character.input_helper_fat')}
                 sx={{ marginTop: '20px' }}
                 value={dreamer.fatPercentage}
+                onChange={(ev: any) => onChange(DreamerVariablesKey.FAT_PERCENTAGE, ev.target.value, true)}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">%</InputAdornment>,
                 }}
             />
 
-            <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
-                <Typography variant="h5">{t('interface.editor.dreamer.input_label_potential')}</Typography>
-                <FormHelperText>{t('interface.editor.dreamer.input_helper_potential')}</FormHelperText>
+            <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="body2">
+                {t('interface.editor.dreamer.body_type_label') + ` ${getBodyTypeLabel()}`}
+            </Typography>
+
+            <Stack spacing={2} direction="column" sx={{ marginTop: '20px' }} alignItems="center">
+                <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="h5">
+                    {t('interface.editor.dreamer.input_label_potential')}
+                </Typography>
                 <Slider
                     min={MINIMUM_DREAMER_POTENTIAL}
                     max={MAXIMUM_DREAMER_POTENTIAL}
@@ -167,9 +179,10 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
                 <Typography sx={{ color: 'text.primary' }} variant="caption">
                     {getPotentialLabel(dreamer.abilityPotential)}
                 </Typography>
+                <FormHelperText>{t('interface.editor.dreamer.input_helper_potential')}</FormHelperText>
             </Stack>
 
-            <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
+            <Stack spacing={2} direction="column" sx={{ marginTop: '20px' }} alignItems="center">
                 <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="h5">
                     {t('interface.editor.dreamer.potential_to_distribute', { ability: Math.max(dreamer.abilityPotential - dreamer.getCurrentAbility(), 0) })}
                     {isAttributeOverTheCap() && (
@@ -178,8 +191,8 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
                         </Tooltip>
                     )}
                 </Typography>
-                <FormHelperText>{t('interface.editor.dreamer.potential_to_distribute_helper')}</FormHelperText>
                 <DreamerAttributeViewer dreamer={dreamer} editable hasError={isAttributeOverTheCap()} onChange={onAttributeChange} />
+                <FormHelperText>{t('interface.editor.dreamer.potential_to_distribute_helper')}</FormHelperText>
             </Stack>
 
             <Stack spacing={2} direction="row" justifyContent="end" sx={{ marginTop: '20px' }}>

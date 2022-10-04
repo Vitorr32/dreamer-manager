@@ -8,6 +8,7 @@ export const en_US = {
                 delete: 'Delete',
                 close: 'Close',
                 submit: 'Submit',
+                save: 'Save',
                 by: 'by',
                 increase: 'increase',
                 decrease: 'decrease',
@@ -365,10 +366,25 @@ export const en_US = {
                 },
             },
             character: {
+                gender: {
+                    female: 'Female',
+                    male: 'Male',
+                },
                 type: {
                     staff: 'Staff',
                     active_dreamer: 'Dreamer',
                     retired_dreamer: 'Retired Dreamer',
+                },
+                ethnicity: {
+                    germania: 'Germanian',
+                    mediterranean: 'Mediterranean',
+                    sinae: 'Sinaen',
+                    sacae: 'Sacae',
+                    indus: 'Indus',
+                    mesopotamia: 'Mesopotamian',
+                    abyssinia: 'Abyssinian',
+                    fuscus: 'Fuscus',
+                    nova_terrae: 'Nova-Terraen',
                 },
                 culture: {
                     wakoku: 'Wakokuan',

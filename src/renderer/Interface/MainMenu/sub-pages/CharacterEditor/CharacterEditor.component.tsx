@@ -12,6 +12,7 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { Dreamer, DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
 import { DreamerInfoEditor } from './DreamerInfoEditor.component';
 import { CharacterPaperDollEditor } from './CharacterPaperDollEditor.component';
+import { current } from '@reduxjs/toolkit';
 
 interface IProps {}
 
@@ -42,13 +43,22 @@ export function CharacterEditor({}: IProps) {
         }
     }, []);
 
-    const onCharacterVariableUpdated = (key: CharacterVariablesKey | DreamerVariablesKey, value: any) => {
+    const onCharacterVariableUpdated = (key: CharacterVariablesKey | DreamerVariablesKey, value: any, isNumberInput: boolean = false) => {
         if (key === CharacterVariablesKey.TYPE && value === CharacterType.ACTIVE_DREAMER) {
             const convertedToDreamer = Object.assign(new Dreamer(), currentCharacter);
 
             convertedToDreamer[key] = value;
             setCurrentCharacter(convertedToDreamer);
             return;
+        }
+
+        if (isNumberInput) {
+            try {
+                const parsedValue = parseFloat(value);
+                value = isNaN(parsedValue) ? '' : parsedValue;
+            } catch (e) {
+                value = 0;
+            }
         }
 
         const updatedCharacter: any = CopyClassInstance(currentCharacter);
@@ -82,6 +92,7 @@ export function CharacterEditor({}: IProps) {
                         paperDoll={currentCharacter.paperDoll}
                         onChange={onCharacterVariableUpdated}
                         onPreviousStep={onPreviousStep}
+                        onNextStep={onCharacterSubmit}
                     />
                 );
             default:
@@ -97,11 +108,13 @@ export function CharacterEditor({}: IProps) {
         setStepperIndex(stepperIndex - 1);
     };
 
-    const onCharacterSubmit = (): void => {
-        if (currentCharacter) {
+    const onCharacterSubmit = async (): Promise<void> => {
+        setLoading(true);
+
+        if (currentCharacter.paperDoll.isCustom) {
         }
 
-        setLoading(true);
+        console.log();
     };
 
     const validateCharacterVariables = (): void => {};
@@ -129,7 +142,8 @@ export function CharacterEditor({}: IProps) {
                     {CharacterSteps.map((characterStep, index) => {
                         return (
                             <Step completed={characterStep.completed} key={`character_editor_step_${index}`}>
-                                <StepButton onClick={(_) => (index === 0 || CharacterSteps[index - 1].completed ? setStepperIndex(index) : null)}>
+                                <StepButton onClick={(_) => setStepperIndex(index)}>
+                                    {/* <StepButton onClick={(_) => (index === 0 || CharacterSteps[index - 1].completed ? setStepperIndex(index) : null)}> */}
                                     {characterStep.label}
                                 </StepButton>
                             </Step>

@@ -22,6 +22,10 @@ export function RemoveFileProtocol(path: string): string {
     return path.replace('local-file-protocol://', '');
 }
 
+export function GetFileNameFromPath(path: string): string {
+    return path.split('\\').pop().split('/').pop();
+}
+
 export async function GetFileFromResources(path: string[]): Promise<{ path: string; buffer: Buffer }> {
     const file = await window.electron.fileSystem.getFileFromResources(path);
     return { path: ApplyFileProtocol(file.path), buffer: file.buffer };

@@ -7,8 +7,8 @@ import { PaperDoll } from './PaperDoll.model';
 import { Culture, LanguageDomination } from '../enums/Culture.enum';
 
 export enum Gender {
-    MALE = 'male',
-    FEMALE = 'female',
+    MALE = 'model.character.gender.male',
+    FEMALE = 'model.character.gender.female',
 }
 
 export enum Affluence {
@@ -30,10 +30,15 @@ export enum CharacterType {
 }
 
 export enum Ethnicity {
-    CAUCASIAN = 'caucasian',
-    INDIAN = 'indian',
-    ASIAN = 'asian',
-    AFRICAN = 'african',
+    CAUCASIAN = 'model.character.ethnicity.germania',
+    MEDITERRANEAN = 'model.character.ethnicity.mediterranean',
+    EAST_ASIAN = 'model.character.ethnicity.sinae',
+    STEPPE_NOMAD = 'model.character.ethnicity.sacae',
+    INDIAN = 'model.character.ethnicity.indus',
+    ARAB = 'model.character.ethnicity.mesopotamia',
+    SUB_SAHARA_AFRICAN = 'model.character.ethnicity.abyssinia',
+    MIXED = 'model.character.ethnicity.fuscus',
+    AMERICAN_INDIAN = 'model.character.ethnicity.nova_terrae',
 }
 
 export enum Status {
@@ -51,6 +56,8 @@ export enum Style {
 }
 
 export enum BodyType {
+    UNDEFINED = 'model.undefined',
+
     ANOREXIC = 'model.character.body_type.anorexic',
     SKINNY = 'model.character.body_type.skinny',
     UNDERWEIGHT = 'model.character.body_type.underweight',

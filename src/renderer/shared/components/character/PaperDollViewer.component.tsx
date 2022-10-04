@@ -2,12 +2,13 @@ import { Button, Stack, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
-import { DollPieces, Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
+import { Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
 import { Character } from 'renderer/shared/models/base/Character.model';
 import { PaperPiece, PieceType } from 'renderer/shared/models/base/PaperPiece.model';
 import { useState } from 'react';
-import { ApplyFileProtocol } from 'renderer/shared/utils/StringOperations';
+import { ApplyFileProtocol, GetFileFromResources, GetFileNameFromPath } from 'renderer/shared/utils/StringOperations';
 import CloseIcon from '@mui/icons-material/Close';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
     character: Character;
@@ -15,14 +16,14 @@ interface IProps {
     emotion: Emotion;
     editable?: boolean;
     fullBody?: boolean;
+    onPaperDollChange?: (paperDoll: PaperDoll) => void;
 }
 
-export function PaperDollViewer({ character, paperDoll, emotion, editable = false, fullBody = false }: IProps) {
+export function PaperDollViewer({ character, paperDoll, emotion, editable = false, fullBody = false, onPaperDollChange }: IProps) {
     const theme = useTheme();
     const paperPieces = useAppSelector((state: RootState) => state.database.mappedDatabase.paperPieces);
 
     const { t, i18n } = useTranslation();
-    const [tempImagePath, setTempImagePath] = useState<{ [key in Emotion]: string }>();
 
     const getPieceOfTypeForEmotion = (paperDoll: PaperDoll, emotion: Emotion, pieceType: PieceType): PaperPiece => {
         const closestEmotion = getClosestEmotion(paperDoll, emotion);
@@ -72,10 +73,6 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
 
     const getCustomSprite = (paperDoll: PaperDoll, emotion: Emotion): string => {
         while (true) {
-            if (tempImagePath && tempImagePath[emotion]) {
-                return tempImagePath[emotion];
-            }
-
             if (paperDoll.emotions[emotion]) {
                 return paperDoll.emotions[emotion].customFileAbsolutePath;
             }
@@ -83,11 +80,9 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
             emotion = getClosestEmotion(paperDoll, emotion);
 
             if (emotion === Emotion.NEUTRAL) {
-                return tempImagePath?.[emotion] || paperDoll.emotions[emotion].customFileAbsolutePath;
+                return paperDoll.emotions[emotion].customFileAbsolutePath;
             }
         }
-
-        return '';
     };
 
     const onImageSelected = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -101,7 +96,39 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
             files.push({ path: file.path, name: file.name });
         }
 
-        setTempImagePath({ ...tempImagePath, [emotion]: ApplyFileProtocol(files[0].path) });
+        const updatedPaperDoll = CopyClassInstance(paperDoll);
+        updatedPaperDoll.emotions[emotion].customFileAbsolutePath = ApplyFileProtocol(files[0].path);
+        onPaperDollChange(updatedPaperDoll);
+    };
+
+    const onImageRemoved = async (): Promise<void> => {
+        const updatedPaperDoll = CopyClassInstance(paperDoll);
+        const emotionSprite = updatedPaperDoll.emotions[emotion];
+
+        console.log('emotionSprite.customFilePath.pop()', emotionSprite.customFilePath?.pop());
+        console.log('GetFileNameFromPath(emotionSprite.customFileAbsolutePath)', GetFileNameFromPath(emotionSprite.customFileAbsolutePath));
+
+        //If there is no original custom file before the current one.
+        if (!emotionSprite.customFilePath || emotionSprite.customFilePath.length === 0) {
+            updatedPaperDoll.emotions[emotion].customFileAbsolutePath = null;
+            onPaperDollChange(updatedPaperDoll);
+            return;
+        }
+
+        //If there is a original custom file that is different from the current one, rollback to that one.
+        if (GetFileNameFromPath(emotionSprite.customFileAbsolutePath) !== emotionSprite.customFilePath.pop()) {
+            const originalFileInfo = await GetFileFromResources(emotionSprite.customFilePath);
+            updatedPaperDoll.emotions[emotion].customFileAbsolutePath = ApplyFileProtocol(originalFileInfo.path);
+            onPaperDollChange(updatedPaperDoll);
+            return;
+        }
+
+        //If the image removed is the original one
+        if (GetFileNameFromPath(emotionSprite.customFileAbsolutePath) === emotionSprite.customFilePath.pop()) {
+            updatedPaperDoll.emotions[emotion].customFileAbsolutePath = null;
+            updatedPaperDoll.emotions[emotion].customFilePath = null;
+            onPaperDollChange(updatedPaperDoll);
+        }
     };
 
     return (
@@ -116,7 +143,7 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
             {paperDoll.isCustom && getCustomSprite(paperDoll, emotion) && (
                 <>
                     <img src={getCustomSprite(paperDoll, emotion)} />
-                    <Button variant="contained" onClick={(_) => setTempImagePath({ ...tempImagePath, [emotion]: '' })}>
+                    <Button variant="contained" onClick={onImageRemoved}>
                         <CloseIcon />
                     </Button>
                 </>

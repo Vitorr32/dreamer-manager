@@ -27,7 +27,7 @@ import { Culture } from 'renderer/shared/models/enums/Culture.enum';
 
 interface IProps {
     character: Dreamer | Character;
-    onChange: (key: CharacterVariablesKey, value: any) => void;
+    onChange: (key: CharacterVariablesKey, value: any, isNumberInput?: boolean) => void;
     onNextStep: () => void;
 }
 
@@ -46,44 +46,55 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
     const onBasicInfoSubmit = (ev: any) => {
         ev.preventDefault();
 
-        let hasError = false;
-        const updatedInfoErrors = {
-            ...errorState,
-        };
+        // let hasError = false;
+        // const updatedInfoErrors = {
+        //     ...errorState,
+        // };
 
-        [
-            CharacterVariablesKey.TYPE,
-            CharacterVariablesKey.HEIGHT,
-            CharacterVariablesKey.NAME,
-            CharacterVariablesKey.SURNAME,
-            CharacterVariablesKey.BIRTHDAY,
-            CharacterVariablesKey.NATIONALITY,
-            CharacterVariablesKey.HOMETOWN,
-            CharacterVariablesKey.ETHNICITY,
-            CharacterVariablesKey.TRAITS,
-        ].forEach((fieldKey) => {
-            let fieldHasError = character[fieldKey] ? false : true;
-            updatedInfoErrors[fieldKey] = fieldHasError;
+        // //Required Check
+        // [
+        //     CharacterVariablesKey.TYPE,
+        //     CharacterVariablesKey.HEIGHT,
+        //     CharacterVariablesKey.NAME,
+        //     CharacterVariablesKey.SURNAME,
+        //     CharacterVariablesKey.BIRTHDAY,
+        //     CharacterVariablesKey.NATIONALITY,
+        //     CharacterVariablesKey.HOMETOWN,
+        //     CharacterVariablesKey.ETHNICITY,
+        //     CharacterVariablesKey.CULTURE,
+        //     CharacterVariablesKey.TRAITS,
+        // ].forEach((fieldKey) => {
+        //     let fieldHasError = character[fieldKey] ? false : true;
+        //     updatedInfoErrors[fieldKey] = fieldHasError;
 
-            if (fieldHasError && !hasError) {
-                hasError = true;
-            }
-        });
+        //     if (fieldHasError && !hasError) {
+        //         hasError = true;
+        //     }
+        // });
 
-        if (hasError) {
-            setErrorState(updatedInfoErrors);
-            return;
-        }
+        // if (hasError) {
+        //     setErrorState(updatedInfoErrors);
+        //     return;
+        // }
 
         onNextStep();
     };
 
-    const onInputChange = (key: CharacterVariablesKey, value: any) => {
+    const onInputChange = (key: CharacterVariablesKey, value: any, isNumberInput: boolean = false) => {
+        if (isNumberInput) {
+            try {
+                value = parseFloat(value);
+            } catch (e) {
+                value = 0;
+            }
+        }
+
+        console.log(value);
+        console.log('isNumberInput', isNumberInput)
+
         onChange(key, value);
         setErrorState({ ...errorState, [key]: value ? false : true });
     };
-
-    console.log(character);
 
     return (
         <Stack direction="column" component={'form'} noValidate autoComplete="off" onSubmit={onBasicInfoSubmit}>
@@ -120,7 +131,8 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
                 helperText={errorState?.[CharacterVariablesKey.HEIGHT] ? t('interface.editor.commons.required') : t('interface.editor.character.input_helper_height')}
                 sx={{ marginTop: '20px' }}
                 required
-                value={character.height}
+                onChange={(ev) => onInputChange(CharacterVariablesKey.HEIGHT, ev.target.value, true)}
+                value={character.height || ''}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">cm</InputAdornment>,
                 }}
