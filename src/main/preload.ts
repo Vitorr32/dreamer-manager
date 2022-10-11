@@ -18,16 +18,13 @@ contextBridge.exposeInMainWorld('electron', {
         getFilesFromResourcesDatabase(folderPath = '') {
             return ipcRenderer.invoke('get-db-files', ['database', folderPath]);
         },
-        saveFilesToResources(path: string[] = [], files: any[]) {
-            return ipcRenderer.invoke('save-assets-files', { path: path, files: files });
-        },
         saveFilesToTempFolder(files: any[]) {
             return ipcRenderer.invoke('save-temp-files', files);
         },
         saveFileToResources(path: string[], fileName: string, content: any) {
             return ipcRenderer.invoke('save-as-json', { path: path, fileName: fileName, content: content });
         },
-        copyFileToResources(originPath: string, destinationPath: string) {
+        copyFileToResources(originPath: string, destinationPath: string[]) {
             return ipcRenderer.invoke('save-as-copy', { originPath: originPath, destinationPath: destinationPath });
         },
         getFileInfo(path: string[]) {

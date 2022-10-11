@@ -2,6 +2,8 @@ import { ipcMain, app } from 'electron';
 import fs from 'fs';
 import path from 'path';
 
+const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
+
 ipcMain.handle('save-as-json', async (_, args: { path: string[]; fileName: string; content: string }) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.path);
@@ -15,12 +17,11 @@ ipcMain.handle('save-as-json', async (_, args: { path: string[]; fileName: strin
 });
 
 ipcMain.handle('save-as-copy', async (_, args: { originPath: string; destinationPath: string[] }) => {
-    const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.destinationPath);
 
     try {
         fs.copyFileSync(args.originPath, ASSET_PATH);
-        return true;
+        return ASSET_PATH;
     } catch (e) {
         return e;
     }
