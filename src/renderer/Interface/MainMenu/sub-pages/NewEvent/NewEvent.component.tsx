@@ -23,7 +23,7 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EventLinkModal } from './EventLinkModal.component';
 import { NewEventFlag } from './NewEventFlag.component';
 import { GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
-import { InsertIconInAssets, InsertJSONFileAsDatabase } from 'renderer/shared/scripts/DatabaseCreate.script';
+import { InsertIconInAssets, UpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { EffectEditor } from 'renderer/shared/components/effects/EffectEditor.component';
@@ -238,7 +238,7 @@ export function NewEvent({}: IProps) {
             toSubmitEvent.visualNovel = toSubmitVN;
         }
 
-        InsertJSONFileAsDatabase([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], BASE_EVENT_FILE, toSubmitEvent, true);
+        UpdateDatabaseJSONFile([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], BASE_EVENT_FILE, toSubmitEvent, true);
         setLoadingState(false);
     };
 

@@ -8,7 +8,7 @@ import { Button, Typography } from '@mui/material';
 import { BASE_TRAIT_FILE, DATABASE_FOLDER, ICONS_FOLDER, LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 import { ApplyFileProtocol, GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
-import { InsertIconInAssets, InsertJSONFileAsDatabase } from 'renderer/shared/scripts/DatabaseCreate.script';
+import { InsertIconInAssets, UpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 
 interface IProps {
     trait: Trait;
@@ -42,7 +42,7 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
         submittedTrait.spritePath = fileInfo?.fullName;
 
         InsertIconInAssets(RemoveFileProtocol(iconPath), [ICONS_FOLDER, TRAIT_DATABASE_FOLDER], submittedTrait.spritePath);
-        InsertJSONFileAsDatabase([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], BASE_TRAIT_FILE, submittedTrait);
+        UpdateDatabaseJSONFile([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], BASE_TRAIT_FILE, submittedTrait);
 
         setLoading(false);
     };

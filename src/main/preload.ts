@@ -21,8 +21,8 @@ contextBridge.exposeInMainWorld('electron', {
         saveFilesToTempFolder(files: any[]) {
             return ipcRenderer.invoke('save-temp-files', files);
         },
-        saveFileToResources(path: string[], fileName: string, content: any) {
-            return ipcRenderer.invoke('save-as-json', { path: path, fileName: fileName, content: content });
+        saveFileToResources(path: string[], content: any) {
+            return ipcRenderer.invoke('save-as-json', { path: path, content: content });
         },
         copyFileToResources(originPath: string, destinationPath: string[]) {
             return ipcRenderer.invoke('save-as-copy', { originPath: originPath, destinationPath: destinationPath });

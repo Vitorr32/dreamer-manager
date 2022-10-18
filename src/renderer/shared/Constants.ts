@@ -45,6 +45,8 @@ export const ICONS_FOLDER = 'icons';
 export const TRAIT_DATABASE_FOLDER = 'traits';
 export const IMAGES_FOLDER = 'images';
 export const SPRITES_FOLDER = 'sprites';
+export const CUSTOM_FOLDER = 'custom';
+export const CHARACTERS_FOLDER = 'characters';
 export const GENERIC_SPRITES_FOLDER = 'generic';
 export const BACKGROUND_IMAGES_FOLDER = 'background';
 export const EVENT_BACKGROUND_IMAGES_FOLDER = 'event';
@@ -60,6 +62,7 @@ export const CUSTOM_USER_FOLDER = '';
 //BASE GAME FILES
 export const BASE_TRAIT_FILE = 'BaseGameTraits.json';
 export const BASE_EVENT_FILE = 'BaseGameEvents.json';
+export const BASE_CHARACTER_FILE = 'BaseGameCharacters.json';
 
 ////////////////////////////////
 //RESOURCES FULL QUALIFIED PATH

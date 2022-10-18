@@ -4,12 +4,12 @@ import path from 'path';
 
 const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
 
-ipcMain.handle('save-as-json', async (_, args: { path: string[]; fileName: string; content: string }) => {
+ipcMain.handle('save-as-json', async (_, args: { path: string[]; content: string }) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.path);
 
     try {
-        fs.writeFileSync(path.join(ASSET_PATH, args.fileName), args.content);
+        fs.writeFileSync(path.join(ASSET_PATH), args.content);
         return true;
     } catch (e) {
         return e;

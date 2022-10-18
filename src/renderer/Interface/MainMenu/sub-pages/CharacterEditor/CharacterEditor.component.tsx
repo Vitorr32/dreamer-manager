@@ -12,10 +12,9 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { Dreamer, DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
 import { DreamerInfoEditor } from './DreamerInfoEditor.component';
 import { CharacterPaperDollEditor } from './CharacterPaperDollEditor.component';
-import { current } from '@reduxjs/toolkit';
 import { Emotion } from 'renderer/shared/models/base/PaperDoll.model';
 import { ApplyFileProtocol, GetFileNameFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
-import { BASE_GAME_FOLDER, SPRITES_FOLDER } from 'renderer/shared/Constants';
+import { BASE_CHARACTER_FILE, CHARACTERS_FOLDER, CUSTOM_FOLDER, DATABASE_FOLDER, SPRITES_FOLDER } from 'renderer/shared/Constants';
 
 interface IProps {}
 
@@ -111,14 +110,6 @@ export function CharacterEditor({}: IProps) {
         setStepperIndex(stepperIndex - 1);
     };
 
-    const generateGenericNameForCustomSprite = (emotion: Emotion, fileName: string) => {
-        //Regex to get the extension of the filename
-        const regex = /(?:\.([^.]+))?$/;
-        //Get the emotion as a index
-        const indexOfEmotion = Object.values(Emotion).indexOf(emotion);
-        return `${currentCharacter.name}_${currentCharacter.id}_${indexOfEmotion}.${regex.exec(fileName)[1]}`;
-    };
-
     const onCharacterSubmit = async (): Promise<void> => {
         setLoading(true);
         const updatedCharacter = CopyClassInstance(currentCharacter);
@@ -132,12 +123,7 @@ export function CharacterEditor({}: IProps) {
 
                 //Check if the custom character sprite has changed;
                 if ((!currentCustomFileName && newCustomFileName) || currentCustomFileName !== newCustomFileName) {
-                    const newCustomPath = [
-                        SPRITES_FOLDER,
-                        // TODO: Think of the way to save new content from the user to the assets folders in a organized way ("player" folder?)
-                        BASE_GAME_FOLDER,
-                        generateGenericNameForCustomSprite(currentEmotion, newCustomFileName),
-                    ];
+                    const newCustomPath = [SPRITES_FOLDER, CUSTOM_FOLDER, generateGenericNameForCustomSprite(currentEmotion, newCustomFileName)];
 
                     const fileOperationResult = await window.electron.fileSystem.copyFileToResources(
                         RemoveFileProtocol(currentEmotionPaperDoll.customFileAbsolutePath),
@@ -153,9 +139,31 @@ export function CharacterEditor({}: IProps) {
                 }
             }
         }
+
+        if (!validateCharacterVariables(updatedCharacter)) {
+            //TODO: Show error on submit
+            return;
+        }
+
+        const fileOperationResult = await CreateOrUpdateDatabaseJSONFile([DATABASE_FOLDER, CHARACTERS_FOLDER], BASE_CHARACTER_FILE, JSON.stringify(updatedCharacter));
+        console.log(fileOperationResult);
     };
 
-    const validateCharacterVariables = (): void => {};
+    const generateGenericNameForCustomSprite = (emotion: Emotion, fileName: string) => {
+        //Regex to get the extension of the filename
+        const regex = /(?:\.([^.]+))?$/;
+        //Get the emotion as a index
+        const indexOfEmotion = Object.values(Emotion).indexOf(emotion);
+        return `${currentCharacter.name}_${currentCharacter.id}_${indexOfEmotion}.${regex.exec(fileName)[1]}`;
+    };
+
+    const generateNameOfCharacterFile = (character: Dreamer | Character): string => {
+        return `${currentCharacter.name}_${currentCharacter.id}`;
+    };
+
+    const validateCharacterVariables = (character: Dreamer | Character): boolean => {
+        return true;
+    };
 
     if (!currentCharacter) {
         return null;
