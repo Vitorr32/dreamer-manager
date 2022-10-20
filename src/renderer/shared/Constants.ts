@@ -47,6 +47,7 @@ export const IMAGES_FOLDER = 'images';
 export const SPRITES_FOLDER = 'sprites';
 export const CUSTOM_FOLDER = 'custom';
 export const CHARACTERS_FOLDER = 'characters';
+export const PAPER_DOLL_FOLDER = 'dolls';
 export const GENERIC_SPRITES_FOLDER = 'generic';
 export const BACKGROUND_IMAGES_FOLDER = 'background';
 export const EVENT_BACKGROUND_IMAGES_FOLDER = 'event';

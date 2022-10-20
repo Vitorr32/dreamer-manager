@@ -8,23 +8,15 @@ ipcMain.handle('save-as-json', async (_, args: { path: string[]; content: string
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.path);
 
-    try {
-        fs.writeFileSync(path.join(ASSET_PATH), args.content);
-        return true;
-    } catch (e) {
-        return e;
-    }
+    fs.writeFileSync(ASSET_PATH, args.content, { flag: 'w' });
+    return ASSET_PATH;
 });
 
 ipcMain.handle('save-as-copy', async (_, args: { originPath: string; destinationPath: string[] }) => {
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.destinationPath);
 
-    try {
-        fs.copyFileSync(args.originPath, ASSET_PATH);
-        return ASSET_PATH;
-    } catch (e) {
-        return e;
-    }
+    fs.copyFileSync(args.originPath, ASSET_PATH);
+    return ASSET_PATH;
 });
 
 ipcMain.handle('save-temp-files', async (_, args: { name: string; path: string }[]) => {

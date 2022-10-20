@@ -15,6 +15,7 @@ import { CharacterPaperDollEditor } from './CharacterPaperDollEditor.component';
 import { Emotion } from 'renderer/shared/models/base/PaperDoll.model';
 import { ApplyFileProtocol, GetFileNameFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { BASE_CHARACTER_FILE, CHARACTERS_FOLDER, CUSTOM_FOLDER, DATABASE_FOLDER, SPRITES_FOLDER } from 'renderer/shared/Constants';
+import { CreateOrUpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 
 interface IProps {}
 
@@ -114,7 +115,7 @@ export function CharacterEditor({}: IProps) {
         setLoading(true);
         const updatedCharacter = CopyClassInstance(currentCharacter);
 
-        if (updatedCharacter.paperDoll.isCustom) {
+        if (updatedCharacter.paperDoll && updatedCharacter.paperDoll.isCustom) {
             for (let emotion in Emotion) {
                 const currentEmotion: Emotion = Emotion[emotion as keyof typeof Emotion];
                 const currentEmotionPaperDoll = updatedCharacter.paperDoll.emotions[currentEmotion];
@@ -146,7 +147,6 @@ export function CharacterEditor({}: IProps) {
         }
 
         const fileOperationResult = await CreateOrUpdateDatabaseJSONFile([DATABASE_FOLDER, CHARACTERS_FOLDER], BASE_CHARACTER_FILE, JSON.stringify(updatedCharacter));
-        console.log(fileOperationResult);
     };
 
     const generateGenericNameForCustomSprite = (emotion: Emotion, fileName: string) => {

@@ -4,7 +4,7 @@ import { Variables, VariableType } from './Variable.model';
 import { Entity } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
 import { PaperDoll } from './PaperDoll.model';
-import { Culture, LanguageDomination } from '../enums/Culture.enum';
+import { Culture, LanguageFluency } from '../enums/Culture.enum';
 
 export enum Gender {
     MALE = 'model.character.gender.male',
@@ -96,7 +96,7 @@ export enum CharacterVariablesKey {
 
 export type LanguageKnowledge = {
     language: Culture;
-    domain: LanguageDomination;
+    fluency: LanguageFluency;
 };
 
 export const CharacterEntityVariables: Variables = {
@@ -240,7 +240,7 @@ export class Character extends EntityBase {
     public nickname: string;
     public age: number;
     public birthday: Date;
-    public paperDoll: PaperDoll;
+    public paperDoll: string;
     // If this character is available if they have the correct age, otherwise they will only appear after a event effect.
     public isActive: boolean;
     // The id of the Nation that this character has citizenship.

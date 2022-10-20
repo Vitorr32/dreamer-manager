@@ -46,36 +46,37 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
     const onBasicInfoSubmit = (ev: any) => {
         ev.preventDefault();
 
-        // let hasError = false;
-        // const updatedInfoErrors = {
-        //     ...errorState,
-        // };
+        let hasError = false;
+        const updatedInfoErrors = {
+            ...errorState,
+        };
 
-        // //Required Check
-        // [
-        //     CharacterVariablesKey.TYPE,
-        //     CharacterVariablesKey.HEIGHT,
-        //     CharacterVariablesKey.NAME,
-        //     CharacterVariablesKey.SURNAME,
-        //     CharacterVariablesKey.BIRTHDAY,
-        //     CharacterVariablesKey.NATIONALITY,
-        //     CharacterVariablesKey.HOMETOWN,
-        //     CharacterVariablesKey.ETHNICITY,
-        //     CharacterVariablesKey.CULTURE,
-        //     CharacterVariablesKey.TRAITS,
-        // ].forEach((fieldKey) => {
-        //     let fieldHasError = character[fieldKey] ? false : true;
-        //     updatedInfoErrors[fieldKey] = fieldHasError;
+        //Required Check
+        [
+            CharacterVariablesKey.ID,
+            CharacterVariablesKey.TYPE,
+            CharacterVariablesKey.HEIGHT,
+            CharacterVariablesKey.NAME,
+            CharacterVariablesKey.SURNAME,
+            CharacterVariablesKey.BIRTHDAY,
+            CharacterVariablesKey.NATIONALITY,
+            CharacterVariablesKey.HOMETOWN,
+            CharacterVariablesKey.ETHNICITY,
+            CharacterVariablesKey.CULTURE,
+            CharacterVariablesKey.TRAITS,
+        ].forEach((fieldKey) => {
+            let fieldHasError = character[fieldKey] ? false : true;
+            updatedInfoErrors[fieldKey] = fieldHasError;
 
-        //     if (fieldHasError && !hasError) {
-        //         hasError = true;
-        //     }
-        // });
+            if (fieldHasError && !hasError) {
+                hasError = true;
+            }
+        });
 
-        // if (hasError) {
-        //     setErrorState(updatedInfoErrors);
-        //     return;
-        // }
+        if (hasError) {
+            setErrorState(updatedInfoErrors);
+            return;
+        }
 
         onNextStep();
     };
@@ -89,16 +90,23 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
             }
         }
 
-        console.log(value);
-        console.log('isNumberInput', isNumberInput)
-
         onChange(key, value);
         setErrorState({ ...errorState, [key]: value ? false : true });
     };
 
     return (
         <Stack direction="column" component={'form'} noValidate autoComplete="off" onSubmit={onBasicInfoSubmit}>
-            <Box sx={{ display: 'flex', columnGap: '20px' }}>
+            <TextField
+                label={t('interface.editor.character.input_label_id')}
+                required
+                value={character.id}
+                onChange={(ev) => onInputChange(CharacterVariablesKey.ID, ev.target.value)}
+                variant="outlined"
+                error={errorState?.[CharacterVariablesKey.ID]}
+                helperText={errorState?.[CharacterVariablesKey.ID] ? t('interface.editor.commons.required') : t('interface.editor.character.input_helper_id')}
+            />
+
+            <Box sx={{ display: 'flex', columnGap: '20px', marginTop: '20px' }}>
                 <TextField
                     label={t('interface.editor.character.input_label_first_name')}
                     required
@@ -245,6 +253,28 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
                 >
                     <MenuItem disabled value="">
                         {t('interface.editor.character.input_placeholder_culture')}
+                    </MenuItem>
+                    {Object.values(Culture).map((enumValue) => (
+                        <MenuItem key={enumValue} value={enumValue}>
+                            {t(enumValue)}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText>
+                    {errorState?.[CharacterVariablesKey.CULTURE] ? t('interface.editor.commons.required') : t('interface.editor.character.input_helper_culture')}
+                </FormHelperText>
+            </FormControl>
+
+            <FormControl required sx={{ marginTop: '20px' }}>
+                <InputLabel>{t('interface.editor.character.input_label_language')}</InputLabel>
+                <Select
+                    value={character.language || []}
+                    label={t('interface.editor.character.input_label_language')}
+                    onChange={(ev) => onInputChange(CharacterVariablesKey.LANGUAGE, ev.target.value)}
+                    multiple
+                >
+                    <MenuItem disabled value="">
+                        {t('interface.editor.character.input_placeholder_language')}
                     </MenuItem>
                     {Object.values(Culture).map((enumValue) => (
                         <MenuItem key={enumValue} value={enumValue}>

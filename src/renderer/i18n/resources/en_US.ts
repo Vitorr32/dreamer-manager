@@ -90,6 +90,8 @@ export const en_US = {
                 character: {
                     title: 'Character Modifier',
                     subtitle: 'Create/Modify the character to be added to the database',
+                    input_label_id: 'Identifier',
+                    input_helper_id: 'The unique identifier that this character will have in the game',
                     input_label_first_name: 'First Name',
                     input_label_nickname: 'Nickname',
                     input_label_surname: 'Surname',

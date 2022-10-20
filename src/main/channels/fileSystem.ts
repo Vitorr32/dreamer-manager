@@ -5,11 +5,8 @@ import fs from 'fs';
 ipcMain.handle('get-file', async (_, args: { path: string[] }) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.path);
-    try {
-        return { path: ASSET_PATH, buffer: fs.readFileSync(ASSET_PATH).toString() };
-    } catch (e) {
-        return e;
-    }
+
+    return { absolutePath: ASSET_PATH, content: fs.readFileSync(ASSET_PATH).toString() };
 });
 
 ipcMain.handle('get-file-info', async (_, args: string) => {
@@ -77,7 +74,7 @@ ipcMain.handle('get-static-files', async (_, args: string[]) => {
             if (/\.(?:ico|gif|png|jpg|jpeg|webp)$/.test(path.extname(absolutePath))) {
                 return (files[fileName].resourcePath = absolutePath);
             } else if (path.extname(absolutePath) === '.json') {
-                return (files[fileName].metadataData = JSON.parse(fs.readFileSync(absolutePath, 'utf-8')));
+                return (files[fileName].metadataData = fs.readFileSync(absolutePath, 'utf-8'));
             }
             return;
         });

@@ -77,7 +77,7 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
                     />
                 </Grid>
 
-                {!character.paperDoll?.isCustom && (
+                {!paperDoll?.isCustom && (
                     <Grid item xs={4}>
                         <PiecesSelector onFilterChange={onFilteredChange} />
                     </Grid>

@@ -4,7 +4,7 @@ export enum Culture {
     LECHIA = 'model.character.culture.lechia',
 }
 
-export enum LanguageDomination {
+export enum LanguageFluency {
     NO_EXPERIENCE = '',
     BEGINNER = '',
     INTERMEDIATE = '',

@@ -1,19 +1,23 @@
-export async function CreateOrUpdateDatabaseJSONFile(path: string[], fileName: string, newValue: any, overwrite: boolean = false): Promise<void> {
+export async function CreateOrUpdateDatabaseJSONFile(path: string[], fileName: string, newValue: any, target: string = 'base', overwrite: boolean = false): Promise<void> {
     try {
         //Check if the file already exists
-        const fileInfo = await window.electron.fileSystem.getFileFromResources([...path, fileName]);
-        UpdateDatabaseJSONFile(path, fileName, newValue, overwrite);
+        //TODO: Allow different type of target files like mod folder and so on.
+        const fileInfo: { absolutePath: string; content: string } = await window.electron.fileSystem.getFileFromResources([...path, fileName]);
+        if (fileInfo) {
+            UpdateDatabaseJSONFile([...path, fileName], fileInfo, newValue, overwrite);
+        }
     } catch (e) {
-        console.log('ERRROR ?: e');
         CreateDatabaseJSONFile(path, fileName, newValue);
     }
 }
 
-export async function UpdateDatabaseJSONFile(path: string[], fileName: string, newValue: any, overwrite: boolean = false): Promise<void> {
-    //TODO: Allow different type of target files like mod folder and so on.
-    const loadedFileJSON: { path: string; buffer: string } = await window.electron.fileSystem.getFileFromResources([...path, fileName]);
-
-    const parsedFile: any[] = JSON.parse(loadedFileJSON.buffer);
+export async function UpdateDatabaseJSONFile(
+    path: string[],
+    currentDatabase: { absolutePath: string; content: string },
+    newValue: any,
+    overwrite: boolean = false
+): Promise<void> {
+    const parsedFile: any[] = JSON.parse(currentDatabase.content);
     const fileIndex = parsedFile.findIndex((value) => value.id === newValue.id);
 
     if (fileIndex === -1) {
@@ -27,10 +31,10 @@ export async function UpdateDatabaseJSONFile(path: string[], fileName: string, n
         }
     }
 
-    const result = await window.electron.fileSystem.saveFileToResources([...path, fileName], JSON.stringify(parsedFile));
+    const result = await window.electron.fileSystem.saveFileToResources(path, JSON.stringify(parsedFile));
 
     if (typeof result === 'boolean' && result) {
-        console.log(`File ${fileName} created/updated`);
+        console.log(`File ${path.pop()} created/updated`);
     } else {
         console.error(result);
     }

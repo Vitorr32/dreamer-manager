@@ -15,8 +15,8 @@ contextBridge.exposeInMainWorld('electron', {
         getStaticResourcesOnFoldersAndSubFolders(path: string[] = []) {
             return ipcRenderer.invoke('get-static-files', path);
         },
-        getFilesFromResourcesDatabase(folderPath = '') {
-            return ipcRenderer.invoke('get-db-files', ['database', folderPath]);
+        getFilesFromResourcesDatabase(folderPath: string[] = []) {
+            return ipcRenderer.invoke('get-db-files', folderPath);
         },
         saveFilesToTempFolder(files: any[]) {
             return ipcRenderer.invoke('save-temp-files', files);
