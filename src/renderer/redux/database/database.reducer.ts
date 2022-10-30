@@ -72,6 +72,24 @@ export const databaseSlice = createSlice({
             }
         ) => {
             switch (action.payload.key) {
+                case Entity.CHARACTERS:
+                    state.characters = action.payload.value;
+                    state.characters.forEach((character) => {
+                        if (state.mappedDatabase.nations[character.id]) {
+                            throw new Error('A nation with id ' + character.id + ' is duplicated');
+                        }
+
+                        state.mappedDatabase.characters[character.id] = character;
+                    });
+                case Entity.PAPER_DOLL:
+                    state.paperDolls = action.payload.value;
+                    state.paperDolls.forEach((paperDoll) => {
+                        if (state.mappedDatabase.nations[paperDoll.id]) {
+                            throw new Error('A nation with id ' + paperDoll.id + ' is duplicated');
+                        }
+
+                        state.mappedDatabase.paperDolls[paperDoll.id] = paperDoll;
+                    });
                 case Entity.NATIONS:
                     state.nations = action.payload.value;
                     state.nations.forEach((nation) => {
@@ -140,6 +158,7 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case Entity.PAPER_PIECE:
+                    console.log(action.payload.value);
                     const entities = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(PaperPiece.prototype), rawAttributeData));
 
                     state.paperPieces = entities;

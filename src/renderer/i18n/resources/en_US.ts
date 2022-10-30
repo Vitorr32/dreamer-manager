@@ -21,7 +21,9 @@ export const en_US = {
             editor: {
                 commons: {
                     required: 'This field is required.',
+                    required_field: 'The field {{field}} is required',
                     invalid_date: 'The date is in a invalid format, the expected format is MM/DD/YYYY (Month/Day/Year)',
+                    not_unique_id: 'The id for this character is not unique',
                 },
                 trait: {
                     next_step: 'Next',
@@ -141,6 +143,8 @@ export const en_US = {
                     input_placeholder_affluence: 'Select Character Wealth',
                     trait_list_label: 'Character Traits',
                     trait_list_helper: '',
+                    feedback_modal_warning: 'Warning',
+                    feedback_modal_list_header: 'The following issues have been found when trying to save the character:',
                 },
                 dreamer: {
                     input_label_family: 'Family Situation',

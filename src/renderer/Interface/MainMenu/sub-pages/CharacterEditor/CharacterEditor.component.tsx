@@ -1,20 +1,35 @@
-import { Box, Button, cardClasses, Paper, Step, StepButton, Stepper, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Card,
+    cardClasses,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Paper,
+    Step,
+    StepButton,
+    Stepper,
+    Typography,
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 import { CharacterBasicInfoEditor } from './CharacterBasicInfoEditor.component';
-import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
+import { Character, CharacterType, CharacterVariablesKey, Gender } from 'renderer/shared/models/base/Character.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { Dreamer, DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
 import { DreamerInfoEditor } from './DreamerInfoEditor.component';
 import { CharacterPaperDollEditor } from './CharacterPaperDollEditor.component';
-import { Emotion } from 'renderer/shared/models/base/PaperDoll.model';
+import { Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
 import { ApplyFileProtocol, GetFileNameFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
-import { BASE_CHARACTER_FILE, CHARACTERS_FOLDER, CUSTOM_FOLDER, DATABASE_FOLDER, SPRITES_FOLDER } from 'renderer/shared/Constants';
+import { BASE_CHARACTER_FILE, BASE_PAPER_DOLLS_FILE, CHARACTERS_FOLDER, CUSTOM_FOLDER, DATABASE_FOLDER, PAPER_DOLL_FOLDER, SPRITES_FOLDER } from 'renderer/shared/Constants';
 import { CreateOrUpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 
 interface IProps {}
@@ -28,21 +43,27 @@ export function CharacterEditor({}: IProps) {
         { label: t('interface.editor.character.step_sprite_info'), completed: false },
     ];
     const params = useParams();
-    const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.characters);
+    const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const [currentCharacter, setCurrentCharacter] = useState<Dreamer | Character>();
+    const [currentPaperDoll, setCurrentPaperDoll] = useState<PaperDoll>();
     const [stepperIndex, setStepperIndex] = useState<number>(0);
+    const [isSubmitFeedbackOpen, setSubmitFeedbackState] = useState(false);
+    const [feedbackState, setFeedbackState] = useState<{ key: CharacterVariablesKey; text: string }[]>([]);
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         const IDParameter = params?.id;
 
         if (IDParameter) {
-            const toEditCharacter = mappedEntities[IDParameter];
+            const toEditCharacter = mappedEntities.characters[IDParameter];
+            const toEditPaperDoll = mappedEntities.paperDolls[toEditCharacter.paperDoll];
 
             setCurrentCharacter(toEditCharacter);
+            setCurrentPaperDoll(toEditPaperDoll);
         } else {
             setCurrentCharacter(new Character());
+            setCurrentPaperDoll(new PaperDoll(Gender.FEMALE));
         }
     }, []);
 
@@ -52,6 +73,11 @@ export function CharacterEditor({}: IProps) {
 
             convertedToDreamer[key] = value;
             setCurrentCharacter(convertedToDreamer);
+            return;
+        }
+
+        if (key === CharacterVariablesKey.PAPER_DOLL) {
+            setCurrentPaperDoll(value);
             return;
         }
 
@@ -92,7 +118,7 @@ export function CharacterEditor({}: IProps) {
                 return (
                     <CharacterPaperDollEditor
                         character={currentCharacter}
-                        paperDoll={currentCharacter.paperDoll}
+                        paperDoll={currentPaperDoll}
                         onChange={onCharacterVariableUpdated}
                         onPreviousStep={onPreviousStep}
                         onNextStep={onCharacterSubmit}
@@ -114,11 +140,17 @@ export function CharacterEditor({}: IProps) {
     const onCharacterSubmit = async (): Promise<void> => {
         setLoading(true);
         const updatedCharacter = CopyClassInstance(currentCharacter);
+        const updatedPaperDoll = CopyClassInstance(currentPaperDoll);
 
-        if (updatedCharacter.paperDoll && updatedCharacter.paperDoll.isCustom) {
+        if (updatedPaperDoll.isCustom) {
             for (let emotion in Emotion) {
                 const currentEmotion: Emotion = Emotion[emotion as keyof typeof Emotion];
-                const currentEmotionPaperDoll = updatedCharacter.paperDoll.emotions[currentEmotion];
+                const currentEmotionPaperDoll = updatedPaperDoll.emotions[currentEmotion];
+                //Check if the current emotion has any configuration set
+                if (!currentEmotionPaperDoll) {
+                    continue;
+                }
+
                 const currentCustomFileName = currentEmotionPaperDoll.customFilePath?.pop() || '';
                 const newCustomFileName = GetFileNameFromPath(currentEmotionPaperDoll.customFileAbsolutePath);
 
@@ -132,8 +164,8 @@ export function CharacterEditor({}: IProps) {
                     );
 
                     //Update the current character paper doll for the respective emotion and with the new paths
-                    updatedCharacter.paperDoll.emotions[currentEmotion] = {
-                        ...updatedCharacter.paperDoll.emotions[currentEmotion],
+                    updatedPaperDoll.emotions[currentEmotion] = {
+                        ...updatedPaperDoll.emotions[currentEmotion],
                         customFilePath: newCustomPath,
                         customFileAbsolutePath: ApplyFileProtocol(fileOperationResult),
                     };
@@ -146,7 +178,8 @@ export function CharacterEditor({}: IProps) {
             return;
         }
 
-        const fileOperationResult = await CreateOrUpdateDatabaseJSONFile([DATABASE_FOLDER, CHARACTERS_FOLDER], BASE_CHARACTER_FILE, JSON.stringify(updatedCharacter));
+        await CreateOrUpdateDatabaseJSONFile([DATABASE_FOLDER, CHARACTERS_FOLDER], BASE_CHARACTER_FILE, updatedCharacter);
+        await CreateOrUpdateDatabaseJSONFile([DATABASE_FOLDER, PAPER_DOLL_FOLDER], BASE_PAPER_DOLLS_FILE, updatedPaperDoll);
     };
 
     const generateGenericNameForCustomSprite = (emotion: Emotion, fileName: string) => {
@@ -203,6 +236,26 @@ export function CharacterEditor({}: IProps) {
             <Box component="main" sx={{ overflow: 'visible' }}>
                 {getStepperContent(stepperIndex)}
             </Box>
+
+            {/* <Dialog open={isSubmitFeedbackOpen} onClose={() => setSubmitFeedbackState(false)}>
+                <DialogTitle>{t('interface.editor.character.feedback_modal_warning')}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{t('interface.editor.character.feedback_modal_list_header')}</DialogContentText>
+                    <Card>
+                        {feedbackState.map((feedback) => {
+                            return (
+                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                    adjective
+                                </Typography>
+                            );
+                        })}
+                    </Card>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleClose}>Subscribe</Button>
+                </DialogActions>
+            </Dialog> */}
         </Box>
     );
 }

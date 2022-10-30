@@ -64,6 +64,7 @@ export const CUSTOM_USER_FOLDER = '';
 export const BASE_TRAIT_FILE = 'BaseGameTraits.json';
 export const BASE_EVENT_FILE = 'BaseGameEvents.json';
 export const BASE_CHARACTER_FILE = 'BaseGameCharacters.json';
+export const BASE_PAPER_DOLLS_FILE = 'BaseGamePaperDolls.json';
 
 ////////////////////////////////
 //RESOURCES FULL QUALIFIED PATH

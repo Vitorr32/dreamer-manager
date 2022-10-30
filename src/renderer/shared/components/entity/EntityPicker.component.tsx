@@ -37,6 +37,8 @@ export function EntityPicker({ entity, pickerTitle, getDisplayName, open, picker
         onSelected(selectedValue);
     };
 
+    console.log('Characters', entities);
+
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogContent sx={{ padding: '20px', minWidth: '600px' }}>

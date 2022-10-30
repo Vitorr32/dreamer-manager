@@ -31,17 +31,17 @@ export async function UpdateDatabaseJSONFile(
         }
     }
 
-    const result = await window.electron.fileSystem.saveFileToResources(path, JSON.stringify(parsedFile));
+    const result = await window.electron.fileSystem.saveFileToResources(path, JSON.stringify(parsedFile, null, '\t'));
 
-    if (typeof result === 'boolean' && result) {
+    if (result) {
         console.log(`File ${path.pop()} created/updated`);
     } else {
-        console.error(result);
+        console.error('Error when saving', result);
     }
 }
 
 export async function CreateDatabaseJSONFile(path: string[], fileName: string, newValue: any): Promise<void> {
-    const result = await window.electron.fileSystem.saveFileToResources([...path, fileName], JSON.stringify([newValue]));
+    const result = await window.electron.fileSystem.saveFileToResources([...path, fileName], JSON.stringify([newValue], null, '\t'));
 
     if (typeof result === 'boolean' && result) {
         console.log(`File ${fileName} created/updated`);

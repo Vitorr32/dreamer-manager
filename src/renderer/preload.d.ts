@@ -21,7 +21,7 @@ declare global {
                 // Such file are paper pieces for now
                 getStaticResourcesOnFoldersAndSubFolders(path: string[]): { resourcePath: string; fileName: string; metadataData: string }[];
                 getFilesFromResourcesDatabase(path: string[]): string[];
-                saveFileToResources(path: string[], content: any): string;
+                saveFileToResources(path: string[], content: string): string;
                 copyFileToResources(originPath: string, destinationPath: string[]): string;
                 getFileInfo(path: string[]): { fileName: string; fullName: string; extension: string };
             };

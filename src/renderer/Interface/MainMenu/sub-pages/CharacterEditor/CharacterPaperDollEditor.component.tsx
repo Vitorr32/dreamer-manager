@@ -22,18 +22,11 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
 
     const { t, i18n } = useTranslation();
     const [currentEmotion, setCurrentEmotion] = useState<Emotion>(Emotion.NEUTRAL);
-    const [currentPaperDoll, setCurrentPaperDoll] = useState<PaperDoll>(new PaperDoll(character.gender || Gender.FEMALE));
-
-    useEffect(() => {
-        if (paperDoll) {
-            setCurrentPaperDoll(paperDoll);
-        }
-    }, [paperDoll]);
 
     const onFilteredChange = () => {};
 
     const onPaperDollChange = (variableKey: PaperDollVariablesKey, value: any) => {
-        const updatedDoll: any = CopyClassInstance(currentPaperDoll);
+        const updatedDoll: any = CopyClassInstance(paperDoll);
 
         updatedDoll[variableKey] = value;
         onChange(CharacterVariablesKey.PAPER_DOLL, updatedDoll);
@@ -43,9 +36,7 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
         <Stack spacing={4} direction="column">
             <FormControl>
                 <FormControlLabel
-                    control={
-                        <Checkbox checked={currentPaperDoll.isCustom || false} onChange={(ev) => onPaperDollChange(PaperDollVariablesKey.IS_CUSTOM, ev.target.checked)} />
-                    }
+                    control={<Checkbox checked={paperDoll.isCustom || false} onChange={(ev) => onPaperDollChange(PaperDollVariablesKey.IS_CUSTOM, ev.target.checked)} />}
                     label={
                         <Typography variant="caption" sx={{ color: 'text.primary' }}>
                             {t('interface.editor.paper_doll.input_label_is_custom')}
@@ -70,7 +61,7 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
                 <Grid item xs={8}>
                     <PaperDollViewer
                         character={character}
-                        paperDoll={currentPaperDoll}
+                        paperDoll={paperDoll}
                         emotion={currentEmotion}
                         editable
                         onPaperDollChange={(updatedDoll) => onChange(CharacterVariablesKey.PAPER_DOLL, updatedDoll)}

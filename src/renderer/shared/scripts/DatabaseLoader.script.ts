@@ -17,7 +17,7 @@ import { Character } from '../models/base/Character.model';
 import { City } from '../models/base/City.model';
 import { Event } from '../models/base/Event.model';
 import { Nation } from '../models/base/Nation.model';
-import { PaperDoll } from '../models/base/PaperDoll.model';
+import { Emotion, PaperDoll } from '../models/base/PaperDoll.model';
 import { PaperPiece } from '../models/base/PaperPiece.model';
 import { Trait } from '../models/base/Trait.model';
 import { Entity } from '../models/enums/Entities.enum';
@@ -36,8 +36,24 @@ export async function GameStartDatabaseLoad(): Promise<void> {
     const charactersLoaded = await GetResourcesFromDatabase<Character>([DATABASE_FOLDER, CHARACTERS_FOLDER]);
     store.dispatch(gameLoadUpdate({ key: Entity.CHARACTERS, value: charactersLoaded, progress: 10 }));
 
-    // const paperDollsLoaded = await GetResourcesFromDatabase<PaperDoll>([DATABASE_FOLDER, PAPER_DOLL_FOLDER]);
-    // store.dispatch(gameLoadUpdate({ key: Entity.PAPER_DOLL, value: paperDollsLoaded, progress: 15 }));
+    console.log('charactersLoaded', charactersLoaded);
+
+    const paperDollsLoaded = await GetResourcesFromDatabase<PaperDoll>([DATABASE_FOLDER, PAPER_DOLL_FOLDER], async (data: PaperDoll) => {
+        //If the paper doll uses the paper pieces system, then we don't need to get the absolute path of any custom sprite
+        if (!data.isCustom) {
+            return data;
+        }
+
+        for (let emotion in Emotion) {
+            const currentEmotion: Emotion = Emotion[emotion as keyof typeof Emotion];
+            const currentEmotionPaperDoll = data.emotions[currentEmotion];
+
+            const { path } = await GetFileFromResources(currentEmotionPaperDoll.customFilePath);
+            data.emotions[currentEmotion].customFileAbsolutePath = ApplyFileProtocol(path);
+        }
+        return data;
+    });
+    store.dispatch(gameLoadUpdate({ key: Entity.PAPER_DOLL, value: paperDollsLoaded, progress: 15 }));
 
     const nationsLoaded = await GetResourcesFromDatabase<Nation>([DATABASE_FOLDER, NATIONS_DATABASE_FOLDER]);
     store.dispatch(gameLoadUpdate({ key: Entity.NATIONS, value: nationsLoaded, progress: 20 }));
@@ -64,9 +80,9 @@ export async function GetResourcesFromDatabase<T>(path: string[], postProcessing
     const loadedJSONs: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(path);
     const loadedObjects: T[] = [];
 
-    loadedJSONs.map((stringfiedObjectList) => {
+    loadedJSONs.map((stringObjectList) => {
         try {
-            loadedObjects.push(...JSON.parse(stringfiedObjectList));
+            loadedObjects.push(...JSON.parse(stringObjectList));
         } catch (e) {
             console.error(e);
         }
@@ -99,7 +115,7 @@ export async function GetStaticResourcesFromDatabase<T>(
             incompleteData.push(object);
         }
 
-        finalData.push(postProcessingFunction(object.metadataData, object.resourcePath));
+        finalData.push(postProcessingFunction(JSON.parse(object.metadataData), object.resourcePath));
     });
 
     if (incompleteData.length !== 0) {
