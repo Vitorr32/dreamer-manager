@@ -1,19 +1,4 @@
-import {
-    Box,
-    Button,
-    Card,
-    cardClasses,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Paper,
-    Step,
-    StepButton,
-    Stepper,
-    Typography,
-} from '@mui/material';
+import { Box, Button, Paper, Step, StepButton, Stepper, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';

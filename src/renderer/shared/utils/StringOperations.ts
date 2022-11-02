@@ -26,12 +26,12 @@ export function GetFileNameFromPath(path: string): string {
     return path.split('\\').pop().split('/').pop();
 }
 
-export async function GetFileFromResources(path: string[]): Promise<{ path: string; buffer: Buffer }> {
+export async function GetFileFromResources(path: string[]): Promise<{ path: string; content: string }> {
     const file = await window.electron.fileSystem.getFileFromResources(path);
-    return { path: ApplyFileProtocol(file.path), buffer: file.buffer };
+    return { path: ApplyFileProtocol(file.absolutePath), content: file.content };
 }
 
-export async function GetFileInfoFromPath(path: string): Promise<{ fileName: string; fullName: string; extension: string }> {
+export async function GetFileInfoFromPath(path: string[]): Promise<{ fileName: string; fullName: string; extension: string }> {
     const filePath = await window.electron.fileSystem.getFileInfo(path);
     return filePath;
 }

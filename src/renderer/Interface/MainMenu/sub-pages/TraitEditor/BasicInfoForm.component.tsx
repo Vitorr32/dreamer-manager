@@ -1,41 +1,22 @@
-import React, { useEffect } from 'react';
-import { MenuItem, TextField, FormControlLabel, Switch, Button, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { MenuItem, TextField, FormControlLabel, Switch, Button, Typography, FormControl, InputLabel, Select, FormHelperText } from '@mui/material';
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
 import { ICONS, MAX_NUMBER_OF_TRAITS_GENERATED, PLACEHOLDER_TRAIT_ICON, TRAITS } from 'renderer/shared/Constants';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
     nextStep: () => void;
     trait: Trait;
-    iconPath: string;
     onChange: (trait: Trait) => void;
-    setTempImage: (imagePath: any) => void;
 }
 
-export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImage }: IProps) {
+export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
     const { t, i18n } = useTranslation();
 
-    useEffect(() => {
-        async function getTraitFilePath() {
-            //Check if there is already a temporary icon path set.
-            if (iconPath) {
-                return;
-            }
-
-            if (trait.iconPath) {
-                const file = await GetFileFromResources(trait.iconPath);
-                setTempImage(file.path);
-            } else {
-                //Get the placeholder icon for trait
-                const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([ICONS, TRAITS, PLACEHOLDER_TRAIT_ICON]);
-                setTempImage(ApplyFileProtocol(file.path));
-            }
-        }
-
-        getTraitFilePath();
-    }, []);
+    const [errorState, setErrorState] = useState<{ [key: string]: boolean }>();
 
     function onNameChange(value: string): void {
         const newTrait = Object.assign(new Trait(), trait);
@@ -58,20 +39,16 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
         onChange(newTrait);
     }
 
-    const onImageSelected = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-        if (event.target.files === null) {
+    const onImageSelected = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        if (event.target.files === null || event.target.files.length === 0) {
             return;
         }
 
-        const files = [];
-        for (let i = 0; i < event.target.files.length; i++) {
-            const file = event.target.files[i];
-            files.push({ path: file.path, name: file.name });
-        }
+        const iconPath = event.target.files[0];
+        const updatedTrait = CopyClassInstance(trait);
+        updatedTrait.absoluteIconPath = ApplyFileProtocol(iconPath.path);
 
-        const savedFile: any = await window.electron.fileSystem.saveFilesToTempFolder(files);
-
-        setTempImage(ApplyFileProtocol(savedFile[0]));
+        onChange(updatedTrait);
     };
 
     return (
@@ -109,30 +86,20 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
                 onChange={(event) => onDescriptionChange(event.target.value)}
             />
 
-            <TextField
-                required
-                label={t('interface.editor.trait.type_label')}
-                helperText={t('interface.editor.trait.type_helper')}
-                variant="outlined"
-                select
-                value={trait.type}
-                onChange={(event) => onInputChange('type', event.target.value)}
-            >
-                {Object.values(TraitType).map((value) => {
-                    if (value === TraitType.UNDEFINED) {
-                        return (
-                            <MenuItem key={`type_${value}`} value={TraitType.UNDEFINED} disabled>
-                                {t('interface.editor.trait.select_type')}
-                            </MenuItem>
-                        );
-                    }
-                    return (
-                        <MenuItem key={`type_${value}`} value={value}>
-                            {t(value)}
+            <FormControl required sx={{ marginTop: '20px' }}>
+                <InputLabel>{t('interface.editor.trait.type_label')}</InputLabel>
+                <Select value={trait.type || ''} label={t('interface.editor.trait.type_label')} onChange={(ev) => onInputChange('type', ev.target.value)}>
+                    <MenuItem disabled value="">
+                        {t('interface.editor.trait.select_type')}
+                    </MenuItem>
+                    {Object.values(TraitType).map((enumValue) => (
+                        <MenuItem key={enumValue} value={enumValue}>
+                            {t(enumValue)}
                         </MenuItem>
-                    );
-                })}
-            </TextField>
+                    ))}
+                </Select>
+                <FormHelperText>{t('interface.editor.trait.type_helper')}</FormHelperText>
+            </FormControl>
 
             <Box className="basic-info__field">
                 <FormControlLabel
@@ -155,7 +122,7 @@ export function BasicInfoForm({ nextStep, trait, iconPath, onChange, setTempImag
                 <Typography variant="overline"> {t('interface.editor.trait.icon_label')}</Typography>
 
                 <Box className="basic-info__image-current">
-                    <img src={iconPath} alt={`${trait.id}_icon`} />
+                    <img src={trait.absoluteIconPath} alt={`${trait.id}_icon`} />
                 </Box>
 
                 <Button variant="contained" component="label">

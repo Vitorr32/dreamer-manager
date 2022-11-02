@@ -12,10 +12,9 @@ import { InsertIconInAssets, UpdateDatabaseJSONFile } from 'renderer/shared/scri
 
 interface IProps {
     trait: Trait;
-    iconPath: string;
 }
 
-export function NewTraitReview({ trait, iconPath }: IProps) {
+export function NewTraitReview({ trait }: IProps) {
     const { t, i18n } = useTranslation();
 
     const database = useSelector((state: RootState) => state.database);
@@ -29,20 +28,21 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
             return;
         }
 
-        const fileInfo = await GetFileInfoFromPath(ApplyFileProtocol(iconPath));
+        // TODO: Rewrite the persistence of the trait on database
+        // const fileInfo = await GetFileInfoFromPath(ApplyFileProtocol(iconPath));
 
-        if (!fileInfo) {
-            const newValidation = {
-                common: t('interface.editor.validation.missing_icon'),
-            };
-            setInputValidation(newValidation);
-        }
+        // if (!fileInfo) {
+        //     const newValidation = {
+        //         common: t('interface.editor.validation.missing_icon'),
+        //     };
+        //     setInputValidation(newValidation);
+        // }
 
-        const submittedTrait = Object.assign({}, trait);
-        submittedTrait.spritePath = fileInfo?.fullName;
+        // const submittedTrait = Object.assign({}, trait);
+        // submittedTrait.spritePath = fileInfo?.fullName;
 
-        InsertIconInAssets(RemoveFileProtocol(iconPath), [ICONS_FOLDER, TRAIT_DATABASE_FOLDER], submittedTrait.spritePath);
-        UpdateDatabaseJSONFile([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], BASE_TRAIT_FILE, submittedTrait);
+        // InsertIconInAssets(RemoveFileProtocol(iconPath), [ICONS_FOLDER, TRAIT_DATABASE_FOLDER], submittedTrait.spritePath);
+        // UpdateDatabaseJSONFile([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], BASE_TRAIT_FILE, submittedTrait);
 
         setLoading(false);
     };
@@ -63,7 +63,7 @@ export function NewTraitReview({ trait, iconPath }: IProps) {
     return (
         <Box className="trait-review">
             <Box className="trait-review__basic">
-                <img className="trait-review__icon" src={iconPath || trait.spritePath} alt={`${trait.id}_icon`} />
+                <img className="trait-review__icon" src={trait.absoluteIconPath} alt={`${trait.id}_icon`} />
                 <Box className="trait-review__field">
                     <Typography variant="overline">{t('interface.editor.trait.id_label')}</Typography>
                     <Typography>{trait.id}</Typography>

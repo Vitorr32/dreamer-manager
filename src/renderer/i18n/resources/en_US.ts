@@ -26,6 +26,7 @@ export const en_US = {
                     not_unique_id: 'The id for this character is not unique',
                 },
                 trait: {
+                    title: 'Trait Editor',
                     next_step: 'Next',
                     previous_step: 'Previous',
                     select_type: 'Select a Trait Type',
@@ -48,6 +49,8 @@ export const en_US = {
                         'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.',
                     is_spawnable: 'Can spawn',
                     not_spawnable: "Can't spawn",
+                    trait_picker_title: 'Game Traits',
+                    trait_picker_label: 'Trait',
                 },
                 effect: {
                     unset_modifier: 'New Modifier',

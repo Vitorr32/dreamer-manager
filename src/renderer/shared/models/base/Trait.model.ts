@@ -1,10 +1,8 @@
 import { Effect } from './Effect.model';
 import { v4 as uuidv4 } from 'uuid';
-import { LANGUAGE_CODES, LANGUAGE_CODE_DEFAULT } from 'renderer/shared/Constants';
+import { LANGUAGE_CODE_DEFAULT } from 'renderer/shared/Constants';
 
 export enum TraitType {
-    UNDEFINED = 'model.undefined',
-
     NORMAL = 'model.trait.type.normal',
     PHYSICAL = 'model.trait.type.physical',
     MENTAL = 'model.trait.type.mental',
@@ -33,7 +31,7 @@ export class Trait {
         this.id = 'trait_' + uuidv4();
 
         this.localization = {};
-        this.type = TraitType.UNDEFINED;
+        this.type = TraitType.NORMAL;
         this.spawnable = false;
         this.effects = [];
     }

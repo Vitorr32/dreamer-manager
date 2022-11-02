@@ -1,9 +1,7 @@
-import { Trait } from './Trait.model';
 import { v4 as uuidv4 } from 'uuid';
 import { Variables, VariableType } from './Variable.model';
 import { Entity } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
-import { PaperDoll } from './PaperDoll.model';
 import { Culture, LanguageFluency } from '../enums/Culture.enum';
 
 export enum Gender {

@@ -1,7 +1,7 @@
 import { MemoryRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { EditorScreen } from './Interface/MainMenu/page/EditorScreen/EditorScreen.component';
 import { MainScreen } from './Interface/MainMenu/page/MainScreen/MainScreen.component';
-import { TraitEditor } from './Interface/MainMenu/sub-pages/TraitEditor/TraitEditor.component';
+import { TraitEditorContainer } from './Interface/MainMenu/sub-pages/TraitEditor/TraitEditorContainer.component';
 import { createTheme, ThemeProvider } from '@mui/material';
 
 import '@fontsource/roboto';
@@ -23,16 +23,14 @@ export default function App() {
         },
     });
 
-    console.log(theme);
-
     return (
         <ThemeProvider theme={theme}>
             <MemoryRouter>
                 <Routes>
-                    <Route index element={<Navigate to="/menu/edit/character/new" />} />
+                    <Route index element={<Navigate to="/menu/edit/trait" />} />
                     <Route path="/menu" element={<MainScreen />} />
                     <Route path="/menu/edit" element={<EditorScreen />} />
-                    <Route path="/menu/edit/trait/*" element={<TraitEditor />} />
+                    <Route path="/menu/edit/trait/*" element={<TraitEditorContainer />} />
                     <Route path="/menu/edit/event/*" element={<EventEditor />} />
                     <Route path="/menu/edit/character/*" element={<CharacterEditorContainer />} />
                 </Routes>

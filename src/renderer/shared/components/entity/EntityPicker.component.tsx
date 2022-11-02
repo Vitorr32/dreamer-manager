@@ -25,6 +25,8 @@ export function EntityPicker({ entity, pickerTitle, getDisplayName, open, picker
 
     const entities: any[] = useSelector((state: RootState) => {
         switch (entity) {
+            case Entity.TRAITS:
+                return state.database.traits;
             case Entity.CHARACTERS:
                 return state.database.characters;
             default:
@@ -36,8 +38,6 @@ export function EntityPicker({ entity, pickerTitle, getDisplayName, open, picker
     const onSubmit = () => {
         onSelected(selectedValue);
     };
-
-    console.log('Characters', entities);
 
     return (
         <Dialog open={open} onClose={onClose}>
@@ -51,7 +51,7 @@ export function EntityPicker({ entity, pickerTitle, getDisplayName, open, picker
                     renderOption={(props, option) => (
                         <Box component="li" {...props}>
                             <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center' }}>
-                                {option.displayName} {option.id && <Typography sx={{ marginLeft: '10px' }}>- {option.id}</Typography>}
+                                {getDisplayName(option)}
                             </Typography>
                         </Box>
                     )}

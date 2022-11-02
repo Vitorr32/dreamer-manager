@@ -158,7 +158,6 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case Entity.PAPER_PIECE:
-                    console.log(action.payload.value);
                     const entities = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(PaperPiece.prototype), rawAttributeData));
 
                     state.paperPieces = entities;

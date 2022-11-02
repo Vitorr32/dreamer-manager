@@ -48,6 +48,10 @@ export async function GameStartDatabaseLoad(): Promise<void> {
             const currentEmotion: Emotion = Emotion[emotion as keyof typeof Emotion];
             const currentEmotionPaperDoll = data.emotions[currentEmotion];
 
+            if (!currentEmotionPaperDoll) {
+                continue;
+            }
+
             const { path } = await GetFileFromResources(currentEmotionPaperDoll.customFilePath);
             data.emotions[currentEmotion].customFileAbsolutePath = ApplyFileProtocol(path);
         }
