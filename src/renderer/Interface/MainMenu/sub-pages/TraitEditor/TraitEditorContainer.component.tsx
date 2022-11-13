@@ -32,7 +32,7 @@ export function TraitEditorContainer() {
                             <Link to="new">
                                 <button>New Trait</button>
                             </Link>
-                            <Button onClick={() => setStateOfEntityPickerModal(true)}>Edit Character</Button>
+                            <Button onClick={() => setStateOfEntityPickerModal(true)}>Edit Trait</Button>
                         </div>
 
                         <EntityPicker

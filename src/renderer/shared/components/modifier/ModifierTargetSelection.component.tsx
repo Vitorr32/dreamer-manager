@@ -16,6 +16,7 @@ import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.m
 import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
 import { Actor } from 'renderer/shared/models/base/Actor.model';
 import { Relationship } from 'renderer/shared/models/base/Relationship.model';
+import { Effect } from 'renderer/shared/models/base/Effect.model';
 
 interface IProps {
     modifier: Modifier;
@@ -276,7 +277,11 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                     <FormHelperText>{t('interface.editor.modifier.targeting.input_label_target_helper')}</FormHelperText>
                     <FormControl fullWidth>
                         <InputLabel>{t('interface.editor.modifier.targeting.input_label_target_select')}</InputLabel>
-                        <Select value={quickTarget === ShortcutFilter.UNDEFINED ? '' : quickTarget} onChange={(e) => onShortcutSelectChange(e.target.value as ShortcutFilter)}>
+                        <Select
+                            label={t('interface.editor.modifier.targeting.input_label_target_select')}
+                            value={quickTarget === ShortcutFilter.UNDEFINED ? '' : quickTarget}
+                            onChange={(e) => onShortcutSelectChange(e.target.value as ShortcutFilter)}
+                        >
                             {getShortcutTargets().map((option, index) => (
                                 <MenuItem key={`shortcut_${index}`} value={option}>
                                     {t(option)}

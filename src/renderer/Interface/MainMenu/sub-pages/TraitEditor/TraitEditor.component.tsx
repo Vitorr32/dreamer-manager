@@ -17,7 +17,7 @@ export function TraitEditor(props: IProps) {
     const { t, i18n } = useTranslation();
     const params = useParams();
 
-    const [stepperIndex, setStepperIndex] = useState(2);
+    const [stepperIndex, setStepperIndex] = useState(0);
     const [stepsCompleted, setStepsCompleted] = useState([false, false, false]);
     const [currentTrait, setCurrentTrait] = useState(new Trait());
     const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.traits);

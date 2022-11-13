@@ -1,7 +1,7 @@
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ExternalExpandedEntityFilter, EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { ExternalExpandedEntityFilter, EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { CopyClassInstance, GetVariablesOfEntity } from 'renderer/shared/utils/General';
@@ -24,8 +24,8 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
     const { t } = useTranslation();
 
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
-    const [externalEntityFilters, setExternalEntityFilters] = useState<EntityFilter>();
-    const [comparingEntityFilters, setComparingEntityFilters] = useState<EntityFilter>();
+    const [externalEntityFilters, setExternalEntityFilters] = useState<EntityVariableValue>();
+    const [comparingEntityFilters, setComparingEntityFilters] = useState<EntityVariableValue>();
 
     const onFilterChanged = (key: 'entity' | 'variableKey' | 'value' | 'operator' | 'isFilteringExternalKey' | 'isComparingEntities', newValue: any) => {
         const updatedFilter = CopyClassInstance(entityFilter);

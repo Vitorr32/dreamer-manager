@@ -435,7 +435,9 @@ export const en_US = {
                     age: 'Age',
                     ethnicity: 'Ethnicity',
                     culture: 'Culture',
-                    language: 'Languages',
+                    languages: 'Languages',
+                    language: 'Language',
+                    fluency: 'Fluency',
                     gender: 'Gender',
                     flags: 'Event Flags',
                     residence_location: 'Residence Location',
@@ -443,6 +445,11 @@ export const en_US = {
                     height: 'Height',
                     paperDoll: 'Paper Doll/Sprites',
                     bodyType: 'Body Type',
+
+                    //Language Knowledge
+                    elbean: 'Elbean',
+                    wakokuan: 'Wakokuan',
+                    lechian: 'Lechian',
                 },
                 attributes: {},
             },
@@ -678,6 +685,7 @@ export const en_US = {
             },
             variable: {
                 operator: {
+                    //Filtering Operator
                     bigger_than: 'Bigger than',
                     equal_or_bigger_than: 'Equal or bigger than',
                     lesser_than: 'Less than',
@@ -687,6 +695,11 @@ export const en_US = {
                     contains: 'Contains / Has',
                     dont_contain: "Does not contain / Don't have",
                     starts_with: 'Starts with',
+                    //Editor Operator
+                    change_by: 'Change {{variable}} value by',
+                    change_to: 'Change {{variable}} value to',
+                    insert_into_array: 'Insert into {{variable}} list',
+                    remove_from_array: 'Remove from {{variable}} list',
                 },
             },
             modifier: {

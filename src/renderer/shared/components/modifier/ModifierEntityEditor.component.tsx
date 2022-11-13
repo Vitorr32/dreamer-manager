@@ -1,17 +1,18 @@
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
-import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
+import { EntityVariable, VariableOperator } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
 import { EntitySelect } from '../entity/EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
 import { VariableValueInput } from '../variables/VariableValueInput.component';
+import { VariableValueOperator } from '../variables/VariableValueOperator.component';
 interface IProps {
     modifier: Modifier;
     onEntityChange: (entity: Entity) => void;
-    onVariableChange: (key: 'variableKey' | 'value', value: any) => void;
+    onVariableChange: (key: 'variableKey' | 'value' | 'operator', value: any) => void;
     options?: EffectEditorOptions;
 }
 
@@ -24,11 +25,23 @@ export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChang
             <EntitySelect entity={modifier.modifiedEntityVariable?.entity} onEntityChange={onEntityChange} />
 
             {/* VARIABLE SELECT */}
-            {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.entity && modifier.modifiedEntityVariable.entity !== Entity.NONE && <VariableSelect
-                entity={modifier.modifiedEntityVariable?.entity}
-                entityVariableKey={modifier.modifiedEntityVariable.variableKey}
-                onVariableChange={(variable: EntityVariable) => onVariableChange('variableKey', variable.key)}
-            />}
+            {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.entity && modifier.modifiedEntityVariable.entity !== Entity.NONE && (
+                <VariableSelect
+                    entity={modifier.modifiedEntityVariable?.entity}
+                    entityVariableKey={modifier.modifiedEntityVariable.variableKey}
+                    onVariableChange={(variable: EntityVariable) => onVariableChange('variableKey', variable.key)}
+                />
+            )}
+
+            {/* OPERATOR SELECT */}
+            {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.variableKey && (
+                <VariableValueOperator
+                    variable={GetVariablesOfEntity(modifier.modifiedEntityVariable.entity)[modifier.modifiedEntityVariable.variableKey]}
+                    variableOperator={modifier.modifiedEntityVariable.operator}
+                    editOperator={true}
+                    onOperatorChange={(operator: VariableOperator) => onVariableChange('operator', operator)}
+                />
+            )}
 
             {/* VARIABLE INPUT */}
             {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.variableKey && (

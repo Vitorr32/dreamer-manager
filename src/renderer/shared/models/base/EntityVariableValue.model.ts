@@ -13,16 +13,13 @@ export enum DynamicValue {
 export interface EntityVariableValue {
     entity: Entity;
     variableKey: string;
+    operator: VariableOperator;
     value: any;
 }
 
-export interface EntityFilter extends EntityVariableValue {
-    operator: VariableOperator;
-}
-
-export interface ExternalExpandedEntityFilter extends EntityFilter {
+export interface ExternalExpandedEntityFilter extends EntityVariableValue {
     isFilteringExternalKey: boolean;
-    externalEntityFilter: EntityFilter[];
+    externalEntityFilter: EntityVariableValue[];
     isComparingEntities: boolean;
-    comparingEntityFilter: EntityFilter[];
+    comparingEntityFilter: EntityVariableValue[];
 }

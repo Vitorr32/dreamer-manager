@@ -12,23 +12,26 @@ export enum VariableType {
     EXTERNAL_KEY,
     EXTERNAL_KEY_LIST,
     BOOLEAN,
-    EFFECTS_LIST,
-    DYNAMIC_ATTRIBUTE,
     OBJECT,
-    OBJECT_LIST,
 }
 
 export enum VariableOperator {
     NONE = 'model.undefined',
     BIGGER_THAN = 'model.variable.operator.bigger_than',
     EQUAL_OR_BIGGER_THAN = 'model.variable.operator.equal_or_bigger_than',
-    LESSER_THAN = 'model.variable.operator.lesser_than',
+    SMALLER_THAN = 'model.variable.operator.lesser_than',
     EQUAL_OR_SMALLER_THAN = 'model.variable.operator.equal_or_lesser_than',
     EQUALS_TO = 'model.variable.operator.equals_to',
     NOT_EQUALS_TO = 'model.variable.operator.dont_equals_to',
     CONTAINS = 'model.variable.operator.contains',
     DONT_CONTAINS = 'model.variable.operator.dont_contain',
     STARTS_WITH = 'model.variable.operator.starts_with',
+
+    //Edit Operators, that are used when creating modifiers.
+    CHANGE_BY = 'model.variable.operator.change_by',
+    CHANGE_TO = 'model.variable.operator.change_to',
+    INSERT_INTO_ARRAY = 'model.variable.operator.insert_into_array',
+    REMOVE_FROM_ARRAY = 'model.variable.operator.remove_from_array',
 }
 
 export interface EntityVariable {

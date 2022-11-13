@@ -75,7 +75,9 @@ export enum CharacterVariablesKey {
     AGE = 'age',
     ETHNICITY = 'ethnicity',
     CULTURE = 'culture',
+    LANGUAGES = 'languages',
     LANGUAGE = 'language',
+    FLUENCY = 'fluency',
     GENDER = 'gender',
     FLAGS = 'flags',
     AGENCY = 'agency',
@@ -90,6 +92,11 @@ export enum CharacterVariablesKey {
     HEIGHT = 'height',
     PAPER_DOLL = 'paperDoll',
     BODY_TYPE = 'bodyType',
+
+    //Languages
+    ELBEAN = 'elbean',
+    WAKOKUAN = 'wakokuab',
+    LECHIAN = 'lechian',
 }
 
 export type LanguageKnowledge = {
@@ -120,11 +127,36 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: true,
     },
-    [CharacterVariablesKey.LANGUAGE]: {
-        key: CharacterVariablesKey.LANGUAGE,
-        displayName: 'model.character.variables.language',
-        type: VariableType.ENUMERATOR_LIST,
-        options: Object.values(Culture).map((value) => value),
+    [CharacterVariablesKey.LANGUAGES]: {
+        key: CharacterVariablesKey.LANGUAGES,
+        displayName: 'model.character.variables.languages',
+        type: VariableType.OBJECT,
+        objectVariables: {
+            [CharacterVariablesKey.ELBEAN]: {
+                key: CharacterVariablesKey.ELBEAN,
+                displayName: 'model.character.variables.elbean',
+                type: VariableType.ENUMERATOR,
+                options: Object.values(LanguageFluency).map((value) => value),
+                read: true,
+                edit: true,
+            },
+            [CharacterVariablesKey.WAKOKUAN]: {
+                key: CharacterVariablesKey.WAKOKUAN,
+                displayName: 'model.character.variables.wakokuan',
+                type: VariableType.ENUMERATOR,
+                options: Object.values(LanguageFluency).map((value) => value),
+                read: true,
+                edit: true,
+            },
+            [CharacterVariablesKey.LECHIAN]: {
+                key: CharacterVariablesKey.LECHIAN,
+                displayName: 'model.character.variables.lechian',
+                type: VariableType.ENUMERATOR,
+                options: Object.values(LanguageFluency).map((value) => value),
+                read: true,
+                edit: true,
+            },
+        },
         read: true,
         edit: true,
     },
@@ -262,7 +294,11 @@ export class Character extends EntityBase {
 
     public ethnicity: Ethnicity;
     public culture: Culture;
-    public language: LanguageKnowledge[];
+    public languages: {
+        elbean: LanguageFluency;
+        wakokuan: LanguageFluency;
+        lechian: LanguageFluency;
+    };
     public gender: Gender = Gender.FEMALE;
 
     public traits: string[] = [];

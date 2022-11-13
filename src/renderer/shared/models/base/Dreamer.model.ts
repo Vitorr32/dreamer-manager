@@ -116,7 +116,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.INTELLIGENCE]: {
         key: DreamerVariablesKey.INTELLIGENCE,
         displayName: 'model.dreamer.variables.intelligence',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -125,7 +125,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.PHYSICAL_CONDITION]: {
         key: DreamerVariablesKey.PHYSICAL_CONDITION,
         displayName: 'model.dreamer.variables.physical_condition',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -134,7 +134,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.ATTRACTIVENESS]: {
         key: DreamerVariablesKey.ATTRACTIVENESS,
         displayName: 'model.dreamer.variables.attractiveness',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -143,7 +143,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.CONCENTRATION]: {
         key: DreamerVariablesKey.CONCENTRATION,
         displayName: 'model.dreamer.variables.concentration',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -152,7 +152,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.CHARISMA]: {
         key: DreamerVariablesKey.CHARISMA,
         displayName: 'model.dreamer.variables.charisma',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -161,7 +161,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.WILLPOWER]: {
         key: DreamerVariablesKey.WILLPOWER,
         displayName: 'model.dreamer.variables.willpower',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -170,7 +170,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.SINGING]: {
         key: DreamerVariablesKey.SINGING,
         displayName: 'model.dreamer.variables.singing',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -179,7 +179,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.DANCING]: {
         key: DreamerVariablesKey.DANCING,
         displayName: 'model.dreamer.variables.dancing',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -188,7 +188,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.COORDINATION]: {
         key: DreamerVariablesKey.COORDINATION,
         displayName: 'model.dreamer.variables.coordination',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -197,7 +197,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.IMPROVISATION]: {
         key: DreamerVariablesKey.IMPROVISATION,
         displayName: 'model.dreamer.variables.improvisation',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -206,7 +206,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.COMPOSURE]: {
         key: DreamerVariablesKey.COMPOSURE,
         displayName: 'model.dreamer.variables.composure',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -215,7 +215,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.MEMORIZATION]: {
         key: DreamerVariablesKey.MEMORIZATION,
         displayName: 'model.dreamer.variables.memorization',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -224,7 +224,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.BRAVERY]: {
         key: DreamerVariablesKey.BRAVERY,
         displayName: 'model.dreamer.variables.bravery',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -233,7 +233,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.CREATIVITY]: {
         key: DreamerVariablesKey.CREATIVITY,
         displayName: 'model.dreamer.variables.creativity',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -242,7 +242,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.EXPRESSIVITY]: {
         key: DreamerVariablesKey.EXPRESSIVITY,
         displayName: 'model.dreamer.variables.expressivity',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -251,7 +251,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.ACTING]: {
         key: DreamerVariablesKey.ACTING,
         displayName: 'model.dreamer.variables.acting',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -260,7 +260,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.LYRICISM]: {
         key: DreamerVariablesKey.LYRICISM,
         displayName: 'model.dreamer.variables.lyricism',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -269,7 +269,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.SEDUCTION]: {
         key: DreamerVariablesKey.SEDUCTION,
         displayName: 'model.dreamer.variables.seduction',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -278,7 +278,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.ENTERTAINMENT]: {
         key: DreamerVariablesKey.ENTERTAINMENT,
         displayName: 'model.dreamer.variables.entertainment',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -287,7 +287,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.PERSUASION]: {
         key: DreamerVariablesKey.PERSUASION,
         displayName: 'model.dreamer.variables.persuasion',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -296,7 +296,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.ELEGANCY]: {
         key: DreamerVariablesKey.ELEGANCY,
         displayName: 'model.dreamer.variables.elegancy',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -305,7 +305,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.EMPATHY]: {
         key: DreamerVariablesKey.EMPATHY,
         displayName: 'model.dreamer.variables.empathy',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -314,7 +314,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.STAMINA]: {
         key: DreamerVariablesKey.STAMINA,
         displayName: 'model.dreamer.variables.stamina',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -323,7 +323,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.TEAMWORK]: {
         key: DreamerVariablesKey.TEAMWORK,
         displayName: 'model.dreamer.variables.teamwork',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -332,7 +332,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.LEADERSHIP]: {
         key: DreamerVariablesKey.LEADERSHIP,
         displayName: 'model.dreamer.variables.leadership',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
@@ -341,7 +341,7 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.FITNESS]: {
         key: DreamerVariablesKey.FITNESS,
         displayName: 'model.dreamer.variables.fitness',
-        type: VariableType.DYNAMIC_ATTRIBUTE,
+        type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,

@@ -1,4 +1,4 @@
-import { EntityFilter, ExternalExpandedEntityFilter } from './models/base/EntityVariableValue.model';
+import { EntityVariableValue, ExternalExpandedEntityFilter } from './models/base/EntityVariableValue.model';
 import { VariableOperator } from './models/base/Variable.model';
 import { Entity } from './models/enums/Entities.enum';
 
@@ -13,7 +13,7 @@ export const END_DATE = new Date(1072, 1, 1, 0, 0, 0, 0);
 export const PLAYER_AGENCY = 'main_agency';
 export const PLAYER_CHARACTER = 'main_char_000';
 
-export const DEFAULT_ENTITY_FILTER: EntityFilter = {
+export const DEFAULT_ENTITY_FILTER: EntityVariableValue = {
     entity: Entity.NONE,
     operator: VariableOperator.NONE,
     value: '',

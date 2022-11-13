@@ -5,8 +5,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
-import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { Modifier, ModifierType } from 'renderer/shared/models/base/Modifier';
+import { VariableOperator } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
@@ -28,13 +28,18 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
     const onEntityModifierChanged = (entity: Entity): void => {
         const newModifier = CopyClassInstance(modifier);
-        newModifier.modifiedEntityVariable = { entity: entity, variableKey: '', value: '' };
+        newModifier.modifiedEntityVariable = { ...DEFAULT_ENTITY_FILTER, entity };
         onChange(newModifier);
     };
 
-    const onEntityVariableChange = (key: 'variableKey' | 'value', value: any): void => {
+    const onEntityVariableChange = (key: 'variableKey' | 'value' | 'operator', value: any): void => {
         const newModifier = CopyClassInstance(modifier);
         newModifier.modifiedEntityVariable[key] = value;
+        //Check if it's a change of the variable, if it is, reset the operator and value inputs.
+        if (key === 'variableKey' && newModifier.modifiedEntityVariable.operator !== VariableOperator.NONE) {
+            newModifier.modifiedEntityVariable.operator = VariableOperator.NONE;
+            newModifier.modifiedEntityVariable.value = null;
+        }
         onChange(newModifier);
     };
 

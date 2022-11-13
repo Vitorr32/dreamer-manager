@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Effect } from 'renderer/shared/models/base/Effect.model';
+import { Effect, Source } from 'renderer/shared/models/base/Effect.model';
 import { MAX_NUMBER_OF_EFFECTS } from 'renderer/shared/Constants';
 import { EffectEditor } from '../../../../shared/components/effects/EffectEditor.component';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
@@ -25,7 +25,7 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
 
     const onNewEffectAddedToList = (): void => {
         const newTrait = Object.assign({}, trait);
-        newTrait.effects.push(new Effect());
+        newTrait.effects.push(new Effect(trait.id, Source.TRAIT));
 
         onChange(newTrait);
     };
@@ -63,7 +63,7 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                     onChange={onEditEffect}
                     index={editEffectIndex}
                     effect={trait.effects[editEffectIndex]}
-                    options={{ filteredTypes: [ModifierTypeSection.EVENT_SECTION, ModifierTypeSection.TRAIT_SECTION], allowConditionTree: true }}
+                    options={{ filteredTypes: [ModifierTypeSection.EVENT_SECTION], allowConditionTree: true }}
                 />
             )}
 

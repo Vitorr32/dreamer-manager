@@ -33,7 +33,7 @@ export enum Source {
 }
 
 export class Effect {
-    //Whetever this effect affect the holder of the effect or the target, if applicable, of the trigger
+    //Whatever this effect affect the holder of the effect or the target, if applicable, of the trigger
     public targetSelf: boolean;
     //Source is with item/trait/race is the source of the effect, used to associate the effect to parent
     public sourceType: Source;
@@ -49,10 +49,10 @@ export class Effect {
     //What is the modifier that this effect cause
     public modifier: Modifier;
 
-    constructor() {
+    constructor(sourceID: string, sourceType: Source, selfTarget?: boolean) {
+        this.sourceID = sourceID;
+        this.sourceType = sourceType;
         this.targetSelf = true;
-        this.sourceType = Source.UNDEFINED;
-        this.sourceID = '';
         this.trigger = Trigger.UNDEFINED;
         this.conditionTree = undefined;
         this.durationType = Duration.UNDEFINED;

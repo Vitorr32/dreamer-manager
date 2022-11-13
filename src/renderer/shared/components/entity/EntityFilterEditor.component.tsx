@@ -1,7 +1,7 @@
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EntityFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { CopyClassInstance, GetVariablesOfEntity } from 'renderer/shared/utils/General';
@@ -11,8 +11,8 @@ import { VariableValueOperator } from '../variables/VariableValueOperator.compon
 import { VariableValueInput } from '../variables/VariableValueInput.component';
 
 interface IProps {
-    entityFilter: EntityFilter;
-    onFilterChange: (entityFilter: EntityFilter) => void;
+    entityFilter: EntityVariableValue;
+    onFilterChange: (entityFilter: EntityVariableValue) => void;
     lockEntitySelection?: boolean;
 }
 
