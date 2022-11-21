@@ -15,7 +15,7 @@ export const PLAYER_CHARACTER = 'main_char_000';
 
 export const DEFAULT_ENTITY_FILTER: EntityVariableValue = {
     entity: Entity.NONE,
-    operator: VariableOperator.NONE,
+    operator: null,
     value: '',
     variableKey: '',
 };

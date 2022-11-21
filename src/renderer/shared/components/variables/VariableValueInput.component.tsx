@@ -2,7 +2,6 @@ import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { DATE_ONLY_DAY_FORMAT } from 'renderer/shared/Constants';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
@@ -24,7 +23,11 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 return (
                     <FormControl fullWidth>
                         <InputLabel>{t('interface.editor.modifier.input_label_value_change')}</InputLabel>
-                        <Select value={variableValue} label={t('interface.editor.modifier.input_label_value_change')} onChange={(e) => onVariableValueChange(e.target.value)}>
+                        <Select
+                            value={variableValue || ''}
+                            label={t('interface.editor.modifier.input_label_value_change')}
+                            onChange={(e) => onVariableValueChange(e.target.value)}
+                        >
                             {variable.options.map((option, index) => (
                                 <MenuItem key={`entity_var_${index}`} value={option}>
                                     {t(option)}
@@ -38,7 +41,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 return (
                     <TextField
                         fullWidth
-                        value={variableValue}
+                        value={variableValue || ''}
                         label={t('interface.editor.modifier.input_label_value_change')}
                         type="number"
                         onChange={(e) => onVariableValueChange(e.target.value)}
@@ -51,7 +54,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 return (
                     <TextField
                         fullWidth
-                        value={variableValue}
+                        value={variableValue || ''}
                         label={t('interface.editor.modifier.input_label_value_change')}
                         onChange={(e) => onVariableValueChange(e.target.value)}
                     />
@@ -64,7 +67,6 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                             label={t('interface.editor.condition.time_datepicker_label')}
                             mask="__/__/____"
                             onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
-                            inputFormat={DATE_ONLY_DAY_FORMAT}
                             value={new Date(variableValue || '01/01/0001')}
                             onChange={(e: any) => onVariableValueChange(e.toDateString())}
                             renderInput={(params: any) => <TextField {...params} />}

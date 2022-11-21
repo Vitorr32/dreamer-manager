@@ -36,8 +36,8 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         const newModifier = CopyClassInstance(modifier);
         newModifier.modifiedEntityVariable[key] = value;
         //Check if it's a change of the variable, if it is, reset the operator and value inputs.
-        if (key === 'variableKey' && newModifier.modifiedEntityVariable.operator !== VariableOperator.NONE) {
-            newModifier.modifiedEntityVariable.operator = VariableOperator.NONE;
+        if (key === 'variableKey') {
+            newModifier.modifiedEntityVariable.operator = null;
             newModifier.modifiedEntityVariable.value = null;
         }
         onChange(newModifier);

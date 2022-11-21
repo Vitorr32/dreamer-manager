@@ -10,6 +10,8 @@ import { ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 import { Box } from '@mui/system';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
+import { EffectOriginType } from 'renderer/shared/models/options/EffectEditorOptions.model';
 
 interface IProps {
     previousStep: () => void;
@@ -24,21 +26,21 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
     const [editEffectIndex, setEditEffectIndex] = useState<number>(-1);
 
     const onNewEffectAddedToList = (): void => {
-        const newTrait = Object.assign({}, trait);
+        const newTrait = CopyClassInstance(trait);
         newTrait.effects.push(new Effect(trait.id, Source.TRAIT));
 
         onChange(newTrait);
     };
 
     const onEditEffect = (index: number, effect: Effect): void => {
-        const newTrait = Object.assign({}, trait);
+        const newTrait = CopyClassInstance(trait);
         newTrait.effects[index] = effect;
 
         onChange(newTrait);
     };
 
     const onDeleteEffectFromList = (index: number): void => {
-        const newTrait = Object.assign({}, trait);
+        const newTrait = CopyClassInstance(trait);
         newTrait.effects.splice(index, 1);
 
         onChange(newTrait);
@@ -63,7 +65,12 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                     onChange={onEditEffect}
                     index={editEffectIndex}
                     effect={trait.effects[editEffectIndex]}
-                    options={{ filteredTypes: [ModifierTypeSection.EVENT_SECTION], allowConditionTree: true }}
+                    options={{
+                        filteredTypes: [ModifierTypeSection.EVENT_SECTION],
+                        allowConditionTree: true,
+                        effectOriginType: EffectOriginType.TRAIT,
+                        effectOriginID: trait.id,
+                    }}
                 />
             )}
 

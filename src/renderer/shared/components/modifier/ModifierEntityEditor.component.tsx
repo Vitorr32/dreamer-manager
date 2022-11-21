@@ -30,6 +30,7 @@ export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChang
                     entity={modifier.modifiedEntityVariable?.entity}
                     entityVariableKey={modifier.modifiedEntityVariable.variableKey}
                     onVariableChange={(variable: EntityVariable) => onVariableChange('variableKey', variable.key)}
+                    isEditor
                 />
             )}
 

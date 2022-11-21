@@ -11,9 +11,10 @@ interface IProps {
     entity: Entity;
     entityVariableKey: string;
     onVariableChange: (variable: EntityVariable) => void;
+    isEditor?: boolean;
 }
 
-export function VariableSelect({ entity, entityVariableKey, onVariableChange }: IProps) {
+export function VariableSelect({ entity, entityVariableKey, onVariableChange, isEditor = false }: IProps) {
     const { t } = useTranslation();
     const [entityVariables, setEntityVariables] = useState<Variables>();
 
@@ -29,27 +30,17 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange }: 
         return entityVariables
             ? Object.keys(entityVariables)
                   .map((variableID) => {
-                      //If the variable is a object with sub-variables, map them separately and then flatten the array
-                      if (entityVariables[variableID].type === VariableType.OBJECT) {
-                          return Object.keys(entityVariables[variableID].objectVariables).map((subVariableID) => {
-                              const subEntityVariable = entityVariables[variableID].objectVariables;
-                              return {
-                                  label: t(subEntityVariable[subVariableID].displayName),
-                                  value: t(subEntityVariable[subVariableID].key),
-                                  data: subEntityVariable[subVariableID],
-                                  group: entityVariables[variableID].displayName,
-                              };
-                          });
-                      }
-
                       return {
                           label: t(entityVariables[variableID].displayName),
-                          value: t(entityVariables[variableID].key),
+                          value: entityVariables[variableID].key,
                           data: entityVariables[variableID],
-                          group: 'Base',
+                          group: entityVariables[variableID].groupBy ? t(entityVariables[variableID].groupBy) : '',
                       };
                   })
-                  .flat()
+                  .filter((variable) => {
+                      console.log('variable', variable);
+                      return isEditor ? variable.data.edit : true;
+                  })
                   .sort((a, b) => (a.group !== b.group ? 1 : -1))
             : [];
     };

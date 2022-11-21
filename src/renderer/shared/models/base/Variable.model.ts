@@ -12,7 +12,6 @@ export enum VariableType {
     EXTERNAL_KEY,
     EXTERNAL_KEY_LIST,
     BOOLEAN,
-    OBJECT,
 }
 
 export enum VariableOperator {
@@ -41,8 +40,8 @@ export interface EntityVariable {
     displayName: string;
     // The type defines what operations and values are accepted to the variable.
     type: VariableType;
-    // A entity may have variables that are objects that hold more properties inside, in this case the Variables of this object also need to be set.
-    objectVariables?: Variables;
+    //Group this variable for easier searching on Autocomplete, Optional
+    groupBy?: string;
     // If it is a variable with type External Key or External List, it means it points to another entity, like the external key of a SQL table.
     // It should also contains which entity is the external key pointing to.
     externalEntity?: Entity;

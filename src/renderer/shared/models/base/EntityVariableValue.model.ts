@@ -13,7 +13,7 @@ export enum DynamicValue {
 export interface EntityVariableValue {
     entity: Entity;
     variableKey: string;
-    operator: VariableOperator;
+    operator?: VariableOperator;
     value: any;
 }
 
