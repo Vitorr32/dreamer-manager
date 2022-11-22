@@ -39,8 +39,8 @@ export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChang
                 <VariableValueOperator
                     variable={GetVariablesOfEntity(modifier.modifiedEntityVariable.entity)[modifier.modifiedEntityVariable.variableKey]}
                     variableOperator={modifier.modifiedEntityVariable.operator}
-                    editOperator={true}
                     onOperatorChange={(operator: VariableOperator) => onVariableChange('operator', operator)}
+                    isEditor
                 />
             )}
 

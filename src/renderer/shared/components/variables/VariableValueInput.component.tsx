@@ -1,6 +1,6 @@
 import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
@@ -16,9 +16,11 @@ interface IProps {
 
 export function VariableValueInput({ variable, variableValue, onVariableValueChange, options }: IProps) {
     const { t } = useTranslation();
+    const theme = useTheme();
 
     const getInputOfVariableType = (type: VariableType): JSX.Element | null => {
         switch (type) {
+            case VariableType.ENUMERATOR_LIST:
             case VariableType.ENUMERATOR:
                 return (
                     <FormControl fullWidth>
@@ -45,9 +47,6 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                         label={t('interface.editor.modifier.input_label_value_change')}
                         type="number"
                         onChange={(e) => onVariableValueChange(e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
                     />
                 );
             case VariableType.TEXT:
@@ -83,8 +82,16 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                         renderInput={(params) => <TextField {...params} label={t(variable.externalEntity)} />}
                     />
                 );
-            default:
-                return null;
+            case VariableType.BOOLEAN:
+                return (
+                    <FormControlLabel
+                        sx={{ color: theme.palette.text.primary }}
+                        control={<Checkbox checked={variableValue || false} onChange={(e) => onVariableValueChange(e.target.checked)} />}
+                        label={t(variable.displayName)}
+                    />
+                );
+            case VariableType.FILE_PATH:
+                return <>{/* <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[IMAGES_FOLDER, ]} /> */}</>;
         }
     };
 

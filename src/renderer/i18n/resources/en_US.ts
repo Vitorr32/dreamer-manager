@@ -433,6 +433,7 @@ export const en_US = {
                     nickname: 'Nickname',
                     birthday: 'Birthday',
                     age: 'Age',
+                    isActive: 'Active Character',
                     ethnicity: 'Ethnicity',
                     culture: 'Culture',
                     languages: 'Languages',

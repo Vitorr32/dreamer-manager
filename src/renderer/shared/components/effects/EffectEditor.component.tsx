@@ -20,7 +20,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
     const { t, i18n } = useTranslation();
 
     const onEffectChanged = (modifier: Modifier) => {
-        const newEffect = Object.assign({}, effect);
+        const newEffect = CopyClassInstance(effect);
 
         newEffect.modifier = modifier;
 

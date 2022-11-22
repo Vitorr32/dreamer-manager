@@ -38,7 +38,6 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange, is
                       };
                   })
                   .filter((variable) => {
-                      console.log('variable', variable);
                       return isEditor ? variable.data.edit : true;
                   })
                   .sort((a, b) => (a.group !== b.group ? 1 : -1))
