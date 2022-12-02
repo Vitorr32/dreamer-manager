@@ -96,6 +96,10 @@ export const PaperDollEntityVariables: Variables = {
 };
 
 export class PaperDoll extends EntityBase {
+    static get _variables() {
+        return PaperDollEntityVariables;
+    }
+
     id: string;
     isCustom: boolean;
 

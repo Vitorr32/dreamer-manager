@@ -205,6 +205,7 @@ export const en_US = {
                     input_label_value_change: 'Modifier Value',
                     modifier_editor_helper_text:
                         "Please select what entity variable will be modified by this modifier, select 'Manually Create a Filter' to create a new filter for the target",
+                    input_placeholder_period: '2m 6w 3d 6h 30m',
                     targeting: {
                         input_label_target_select: 'Target of Effect',
                         input_label_target_helper: 'Select which entity will receive the effect modifiers',

@@ -1,11 +1,15 @@
-import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Autocomplete, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, useTheme } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { Autocomplete, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, TextField, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { GetEntitiesOfEntity } from 'renderer/shared/utils/General';
+import LoopIcon from '@mui/icons-material/Loop';
+import { useState } from 'react';
+import { ResourcesSearch } from '../file/ResourcesSearch';
 
 interface IProps {
     variable: EntityVariable;
@@ -17,6 +21,8 @@ interface IProps {
 export function VariableValueInput({ variable, variableValue, onVariableValueChange, options }: IProps) {
     const { t } = useTranslation();
     const theme = useTheme();
+
+    const [alternativeInput, setInputType] = useState<boolean>(false);
 
     const getInputOfVariableType = (type: VariableType): JSX.Element | null => {
         switch (type) {
@@ -60,17 +66,36 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 );
             case VariableType.DATE:
                 return (
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DesktopDatePicker
-                            fullWidth
-                            label={t('interface.editor.condition.time_datepicker_label')}
-                            mask="__/__/____"
-                            onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
-                            value={new Date(variableValue || '01/01/0001')}
-                            onChange={(e: any) => onVariableValueChange(e.toDateString())}
-                            renderInput={(params: any) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
+                    <>
+                        {alternativeInput ? (
+                            <TextField
+                                fullWidth
+                                value={variableValue || ''}
+                                label={t('interface.editor.modifier.input_label_value_change')}
+                                placeholder={t('interface.editor.modifier.input_placeholder_period')}
+                                onChange={(e) => onVariableValueChange(e.target.value)}
+                            />
+                        ) : (
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DesktopDatePicker
+                                    label={t('interface.editor.condition.time_datepicker_label')}
+                                    mask="__/__/____"
+                                    onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
+                                    value={new Date(variableValue || '01/01/0001')}
+                                    onChange={(e: any) => onVariableValueChange(e.toDateString())}
+                                    renderInput={(params: any) => <TextField {...params} sx={{ minWidth: '300px' }} />}
+                                />
+                            </LocalizationProvider>
+                        )}
+                        <IconButton
+                            onClick={() => {
+                                setInputType(!alternativeInput);
+                                onVariableValueChange('');
+                            }}
+                        >
+                            <LoopIcon />
+                        </IconButton>
+                    </>
                 );
             case VariableType.EXTERNAL_KEY:
             case VariableType.EXTERNAL_KEY_LIST:
@@ -91,7 +116,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                     />
                 );
             case VariableType.FILE_PATH:
-                return <>{/* <ResourcesSearch onResourceSelected={onBackgroundSelected} rootFolder={[IMAGES_FOLDER, ]} /> */}</>;
+                return <ResourcesSearch onResourceSelected={(fileName, filePath, path) => onVariableValueChange(path)} rootFolder={[]} />;
         }
     };
 

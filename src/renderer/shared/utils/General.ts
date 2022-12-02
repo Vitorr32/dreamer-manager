@@ -2,6 +2,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import { store } from 'renderer/redux/store';
 import { Actor } from '../models/base/Actor.model';
 import { Character } from '../models/base/Character.model';
+import { PaperDoll } from '../models/base/PaperDoll.model';
+import { PaperPiece } from '../models/base/PaperPiece.model';
 import { Relationship } from '../models/base/Relationship.model';
 import { Variables } from '../models/base/Variable.model';
 import { World } from '../models/base/World.model';
@@ -35,6 +37,10 @@ export function GetVariablesOfEntity(entity: Entity): Variables {
             return World.getEntityVariables();
         case Entity.RELATIONSHIP:
             return Relationship.getEntityVariables();
+        case Entity.PAPER_DOLL:
+            return PaperDoll.getEntityVariables();
+        case Entity.PAPER_PIECE:
+            return PaperPiece.getEntityVariables();
         default:
             return null;
     }

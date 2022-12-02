@@ -96,10 +96,6 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
     return (
         <Box className="resources">
             <Box className="resources__header">
-                <Typography variant="h2" component="h2">
-                    {t('interface.tools.flag.title')}
-                </Typography>
-
                 <Box className="resources__path">
                     <Button onClick={stepBackFromFolder} disabled={AreArraysEqual(rootFolder, currentPath)}>
                         <ArrowBackIcon />
