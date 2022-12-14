@@ -23,6 +23,8 @@ export default function App() {
         },
     });
 
+    console.log('Game Theme', theme);
+
     return (
         <ThemeProvider theme={theme}>
             <MemoryRouter>

@@ -68,7 +68,7 @@ export function TraitEditor(props: IProps) {
     };
 
     return (
-        <Box sx={{ backgroundColor: 'background.default', padding: '20px' }}>
+        <Box sx={{ backgroundColor: 'background.default', padding: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Paper sx={{ display: 'flex', columnGap: '20px', padding: '20px', alignItems: 'center' }} elevation={2}>
                 <Link to="/menu/edit/trait">
                     <Button color="primary">
@@ -78,10 +78,12 @@ export function TraitEditor(props: IProps) {
 
                 <Typography variant="h5">{t('interface.editor.trait.title') as string}</Typography>
 
-                <LanguageToggle />
+                <Box sx={{ marginLeft: 'auto' }}>
+                    <LanguageToggle />
+                </Box>
             </Paper>
 
-            <Box component="main" sx={{ overflow: 'visible' }}>
+            <Box component="main" sx={{ overflow: 'visible', marginTop: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <Stepper nonLinear activeStep={stepperIndex}>
                     <Step completed={stepsCompleted[0]}>
                         <StepButton onClick={(_) => setStepperIndex(0)}>Basic Information</StepButton>

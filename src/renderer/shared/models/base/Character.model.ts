@@ -201,7 +201,7 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: true,
     },
-    affluence: {
+    [CharacterVariablesKey.AFFLUENCE]: {
         key: CharacterVariablesKey.AFFLUENCE,
         displayName: 'model.character.variables.affluence',
         type: VariableType.ENUMERATOR,

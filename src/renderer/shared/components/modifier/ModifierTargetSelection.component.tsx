@@ -184,7 +184,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                 shortcutFilterTree.root.entityFilters.push({
                     ...DEFAULT_EXTERNAL_ENTITY_FILTER,
                     entity: Entity.CHARACTERS,
-                    variableKey: Actor.getEntityVariables()['id'].key,
+                    variableKey: Character.getEntityVariables()[CharacterVariablesKey.ID].key,
                     operator: VariableOperator.EQUALS_TO,
                     value: DynamicValue.SELF,
                 });
@@ -195,12 +195,12 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                     {
                         ...DEFAULT_EXTERNAL_ENTITY_FILTER,
                         entity: Entity.RELATIONSHIP,
-                        variableKey: Actor.getEntityVariables()['originCharacter'].key,
+                        variableKey: Character.getEntityVariables()[CharacterVariablesKey.ID].key,
                         externalEntityFilter: [
                             {
                                 entity: Entity.CHARACTERS,
                                 operator: VariableOperator.EQUALS_TO,
-                                variableKey: Actor.getEntityVariables()['id'].key,
+                                variableKey: Actor.getEntityVariables()[CharacterVariablesKey.ID].key,
                                 value: DynamicValue.SELF,
                             },
                         ],

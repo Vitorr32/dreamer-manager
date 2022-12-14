@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MenuItem, TextField, FormControlLabel, Switch, Button, Typography, FormControl, InputLabel, Select, FormHelperText } from '@mui/material';
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
-import { ICONS, MAX_NUMBER_OF_TRAITS_GENERATED, PLACEHOLDER_TRAIT_ICON, TRAITS } from 'renderer/shared/Constants';
-import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
+import { MAX_NUMBER_OF_TRAITS_GENERATED, PLACEHOLDER_TRAIT_ICON, TRAITS } from 'renderer/shared/Constants';
+import { ApplyFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
@@ -52,11 +52,7 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
     };
 
     return (
-        <Box className="basic-info">
-            <Box className="basic-info__header">
-                <Typography variant="h5">Basic Information</Typography>
-            </Box>
-
+        <Box sx={{ paddingTop: '20px' }}>
             <TextField
                 required
                 label={t('interface.editor.trait.id_label')}
@@ -84,6 +80,7 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
                 rows={4}
                 value={trait.getDescription(i18n.language)}
                 onChange={(event) => onDescriptionChange(event.target.value)}
+                sx={{ marginTop: '20px' }}
             />
 
             <FormControl required sx={{ marginTop: '20px' }}>
@@ -114,22 +111,26 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
                     }
                     label={t('interface.editor.trait.spawn_label') as string}
                     labelPlacement="start"
+                    sx={{ color: 'text.primary', marginLeft: '0' }}
                 />
-                <Typography variant="caption">{t('interface.editor.trait.spawn_helper', { max: MAX_NUMBER_OF_TRAITS_GENERATED })}</Typography>
+                <FormHelperText sx={{ marginLeft: '14px' }}>{t('interface.editor.trait.spawn_helper', { max: MAX_NUMBER_OF_TRAITS_GENERATED })}</FormHelperText>
             </Box>
 
             <Box className="basic-info__image-input">
-                <Typography variant="overline"> {t('interface.editor.trait.icon_label')}</Typography>
+                <Typography variant="h6" sx={{ color: 'text.primary' }}>
+                    {t('interface.editor.trait.icon_label')}
+                </Typography>
 
-                <Box className="basic-info__image-current">
+                <Box className="basic-info__image-current" sx={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
                     <img src={trait.absoluteIconPath} alt={`${trait.id}_icon`} />
+
+                    <Button variant="contained" component="label" sx={{ color: 'text.primary' }}>
+                        {t('interface.editor.trait.icon_button')}
+                        <input name="avatar" type="file" hidden onChange={onImageSelected} accept="image/*" />
+                    </Button>
                 </Box>
 
-                <Button variant="contained" component="label">
-                    Choose Image File
-                    <input name="avatar" type="file" hidden onChange={onImageSelected} accept="image/*" />
-                </Button>
-                <Typography variant="caption">{t('interface.editor.trait.icon_helper')}</Typography>
+                <FormHelperText sx={{ marginLeft: '14px' }}>{t('interface.editor.trait.icon_helper')}</FormHelperText>
             </Box>
 
             <Box className="basic-info__footer">

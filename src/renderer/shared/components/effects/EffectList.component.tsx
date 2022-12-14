@@ -25,6 +25,10 @@ export function EffectList({ effects, onEffectSelected, onEffectDeleted }: IProp
         setConfirmDeleteOpen(false);
     };
 
+    if (effects.length === 0) {
+        return null;
+    }
+
     return (
         <>
             <List className="effect-editor__list">
@@ -32,6 +36,7 @@ export function EffectList({ effects, onEffectSelected, onEffectDeleted }: IProp
                     <ListItem
                         className="effect-editor__list-item"
                         key={`effect_${index}`}
+                        sx={{ borderColor: 'text.primary' }}
                         secondaryAction={
                             effects.length !== 1 && (
                                 <Tooltip title={t('interface.editor.effect.remove_effect') as string}>
@@ -59,7 +64,12 @@ export function EffectList({ effects, onEffectSelected, onEffectDeleted }: IProp
                                     ? effect.modifier.type
                                     : 'interface.editor.effect.unset_modifier'
                             )}
-                            secondary={effect.modifier && effect.modifier.effectiveChange !== 0 ? effect.modifier.effectiveChange : t('interface.editor.effect.unset_value')}
+                            secondary={
+                                effect.modifier && effect.modifier.modifiedEntityVariable.value !== 0
+                                    ? effect.modifier.modifiedEntityVariable.value
+                                    : t('interface.editor.effect.unset_value')
+                            }
+                            sx={{ color: 'text.primary' }}
                         />
                     </ListItem>
                 ))}

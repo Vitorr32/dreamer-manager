@@ -47,8 +47,10 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
     };
 
     return (
-        <Box className="effect-editor">
-            <Typography variant="caption">{t('interface.editor.effect.effect_instruction', { max: MAX_NUMBER_OF_EFFECTS })}</Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '20px' }}>
+            <Typography variant="caption" sx={{ color: 'text.primary', marginTop: '20px', display: 'block' }}>
+                {t('interface.editor.effect.effect_instruction', { max: MAX_NUMBER_OF_EFFECTS })}
+            </Typography>
 
             <Box className="effect-editor__list-wrapper">
                 <EffectList effects={trait.effects} onEffectSelected={(index) => setEditEffectIndex(index)} onEffectDeleted={(index) => onDeleteEffectFromList(index)} />
@@ -78,7 +80,7 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                 <EffectSummary key={'effect_' + index} effect={effect} />
             ))}
 
-            <Box className="buttons-wrapper">
+            <Box sx={{ flex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
                 <Button color="primary" onClick={previousStep}>
                     {t('interface.commons.previous')}
                 </Button>

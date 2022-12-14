@@ -19,6 +19,8 @@ interface IProps {
 export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChange }: IProps) {
     const { t } = useTranslation();
 
+    console.log('modifier', modifier);
+
     return (
         <Box className="entity-editor">
             {/* ENTITY SELECT */}

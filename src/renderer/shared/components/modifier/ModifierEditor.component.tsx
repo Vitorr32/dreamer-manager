@@ -1,5 +1,5 @@
 import { ArrowForward } from '@mui/icons-material';
-import { Button, FormHelperText, Typography } from '@mui/material';
+import { Button, FormHelperText, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -79,13 +79,15 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
     };
 
     return (
-        <Box className="modifier-editor" sx={{ bgcolor: 'background.default' }}>
-            <Box className="modifier-editor__header">
-                <Typography variant="h4">{t('interface.editor.modifier.title')}</Typography>
-                <Typography variant="subtitle1">{t('interface.editor.modifier.subtitle')}</Typography>
+        <Paper sx={{ bgcolor: 'background.default', padding: '10px 20px' }} elevation={1}>
+            <Box sx={{ borderColor: 'text.primary' }}>
+                <Typography sx={{ color: 'text.primary' }} variant="h6">
+                    {t('interface.editor.modifier.title')}
+                </Typography>
+                <FormHelperText>{t('interface.editor.modifier.subtitle')}</FormHelperText>
             </Box>
 
-            <Box className="modifier-editor__content">
+            <Box sx={{ marginTop: '10px' }}>
                 <Button className="modifier-editor__select-type" variant="contained" endIcon={<ArrowForward />} onClick={() => setShowTypeModal(true)}>
                     {modifier.type === ModifierType.UNDEFINED ? t('interface.editor.modifier.select_type') : t(modifier.type)}
                 </Button>
@@ -108,6 +110,6 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             </Box>
 
             <ModifierTypeDialog modifier={modifier} onTypeSelect={onTypeSubmitted} open={showTypeModal} onClose={() => setShowTypeModal(false)} options={options} />
-        </Box>
+        </Paper>
     );
 }

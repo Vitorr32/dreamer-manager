@@ -8,14 +8,7 @@ interface IProps {}
 export function LanguageToggle({}: IProps) {
     const { t, i18n } = useTranslation();
     return (
-        <TextField
-            required
-            label={t('interface.commons.language')}
-            value={i18n.language}
-            variant="outlined"
-            select
-            onChange={(event) => i18n.changeLanguage(event.target.value)}
-        >
+        <TextField label={t('interface.commons.language')} value={i18n.language} variant="outlined" select onChange={(event) => i18n.changeLanguage(event.target.value)}>
             {LANGUAGE_CODES.map((value) => {
                 return (
                     <MenuItem key={`language_${value}`} value={value}>

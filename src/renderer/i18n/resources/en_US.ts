@@ -43,7 +43,8 @@ export const en_US = {
                     spawn_label: 'Spawnable',
                     spawn_helper: `Whatever this trait can be found on generated Dreamers, otherwise it can be obtainable only by events (Do note that traits of type 'National' will always be spawned), generated dreamers will have up to {{max}}
                     traits on generation.`,
-                    icon_label: 'Avatar Icon',
+                    icon_label: 'Trait Icon',
+                    icon_button: 'Choose Image from Computer',
                     icon_helper: 'The image used as icon for the trait, it should have a square (Optimally 100x100) proportion with transparent background when necessary.',
                     localization_message:
                         'To create a new trait, you need to have the localized name and description in at least American English, since it is the default language.',
@@ -53,7 +54,7 @@ export const en_US = {
                     trait_picker_label: 'Trait',
                 },
                 effect: {
-                    unset_modifier: 'New Modifier',
+                    unset_modifier: 'New Effect',
                     unset_value: 'Unknown value',
                     effect_instruction:
                         "* Here you can create/edit the effects that the new trait will have, each effect can have it's own conditions and modifiers, a single trait can have up to {{max}} effects.",
@@ -188,7 +189,7 @@ export const en_US = {
                 },
                 modifier: {
                     title: 'Modifier Editor',
-                    subtitle: 'What this effect modify on the game character?',
+                    subtitle: 'What this effect modify on the game entities?',
                     select_type: 'Modifier Type',
                     select_type_caption: 'Select the type of modifier that this effect will have',
                     select_type_submit: 'Submit',
@@ -203,12 +204,11 @@ export const en_US = {
                     input_label_variable: 'Entity Variable',
                     input_label_conditional: 'Conditional',
                     input_label_value_change: 'Modifier Value',
-                    modifier_editor_helper_text:
-                        "Please select what entity variable will be modified by this modifier, select 'Manually Create a Filter' to create a new filter for the target",
+                    modifier_editor_helper_text: `Select what Entity's variable will be modified by this modifier`,
                     input_placeholder_period: '2m 6w 3d 6h 30m',
                     targeting: {
                         input_label_target_select: 'Target of Effect',
-                        input_label_target_helper: 'Select which entity will receive the effect modifiers',
+                        input_label_target_helper: `Select which Entity will receive the modifier, select 'Manually Create a Filter' to create a specific filter for the target of the modifier`,
                         input_label_origin_select: 'Creator of Effect',
                     },
                 },
