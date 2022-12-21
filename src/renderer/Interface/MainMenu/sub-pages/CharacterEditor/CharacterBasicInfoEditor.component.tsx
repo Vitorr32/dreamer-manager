@@ -265,7 +265,8 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
                 </FormHelperText>
             </FormControl>
 
-            <FormControl required sx={{ marginTop: '20px' }}>
+            {/* TODO: Create a good way to add/remove languages of the character */}
+            {/* <FormControl required sx={{ marginTop: '20px' }}>
                 <InputLabel>{t('interface.editor.character.input_label_language')}</InputLabel>
                 <Select
                     value={character.language || []}
@@ -285,7 +286,7 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
                 <FormHelperText>
                     {errorState?.[CharacterVariablesKey.CULTURE] ? t('interface.editor.commons.required') : t('interface.editor.character.input_helper_culture')}
                 </FormHelperText>
-            </FormControl>
+            </FormControl> */}
 
             {character.type === CharacterType.STAFF && (
                 <FormControl required sx={{ marginTop: '20px' }}>

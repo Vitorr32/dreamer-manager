@@ -19,15 +19,13 @@ interface IProps {
 export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChange }: IProps) {
     const { t } = useTranslation();
 
-    console.log('modifier', modifier);
-
     return (
         <Box className="entity-editor">
             {/* ENTITY SELECT */}
             <EntitySelect entity={modifier.modifiedEntityVariable?.entity} onEntityChange={onEntityChange} />
 
             {/* VARIABLE SELECT */}
-            {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.entity && modifier.modifiedEntityVariable.entity !== Entity.NONE && (
+            {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.entity && (
                 <VariableSelect
                     entity={modifier.modifiedEntityVariable?.entity}
                     entityVariableKey={modifier.modifiedEntityVariable.variableKey}

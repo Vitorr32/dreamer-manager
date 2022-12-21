@@ -6,7 +6,6 @@ import { MAX_NUMBER_OF_EFFECTS } from 'renderer/shared/Constants';
 import { EffectEditor } from '../../../../shared/components/effects/EffectEditor.component';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
-import { ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 import { Box } from '@mui/system';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
@@ -68,7 +67,6 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                     index={editEffectIndex}
                     effect={trait.effects[editEffectIndex]}
                     options={{
-                        filteredTypes: [ModifierTypeSection.EVENT_SECTION],
                         allowConditionTree: true,
                         effectOriginType: EffectOriginType.TRAIT,
                         effectOriginID: trait.id,

@@ -11,10 +11,18 @@ export enum ActorType {
     SPECIFIC_TYPE = 'interface.editor.event.casting_is_specific',
 }
 
+export enum ActorVariablesKey {
+    ID = 'id',
+    ALIAS = 'alias',
+    ACTOR_TYPE = 'actorType',
+    CHARACTER_ID = 'characterID',
+    SPRITE_PATH = 'spriteFilePath',
+}
+
 export const ActorEntityVariables: Variables = {
-    id: { key: 'id', displayName: 'model.actor.variables.id', type: VariableType.TEXT, read: true, edit: false },
-    alias: { key: 'alias', displayName: 'model.actor.variables.alias', type: VariableType.TEXT, read: true, edit: true },
-    characterID: {
+    [ActorVariablesKey.ID]: { key: ActorVariablesKey.ID, displayName: 'model.actor.variables.id', type: VariableType.TEXT, read: true, edit: false },
+    [ActorVariablesKey.ALIAS]: { key: ActorVariablesKey.ALIAS, displayName: 'model.actor.variables.alias', type: VariableType.TEXT, read: true, edit: true },
+    [ActorVariablesKey.CHARACTER_ID]: {
         key: 'characterID',
         displayName: 'model.actor.variables.characterID',
         type: VariableType.EXTERNAL_KEY,
@@ -22,14 +30,20 @@ export const ActorEntityVariables: Variables = {
         read: true,
         edit: false,
     },
-    spriteFilePath: { key: 'spriteFilePath', displayName: 'model.actor.variables.spritePath', type: VariableType.FILE_PATH, read: true, edit: true },
-    actorType: {
-        key: 'actorType',
+    [ActorVariablesKey.SPRITE_PATH]: {
+        key: ActorVariablesKey.SPRITE_PATH,
+        displayName: 'model.actor.variables.spritePath',
+        type: VariableType.FILE_PATH,
+        read: true,
+        edit: true,
+    },
+    [ActorVariablesKey.ACTOR_TYPE]: {
+        key: ActorVariablesKey.ACTOR_TYPE,
         displayName: 'model.actor.variables.type',
         type: VariableType.ENUMERATOR,
         options: Object.values(ActorType).map((value) => value),
-        read: false,
-        edit: false,
+        read: true,
+        edit: true,
     },
 };
 

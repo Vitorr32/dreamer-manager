@@ -15,7 +15,7 @@ export function EntitySelect({ entity, onEntityChange, disabled }: IProps) {
         <FormControl fullWidth>
             <InputLabel>{t('interface.editor.modifier.input_label_entity')}</InputLabel>
             <Select
-                value={entity || Entity.NONE}
+                value={entity || ''}
                 disabled={disabled}
                 label={t('interface.editor.modifier.input_label_entity')}
                 onChange={(e) => onEntityChange(e.target.value as Entity)}

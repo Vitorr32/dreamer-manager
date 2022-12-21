@@ -14,7 +14,7 @@ import { Agency } from 'renderer/shared/models/base/Agency.model';
 import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
-import { Actor } from 'renderer/shared/models/base/Actor.model';
+import { Actor, ActorVariablesKey } from 'renderer/shared/models/base/Actor.model';
 import { Relationship } from 'renderer/shared/models/base/Relationship.model';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 
@@ -91,6 +91,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
 
     const populateFilterWithSelectedShortcut = (shortcut: ShortcutFilter, isTargetFilter: boolean = true) => {
         const shortcutFilterTree: EntityFilterTree = new EntityFilterTree();
+
         switch (shortcut) {
             case ShortcutFilter.EVERYONE:
                 // To set the Everyone filter, just get all character of age bigger than 0, which means everyone currently instantiated in game.
@@ -188,6 +189,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                     operator: VariableOperator.EQUALS_TO,
                     value: DynamicValue.SELF,
                 });
+                break;
             case ShortcutFilter.SELF_FRIENDS:
                 shortcutFilterTree.root.logicOperator = LogicOperator.AND;
 
@@ -213,6 +215,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                         value: 50,
                     }
                 );
+                break;
             case ShortcutFilter.SELF_RIVALS:
                 shortcutFilterTree.root.logicOperator = LogicOperator.AND;
 
@@ -220,12 +223,12 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                     {
                         ...DEFAULT_EXTERNAL_ENTITY_FILTER,
                         entity: Entity.RELATIONSHIP,
-                        variableKey: Actor.getEntityVariables()['originCharacter'].key,
+                        variableKey: Actor.getEntityVariables()[ActorVariablesKey.CHARACTER_ID].key,
                         externalEntityFilter: [
                             {
                                 entity: Entity.CHARACTERS,
                                 operator: VariableOperator.EQUALS_TO,
-                                variableKey: Actor.getEntityVariables()['id'].key,
+                                variableKey: Actor.getEntityVariables()[ActorVariablesKey.ID].key,
                                 value: DynamicValue.SELF,
                             },
                         ],
@@ -245,6 +248,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                         value: 50,
                     }
                 );
+                break;
             default:
                 console.error('No entity selected, or uknown entity' + modifier.modifiedEntityVariable.entity);
                 break;
@@ -272,25 +276,24 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
 
     return (
         <Box className="target-selection">
-            {modifier.modifiedEntityVariable.entity !== Entity.NONE && (
-                <>
-                    <FormHelperText>{t('interface.editor.modifier.targeting.input_label_target_helper')}</FormHelperText>
-                    <FormControl fullWidth>
-                        <InputLabel>{t('interface.editor.modifier.targeting.input_label_target_select')}</InputLabel>
-                        <Select
-                            label={t('interface.editor.modifier.targeting.input_label_target_select')}
-                            value={quickTarget === ShortcutFilter.UNDEFINED ? '' : quickTarget}
-                            onChange={(e) => onShortcutSelectChange(e.target.value as ShortcutFilter)}
-                        >
-                            {getShortcutTargets().map((option, index) => (
-                                <MenuItem key={`shortcut_${index}`} value={option}>
-                                    {t(option)}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </>
-            )}
+            <FormControl fullWidth>
+                <InputLabel>{t('interface.editor.modifier.targeting.input_label_target_select')}</InputLabel>
+                <Select
+                    label={t('interface.editor.modifier.targeting.input_label_target_select')}
+                    value={quickTarget === ShortcutFilter.UNDEFINED ? '' : quickTarget}
+                    onChange={(e) => onShortcutSelectChange(e.target.value as ShortcutFilter)}
+                >
+                    <MenuItem disabled value="">
+                        {t('interface.editor.character.input_placeholder_culture')}
+                    </MenuItem>
+                    {getShortcutTargets().map((option, index) => (
+                        <MenuItem key={`shortcut_${index}`} value={option}>
+                            {t(option)}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText>{t('interface.editor.modifier.targeting.input_label_target_helper')}</FormHelperText>
+            </FormControl>
 
             {showFilterEditor && (
                 <>
