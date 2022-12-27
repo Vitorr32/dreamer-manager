@@ -4,7 +4,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { ModifierType } from 'renderer/shared/models/base/Modifier';
 
 interface IProps {
     effects: Effect[];
@@ -31,12 +30,11 @@ export function EffectList({ effects, onEffectSelected, onEffectDeleted }: IProp
 
     return (
         <>
-            <List className="effect-editor__list">
+            <List>
                 {effects.map((effect, index) => (
                     <ListItem
-                        className="effect-editor__list-item"
                         key={`effect_${index}`}
-                        sx={{ borderColor: 'text.primary' }}
+                        sx={{ display: 'flex', border: '1px solid', borderColor: 'text.primary' }}
                         secondaryAction={
                             effects.length !== 1 && (
                                 <Tooltip title={t('interface.editor.effect.remove_effect') as string}>
@@ -59,11 +57,7 @@ export function EffectList({ effects, onEffectSelected, onEffectDeleted }: IProp
                             </ListItemIcon>
                         </Tooltip>
                         <ListItemText
-                            primary={t(
-                                effect.modifier && effect.modifier.type && effect.modifier.type !== ModifierType.UNDEFINED
-                                    ? effect.modifier.type
-                                    : 'interface.editor.effect.unset_modifier'
-                            )}
+                            primary={t('interface.editor.effect.unset_modifier')}
                             secondary={
                                 effect.modifier && effect.modifier.modifiedEntityVariable.value !== 0
                                     ? effect.modifier.modifiedEntityVariable.value

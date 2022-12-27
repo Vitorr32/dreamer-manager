@@ -65,6 +65,9 @@ export const en_US = {
                     remove_effect_confirmation: 'Are you sure you want to delete this effect? This operation cannot be reverted',
                 },
                 condition: {
+                    title: 'Modified Conditions',
+                    helper_text:
+                        'Conditions will add scenarios where the modifier will be applied, such as time of the day, when practicing an specific attribute, if the interaction is with the opposite sex and so on.',
                     initiator: 'Condition Initiator Selector',
                     activeAgent: 'Condition active agent',
                     passiveAgent: 'Condition passive agent',
@@ -79,7 +82,10 @@ export const en_US = {
                     numeric_selector_input_from: 'From',
                     numeric_selector_input_to: 'To',
                     time_datepicker_label: 'Pick the date',
-                    add_condition_label: 'Add Condition',
+                    add_condition_label: 'Add Conditions',
+                    add_condition_helper: 'Without conditions, the modifier will always be active',
+                    remove_condition_label: 'Remove Conditions',
+                    remove_condition_helper: 'By adding an condition, you will be able to specify in which situation the modifier will be applied',
                 },
                 entity: {
                     input_label_operator: 'Operator',
@@ -202,6 +208,7 @@ export const en_US = {
                     input_placeholder_period: '2m 6w 3d 6h 30m',
                     targeting: {
                         input_label_target_select: 'Target of Effect',
+                        input_placeholder_target: 'Select a type of Target or create one manually',
                         input_label_target_helper: `Select which Entity will receive the modifier, select 'Manually Create a Filter' to create a specific filter for the target of the modifier`,
                         input_label_origin_select: 'Creator of Effect',
                     },

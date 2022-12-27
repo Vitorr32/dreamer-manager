@@ -81,11 +81,11 @@ export function ConditionNode({ conditionNode, index, depth, onChange, onRemoveS
     };
 
     return (
-        <Box className="condition-node">
+        <Box sx={{ padding: '10px 20px', border: '1px solid' }}>
             <Box className="condition-node__config">
                 <FormControl variant="standard">
                     <InputLabel id="logic-operator-label">Logic Operator</InputLabel>
-                    <Select labelId="logic-operator-label" id="logic-operator" value={conditionNode.logicOperator} onChange={onLogicOperatorChange}>
+                    <Select labelId="logic-operator-label" id="logic-operator" sx={{ minWidth: '200px' }} value={conditionNode.logicOperator} onChange={onLogicOperatorChange}>
                         <MenuItem value={LogicOperator.IF}>IF</MenuItem>
                         <MenuItem value={LogicOperator.OR}>OR</MenuItem>
                         <MenuItem value={LogicOperator.AND}>AND</MenuItem>

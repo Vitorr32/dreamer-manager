@@ -5,7 +5,7 @@ import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Modifier, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
-import { Button } from '@mui/material';
+import { Box, Button, FormHelperText, Paper, Typography } from '@mui/material';
 import { Condition } from 'renderer/shared/models/base/Condition.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { useTranslation } from 'react-i18next';
@@ -50,18 +50,52 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         onChange(index, updatedEffect);
     };
 
+    const onRemoveConditionTree = () => {
+        if (!effect.conditionTree) {
+            console.error('The tree is not there!');
+            return;
+        }
+
+        const updatedEffect = CopyClassInstance(effect);
+
+        updatedEffect.conditionTree = null;
+        onChange(index, updatedEffect);
+    };
+
     return (
-        <React.Fragment>
+        <>
             <ModifierEditor modifier={effect.modifier} onChange={onEffectChanged} options={options} />
 
-            {(!options || options.allowConditionTree) && (
-                <>
-                    <Button variant="contained" onClick={onAddConditionTree}>
-                        {t('interface.editor.condition.add_condition_label')}
-                    </Button>
-                    <ConditionTreeEditor conditionTree={effect.conditionTree} onChange={onConditionChanged} />
-                </>
-            )}
-        </React.Fragment>
+            <Paper sx={{ bgcolor: 'background.default', padding: '10px 20px' }} elevation={1}>
+                <Typography sx={{ color: 'text.primary' }} variant="h6">
+                    {t('interface.editor.condition.title')}
+                </Typography>
+                <FormHelperText>{t('interface.editor.condition.helper_text')}</FormHelperText>
+
+                <Box sx={{ display: 'flex', columnGap: '20px', alignItems: 'center', marginTop: '10px' }}>
+                    {!effect.conditionTree && (
+                        <>
+                            <Button variant="contained" onClick={onAddConditionTree}>
+                                {t('interface.editor.condition.add_condition_label')}
+                            </Button>
+
+                            <FormHelperText>{t('interface.editor.condition.add_condition_helper')}</FormHelperText>
+                        </>
+                    )}
+
+                    {effect.conditionTree && (
+                        <>
+                            <Button variant="contained" onClick={onRemoveConditionTree}>
+                                {t('interface.editor.condition.remove_condition_label')}
+                            </Button>
+
+                            <FormHelperText>{t('interface.editor.condition.remove_condition_helper')}</FormHelperText>
+                        </>
+                    )}
+                </Box>
+
+                <ConditionTreeEditor conditionTree={effect.conditionTree} onChange={onConditionChanged} />
+            </Paper>
+        </>
     );
 }

@@ -27,17 +27,6 @@ export class Condition {
     //A number representing any of the selectors of the individual Initiator
     public selector: EntitySelector;
     public entityFilter: ExternalExpandedEntityFilter;
-    /*
-        Parameters will represent different values depending the type of initiator that the condition has
-        Status: Up to 3 parameters [Status Enumerator, First Input, Second Input]
-        Attributes: Up to 3 parameters [Skill ID, First Input, Second Input]
-        Trait: Only one parameter [Trait ID]
-        Event: Only one parameter [Flag ID]
-        Location: Only one parameter [Location ID]
-        Time: Only one parameter [Timestamp in seconds]
-        Relationship: Up to 4 parameters [Character ID, Relationship Attribute, First Input, Second Input]
-    */
-    public parameters: number[] | string[];
 
     //Verify the health of the condition metadata, not if the condition actually evaluates to true or false with in-game attributes.
     public EvaluateConditionHealth(): Feedback {
@@ -52,7 +41,6 @@ export class Condition {
 
     constructor() {
         this.selector = EntitySelector.UNDEFINED;
-        this.parameters = [];
         this.entityFilter = {
             ...DEFAULT_ENTITY_FILTER,
             isFilteringExternalKey: false,

@@ -284,7 +284,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                     onChange={(e) => onShortcutSelectChange(e.target.value as ShortcutFilter)}
                 >
                     <MenuItem disabled value="">
-                        {t('interface.editor.character.input_placeholder_culture')}
+                        {t('interface.editor.modifier.targeting.input_placeholder_target')}
                     </MenuItem>
                     {getShortcutTargets().map((option, index) => (
                         <MenuItem key={`shortcut_${index}`} value={option}>
