@@ -4,7 +4,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
-import { ConditionTreeSummary } from './ConditionTreeSummary.component';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 interface IProps {
@@ -58,7 +57,6 @@ export function EffectSummary({ effect }: IProps) {
 
     return (
         <Box className="effect-summary">
-            {effect.conditionTree && <ConditionTreeSummary conditionTree={effect.conditionTree} />}
             <Box className="effect-summary__modifier">{renderModifierLine(effect.modifier)}</Box>
         </Box>
     );

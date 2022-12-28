@@ -1,14 +1,12 @@
-import React from 'react';
-import { ConditionTreeEditor } from 'renderer/shared/components/condition/ConditionTreeEditor.component';
 import { ModifierEditor } from 'renderer/shared/components/modifier/ModifierEditor.component';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
-import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
-import { Modifier, ModifierTypeSection } from 'renderer/shared/models/base/Modifier';
+import { Modifier } from 'renderer/shared/models/base/Modifier';
 import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { Box, Button, FormHelperText, Paper, Typography } from '@mui/material';
-import { Condition } from 'renderer/shared/models/base/Condition.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { useTranslation } from 'react-i18next';
+import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
+import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 interface IProps {
     effect: Effect;
     index: number;
@@ -27,11 +25,9 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         onChange(index, newEffect);
     };
 
-    const onConditionChanged = (conditionTree: ConditionTree) => {
+    const onConditionChanged = (conditionTree: EntityFilterTree) => {
         const newEffect = CopyClassInstance(effect);
-
         newEffect.conditionTree = conditionTree;
-
         onChange(index, newEffect);
     };
 
@@ -42,11 +38,8 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         }
 
         const updatedEffect = CopyClassInstance(effect);
-        const newConditionTree = new ConditionTree();
-        newConditionTree.root.conditions = [new Condition()];
-
+        const newConditionTree = new EntityFilterTree();
         updatedEffect.conditionTree = newConditionTree;
-
         onChange(index, updatedEffect);
     };
 
@@ -94,7 +87,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
                     )}
                 </Box>
 
-                <ConditionTreeEditor conditionTree={effect.conditionTree} onChange={onConditionChanged} />
+                <CompositeEntityFilter filterTree={effect.conditionTree} onFilterTreeChange={onConditionChanged} />
             </Paper>
         </>
     );

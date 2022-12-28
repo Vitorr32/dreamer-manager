@@ -16,13 +16,12 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { Actor, Flag } from 'renderer/shared/models/base/Event.model';
 import { Scene, SceneResult, SceneResultType } from 'renderer/shared/models/base/Scene.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component';
 import { EffectEditor } from '../effects/EffectEditor.component';
+import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 
 interface IProps {
     isOpen: boolean;
@@ -101,7 +100,6 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                                 onChange={(index, effect) => sceneResultsModified(index, 'effect', effect)}
                                                 options={{
                                                     isEventEffect: true,
-                                                    filteredTypes: [],
                                                     specifiedActors: !!actors ? actors : [],
                                                     allowConditionTree: true,
                                                 }}
@@ -135,9 +133,9 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                         )}
 
                                         {sceneResult.type === SceneResultType.MODIFY_FLAG_TO_WORLD && (
-                                            <ConditionTreeEditor
-                                                conditionTree={sceneResult.conditionTree}
-                                                onChange={(conditionTree) => sceneResultsModified(index, 'conditionTree', conditionTree)}
+                                            <CompositeEntityFilter
+                                                filterTree={sceneResult.conditionTree}
+                                                onFilterTreeChange={(conditionTree) => sceneResultsModified(index, 'conditionTree', conditionTree)}
                                             />
                                         )}
                                     </>

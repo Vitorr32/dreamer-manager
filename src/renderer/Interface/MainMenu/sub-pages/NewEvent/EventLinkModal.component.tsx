@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Modal, Select, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { ConditionTreeEditor } from 'renderer/shared/components/condition/ConditionTreeEditor.component';
-import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
+import { CompositeEntityFilter } from 'renderer/shared/components/entity/CompositeEntityFilter.component';
+import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { ConnectionType, Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 interface IProps {
@@ -25,7 +25,7 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
 
     const onAddConditionToConnection = (): void => {
         const newConnection = CopyClassInstance(sceneConnection);
-        newConnection.choiceCondition = new ConditionTree();
+        newConnection.choiceCondition = new EntityFilterTree();
 
         onSceneConnectionChange(newConnection);
     };
@@ -75,7 +75,7 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
         onSceneConnectionChange(newConnection);
     };
 
-    const onConditionChanged = (conditionTree: ConditionTree): void => {
+    const onConditionChanged = (conditionTree: EntityFilterTree): void => {
         const newConnection = CopyClassInstance(sceneConnection);
         newConnection.choiceCondition = conditionTree;
 
@@ -132,7 +132,7 @@ export function EventLinkModal({ open, onClose, sceneConnection, parentScene, ch
                         </Box>
                     )}
 
-                    {shouldShowConditionTree() && <ConditionTreeEditor conditionTree={sceneConnection?.choiceCondition} onChange={onConditionChanged} />}
+                    {shouldShowConditionTree() && <CompositeEntityFilter filterTree={sceneConnection?.choiceCondition} onFilterTreeChange={onConditionChanged} />}
                 </Box>
             </Box>
         </Modal>

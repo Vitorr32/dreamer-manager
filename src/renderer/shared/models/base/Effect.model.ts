@@ -1,4 +1,4 @@
-import { ConditionTree } from './ConditionTree';
+import { EntityFilterTree } from './EntityFilterTree.model';
 import { Modifier } from './Modifier';
 
 export enum Trigger {
@@ -32,6 +32,25 @@ export enum Source {
     MAX_SOURCES,
 }
 
+export enum ConditionFilterOperator {
+    ANY_SATISFY_FILTER = 'model.condition.selector.entity.any_true',
+    NONE_SATISFY_FILTER = 'model.condition.selector.entity.all_false',
+    X_SATISFY_FILTER = 'model.condition.selector.entity.number_x_true',
+}
+
+export enum TimeSelector {
+    UNDEFINED = 'model.undefined',
+
+    IS_WEEKDAY = 'model.condition.selector.time.weekday',
+    IS_WEEKEND = 'model.condition.selector.time.weekend',
+    IS_HOLIDAY = 'model.condition.selector.time.holiday',
+    IS_NIGHT = 'model.condition.selector.time.night',
+    IS_DAY = 'model.condition.selector.time.day',
+    IS_AT_DATE = 'model.condition.selector.time.isDate',
+    IS_AFTER_DATE = 'model.condition.selector.time.afterDate',
+    IS_BEFORE_DATE = 'model.condition.selector.time.beforeDate',
+}
+
 export class Effect {
     //Whatever this effect affect the holder of the effect or the target, if applicable, of the trigger
     public targetSelf: boolean;
@@ -41,8 +60,10 @@ export class Effect {
     public sourceID: string;
     //What trigger the check for this effect
     public trigger: Trigger;
+    //Operator that checks the desired result of the Condition Tree
+    public conditionFilterLogicOperator: ConditionFilterOperator;
     //What is the condition for the activation of this effect when the trigger is triggered, it also may always happen.
-    public conditionTree: ConditionTree | undefined;
+    public conditionTree: EntityFilterTree;
     //After the effect was activated, for how much time does it take effect?
     public durationType: Duration;
     public durationArgs: number[] | undefined;

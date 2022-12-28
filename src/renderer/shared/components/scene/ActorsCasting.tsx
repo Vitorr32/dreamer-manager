@@ -24,14 +24,14 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE, PLAYER_CHARACTER, SPRITES_FOLDER } from 'renderer/shared/Constants';
-import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { ConditionTreeEditor } from '../condition/ConditionTreeEditor.component';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
 import { ResourcesSearch } from '../file/ResourcesSearch';
 import { Actor, ActorType } from 'renderer/shared/models/base/Actor.model';
 import { Character } from 'renderer/shared/models/base/Character.model';
+import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
+import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 
 interface IProps {
     event: Event;
@@ -70,12 +70,12 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
             const file = await GetFileFromResources([...spriteGamePath, ...selectedActor.spriteFilePath]);
             setSelectedActorSpritePath(file.path);
         } else {
-            const file: { path: string; buffer: Buffer } = await window.electron.fileSystem.getFileFromResources([
+            const file: { absolutePath: string; content: string } = await window.electron.fileSystem.getFileFromResources([
                 ...spriteGamePath,
                 GENERIC_SPRITES_FOLDER,
                 PLACEHOLDER_ACTOR_SPRITE,
             ]);
-            setSelectedActorSpritePath(ApplyFileProtocol(file.path));
+            setSelectedActorSpritePath(ApplyFileProtocol(file.absolutePath));
         }
     };
 
@@ -96,11 +96,11 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         onEventEdited(editedEvent);
     };
 
-    const onActorConditionEdited = (originalActor: Actor, indexOfActor: number, updatedTree: ConditionTree): void => {
+    const onActorConditionEdited = (originalActor: Actor, indexOfActor: number, updatedTree: EntityFilterTree): void => {
         const newActor = Object.assign({}, originalActor);
         const modifiedEvent = Object.assign({}, event);
 
-        newActor.actorCastingCondition = updatedTree;
+        newActor.actorCastingFilter = updatedTree;
         modifiedEvent.actors[indexOfActor] = newActor;
 
         onEventEdited(modifiedEvent);
@@ -119,7 +119,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         const newActor = Object.assign({}, originalActor);
         const modifiedEvent = CopyClassInstance(event);
 
-        newActor.actorCastingCondition = new ConditionTree();
+        newActor.actorCastingFilter = new EntityFilterTree();
         modifiedEvent.actors[index] = newActor;
 
         onEventEdited(modifiedEvent);
@@ -134,7 +134,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         switch (value) {
             case ActorType.SPECIFIC_TYPE:
                 newActor.characterID = null;
-                newActor.actorCastingCondition = null;
+                newActor.actorCastingFilter = null;
                 newActor.spriteFilePath = [];
 
                 break;
@@ -144,7 +144,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                 break;
             case ActorType.PLAYER_CHARACTER:
                 newActor.characterID = null;
-                newActor.actorCastingCondition = null;
+                newActor.actorCastingFilter = null;
                 newActor.alias = t('interface.editor.event.casting_alias_main_character_temp');
                 newActor.characterID = PLAYER_CHARACTER;
 
@@ -156,7 +156,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
                 break;
             case ActorType.GENERIC_TYPE:
                 newActor.characterID = null;
-                newActor.actorCastingCondition = null;
+                newActor.actorCastingFilter = null;
                 newActor.alias = `${t('model.event.actor.type.generic')}_${event.actors?.length || 0}`;
                 break;
         }
@@ -353,16 +353,16 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
 
                                 {selectedActor.actorType === ActorType.DYNAMIC_TYPE && (
                                     <>
-                                        {!selectedActor.actorCastingCondition && (
+                                        {!selectedActor.actorCastingFilter && (
                                             <Button onClick={() => addActorConditionToActor(selectedActor, selectedActorIndex)}>
                                                 {t('interface.editor.event.casting_actor_add_condition')}
                                             </Button>
                                         )}
 
-                                        {selectedActor.actorCastingCondition && (
-                                            <ConditionTreeEditor
-                                                conditionTree={selectedActor.actorCastingCondition}
-                                                onChange={(conditionTree) => onActorConditionEdited(selectedActor, selectedActorIndex, conditionTree)}
+                                        {selectedActor.actorCastingFilter && (
+                                            <CompositeEntityFilter
+                                                filterTree={selectedActor.actorCastingFilter}
+                                                onFilterTreeChange={(conditionTree) => onActorConditionEdited(selectedActor, selectedActorIndex, conditionTree)}
                                             />
                                         )}
                                     </>

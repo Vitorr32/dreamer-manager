@@ -1,4 +1,3 @@
-import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { EntityFilterTree, FilterNode } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
@@ -19,9 +18,5 @@ export function CompositeEntityFilter({ filterTree, onFilterTreeChange }: IProps
         onFilterTreeChange(updatedTree);
     };
 
-    return (
-        <Box>
-            <EntityFilterNode filterNode={filterTree.root} index={0} isRoot={true} onFilterNodeChange={onRootFilterChange} />
-        </Box>
-    );
+    return filterTree && <EntityFilterNode filterNode={filterTree.root} index={0} isRoot={true} onFilterNodeChange={onRootFilterChange} />;
 }

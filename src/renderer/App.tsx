@@ -29,7 +29,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <MemoryRouter>
                 <Routes>
-                    <Route index element={<Navigate to="/menu/edit/trait" />} />
+                    <Route index element={<Navigate to="/menu/edit/trait/edit/trait_0" />} />
                     <Route path="/menu" element={<MainScreen />} />
                     <Route path="/menu/edit" element={<EditorScreen />} />
                     <Route path="/menu/edit/trait/*" element={<TraitEditorContainer />} />

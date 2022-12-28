@@ -14,7 +14,6 @@ import {
 } from 'renderer/shared/Constants';
 import React, { useEffect, useState } from 'react';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
-import { ConditionTree } from 'renderer/shared/models/base/ConditionTree';
 import { Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EditableScene } from 'renderer/shared/components/scene/EditableScene';
@@ -34,6 +33,7 @@ import { EventTreeRender } from './EventTreeRender.component';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 import { EffectOriginType } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 
 interface IProps {}
 
@@ -45,7 +45,7 @@ export function NewEvent({}: IProps) {
     const [isLoading, setLoadingState] = useState<boolean>(false);
     const [editEffectIndex, setEditEffectIndex] = useState<number>(-1);
     const [editedNode, setEditedNode] = useState<Scene | null>(null);
-    const [currentEvent, setCurrentEvent] = useState(new Event(undefined, '', { condition: new ConditionTree(), queryActorsConditions: [] }));
+    const [currentEvent, setCurrentEvent] = useState(new Event(undefined, '', { condition: new EntityFilterTree(), queryActorsConditions: [] }));
     const [currentVN, setCurrentVN] = useState<VisualNovel>(null);
     const [tempImagesPath, setTempImagesPaths] = useState<{ [key: string]: string }>({});
     const [sceneLinkEditInfo, setSceneLinkEditInfo] = useState<{ source: Scene; target: Scene; connection: SceneConnection }>();

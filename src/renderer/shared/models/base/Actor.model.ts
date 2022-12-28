@@ -1,8 +1,8 @@
-import { ConditionTree } from './ConditionTree';
 import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
 import { v4 as uuidv4 } from 'uuid';
 import { Entity } from '../enums/Entities.enum';
+import { EntityFilterTree } from './EntityFilterTree.model';
 
 export enum ActorType {
     PLAYER_CHARACTER = 'interface.editor.event.casting_player',
@@ -58,7 +58,7 @@ export class Actor extends EntityBase {
     //If the actor is a specific character, just put the id here.
     characterID?: string;
     //Condition to be checked to select the actor in case of dynamic casting
-    actorCastingCondition?: ConditionTree;
+    actorCastingFilter?: EntityFilterTree;
     // Actor object ID
     id: string;
     // Actor alias that the user may change to better edit the event, or if the actor is generic, the name that will appear on the dialogue screen.

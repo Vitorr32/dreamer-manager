@@ -78,7 +78,7 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
             <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} />
 
             {/* VARIABLE SELECT */}
-            {entityFilter.entity !== Entity.NONE && (
+            {entityFilter.entity && (
                 <VariableSelect
                     entity={entityFilter.entity}
                     entityVariableKey={entityFilter.variableKey}
