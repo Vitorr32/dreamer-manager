@@ -57,7 +57,7 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
     };
 
     return verifyVariablePossibleOperators(variable.type) ? (
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={{ minWidth: '300px' }}>
             <InputLabel>{t('interface.editor.entity.input_label_operator')}</InputLabel>
             <Select
                 value={variableOperator || ''}

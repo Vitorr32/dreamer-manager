@@ -37,12 +37,12 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, lockEntitySel
     };
 
     return (
-        <Box className="">
+        <Box sx={{ display: 'flex', gap: '20px' }}>
             {/* ENTITY SELECT */}
             <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} disabled={lockEntitySelection} />
 
             {/* VARIABLE SELECT */}
-            {entityFilter.entity !== Entity.NONE && (
+            {entityFilter.entity && (
                 <VariableSelect
                     entity={entityFilter.entity}
                     entityVariableKey={entityFilter.variableKey}

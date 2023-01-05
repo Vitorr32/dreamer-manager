@@ -7,6 +7,8 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { useTranslation } from 'react-i18next';
 import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
+import { EffectTriggerSelection } from './EffectTriggerSelection.component';
+import { EffectPeriodSelection } from './EffectPeriodSelection.component';
 interface IProps {
     effect: Effect;
     index: number;
@@ -17,17 +19,10 @@ interface IProps {
 export function EffectEditor({ effect, index, onChange, options }: IProps) {
     const { t, i18n } = useTranslation();
 
-    const onEffectChanged = (modifier: Modifier) => {
+    const onEffectChanged = (key: 'modifier' | 'trigger' | 'conditionTree' | 'periodValue' | 'periodType', value: any) => {
         const newEffect = CopyClassInstance(effect);
-
-        newEffect.modifier = modifier;
-
-        onChange(index, newEffect);
-    };
-
-    const onConditionChanged = (conditionTree: EntityFilterTree) => {
-        const newEffect = CopyClassInstance(effect);
-        newEffect.conditionTree = conditionTree;
+        // @ts-ignore
+        newEffect[key] = value;
         onChange(index, newEffect);
     };
 
@@ -57,7 +52,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
 
     return (
         <>
-            <ModifierEditor modifier={effect.modifier} onChange={onEffectChanged} options={options} />
+            <ModifierEditor modifier={effect.modifier} onChange={(modifier) => onEffectChanged('modifier', modifier)} options={options} />
 
             <Paper sx={{ bgcolor: 'background.default', padding: '10px 20px' }} elevation={1}>
                 <Typography sx={{ color: 'text.primary' }} variant="h6">
@@ -87,7 +82,25 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
                     )}
                 </Box>
 
-                <CompositeEntityFilter filterTree={effect.conditionTree} onFilterTreeChange={onConditionChanged} />
+                {effect.conditionTree && (
+                    <Box sx={{ marginTop: '20px' }}>
+                        <EffectTriggerSelection
+                            effectTrigger={effect.trigger}
+                            effectSource={effect.sourceType}
+                            onTriggerChange={(trigger) => onEffectChanged('trigger', trigger)}
+                        />
+
+                        <CompositeEntityFilter filterTree={effect.conditionTree} onFilterTreeChange={(conditionTree) => onEffectChanged('conditionTree', conditionTree)} />
+
+                        <EffectPeriodSelection
+                            effectPeriod={effect.periodType}
+                            effectPeriodValue={effect.periodValue}
+                            effectSource={effect.sourceType}
+                            onPeriodChange={(periodType) => onEffectChanged('periodType', periodType)}
+                            onPeriodValueChange={(value) => onEffectChanged('periodValue', value)}
+                        />
+                    </Box>
+                )}
             </Paper>
         </>
     );

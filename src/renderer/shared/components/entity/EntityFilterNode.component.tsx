@@ -108,7 +108,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                 )}
             </Box>
 
-            <Box className="node-children">
+            <Box>
                 NODE FILTERS:
                 {filterNode.entityFilters.map((entityFilter, index) => {
                     return (

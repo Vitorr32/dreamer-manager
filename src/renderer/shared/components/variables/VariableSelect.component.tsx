@@ -19,7 +19,7 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange, is
     const [entityVariables, setEntityVariables] = useState<Variables>();
 
     useEffect(() => {
-        if (entity && entity !== Entity.NONE) {
+        if (entity) {
             setEntityVariables(GetVariablesOfEntity(entity));
         } else {
             setEntityVariables(null);
@@ -47,6 +47,7 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange, is
     return entityVariableKey && !entityVariables ? null : (
         <Autocomplete
             fullWidth
+            sx={{ minWidth: '300px' }}
             options={getVariablesOfEntityAsSuggestions()}
             groupBy={(option) => option.group}
             onChange={(_, option: any) => onVariableChange(entityVariables[option.value])}

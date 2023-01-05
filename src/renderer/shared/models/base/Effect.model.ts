@@ -2,34 +2,23 @@ import { EntityFilterTree } from './EntityFilterTree.model';
 import { Modifier } from './Modifier';
 
 export enum Trigger {
-    UNDEFINED,
-
-    ALWAYS_ACTIVE,
-    ON_INTERACTION_START,
-    INTERACTION_END,
-    DURING_INTERACTION,
-
-    MAX_TRIGGERS,
+    ON_INTERACTION_START = 'model.effect.trigger.interaction_start',
+    ON_EVENT_START = 'model.effect.trigger.event_starts',
+    ON_TRAINING_START = 'model.effect.trigger.training_start',
+    ON_RECORD_START = 'model.effect.trigger.record_starts',
+    ON_SHOW_START = 'model.effect.trigger.show_starts',
 }
 
-export enum Duration {
-    UNDEFINED,
-
-    PERMANENT,
-    SPECIFIC_DURATION,
-    SPECIFIC_DATE,
-
-    MAX_DURATIONS,
+export enum Period {
+    PERMANENT = 'model.effect.period.permanent',
+    SPECIFIC_PERIOD = 'model.effect.period.specific_period',
+    SPECIFIC_DATE = 'model.effect.period.specific_date',
 }
 
 export enum Source {
-    UNDEFINED,
-
     TRAIT,
     RACE,
     ITEM,
-
-    MAX_SOURCES,
 }
 
 export enum ConditionFilterOperator {
@@ -65,8 +54,9 @@ export class Effect {
     //What is the condition for the activation of this effect when the trigger is triggered, it also may always happen.
     public conditionTree: EntityFilterTree;
     //After the effect was activated, for how much time does it take effect?
-    public durationType: Duration;
-    public durationArgs: number[] | undefined;
+    public periodType: Period;
+    //Depending on the effect period type, the value of the periodValue may be a specific date(01/01/2023) or a duration string (2w 3d 4h)
+    public periodValue: string;
     //What is the modifier that this effect cause
     public modifier: Modifier;
 
@@ -74,10 +64,6 @@ export class Effect {
         this.sourceID = sourceID;
         this.sourceType = sourceType;
         this.targetSelf = true;
-        this.trigger = Trigger.UNDEFINED;
-        this.conditionTree = undefined;
-        this.durationType = Duration.UNDEFINED;
-        this.durationArgs = undefined;
         this.modifier = new Modifier();
     }
 }

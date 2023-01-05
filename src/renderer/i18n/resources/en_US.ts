@@ -63,9 +63,18 @@ export const en_US = {
                     remove_effect: 'Remove effect',
                     remove_effect_title: 'Delete effect confirmation',
                     remove_effect_confirmation: 'Are you sure you want to delete this effect? This operation cannot be reverted',
+                    input_label_trigger: 'Effect Trigger',
+                    input_placeholder_trigger: 'Trigger',
+                    input_helper_trigger: 'Choose the trigger that may activate the modifier in case the condition is true.',
+                    input_label_period: 'Effect Period',
+                    input_placeholder_period: 'Period',
+                    input_helper_period: 'Once this effect is triggered, when or how long it lasts?',
+                    input_label_end_date: 'Effect End Date',
+                    input_label_active_period: 'Effect Active Period',
+                    input_placeholder_active_period: '1y 2mo 3w 4d 5h 6m',
                 },
                 condition: {
-                    title: 'Modified Conditions',
+                    title: 'Effect Conditions',
                     helper_text:
                         'Conditions will add scenarios where the modifier will be applied, such as time of the day, when practicing an specific attribute, if the interaction is with the opposite sex and so on.',
                     selector: 'Selector Specificator',
@@ -633,6 +642,20 @@ export const en_US = {
                     development: 'Development',
                     national: 'National',
                     special: 'Special',
+                },
+            },
+            effect: {
+                trigger: {
+                    interaction_start: 'On Interaction',
+                    event_starts: 'On Event',
+                    training_start: 'On Training',
+                    record_starts: 'On Record',
+                    show_starts: 'On Concert',
+                },
+                period: {
+                    permanent: 'Permanent',
+                    specific_period: 'Specific Period',
+                    specific_date: 'Specific Date',
                 },
             },
             nation: {

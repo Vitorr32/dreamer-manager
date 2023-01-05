@@ -23,6 +23,7 @@ export function TraitEditor(props: IProps) {
     const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.traits);
 
     useEffect(() => {
+        console.log(params);
         const IDParameter = params?.id;
 
         if (IDParameter) {

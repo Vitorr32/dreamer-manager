@@ -29,7 +29,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
             case VariableType.ENUMERATOR_LIST:
             case VariableType.ENUMERATOR:
                 return (
-                    <FormControl fullWidth>
+                    <FormControl fullWidth sx={{ minWidth: '300px' }}>
                         <InputLabel>{t('interface.editor.modifier.input_label_value_change')}</InputLabel>
                         <Select
                             value={variableValue || ''}
@@ -49,6 +49,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 return (
                     <TextField
                         fullWidth
+                        sx={{ minWidth: '200px' }}
                         value={variableValue || ''}
                         label={t('interface.editor.modifier.input_label_value_change')}
                         type="number"
@@ -59,6 +60,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 return (
                     <TextField
                         fullWidth
+                        sx={{ minWidth: '200px' }}
                         value={variableValue || ''}
                         label={t('interface.editor.modifier.input_label_value_change')}
                         onChange={(e) => onVariableValueChange(e.target.value)}
@@ -70,6 +72,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                         {alternativeInput ? (
                             <TextField
                                 fullWidth
+                                sx={{ minWidth: '200px' }}
                                 value={variableValue || ''}
                                 label={t('interface.editor.modifier.input_label_value_change')}
                                 placeholder={t('interface.editor.modifier.input_placeholder_period')}
@@ -103,6 +106,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                     <Autocomplete
                         fullWidth
                         freeSolo
+                        sx={{ minWidth: '200px' }}
                         options={getSuggestionsForAutocompleteOfEntity(variable.externalEntity)}
                         renderInput={(params) => <TextField {...params} label={t(variable.externalEntity)} />}
                     />

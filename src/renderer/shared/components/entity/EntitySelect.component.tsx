@@ -12,7 +12,7 @@ export function EntitySelect({ entity, onEntityChange, disabled }: IProps) {
     const { t } = useTranslation();
 
     return (
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={{ minWidth: '200px' }}>
             <InputLabel>{t('interface.editor.modifier.input_label_entity')}</InputLabel>
             <Select
                 value={entity || ''}
