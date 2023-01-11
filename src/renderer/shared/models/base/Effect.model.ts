@@ -19,6 +19,7 @@ export enum Source {
     TRAIT,
     RACE,
     ITEM,
+    EVENT,
 }
 
 export enum ConditionFilterOperator {

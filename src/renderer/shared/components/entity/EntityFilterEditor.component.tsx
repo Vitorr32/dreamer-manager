@@ -9,14 +9,15 @@ import { EntitySelect } from './EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
 import { VariableValueOperator } from '../variables/VariableValueOperator.component';
 import { VariableValueInput } from '../variables/VariableValueInput.component';
+import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 
 interface IProps {
     entityFilter: EntityVariableValue;
     onFilterChange: (entityFilter: EntityVariableValue) => void;
-    lockEntitySelection?: boolean;
+    entityFilterOptions?: EntityFilterOptions;
 }
 
-export function EntityFilterEditor({ entityFilter, onFilterChange, lockEntitySelection = false }: IProps) {
+export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterOptions }: IProps) {
     const { t } = useTranslation();
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
 
@@ -39,7 +40,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, lockEntitySel
     return (
         <Box sx={{ display: 'flex', gap: '20px' }}>
             {/* ENTITY SELECT */}
-            <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} disabled={lockEntitySelection} />
+            <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} />
 
             {/* VARIABLE SELECT */}
             {entityFilter.entity && (

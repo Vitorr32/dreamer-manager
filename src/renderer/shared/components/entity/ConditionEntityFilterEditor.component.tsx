@@ -12,12 +12,12 @@ import { VariableValueInput } from '../variables/VariableValueInput.component';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { EntityFilterEditor } from './EntityFilterEditor.component';
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
-import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 
 interface IProps {
     entityFilter: ExternalExpandedEntityFilter;
     onFilterChange: (entityFilter: ExternalExpandedEntityFilter) => void;
-    options: EffectEditorOptions;
+    options: EntityFilterOptions;
 }
 
 export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, options }: IProps) {

@@ -10,7 +10,8 @@ import { Box } from '@mui/system';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { EffectOriginType } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { ShortcutFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
 
 interface IProps {
     previousStep: () => void;
@@ -67,9 +68,18 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                     index={editEffectIndex}
                     effect={trait.effects[editEffectIndex]}
                     options={{
+                        specifiedEntities: {
+                            [Entity.CHARACTERS]: [
+                                {
+                                    label: 'Trait Holder',
+                                    data: null,
+                                    shortcut: ShortcutFilter.TRAIT_HOLDER,
+                                },
+                            ],
+                        },
                         allowConditionTree: true,
-                        effectOriginType: EffectOriginType.TRAIT,
-                        effectOriginID: trait.id,
+                        sourceType: Source.TRAIT,
+                        sourceID: trait.id,
                     }}
                 />
             )}

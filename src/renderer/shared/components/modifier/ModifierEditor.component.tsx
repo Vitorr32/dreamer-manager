@@ -6,7 +6,7 @@ import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
-import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ModifierEntityEditor } from './ModifierEntityEditor.component';
 import { ModifierTargetSelection } from './ModifierTargetSelection.component';
@@ -14,7 +14,7 @@ import { ModifierTargetSelection } from './ModifierTargetSelection.component';
 interface IProps {
     modifier: Modifier;
     onChange: (modifier: Modifier) => void;
-    options?: EffectEditorOptions;
+    options?: EntityFilterOptions;
 }
 
 export function ModifierEditor({ modifier, onChange, options }: IProps) {

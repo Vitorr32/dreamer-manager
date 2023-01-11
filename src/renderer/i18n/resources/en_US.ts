@@ -771,6 +771,7 @@ export const en_US = {
                     selfRivals: "This Character's Rivals",
                     mainStudio: 'Main Studio',
                     allActors: 'All actors in this Event',
+                    trait_holder: 'Trait Holder',
                 },
             },
             event: {

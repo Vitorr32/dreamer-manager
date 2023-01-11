@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
 import { EntityVariable, VariableOperator } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
-import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
 import { EntitySelect } from '../entity/EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
@@ -13,7 +13,7 @@ interface IProps {
     modifier: Modifier;
     onEntityChange: (entity: Entity) => void;
     onVariableChange: (key: 'variableKey' | 'value' | 'operator', value: any) => void;
-    options?: EffectEditorOptions;
+    options?: EntityFilterOptions;
 }
 
 export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChange }: IProps) {

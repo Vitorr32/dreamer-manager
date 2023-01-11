@@ -1,8 +1,8 @@
-import { Box, Button, MenuItem, Modal, TextField, Typography } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
     BASE_EVENT_FILE,
     DATABASE_FOLDER,
@@ -12,7 +12,7 @@ import {
     IMAGES_FOLDER,
     SPRITES_FOLDER,
 } from 'renderer/shared/Constants';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Event, Flag } from 'renderer/shared/models/base/Event.model';
 import { Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
@@ -24,14 +24,13 @@ import { NewEventFlag } from './NewEventFlag.component';
 import { GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { InsertIconInAssets, UpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
-import { Effect } from 'renderer/shared/models/base/Effect.model';
+import { Effect, Source } from 'renderer/shared/models/base/Effect.model';
 import { EffectEditor } from 'renderer/shared/components/effects/EffectEditor.component';
 import { EventInfoModal } from './EventInfoModal.component';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { EventTreeRender } from './EventTreeRender.component';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
-import { EffectOriginType } from 'renderer/shared/models/options/EffectEditorOptions.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 
@@ -296,8 +295,8 @@ export function NewEvent({}: IProps) {
                                 index={editEffectIndex}
                                 effect={currentEvent.effects[editEffectIndex]}
                                 options={{
-                                    effectOriginType: EffectOriginType.EVENT,
-                                    effectOriginID: currentEvent.id,
+                                    sourceType: Source.EVENT,
+                                    sourceID: currentEvent.id,
                                     specifiedEntities: {
                                         [Entity.ACTORS]: currentEvent.actors,
                                         [Entity.FLAGS]: currentEvent.flags,

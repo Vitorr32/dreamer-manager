@@ -1,7 +1,7 @@
 import { ModifierEditor } from 'renderer/shared/components/modifier/ModifierEditor.component';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
-import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { Box, Button, FormHelperText, Paper, Typography } from '@mui/material';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ interface IProps {
     effect: Effect;
     index: number;
     onChange: (index: number, effect: Effect) => void;
-    options?: EffectEditorOptions;
+    options?: EntityFilterOptions;
 }
 
 export function EffectEditor({ effect, index, onChange, options }: IProps) {

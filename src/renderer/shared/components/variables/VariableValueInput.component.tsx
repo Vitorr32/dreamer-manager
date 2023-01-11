@@ -5,7 +5,7 @@ import { Autocomplete, Checkbox, FormControl, FormControlLabel, IconButton, Inpu
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
 import { Entity } from 'renderer/shared/models/enums/Entities.enum';
-import { EffectEditorOptions } from 'renderer/shared/models/options/EffectEditorOptions.model';
+import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { GetEntitiesOfEntity } from 'renderer/shared/utils/General';
 import LoopIcon from '@mui/icons-material/Loop';
 import { useState } from 'react';
@@ -15,7 +15,7 @@ interface IProps {
     variable: EntityVariable;
     variableValue: any;
     onVariableValueChange: (value: any) => void;
-    options?: EffectEditorOptions;
+    options?: EntityFilterOptions;
 }
 
 export function VariableValueInput({ variable, variableValue, onVariableValueChange, options }: IProps) {

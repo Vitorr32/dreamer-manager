@@ -9,6 +9,7 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EntityFilterEditor } from './EntityFilterEditor.component';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
+import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 
 interface IProps {
     filterNode: FilterNode;
@@ -18,9 +19,10 @@ interface IProps {
     isRoot?: boolean;
     onFilterNodeChange: (entityFilterTree: FilterNode, indexOfNode: number) => void;
     onRemoveSelf?: (index: number) => void;
+    entityFilterOptions? : EntityFilterOptions;
 }
 
-export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf, index, parentIndex = 0, depth = 0, isRoot = false }: IProps) {
+export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf, index, parentIndex = 0, depth = 0, isRoot = false, entityFilterOptions }: IProps) {
     const { t } = useTranslation();
 
     const onLogicOperatorChange = (operator: LogicOperator): void => {
@@ -137,6 +139,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                             filterNode={entityFilter}
                             onFilterNodeChange={(filterNode) => onChildNodeChange(filterNode, index)}
                             onRemoveSelf={onChildNodeRemoval}
+                            entityFilterOptions={entityFilterOptions}
                         />
                     );
                 })}
