@@ -1,17 +1,17 @@
 import { Source } from '../base/Effect.model';
 import { ShortcutFilter } from '../base/EntityVariableValue.model';
-import { Entity } from '../enums/Entities.enum';
+import { EntityType } from '../enums/Entities.enum';
 export interface EntityFilterOptions {
     specifiedEntities?: {
-        [key in Entity]?: {
+        [key in EntityType]?: {
             label: string;
             data: any;
             shortcut?: ShortcutFilter;
         }[];
     };
-    filteredEntities?: Entity[];
+    filteredEntities?: EntityType[];
     filteredAttributes?: {
-        [key in Entity]?: string[];
+        [key in EntityType]?: string[];
     };
     allowConditionTree?: boolean;
     sourceType?: Source;

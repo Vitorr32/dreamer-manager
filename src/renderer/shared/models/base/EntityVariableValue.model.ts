@@ -1,4 +1,4 @@
-import { Entity } from '../enums/Entities.enum';
+import { EntityType } from '../enums/Entities.enum';
 import { VariableOperator } from './Variable.model';
 
 export enum ShortcutFilter {
@@ -31,7 +31,9 @@ export enum DynamicValue {
     SELF = 'SELF',
 }
 export interface EntityVariableValue {
-    entity: Entity;
+    entityType: EntityType;
+    specifiedEntitiesFromShortcut?: string[]; // Only used on run-time, this are the entities that were pooled when validating the EntityVariableValue.
+    specifiedShortcut?: ShortcutFilter;
     variableKey: string;
     operator?: VariableOperator;
     value: any;

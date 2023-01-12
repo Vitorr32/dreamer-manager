@@ -1,4 +1,4 @@
-import { Entity } from '../enums/Entities.enum';
+import { EntityType } from '../enums/Entities.enum';
 import { Attribute } from './Attribute.model';
 
 export enum VariableType {
@@ -44,7 +44,7 @@ export interface EntityVariable {
     groupBy?: string;
     // If it is a variable with type External Key or External List, it means it points to another entity, like the external key of a SQL table.
     // It should also contains which entity is the external key pointing to.
-    externalEntity?: Entity;
+    externalEntity?: EntityType;
     // If it is a variable with Enumerator values, here all the possible values should be set.
     options?: string[];
     // If it is a number variable that has limits, what is the minimum and maximum values? otherwise any value can be set

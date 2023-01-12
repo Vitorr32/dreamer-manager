@@ -51,6 +51,10 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
         onChange(updatedTrait);
     };
 
+    if (!trait) {
+        return null;
+    }
+
     return (
         <Box sx={{ paddingTop: '20px' }}>
             <TextField

@@ -1,4 +1,4 @@
-import { Entity } from '../enums/Entities.enum';
+import { EntityType } from '../enums/Entities.enum';
 
 export enum EffectOriginType {
     TRAIT,
@@ -8,7 +8,7 @@ export enum EffectOriginType {
 export interface EffectEditorOptions {
     isEventEffect?: boolean;
     specifiedEntities?: {
-        [key in Entity]?: any[];
+        [key in EntityType]?: any[];
     };
     allowConditionTree?: boolean;
     effectOriginType?: EffectOriginType;

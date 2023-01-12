@@ -1,15 +1,15 @@
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, VariableOperator } from 'renderer/shared/models/base/Variable.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntitySelect } from './EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
 import { VariableValueOperator } from '../variables/VariableValueOperator.component';
 import { VariableValueInput } from '../variables/VariableValueInput.component';
 
 interface IProps {
-    entity: Entity;
-    onEntityChange: (entity: Entity) => void;
+    entity: EntityType;
+    onEntityChange: (entity: EntityType) => void;
     variable: EntityVariable;
     onVariableChange: (variable: EntityVariable) => void;
     operator: VariableOperator;
@@ -27,7 +27,7 @@ export function EntityFilter({ entity, onEntityChange, variable, onVariableChang
             <EntitySelect entity={entity} onEntityChange={onEntityChange} />
 
             {/* VARIABLE SELECT */}
-            {entity !== Entity.NONE && <VariableSelect entity={entity} entityVariableKey={variable.key} onVariableChange={onVariableChange} />}
+            {entity !== EntityType.NONE && <VariableSelect entity={entity} entityVariableKey={variable.key} onVariableChange={onVariableChange} />}
 
             {/* OPERATOR SELECT */}
             {variable && <VariableValueOperator variable={variable} variableOperator={operator} onOperatorChange={onOperatorChange} />}

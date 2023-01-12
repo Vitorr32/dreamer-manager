@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { EntityPicker } from 'renderer/shared/components/entity/EntityPicker.component';
 import { Character, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { CharacterEditor } from './CharacterEditor.component';
 
 export function CharacterEditorContainer() {
@@ -37,7 +37,7 @@ export function CharacterEditorContainer() {
 
                         <EntityPicker
                             open={stateOfEntityPickerModal}
-                            entity={Entity.CHARACTERS}
+                            entity={EntityType.CHARACTERS}
                             getDisplayName={(character: Character) => `${character.name} ${character.nickname ? `"${character.nickname}" ` : ''}${character.surname}`}
                             pickerTitle={t('interface.editor.character.character_picker_title')}
                             pickerLabel={t('interface.editor.character.character_picker_label')}

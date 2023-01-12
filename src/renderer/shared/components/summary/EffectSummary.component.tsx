@@ -19,7 +19,7 @@ export function EffectSummary({ effect }: IProps) {
         // const valueSet = modifier.effectiveChange !== 0 ? true : false;
         // const isPositive = modifier.effectiveChange > 0 ? true : false;
 
-        switch (modifier.modifiedEntityVariable.entity) {
+        switch (modifier.modifiedEntityVariable.entityType) {
             // case ModifierType.MODIFY_SKILL_CURRENT_VALUE:
             // case ModifierType.MODIFY_POTENTIAL_VALUE:
             // case ModifierType.MODIFY_SKILL_GAIN_MULTIPLIER_VALUE:

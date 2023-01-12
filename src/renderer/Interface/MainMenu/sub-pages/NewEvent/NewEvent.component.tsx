@@ -31,7 +31,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { EventTreeRender } from './EventTreeRender.component';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 
 interface IProps {}
@@ -298,8 +298,8 @@ export function NewEvent({}: IProps) {
                                     sourceType: Source.EVENT,
                                     sourceID: currentEvent.id,
                                     specifiedEntities: {
-                                        [Entity.ACTORS]: currentEvent.actors,
-                                        [Entity.FLAGS]: currentEvent.flags,
+                                        [EntityType.ACTORS]: currentEvent.actors,
+                                        [EntityType.FLAGS]: currentEvent.flags,
                                     },
                                     allowConditionTree: true,
                                 }}

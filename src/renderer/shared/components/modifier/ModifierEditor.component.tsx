@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ModifierEntityEditor } from './ModifierEntityEditor.component';
@@ -20,9 +20,9 @@ interface IProps {
 export function ModifierEditor({ modifier, onChange, options }: IProps) {
     const { t, i18n } = useTranslation();
 
-    const onEntityModifierChanged = (entity: Entity): void => {
+    const onEntityModifierChanged = (entity: EntityType): void => {
         const newModifier = CopyClassInstance(modifier);
-        newModifier.modifiedEntityVariable = { ...DEFAULT_ENTITY_FILTER, entity };
+        newModifier.modifiedEntityVariable = { ...DEFAULT_ENTITY_FILTER, entityType: entity };
         onChange(newModifier);
     };
 

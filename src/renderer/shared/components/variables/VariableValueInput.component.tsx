@@ -4,7 +4,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Autocomplete, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, TextField, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { GetEntitiesOfEntity } from 'renderer/shared/utils/General';
 import LoopIcon from '@mui/icons-material/Loop';
@@ -124,7 +124,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
         }
     };
 
-    const getSuggestionsForAutocompleteOfEntity = (entity: Entity): any[] => {
+    const getSuggestionsForAutocompleteOfEntity = (entity: EntityType): any[] => {
         const allEntities = GetEntitiesOfEntity(entity);
 
         if (options && options.specifiedEntities && options.specifiedEntities[entity]) {

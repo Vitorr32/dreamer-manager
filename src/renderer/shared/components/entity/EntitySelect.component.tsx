@@ -1,15 +1,37 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, ListSubheader, MenuItem, Select } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityVariableValue, ShortcutFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 
 interface IProps {
-    entity: Entity;
-    onEntityChange: (entity: Entity) => void;
+    entity: EntityVariableValue;
+    onEntityChange: (entity: EntityVariableValue) => void;
     disabled?: boolean;
 }
 
-export function EntitySelect({ entity, onEntityChange, disabled }: IProps) {
+export function EntitySelect({ entity, onEntityChange, disabled = false }: IProps) {
     const { t } = useTranslation();
+
+    const onSelectChange = (selectedValue: string): void => {
+        if (Object.values(EntityType).includes(selectedValue as EntityType)) {
+            onEntityChange({
+                entityType: selectedValue as EntityType,
+                specifiedEntitiesFromShortcut: null,
+                specifiedShortcut: null,
+                value: null,
+                variableKey: null,
+            });
+            return;
+        }
+
+        // onEntityChange({
+        //     entityType: selectedValue as EntityType,
+        //     specifiedEntitiesFromShortcut: null,
+        //     specifiedShortcut: null,
+        //     value: null,
+        //     variableKey: null,
+        // });
+    };
 
     return (
         <FormControl fullWidth sx={{ minWidth: '200px' }}>
@@ -18,9 +40,17 @@ export function EntitySelect({ entity, onEntityChange, disabled }: IProps) {
                 value={entity || ''}
                 disabled={disabled}
                 label={t('interface.editor.modifier.input_label_entity')}
-                onChange={(e) => onEntityChange(e.target.value as Entity)}
+                onChange={(e) => onSelectChange(e.target.value as string)}
             >
-                {Object.values(Entity).map((entity) => (
+                <ListSubheader>{t('interface.editor.modifier.input_group_entities')}</ListSubheader>
+                {Object.values(EntityType).map((entity) => (
+                    <MenuItem key={entity} value={entity}>
+                        {t(entity)}
+                    </MenuItem>
+                ))}
+
+                <ListSubheader>{t('interface.editor.modifier.input_group_shortcuts')}</ListSubheader>
+                {Object.values(ShortcutFilter).map((entity) => (
                     <MenuItem key={entity} value={entity}>
                         {t(entity)}
                     </MenuItem>

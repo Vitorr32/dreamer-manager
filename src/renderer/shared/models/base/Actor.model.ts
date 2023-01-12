@@ -1,7 +1,7 @@
 import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
 import { v4 as uuidv4 } from 'uuid';
-import { Entity } from '../enums/Entities.enum';
+import { EntityType } from '../enums/Entities.enum';
 import { EntityFilterTree } from './EntityFilterTree.model';
 
 export enum ActorType {
@@ -26,7 +26,7 @@ export const ActorEntityVariables: Variables = {
         key: 'characterID',
         displayName: 'model.actor.variables.characterID',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.CHARACTERS,
+        externalEntity: EntityType.CHARACTERS,
         read: true,
         edit: false,
     },

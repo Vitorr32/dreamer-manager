@@ -1,4 +1,4 @@
-import { Entity } from '../enums/Entities.enum';
+import { EntityType } from '../enums/Entities.enum';
 import { EntityFilterTree } from './EntityFilterTree.model';
 import { EntityVariableValue } from './EntityVariableValue.model';
 import { VariableOperator } from './Variable.model';
@@ -9,7 +9,7 @@ export class Modifier {
 
     constructor() {
         this.modifiedEntityVariable = {
-            entity: null,
+            entityType: null,
             operator: VariableOperator.CHANGE_BY,
             value: '',
             variableKey: '',

@@ -7,7 +7,7 @@ import { Nation } from 'renderer/shared/models/base/Nation.model';
 import { PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
 import { PaperPiece } from 'renderer/shared/models/base/PaperPiece.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { Trait } from '../../shared/models/base/Trait.model';
 
 interface Database {
@@ -68,11 +68,11 @@ export const databaseSlice = createSlice({
             state,
             action: {
                 type: string;
-                payload: { value: any[]; key: Entity; progress: number };
+                payload: { value: any[]; key: EntityType; progress: number };
             }
         ) => {
             switch (action.payload.key) {
-                case Entity.CHARACTERS:
+                case EntityType.CHARACTERS:
                     state.characters = action.payload.value;
                     state.characters.forEach((character) => {
                         if (state.mappedDatabase.nations[character.id]) {
@@ -81,7 +81,7 @@ export const databaseSlice = createSlice({
 
                         state.mappedDatabase.characters[character.id] = character;
                     });
-                case Entity.PAPER_DOLL:
+                case EntityType.PAPER_DOLL:
                     state.paperDolls = action.payload.value;
                     state.paperDolls.forEach((paperDoll) => {
                         if (state.mappedDatabase.nations[paperDoll.id]) {
@@ -90,7 +90,7 @@ export const databaseSlice = createSlice({
 
                         state.mappedDatabase.paperDolls[paperDoll.id] = paperDoll;
                     });
-                case Entity.NATIONS:
+                case EntityType.NATIONS:
                     state.nations = action.payload.value;
                     state.nations.forEach((nation) => {
                         if (state.mappedDatabase.nations[nation.id]) {
@@ -100,7 +100,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.nations[nation.id] = nation;
                     });
                     break;
-                case Entity.TRAITS:
+                case EntityType.TRAITS:
                     const traits = action.payload.value.map((rawTraitData) => Object.assign(Object.create(Trait.prototype), rawTraitData));
 
                     state.traits = traits;
@@ -112,7 +112,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.traits[trait.id] = trait;
                     });
                     break;
-                case Entity.ATTRIBUTES:
+                case EntityType.ATTRIBUTES:
                     const attrs = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(Attribute.prototype), rawAttributeData));
 
                     state.attributes = attrs;
@@ -124,7 +124,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.attributes[attr.id] = attr;
                     });
                     break;
-                case Entity.CITIES:
+                case EntityType.CITIES:
                     state.cities = action.payload.value;
                     state.cities.forEach((city) => {
                         if (state.mappedDatabase.cities[city.id]) {
@@ -134,7 +134,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.cities[city.id] = city;
                     });
                     break;
-                case Entity.EVENTS:
+                case EntityType.EVENTS:
                     state.events = action.payload.value;
                     state.events.forEach((event) => {
                         if (state.mappedDatabase.events[event.id]) {
@@ -157,7 +157,7 @@ export const databaseSlice = createSlice({
                         state.mappedDatabase.events[event.id] = event;
                     });
                     break;
-                case Entity.PAPER_PIECE:
+                case EntityType.PAPER_PIECE:
                     const entities = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(PaperPiece.prototype), rawAttributeData));
 
                     state.paperPieces = entities;

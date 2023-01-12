@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { EntityPicker } from 'renderer/shared/components/entity/EntityPicker.component';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { TraitEditor } from './TraitEditor.component';
 
 export function TraitEditorContainer() {
@@ -37,7 +37,7 @@ export function TraitEditorContainer() {
 
                         <EntityPicker
                             open={stateOfEntityPickerModal}
-                            entity={Entity.TRAITS}
+                            entity={EntityType.TRAITS}
                             getDisplayName={(entity: Trait) => `${entity.getName(i18n.language)} - ${entity.id}`}
                             pickerTitle={t('interface.editor.trait.trait_picker_title')}
                             pickerLabel={t('interface.editor.trait.trait_picker_label')}

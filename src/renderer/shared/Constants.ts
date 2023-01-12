@@ -1,6 +1,6 @@
 import { EntityVariableValue, ExternalExpandedEntityFilter } from './models/base/EntityVariableValue.model';
 import { VariableOperator } from './models/base/Variable.model';
-import { Entity } from './models/enums/Entities.enum';
+import { EntityType } from './models/enums/Entities.enum';
 
 export const MAX_NUMBER_OF_TRAITS_GENERATED = 5;
 export const MAX_NUMBER_OF_TRAITS = 20;
@@ -14,7 +14,7 @@ export const PLAYER_AGENCY = 'main_agency';
 export const PLAYER_CHARACTER = 'main_char_000';
 
 export const DEFAULT_ENTITY_FILTER: EntityVariableValue = {
-    entity: Entity.NONE,
+    entityType: EntityType.NONE,
     operator: null,
     value: '',
     variableKey: '',

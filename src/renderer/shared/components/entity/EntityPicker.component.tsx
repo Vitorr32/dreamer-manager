@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 
 interface IProps {
-    entity: Entity;
+    entity: EntityType;
     //Labels from the i18next
     pickerTitle: string;
     pickerLabel: string;
@@ -25,9 +25,9 @@ export function EntityPicker({ entity, pickerTitle, getDisplayName, open, picker
 
     const entities: any[] = useSelector((state: RootState) => {
         switch (entity) {
-            case Entity.TRAITS:
+            case EntityType.TRAITS:
                 return state.database.traits;
-            case Entity.CHARACTERS:
+            case EntityType.CHARACTERS:
                 return state.database.characters;
             default:
                 return [];

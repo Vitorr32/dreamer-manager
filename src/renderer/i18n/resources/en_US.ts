@@ -202,6 +202,8 @@ export const en_US = {
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                     input_label_entity: 'Entity',
                     input_label_variable: 'Entity Variable',
+                    input_group_shortcuts: 'Specific Entities',
+                    input_group_entities: 'All Entities of Type',
                     input_label_conditional: 'Conditional',
                     input_label_value_change: 'Modifier Value',
                     modifier_editor_helper_text: `Select what Entity's variable will be modified by this modifier`,

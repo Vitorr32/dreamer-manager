@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Relationship } from 'renderer/shared/models/base/Relationship.model';
 import { EntityVariable, Variables, VariableType } from 'renderer/shared/models/base/Variable.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IProps {
-    entity: Entity;
+    entity: EntityType;
     entityVariableKey: string;
     onVariableChange: (variable: EntityVariable) => void;
     isEditor?: boolean;

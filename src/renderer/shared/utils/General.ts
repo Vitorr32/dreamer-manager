@@ -7,7 +7,7 @@ import { PaperPiece } from '../models/base/PaperPiece.model';
 import { Relationship } from '../models/base/Relationship.model';
 import { Variables } from '../models/base/Variable.model';
 import { World } from '../models/base/World.model';
-import { Entity } from '../models/enums/Entities.enum';
+import { EntityType } from '../models/enums/Entities.enum';
 
 export function AreArraysEqual(array1: any[], array2: any[]): boolean {
     if (!array1 && !array2) {
@@ -27,30 +27,30 @@ export function CopyClassInstance<T>(object: T): T {
     return Object.assign(Object.create(Object.getPrototypeOf(object)), cloneDeep(object));
 }
 
-export function GetVariablesOfEntity(entity: Entity): Variables {
+export function GetVariablesOfEntity(entity: EntityType): Variables {
     switch (entity) {
-        case Entity.CHARACTERS:
+        case EntityType.CHARACTERS:
             return Character.getEntityVariables();
-        case Entity.ACTORS:
+        case EntityType.ACTORS:
             return Actor.getEntityVariables();
-        case Entity.WORLD_STATE:
+        case EntityType.WORLD_STATE:
             return World.getEntityVariables();
-        case Entity.RELATIONSHIP:
+        case EntityType.RELATIONSHIP:
             return Relationship.getEntityVariables();
-        case Entity.PAPER_DOLL:
+        case EntityType.PAPER_DOLL:
             return PaperDoll.getEntityVariables();
-        case Entity.PAPER_PIECE:
+        case EntityType.PAPER_PIECE:
             return PaperPiece.getEntityVariables();
         default:
             return null;
     }
 }
 
-export function GetEntitiesOfEntity(entity: Entity): any[] {
+export function GetEntitiesOfEntity(entity: EntityType): any[] {
     switch (entity) {
-        case Entity.CHARACTERS:
+        case EntityType.CHARACTERS:
             return store.getState().database.characters;
-        case Entity.FLAGS:
+        case EntityType.FLAGS:
             return store.getState().database.flags;
         default:
             console.error('Searched for unknown entity: ' + entity);

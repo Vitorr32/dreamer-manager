@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ExternalExpandedEntityFilter, EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { CopyClassInstance, GetVariablesOfEntity } from 'renderer/shared/utils/General';
 import { EntitySelect } from './EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
@@ -31,7 +31,7 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
         const updatedFilter = CopyClassInstance(entityFilter);
 
         if (key === 'variableKey') {
-            setSelectedVariable(GetVariablesOfEntity(entityFilter.entity)[newValue]);
+            setSelectedVariable(GetVariablesOfEntity(entityFilter.entityType)[newValue]);
             updatedFilter.value = '';
         } else if (key === 'entity') {
             setSelectedVariable(null);
@@ -52,7 +52,7 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
         if (hasTarget) {
             setExternalEntityFilters({
                 ...DEFAULT_ENTITY_FILTER,
-                entity: selectedVariable.externalEntity,
+                entityType: selectedVariable.externalEntity,
             });
             return;
         }
@@ -64,7 +64,7 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
         if (hasTarget) {
             setComparingEntityFilters({
                 ...DEFAULT_ENTITY_FILTER,
-                entity: entityFilter.entity,
+                entityType: entityFilter.entityType,
             });
             return;
         }
@@ -75,12 +75,12 @@ export function ConditionEntityFilterEditor({ entityFilter, onFilterChange, opti
     return (
         <Box>
             {/* ENTITY SELECT */}
-            <EntitySelect entity={entityFilter.entity} onEntityChange={(entity) => onFilterChanged('entity', entity)} />
+            <EntitySelect entity={entityFilter.entityType} onEntityChange={(entity) => onFilterChanged('entity', entity)} />
 
             {/* VARIABLE SELECT */}
-            {entityFilter.entity && (
+            {entityFilter.entityType && (
                 <VariableSelect
-                    entity={entityFilter.entity}
+                    entity={entityFilter.entityType}
                     entityVariableKey={entityFilter.variableKey}
                     onVariableChange={(variable) => onFilterChanged('variableKey', variable.key)}
                 />

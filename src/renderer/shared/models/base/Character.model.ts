@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Variables, VariableType } from './Variable.model';
-import { Entity } from '../enums/Entities.enum';
+import { EntityType } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
 import { Culture, LanguageFluency } from '../enums/Culture.enum';
 
@@ -165,7 +165,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.FLAGS,
         displayName: 'model.character.variables.flags',
         type: VariableType.EXTERNAL_KEY_LIST,
-        externalEntity: Entity.FLAGS,
+        externalEntity: EntityType.FLAGS,
         read: true,
         edit: true,
     },
@@ -173,7 +173,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.AGENCY,
         displayName: 'model.character.variables.agency',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.AGENCY,
+        externalEntity: EntityType.AGENCY,
         read: true,
         edit: true,
     },
@@ -181,7 +181,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.NATIONALITY,
         displayName: 'model.character.variables.nationality',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.NATIONS,
+        externalEntity: EntityType.NATIONS,
         read: true,
         edit: false,
     },
@@ -189,7 +189,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.HOMETOWN,
         displayName: 'model.character.variables.hometown',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.CITIES,
+        externalEntity: EntityType.CITIES,
         read: true,
         edit: false,
     },
@@ -197,7 +197,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.RESIDENCE_LOCATION,
         displayName: 'model.character.variables.residence_location',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.CITIES,
+        externalEntity: EntityType.CITIES,
         read: true,
         edit: true,
     },
@@ -223,7 +223,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.TRAITS,
         displayName: 'model.character.variables.nationality',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.TRAITS,
+        externalEntity: EntityType.TRAITS,
         read: true,
         edit: false,
     },
@@ -238,7 +238,7 @@ export const CharacterEntityVariables: Variables = {
         key: CharacterVariablesKey.PAPER_DOLL,
         displayName: 'model.character.variables.paperDoll',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.PAPER_DOLL,
+        externalEntity: EntityType.PAPER_DOLL,
         read: true,
         edit: true,
     },

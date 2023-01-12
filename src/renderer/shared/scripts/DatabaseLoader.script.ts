@@ -20,7 +20,7 @@ import { Nation } from '../models/base/Nation.model';
 import { Emotion, PaperDoll } from '../models/base/PaperDoll.model';
 import { PaperPiece } from '../models/base/PaperPiece.model';
 import { Trait } from '../models/base/Trait.model';
-import { Entity } from '../models/enums/Entities.enum';
+import { EntityType } from '../models/enums/Entities.enum';
 import { ApplyFileProtocol, GetFileFromResources } from '../utils/StringOperations';
 
 export async function GameStartDatabaseLoad(): Promise<void> {
@@ -31,10 +31,10 @@ export async function GameStartDatabaseLoad(): Promise<void> {
         trait.absoluteIconPath = processedPath.path;
         return trait;
     });
-    store.dispatch(gameLoadUpdate({ key: Entity.TRAITS, value: traits, progress: 0 }));
+    store.dispatch(gameLoadUpdate({ key: EntityType.TRAITS, value: traits, progress: 0 }));
 
     const charactersLoaded = await GetResourcesFromDatabase<Character>([DATABASE_FOLDER, CHARACTERS_FOLDER]);
-    store.dispatch(gameLoadUpdate({ key: Entity.CHARACTERS, value: charactersLoaded, progress: 10 }));
+    store.dispatch(gameLoadUpdate({ key: EntityType.CHARACTERS, value: charactersLoaded, progress: 10 }));
 
     console.log('charactersLoaded', charactersLoaded);
 
@@ -57,25 +57,25 @@ export async function GameStartDatabaseLoad(): Promise<void> {
         }
         return data;
     });
-    store.dispatch(gameLoadUpdate({ key: Entity.PAPER_DOLL, value: paperDollsLoaded, progress: 15 }));
+    store.dispatch(gameLoadUpdate({ key: EntityType.PAPER_DOLL, value: paperDollsLoaded, progress: 15 }));
 
     const nationsLoaded = await GetResourcesFromDatabase<Nation>([DATABASE_FOLDER, NATIONS_DATABASE_FOLDER]);
-    store.dispatch(gameLoadUpdate({ key: Entity.NATIONS, value: nationsLoaded, progress: 20 }));
+    store.dispatch(gameLoadUpdate({ key: EntityType.NATIONS, value: nationsLoaded, progress: 20 }));
 
     const attributesLoaded = await GetResourcesFromDatabase<Attribute>([DATABASE_FOLDER, ATTRIBUTES_DATABASE_FOLDER]);
-    store.dispatch(gameLoadUpdate({ key: Entity.ATTRIBUTES, value: attributesLoaded, progress: 40 }));
+    store.dispatch(gameLoadUpdate({ key: EntityType.ATTRIBUTES, value: attributesLoaded, progress: 40 }));
 
     const eventsLoaded = await GetResourcesFromDatabase<Event>([DATABASE_FOLDER, EVENT_DATABASE_FOLDER]);
-    store.dispatch(gameLoadUpdate({ key: Entity.EVENTS, value: eventsLoaded, progress: 60 }));
+    store.dispatch(gameLoadUpdate({ key: EntityType.EVENTS, value: eventsLoaded, progress: 60 }));
 
     const citiesLoaded = await GetResourcesFromDatabase<City>([DATABASE_FOLDER, CITIES_DATABASE_FOLDER]);
-    store.dispatch(gameLoadUpdate({ key: Entity.CITIES, value: citiesLoaded, progress: 80 }));
+    store.dispatch(gameLoadUpdate({ key: EntityType.CITIES, value: citiesLoaded, progress: 80 }));
 
     const paperPiecesLoaded = await GetStaticResourcesFromDatabase<PaperPiece>([SPRITES_FOLDER, PAPER_PIECES_FOLDER], async (data: PaperPiece, staticResourcePath: string) => {
         data.absolutePath = ApplyFileProtocol(staticResourcePath);
         return data;
     });
-    store.dispatch(gameLoadUpdate({ key: Entity.PAPER_PIECE, value: paperPiecesLoaded, progress: 90 }));
+    store.dispatch(gameLoadUpdate({ key: EntityType.PAPER_PIECE, value: paperPiecesLoaded, progress: 90 }));
 
     console.log('On GameStartDatabaseLoaded:', store.getState().database.mappedDatabase);
 }

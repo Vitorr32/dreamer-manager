@@ -1,4 +1,4 @@
-import { Entity } from '../enums/Entities.enum';
+import { EntityType } from '../enums/Entities.enum';
 import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
 
@@ -22,7 +22,7 @@ export const RelationshipEntityVariables: Variables = {
         key: 'originCharacter',
         displayName: 'model.relationship.variables.originChar',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.CHARACTERS,
+        externalEntity: EntityType.CHARACTERS,
         read: true,
         edit: false,
     },
@@ -30,7 +30,7 @@ export const RelationshipEntityVariables: Variables = {
         key: 'targetCharacter',
         displayName: 'model.relationship.variables.targetChar',
         type: VariableType.EXTERNAL_KEY,
-        externalEntity: Entity.CHARACTERS,
+        externalEntity: EntityType.CHARACTERS,
         read: true,
         edit: false,
     },

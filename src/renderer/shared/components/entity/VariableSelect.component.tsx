@@ -2,11 +2,11 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, Variables } from 'renderer/shared/models/base/Variable.model';
-import { Entity } from 'renderer/shared/models/enums/Entities.enum';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
 
 interface IProps {
-    entity: Entity;
+    entity: EntityType;
     entityVariableKey: string;
     onVariableChange: (variable: EntityVariable) => void;
 }
@@ -16,7 +16,7 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange }: 
     const [entityVariables, setEntityVariables] = useState<Variables>();
 
     useEffect(() => {
-        if (entity && entity !== Entity.NONE) {
+        if (entity && entity !== EntityType.NONE) {
             setEntityVariables(GetVariablesOfEntity(entity));
         } else {
             setEntityVariables(null);

@@ -1,4 +1,4 @@
-export enum Entity {
+export enum EntityType {
     ACTORS = 'model.entity.actors',
     ATTRIBUTES = 'model.entity.attributes',
     EVENTS = 'model.entity.events',
