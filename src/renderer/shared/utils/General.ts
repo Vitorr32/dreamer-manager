@@ -2,6 +2,9 @@ import cloneDeep from 'lodash/cloneDeep';
 import { store } from 'renderer/redux/store';
 import { Actor } from '../models/base/Actor.model';
 import { Character } from '../models/base/Character.model';
+import { Dreamer } from '../models/base/Dreamer.model';
+import { Trigger, Source } from '../models/base/Effect.model';
+import { DynamicEntity } from '../models/base/EntityVariableValue.model';
 import { PaperDoll } from '../models/base/PaperDoll.model';
 import { PaperPiece } from '../models/base/PaperPiece.model';
 import { Relationship } from '../models/base/Relationship.model';
@@ -31,6 +34,8 @@ export function GetVariablesOfEntity(entity: EntityType): Variables {
     switch (entity) {
         case EntityType.CHARACTERS:
             return Character.getEntityVariables();
+        case EntityType.DREAMER:
+            return Dreamer.getEntityVariables();
         case EntityType.ACTORS:
             return Actor.getEntityVariables();
         case EntityType.WORLD_STATE:
@@ -54,6 +59,43 @@ export function GetEntitiesOfEntity(entity: EntityType): any[] {
             return store.getState().database.flags;
         default:
             console.error('Searched for unknown entity: ' + entity);
+            return [];
+    }
+}
+
+export function GetEntityTypeOfDynamicEntity(dynamicEntity: DynamicEntity): EntityType {
+    switch (dynamicEntity) {
+        case DynamicEntity.ALL_ACTORS:
+            return EntityType.ACTORS;
+        case DynamicEntity.ALL_DREAMERS_OF_STUDIO:
+        case DynamicEntity.SELF_PRODUCER:
+            return EntityType.DREAMER;
+        case DynamicEntity.EVERYONE:
+        case DynamicEntity.EVERYONE_ON_AGENCY:
+        case DynamicEntity.SELF:
+        case DynamicEntity.SELF_FRIENDS:
+        case DynamicEntity.SELF_RIVALS:
+        case DynamicEntity.ALL_STAFF_OF_AGENCY:
+            return EntityType.CHARACTERS;
+        default:
+            console.error('Unknown dynamic entity:');
+            return null;
+    }
+}
+
+export function FilterPossibleDynamicEntitiesForTriggerType(effectTriggerType: Trigger, effectSource: Source): DynamicEntity[] {
+    switch(effectTriggerType) {
+        case Trigger.ON_INTERACTION_START:
+            return [DynamicEntity.SELF, DynamicEntity.SELF_FRIENDS, DynamicEntity.SELF_RIVALS];
+        case Trigger.ON_EVENT_START:
+            return [DynamicEntity.ALL_ACTORS, DynamicEntity.PROTAGONIST];
+        case Trigger.ON_RECORD_START:
+            return [DynamicEntity.SELF, DynamicEntity.SELF_FRIENDS, DynamicEntity.SELF_RIVALS];
+        case Trigger.ON_SHOW_START:
+            return [DynamicEntity.EVERYONE];
+        case Trigger.ON_TRAINING_START:
+            return [];
+        default:
             return [];
     }
 }

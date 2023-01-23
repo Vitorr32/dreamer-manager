@@ -11,7 +11,7 @@ import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
-import { ShortcutFilter } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { DynamicEntity } from 'renderer/shared/models/base/EntityVariableValue.model';
 
 interface IProps {
     previousStep: () => void;
@@ -73,7 +73,7 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                                 {
                                     label: 'Trait Holder',
                                     data: null,
-                                    shortcut: ShortcutFilter.TRAIT_HOLDER,
+                                    shortcut: DynamicEntity.SELF,
                                 },
                             ],
                         },

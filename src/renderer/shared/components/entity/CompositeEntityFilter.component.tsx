@@ -7,7 +7,7 @@ import { EntityFilterNode } from './EntityFilterNode.component';
 interface IProps {
     filterTree: EntityFilterTree;
     onFilterTreeChange: (entityFilterTree: EntityFilterTree) => void;
-    entityFilterOptions? : EntityFilterOptions;
+    entityFilterOptions?: EntityFilterOptions;
 }
 
 export function CompositeEntityFilter({ filterTree, onFilterTreeChange, entityFilterOptions }: IProps) {
@@ -20,5 +20,9 @@ export function CompositeEntityFilter({ filterTree, onFilterTreeChange, entityFi
         onFilterTreeChange(updatedTree);
     };
 
-    return filterTree && <EntityFilterNode filterNode={filterTree.root} index={0} isRoot={true} onFilterNodeChange={onRootFilterChange} />;
+    return (
+        filterTree && (
+            <EntityFilterNode filterNode={filterTree.root} index={0} isRoot={true} onFilterNodeChange={onRootFilterChange} entityFilterOptions={entityFilterOptions} />
+        )
+    );
 }

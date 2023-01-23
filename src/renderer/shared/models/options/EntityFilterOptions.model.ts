@@ -1,15 +1,15 @@
 import { Source } from '../base/Effect.model';
-import { ShortcutFilter } from '../base/EntityVariableValue.model';
+import { DynamicEntity } from '../base/EntityVariableValue.model';
 import { EntityType } from '../enums/Entities.enum';
 export interface EntityFilterOptions {
     specifiedEntities?: {
         [key in EntityType]?: {
             label: string;
             data: any;
-            shortcut?: ShortcutFilter;
+            shortcut?: DynamicEntity;
         }[];
     };
-    filteredEntities?: EntityType[];
+    filteredEntities?: EntityType | DynamicEntity[];
     filteredAttributes?: {
         [key in EntityType]?: string[];
     };
