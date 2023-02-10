@@ -22,7 +22,7 @@ export function ModifierEntityEditor({ modifier, onEntityChange, onVariableChang
     return (
         <Box className="entity-editor">
             {/* ENTITY SELECT */}
-            <EntitySelect entity={modifier.modifiedEntityVariable?.entityType} onEntityChange={onEntityChange} />
+            <EntitySelect entity={modifier.modifiedEntityVariable} onEntityChange={(entityTypeString: string) => onEntityChange(entityTypeString as EntityType)} />
 
             {/* VARIABLE SELECT */}
             {modifier.modifiedEntityVariable && modifier.modifiedEntityVariable.entityType && (

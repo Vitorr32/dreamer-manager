@@ -32,6 +32,8 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
     };
 
     const onTriggerTypeChanged = (triggerType: Trigger) => {
+        console.log('triggerType',  triggerType)
+        console.log('FilterPossibleDynamicEntitiesForTriggerType',  FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType))
         setExpandedOptions({
             ...(expandedOptions || {}),
             filteredEntities: FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType)

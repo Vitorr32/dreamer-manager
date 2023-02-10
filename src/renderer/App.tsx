@@ -8,6 +8,7 @@ import '@fontsource/roboto';
 import './App.scss';
 import { EventEditor } from './Interface/MainMenu/sub-pages/EventEditor/EventEditor.component';
 import { CharacterEditorContainer } from './Interface/MainMenu/sub-pages/CharacterEditor/CharacterEditorContainer.component';
+import { StartUpPage } from './Interface/MainMenu/page/MainScreen/StartUpPage.component';
 
 export default function App() {
     const theme = createTheme({
@@ -30,6 +31,7 @@ export default function App() {
             <MemoryRouter>
                 <Routes>
                     <Route index element={<Navigate to="/menu/edit/trait/edit/trait_0" />} />
+                    <Route path='/startup' element={<StartUpPage/>} />
                     <Route path="/menu" element={<MainScreen />} />
                     <Route path="/menu/edit" element={<EditorScreen />} />
                     <Route path="/menu/edit/trait/*" element={<TraitEditorContainer />} />

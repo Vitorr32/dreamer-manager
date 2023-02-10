@@ -68,16 +68,6 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                     index={editEffectIndex}
                     effect={trait.effects[editEffectIndex]}
                     options={{
-                        specifiedEntities: {
-                            [EntityType.CHARACTERS]: [
-                                {
-                                    label: 'Trait Holder',
-                                    data: null,
-                                    shortcut: DynamicEntity.SELF,
-                                },
-                            ],
-                        },
-                        allowConditionTree: true,
                         sourceType: Source.TRAIT,
                         sourceID: trait.id,
                     }}

@@ -1,9 +1,9 @@
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { DynamicEntity, EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
-import { CopyClassInstance, GetVariablesOfEntity } from 'renderer/shared/utils/General';
+import { CopyClassInstance, GetEntityTypeOfDynamicEntity, GetVariablesOfEntity } from 'renderer/shared/utils/General';
 import { EntitySelect } from './EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
 import { VariableValueOperator } from '../variables/VariableValueOperator.component';
@@ -30,21 +30,24 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
             setSelectedVariable(null);
             updatedFilter.variableKey = '';
             updatedFilter.value = '';
+
+            //In case the entity type is actually a dynamic entity value, populate the entity type and specify the dynamic entity value.
+            if (Object.values(DynamicEntity).includes(newValue as DynamicEntity)) {
+                updatedFilter.specifiedDynamicEntity = newValue as DynamicEntity;
+                updatedFilter.entityType = GetEntityTypeOfDynamicEntity(newValue as DynamicEntity);
+                onFilterChange(updatedFilter);
+                return;
+            }
         }
 
         updatedFilter[key] = newValue;
         onFilterChange(updatedFilter);
     };
 
-    const onEntityFilterChanged = (entityFilter: EntityVariableValue): void => {
-        const updatedFilter = CopyClassInstance(entityFilter);
-        onFilterChange(updatedFilter);
-    }
-
     return (
         <Box sx={{ display: 'flex', gap: '20px' }}>
             {/* ENTITY SELECT */}
-            <EntitySelect entity={entityFilter} onEntityChange={(entityFilter) => onEntityFilterChanged(entityFilter)} />
+            <EntitySelect entity={entityFilter} onEntityChange={(entityType) => onFilterChanged('entityType', entityType)} />
 
             {/* VARIABLE SELECT */}
             {entityFilter.entityType && (

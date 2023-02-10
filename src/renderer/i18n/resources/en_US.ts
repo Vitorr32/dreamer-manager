@@ -94,6 +94,8 @@ export const en_US = {
                     button_filter_add_filter: 'Add Filter to Node',
                     button_filter_add_child: 'Add Child to Node',
                     button_remove_filter: 'Removed Filter Node',
+                    node_filters: 'Node Condition',
+                    node_children: 'Node Conditional Sub-nodes'
                 },
                 actor: {
                     input_label_selection: 'Actor Selection',
@@ -818,9 +820,6 @@ export const en_US = {
                     if: 'If the following is true',
                     and: 'If all of the following is true',
                     or: 'If any of the following is true',
-                },
-                initiator: {
-                    attr_range: '{{attr}} ',
                 },
                 numeric_selector: {
                     between: '{{main}} is between {{value1}} and {{value2}}',

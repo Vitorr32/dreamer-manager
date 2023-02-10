@@ -1,4 +1,4 @@
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_EXTERNAL_ENTITY_FILTER } from 'renderer/shared/Constants';
@@ -19,7 +19,7 @@ interface IProps {
     isRoot?: boolean;
     onFilterNodeChange: (entityFilterTree: FilterNode, indexOfNode: number) => void;
     onRemoveSelf?: (index: number) => void;
-    entityFilterOptions? : EntityFilterOptions;
+    entityFilterOptions?: EntityFilterOptions;
 }
 
 export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf, index, parentIndex = 0, depth = 0, isRoot = false, entityFilterOptions }: IProps) {
@@ -110,8 +110,8 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                 )}
             </Box>
 
-            <Box>
-                NODE FILTERS:
+            <Box sx={{ marginTop: '10px' }}>
+                <Typography> {t('interface.editor.entity.node_filters')}</Typography>
                 {filterNode.entityFilters.map((entityFilter, index) => {
                     return (
                         <Box key={`entity_filter_${depth}_${parentIndex}${index}`} sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -127,8 +127,8 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                 })}
             </Box>
 
-            <Box className="node-filters">
-                NODE CHILDREN:
+            <Box sx={{ marginTop: '10px' }}>
+                <Typography>{t('interface.editor.entity.node_children')}</Typography>
                 {filterNode.children.map((entityFilter, index) => {
                     return (
                         <EntityFilterNode
