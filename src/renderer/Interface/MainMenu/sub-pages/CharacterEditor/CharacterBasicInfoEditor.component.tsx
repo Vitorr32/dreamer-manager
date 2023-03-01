@@ -177,7 +177,7 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
                         onError={(reason: any) => setErrorState({ ...errorState, [CharacterVariablesKey.BIRTHDAY]: !!reason })}
                         inputFormat={t('interface.utils.date_format')}
                         value={character.birthday || new Date(1560, 0, 1)}
-                        onChange={(e: any) => onInputChange(CharacterVariablesKey.BIRTHDAY, e.toDateString())}
+                        onChange={(e: any) => onInputChange(CharacterVariablesKey.BIRTHDAY, e.toISOString())}
                         renderInput={(params: any) => <TextField required {...params} />}
                     />
                     <FormHelperText>

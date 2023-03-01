@@ -14,7 +14,7 @@ export const PLAYER_AGENCY = 'main_agency';
 export const PLAYER_CHARACTER = 'main_char_000';
 
 export const DEFAULT_ENTITY_FILTER: EntityVariableValue = {
-    entityType: EntityType.NONE,
+    entityType: EntityType.WORLD_STATE,
     operator: null,
     value: '',
     variableKey: '',

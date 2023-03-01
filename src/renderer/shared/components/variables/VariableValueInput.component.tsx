@@ -85,7 +85,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                                     mask="__/__/____"
                                     onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
                                     value={new Date(variableValue || '01/01/0001')}
-                                    onChange={(e: any) => onVariableValueChange(e.toDateString())}
+                                    onChange={(e: any) => onVariableValueChange(e.toISOString())}
                                     renderInput={(params: any) => <TextField {...params} sx={{ minWidth: '300px' }} />}
                                 />
                             </LocalizationProvider>

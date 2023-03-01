@@ -56,7 +56,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                             maxDate={new Date(1700, 12, 30)}
                             inputFormat={t('interface.utils.date_format')}
                             value={variableValue || new Date(1560, 0, 1)}
-                            onChange={(e: any) => onVariableValueChange(e.toDateString())}
+                            onChange={(e: any) => onVariableValueChange(e.toISOString())}
                             renderInput={(params: any) => <TextField required {...params} />}
                         />
                     </LocalizationProvider>

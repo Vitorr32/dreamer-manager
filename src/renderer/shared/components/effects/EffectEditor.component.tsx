@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ModifierEditor } from 'renderer/shared/components/modifier/ModifierEditor.component';
-import { Effect, Trigger } from 'renderer/shared/models/base/Effect.model';
+import { Effect, Period, Trigger } from 'renderer/shared/models/base/Effect.model';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { Box, Button, FormHelperText, Paper, Typography } from '@mui/material';
 import { CopyClassInstance, FilterPossibleDynamicEntitiesForTriggerType } from 'renderer/shared/utils/General';
@@ -28,16 +28,20 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         if (key === 'trigger') {
             onTriggerTypeChanged(value as Trigger);
         }
+
+        if(key === 'periodType') {
+            newEffect.periodValue = newEffect.periodType === Period.SPECIFIC_DATE_FROM_TO ? ['', ''] : '';
+        }
         onChange(index, newEffect);
     };
 
     const onTriggerTypeChanged = (triggerType: Trigger) => {
-        console.log('triggerType',  triggerType)
-        console.log('FilterPossibleDynamicEntitiesForTriggerType',  FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType))
+        console.log('triggerType', triggerType);
+        console.log('FilterPossibleDynamicEntitiesForTriggerType', FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType));
         setExpandedOptions({
             ...(expandedOptions || {}),
-            filteredEntities: FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType)
-        })
+            filteredEntities: FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType),
+        });
     };
 
     const onAddConditionTree = () => {
@@ -97,18 +101,20 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
                 </Box>
 
                 {effect.conditionTree && (
-                    <Box sx={{ marginTop: '20px' }}>
+                    <Box sx={{ marginTop: '20px', display: 'flex', flexDirection: 'column', rowGap: '10px' }}>
                         <EffectTriggerSelection
                             effectTrigger={effect.trigger}
                             effectSource={effect.sourceType}
                             onTriggerChange={(trigger) => onEffectChanged('trigger', trigger)}
                         />
 
-                        <CompositeEntityFilter
-                            filterTree={effect.conditionTree}
-                            onFilterTreeChange={(conditionTree) => onEffectChanged('conditionTree', conditionTree)}
-                            entityFilterOptions={options}
-                        />
+                        {effect.trigger && (
+                            <CompositeEntityFilter
+                                filterTree={effect.conditionTree}
+                                onFilterTreeChange={(conditionTree) => onEffectChanged('conditionTree', conditionTree)}
+                                entityFilterOptions={options}
+                            />
+                        )}
 
                         <EffectPeriodSelection
                             effectPeriod={effect.periodType}

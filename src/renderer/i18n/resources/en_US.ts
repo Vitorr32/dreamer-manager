@@ -69,6 +69,7 @@ export const en_US = {
                     input_label_period: 'Effect Period',
                     input_placeholder_period: 'Period',
                     input_helper_period: 'Once this effect is triggered, when or how long it lasts?',
+                    input_label_start_date: 'Effect Start Date',
                     input_label_end_date: 'Effect End Date',
                     input_label_active_period: 'Effect Active Period',
                     input_placeholder_active_period: '1y 2mo 3w 4d 5h 6m',
@@ -651,6 +652,10 @@ export const en_US = {
             },
             effect: {
                 trigger: {
+                    on_day_end: 'On Day End (Midnight)',
+                    on_week_end: 'On Week End',
+                    on_month_end: 'On Month End',
+                    on_year_end: 'On Month End',
                     interaction_start: 'On Interaction',
                     event_starts: 'On Event',
                     training_start: 'On Training',
@@ -660,7 +665,8 @@ export const en_US = {
                 period: {
                     permanent: 'Permanent',
                     specific_period: 'Specific Period',
-                    specific_date: 'Specific Date',
+                    specific_date_to: 'Until Specific Date',
+                    specific_date_from_to: 'From/To Specific Date'
                 },
             },
             nation: {

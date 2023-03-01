@@ -2,6 +2,10 @@ import { EntityFilterTree } from './EntityFilterTree.model';
 import { Modifier } from './Modifier';
 
 export enum Trigger {
+    ON_DAY_END = 'model.effect.trigger.on_day_end',
+    ON_WEEK_END = 'model.effect.trigger.on_week_end',
+    ON_MONTH_END = 'model.effect.trigger.on_month_end',
+    ON_YEAR_END = 'model.effect.trigger.on_year_end',
     ON_INTERACTION_START = 'model.effect.trigger.interaction_start',
     ON_EVENT_START = 'model.effect.trigger.event_starts',
     ON_TRAINING_START = 'model.effect.trigger.training_start',
@@ -12,7 +16,8 @@ export enum Trigger {
 export enum Period {
     PERMANENT = 'model.effect.period.permanent',
     SPECIFIC_PERIOD = 'model.effect.period.specific_period',
-    SPECIFIC_DATE = 'model.effect.period.specific_date',
+    SPECIFIC_DATE = 'model.effect.period.specific_date_to',
+    SPECIFIC_DATE_FROM_TO = 'model.effect.period.specific_date_from_to'
 }
 
 export enum Source {
@@ -56,8 +61,9 @@ export class Effect {
     public conditionTree: EntityFilterTree;
     //After the effect was activated, for how much time does it take effect?
     public periodType: Period;
-    //Depending on the effect period type, the value of the periodValue may be a specific date(01/01/2023) or a duration string (2w 3d 4h)
-    public periodValue: string;
+    //Depending on the effect period type, the value of the periodValue may be a specific date(01/01/2023 on UTC time), a duration string (2w 3d 4h)
+    //or a from/to string array ['01/01/2023', '30/01/2023']
+    public periodValue: any;
     //What is the modifier that this effect cause
     public modifier: Modifier;
 
