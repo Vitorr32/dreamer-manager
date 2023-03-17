@@ -29,7 +29,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
             onTriggerTypeChanged(value as Trigger);
         }
 
-        if(key === 'periodType') {
+        if (key === 'periodType') {
             newEffect.periodValue = newEffect.periodType === Period.SPECIFIC_DATE_FROM_TO ? ['', ''] : '';
         }
         onChange(index, newEffect);
@@ -39,8 +39,9 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         console.log('triggerType', triggerType);
         console.log('FilterPossibleDynamicEntitiesForTriggerType', FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType));
         setExpandedOptions({
+            ...(options || {}),
             ...(expandedOptions || {}),
-            filteredEntities: FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType),
+            filteredDynamicEntities: FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType),
         });
     };
 
@@ -112,7 +113,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
                             <CompositeEntityFilter
                                 filterTree={effect.conditionTree}
                                 onFilterTreeChange={(conditionTree) => onEffectChanged('conditionTree', conditionTree)}
-                                entityFilterOptions={options}
+                                entityFilterOptions={expandedOptions}
                             />
                         )}
 

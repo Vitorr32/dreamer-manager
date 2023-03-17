@@ -78,7 +78,6 @@ export const en_US = {
                     title: 'Effect Conditions',
                     helper_text:
                         'Conditions will add scenarios where the modifier will be applied, such as time of the day, when practicing an specific attribute, if the interaction is with the opposite sex and so on.',
-                    selector: 'Selector Specificator',
                     attr_selector_placeholder: 'Select Attribute',
                     trait_selector_placeholder: 'Select Trait',
                     flag_selector_placeholder: 'Select the event tag',
@@ -89,6 +88,7 @@ export const en_US = {
                     remove_condition_helper: 'By adding an condition, you will be able to specify in which situation the modifier will be applied',
                 },
                 entity: {
+                    input_label_logic_operator: 'Logic Operator',
                     input_label_operator: 'Operator',
                     input_label_external_filter: 'User External Entity Property as Filter',
                     input_label_comparison: 'Compare to Another Entity',
@@ -204,7 +204,7 @@ export const en_US = {
                     input_percent: 'Percentage change',
                     input_percent_helper: 'Percentage to be applied (can be negative)',
                     input_label_entity: 'Entity',
-                    input_placeholder_entity: 'Entity Type or Dynamic Entity',
+                    input_placeholder_entity: 'Entity',
                     input_label_variable: 'Entity Variable',
                     input_group_dynamic_entities: 'Dynamic Entities',
                     input_group_entities: 'All Entities of Type',
@@ -655,7 +655,7 @@ export const en_US = {
                     on_day_end: 'On Day End (Midnight)',
                     on_week_end: 'On Week End',
                     on_month_end: 'On Month End',
-                    on_year_end: 'On Month End',
+                    on_year_end: 'On Year End',
                     interaction_start: 'On Interaction',
                     event_starts: 'On Event',
                     training_start: 'On Training',

@@ -23,10 +23,10 @@ export enum DynamicEntity {
 }
 
 export interface EntityVariableValue {
-    entityType: EntityType;
+    entityType?: EntityType;
     specifiedDynamicEntities?: string[]; // Only used on run-time, this are the entities that were pooled when validating the EntityVariableValue.
     specifiedDynamicEntity?: DynamicEntity;
-    variableKey: string;
+    variableKey?: string;
     operator?: VariableOperator;
     value: any;
 }

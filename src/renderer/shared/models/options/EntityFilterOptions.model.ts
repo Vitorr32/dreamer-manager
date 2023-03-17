@@ -9,7 +9,7 @@ export interface EntityFilterOptions {
             shortcut?: DynamicEntity;
         }[];
     };
-    filteredEntities?: string[];
+    filteredDynamicEntities?: DynamicEntity[];
     filteredAttributes?: {
         [key in EntityType]?: string[];
     };

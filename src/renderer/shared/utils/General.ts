@@ -83,7 +83,7 @@ export function GetEntityTypeOfDynamicEntity(dynamicEntity: DynamicEntity): Enti
     }
 }
 
-export function FilterPossibleDynamicEntitiesForTriggerType(effectTriggerType: Trigger, effectSource: Source): string[] {
+export function FilterPossibleDynamicEntitiesForTriggerType(effectTriggerType: Trigger, effectSource: Source): DynamicEntity[] {
     switch(effectTriggerType) {
         case Trigger.ON_INTERACTION_START:
             return [DynamicEntity.SELF, DynamicEntity.SELF_FRIENDS, DynamicEntity.SELF_RIVALS];

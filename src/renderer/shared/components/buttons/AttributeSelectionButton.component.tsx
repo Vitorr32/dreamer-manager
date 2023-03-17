@@ -17,7 +17,7 @@ interface IProps {
 export function AttributeSelectionButton({ displayIDs, onChange, multi }: IProps) {
     const mappedDatabase = useSelector((state: RootState) => state.database.mappedDatabase);
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [showTool, setShowTool] = React.useState<boolean>(false);
     const [selectedAttribute, setAttribute] = React.useState<Attribute[]>();
 
@@ -39,7 +39,7 @@ export function AttributeSelectionButton({ displayIDs, onChange, multi }: IProps
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
                 {selectedAttribute === undefined || displayIDs.length === 0
                     ? t('interface.editor.condition.attr_selector_placeholder')
-                    : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].name).join(', ')}
+                    : displayIDs.map((displayID) => mappedDatabase.attributes[displayID].getName(i18n.language)).join(', ')}
             </Button>
 
             <AttributePicker showTool={showTool} onSelection={onAttributeSelected} multi={multi} />

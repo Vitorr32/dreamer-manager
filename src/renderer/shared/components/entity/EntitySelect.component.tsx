@@ -15,37 +15,18 @@ export function EntitySelect({ entity, onEntityChange, disabled = false, entityF
     const { t } = useTranslation();
 
     const getEntitiesOptions = (): React.ReactNode[] => {
-        console.log('entityFilterOptions', entityFilterOptions)
-        if (entityFilterOptions?.filteredEntities) {
-            return [
-                <ListSubheader key="entities-subheader">{t('interface.editor.modifier.input_group_entities')}</ListSubheader>,
-                ...Object.values(EntityType)
-                    .filter((obj: any) => entityFilterOptions.filteredEntities.indexOf(obj) !== -1)
-                    .map((entity) => (
-                        <MenuItem key={entity} value={entity}>
-                            {t(entity)}
-                        </MenuItem>
-                    )),
-                <ListSubheader key="dynamic-subheader">{t('interface.editor.modifier.input_group_dynamic_entities')}</ListSubheader>,
-                Object.values(DynamicEntity)
-                    .filter((obj: any) => entityFilterOptions.filteredEntities.indexOf(obj) !== -1)
-                    .map((entity) => (
-                        <MenuItem key={entity} value={entity}>
-                            {t(entity)}
-                        </MenuItem>
-                    )),
-            ];
-        }
-
         return [
+            <ListSubheader key="dynamic-subheader">{t('interface.editor.modifier.input_group_dynamic_entities')}</ListSubheader>,
+            ...Object.values(DynamicEntity)
+                .filter((obj: any) => (entityFilterOptions?.filteredDynamicEntities ? entityFilterOptions?.filteredDynamicEntities.indexOf(obj) !== -1 : true))
+                .map((entity) => (
+                    <MenuItem key={entity} value={entity}>
+                        {t(entity)}
+                    </MenuItem>
+                )),
+            ,
             <ListSubheader key="entities-subheader">{t('interface.editor.modifier.input_group_entities')}</ListSubheader>,
             ...Object.values(EntityType).map((entity) => (
-                <MenuItem key={entity} value={entity}>
-                    {t(entity)}
-                </MenuItem>
-            )),
-            <ListSubheader key="dynamic-subheader">{t('interface.editor.modifier.input_group_dynamic_entities')}</ListSubheader>,
-            ...Object.values(DynamicEntity).map((entity) => (
                 <MenuItem key={entity} value={entity}>
                     {t(entity)}
                 </MenuItem>

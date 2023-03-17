@@ -82,7 +82,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
         <Box className="condition-node">
             <Box className="condition-node__config">
                 <FormControl variant="standard">
-                    <InputLabel id="logic-operator-label">Logic Operator</InputLabel>
+                    <InputLabel id="logic-operator-label">{t('interface.editor.entity.input_label_logic_operator')}</InputLabel>
                     <Select
                         labelId="logic-operator-label"
                         id="logic-operator"
@@ -118,6 +118,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                             <EntityFilterEditor
                                 entityFilter={entityFilter}
                                 onFilterChange={(updatedFilter) => onNodeFilterChange({ ...DEFAULT_EXTERNAL_ENTITY_FILTER, ...updatedFilter }, index)}
+                                entityFilterOptions={entityFilterOptions}
                             />
                             <Button onClick={() => onNodeFilterRemoval(index)}>
                                 <CloseIcon />
