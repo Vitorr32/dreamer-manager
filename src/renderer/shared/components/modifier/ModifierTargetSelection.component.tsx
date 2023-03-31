@@ -43,7 +43,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
     const getShortcutTargets = (): DynamicEntity[] => {
         const shortcuts: DynamicEntity[] = [DynamicEntity.SPECIFIC_FILTER];
 
-        switch (modifier.modifiedEntityVariable.entityType) {
+        switch (modifier.modifiedEntityVariables.entityType) {
             case EntityType.RELATIONSHIP:
             case EntityType.CHARACTERS:
                 shortcuts.push(
@@ -232,7 +232,7 @@ export function ModifierTargetSelection({ modifier, onModifierTargetChange, onMo
                 );
                 break;
             default:
-                console.error('No entity selected, or uknown entity' + modifier.modifiedEntityVariable.entityType);
+                console.error('No entity selected, or uknown entity' + modifier.modifiedEntityVariables.entityType);
                 break;
         }
 

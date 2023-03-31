@@ -1,19 +1,13 @@
-import { EntityType } from '../enums/Entities.enum';
+import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EntityFilterTree } from './EntityFilterTree.model';
 import { EntityVariableValue } from './EntityVariableValue.model';
-import { VariableOperator } from './Variable.model';
 export class Modifier {
-    public modifiedEntityVariable: EntityVariableValue;
+    public modifiedEntityVariables: EntityVariableValue[];
     public targetEntityFilter: EntityFilterTree;
     public originEntityFilter?: EntityFilterTree;
 
     constructor() {
-        this.modifiedEntityVariable = {
-            entityType: null,
-            operator: VariableOperator.CHANGE_BY,
-            value: '',
-            variableKey: '',
-        };
+        this.modifiedEntityVariables = [DEFAULT_ENTITY_FILTER];
         this.targetEntityFilter = new EntityFilterTree();
     }
 }

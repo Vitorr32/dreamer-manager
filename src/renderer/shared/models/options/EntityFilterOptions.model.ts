@@ -13,6 +13,7 @@ export interface EntityFilterOptions {
     filteredAttributes?: {
         [key in EntityType]?: string[];
     };
+    fixedEntity?: EntityType;
     allowConditionTree?: boolean;
     sourceType?: Source;
     sourceID?: string;

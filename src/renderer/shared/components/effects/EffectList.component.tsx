@@ -56,15 +56,7 @@ export function EffectList({ effects, onEffectSelected, onEffectDeleted }: IProp
                                 </IconButton>
                             </ListItemIcon>
                         </Tooltip>
-                        <ListItemText
-                            primary={t('interface.editor.effect.unset_modifier')}
-                            secondary={
-                                effect.modifier && effect.modifier.modifiedEntityVariable.value !== 0
-                                    ? effect.modifier.modifiedEntityVariable.value
-                                    : t('interface.editor.effect.unset_value')
-                            }
-                            sx={{ color: 'text.primary' }}
-                        />
+                        <ListItemText primary={t('interface.editor.effect.unset_modifier')} sx={{ color: 'text.primary' }} />
                     </ListItem>
                 ))}
             </List>

@@ -198,7 +198,9 @@ export const en_US = {
                 },
                 modifier: {
                     title: 'Modifier Editor',
-                    subtitle: 'What this effect modify on the game entities?',
+                    subtitle: 'What this effect will modify on the target entity?',
+                    button_add_modifier: 'Add modifier to effect',
+                    button_remove_modifier: 'Remove this modifier from list',
                     input_numeric: 'Value change',
                     input_numeric_helper: 'The value that the modifier will apply (can be negative)',
                     input_percent: 'Percentage change',

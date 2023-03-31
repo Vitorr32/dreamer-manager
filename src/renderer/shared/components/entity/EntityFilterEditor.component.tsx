@@ -14,9 +14,10 @@ interface IProps {
     entityFilter: EntityVariableValue;
     onFilterChange: (entityFilter: EntityVariableValue) => void;
     entityFilterOptions?: EntityFilterOptions;
+    isEditor?: boolean;
 }
 
-export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterOptions }: IProps) {
+export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterOptions, isEditor = false }: IProps) {
     const { t } = useTranslation();
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
 
@@ -55,6 +56,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
                     entity={entityFilter.entityType}
                     entityVariableKey={entityFilter.variableKey}
                     onVariableChange={(variable) => onFilterChanged('variableKey', variable.key)}
+                    isEditor={isEditor}
                 />
             )}
 
@@ -64,6 +66,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
                     variable={selectedVariable}
                     variableOperator={entityFilter.operator}
                     onOperatorChange={(operator) => onFilterChanged('operator', operator)}
+                    isEditor={isEditor}
                 />
             )}
 

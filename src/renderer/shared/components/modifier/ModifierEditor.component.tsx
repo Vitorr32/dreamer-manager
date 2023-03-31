@@ -1,15 +1,17 @@
-import { FormHelperText, Paper, Typography } from '@mui/material';
+import { Button, FormHelperText, IconButton, Paper, Tooltip, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
+import { EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
-import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { ModifierEntityEditor } from './ModifierEntityEditor.component';
+import { EntityFilterEditor } from '../entity/EntityFilterEditor.component';
 import { ModifierTargetSelection } from './ModifierTargetSelection.component';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
+import { useEffect, useState } from 'react';
 
 interface IProps {
     modifier: Modifier;
@@ -20,20 +22,9 @@ interface IProps {
 export function ModifierEditor({ modifier, onChange, options }: IProps) {
     const { t, i18n } = useTranslation();
 
-    const onEntityModifierChanged = (entity: EntityType): void => {
+    const onEntityModifierChanged = (entityFilter: EntityVariableValue, index: number): void => {
         const newModifier = CopyClassInstance(modifier);
-        newModifier.modifiedEntityVariable = { ...DEFAULT_ENTITY_FILTER, entityType: entity };
-        onChange(newModifier);
-    };
-
-    const onEntityVariableChange = (key: 'variableKey' | 'value' | 'operator', value: any): void => {
-        const newModifier = CopyClassInstance(modifier);
-        newModifier.modifiedEntityVariable[key] = value;
-        //Check if it's a change of the variable, if it is, reset the operator and value inputs.
-        if (key === 'variableKey') {
-            newModifier.modifiedEntityVariable.operator = null;
-            newModifier.modifiedEntityVariable.value = null;
-        }
+        newModifier.modifiedEntityVariables[index] = entityFilter;
         onChange(newModifier);
     };
 
@@ -43,26 +34,56 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         onChange(newModifier);
     };
 
+    const onModifierListAddition = (): void => {
+        const newModifier = CopyClassInstance(modifier);
+        newModifier.modifiedEntityVariables.push(DEFAULT_ENTITY_FILTER);
+        onChange(newModifier);
+    };
+
+    const onModifierListRemoval = (toRemoveIndex: number) => {
+        const newModifier = CopyClassInstance(modifier);
+        newModifier.modifiedEntityVariables.splice(toRemoveIndex, 1);
+        onChange(newModifier);
+    };
+
     return (
         <Paper sx={{ bgcolor: 'background.default', padding: '10px 20px' }} elevation={1}>
-            <Box sx={{ borderColor: 'text.primary' }}>
+            <Box sx={{ borderColor: 'text.primary', position: 'relative' }}>
                 <Typography sx={{ color: 'text.primary' }} variant="h6">
                     {t('interface.editor.modifier.title')}
                 </Typography>
                 <FormHelperText>{t('interface.editor.modifier.subtitle')}</FormHelperText>
+
+                <Button sx={{ position: 'absolute', right: '0', top: '10px' }} variant="contained" startIcon={<AddIcon />} onClick={onModifierListAddition}>
+                    {t('interface.editor.modifier.button_add_modifier')}
+                </Button>
             </Box>
 
-            <Box sx={{ marginTop: '10px' }}>
-                <ModifierEntityEditor modifier={modifier} onEntityChange={onEntityModifierChanged} onVariableChange={onEntityVariableChange} options={options} />
-                <FormHelperText>{t('interface.editor.modifier.modifier_editor_helper_text')}</FormHelperText>
+            {...modifier.modifiedEntityVariables.map((modifierFilterValue, index) => (
+                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '10px' }} key={`modifierFilterValue-${index}`}>
+                    <EntityFilterEditor
+                        entityFilter={modifierFilterValue}
+                        onFilterChange={(entityFilter) => onEntityModifierChanged(entityFilter, index)}
+                        entityFilterOptions={options}
+                        isEditor
+                    />
+                    {index !== 0 && (
+                        <Tooltip title={t('interface.editor.modifier.button_remove_modifier')}>
+                            <IconButton sx={{ marginLeft: '5px' }} onClick={() => onModifierListRemoval(index)}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                </Box>
+            ))}
+            <FormHelperText>{t('interface.editor.modifier.modifier_editor_helper_text')}</FormHelperText>
 
-                <ModifierTargetSelection
-                    modifier={modifier}
-                    onModifierTargetChange={(filter) => onModifierFilteringChange('targetEntityFilter', filter)}
-                    onModifierReceptorChange={(filter) => onModifierFilteringChange('originEntityFilter', filter)}
-                    options={options}
-                />
-            </Box>
+            <ModifierTargetSelection
+                modifier={modifier}
+                onModifierTargetChange={(filter) => onModifierFilteringChange('targetEntityFilter', filter)}
+                onModifierReceptorChange={(filter) => onModifierFilteringChange('originEntityFilter', filter)}
+                options={options}
+            />
         </Paper>
     );
 }
