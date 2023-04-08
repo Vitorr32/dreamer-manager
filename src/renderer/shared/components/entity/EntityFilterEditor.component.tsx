@@ -38,6 +38,8 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
                 updatedFilter.entityType = GetEntityTypeOfDynamicEntity(newValue as DynamicEntity);
                 onFilterChange(updatedFilter);
                 return;
+            } else {
+                updatedFilter.specifiedDynamicEntity = null;
             }
         }
 

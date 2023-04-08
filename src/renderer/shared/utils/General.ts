@@ -67,9 +67,10 @@ export function GetEntityTypeOfDynamicEntity(dynamicEntity: DynamicEntity): Enti
     switch (dynamicEntity) {
         case DynamicEntity.ALL_ACTORS:
             return EntityType.ACTORS;
+        case DynamicEntity.SELF_DREAMER:
         case DynamicEntity.ALL_DREAMERS_OF_STUDIO:
-        case DynamicEntity.SELF_PRODUCER:
             return EntityType.DREAMER;
+        case DynamicEntity.SELF_PRODUCER:
         case DynamicEntity.EVERYONE:
         case DynamicEntity.EVERYONE_ON_AGENCY:
         case DynamicEntity.SELF:
@@ -77,14 +78,17 @@ export function GetEntityTypeOfDynamicEntity(dynamicEntity: DynamicEntity): Enti
         case DynamicEntity.SELF_RIVALS:
         case DynamicEntity.ALL_STAFF_OF_AGENCY:
             return EntityType.CHARACTERS;
+        case DynamicEntity.MC_AGENCY:
+        case DynamicEntity.SELF_AGENCY:
+            return EntityType.AGENCY;
         default:
-            console.error('Unknown dynamic entity:');
+            console.error('Unknown dynamic entity:', dynamicEntity);
             return null;
     }
 }
 
 export function FilterPossibleDynamicEntitiesForTriggerType(effectTriggerType: Trigger, effectSource: Source): DynamicEntity[] {
-    switch(effectTriggerType) {
+    switch (effectTriggerType) {
         case Trigger.ON_INTERACTION_START:
             return [DynamicEntity.SELF, DynamicEntity.SELF_FRIENDS, DynamicEntity.SELF_RIVALS];
         case Trigger.ON_EVENT_START:

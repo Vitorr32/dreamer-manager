@@ -10,6 +10,7 @@ export enum DynamicEntity {
     EVERYONE_ON_AGENCY = 'model.modifier.targeting.allStudioEmployees',
     EVERYONE = 'model.modifier.targeting.everyCharacter',
     SELF = 'model.modifier.targeting.self',
+    SELF_DREAMER = 'model.modifier.targetting.selfDreamer',
     SELF_FRIENDS = 'model.modifier.targeting.selfFriends',
     SELF_RIVALS = 'model.modifier.targeting.selfRivals',
     SELF_PRODUCER = 'model.modifier.targeting.selfProducer',

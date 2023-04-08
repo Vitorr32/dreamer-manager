@@ -47,8 +47,6 @@ export enum TimeSelector {
 }
 
 export class Effect {
-    //Whatever this effect affect the holder of the effect or the target, if applicable, of the trigger
-    public targetSelf: boolean;
     //Source is with item/trait/race is the source of the effect, used to associate the effect to parent
     public sourceType: Source;
     //Source ID, used to get the source of the effect
@@ -64,13 +62,12 @@ export class Effect {
     //Depending on the effect period type, the value of the periodValue may be a specific date(01/01/2023 on UTC time), a duration string (2w 3d 4h)
     //or a from/to string array ['01/01/2023', '30/01/2023']
     public periodValue: any;
-    //What is the modifier that this effect cause
-    public modifier: Modifier;
+    //What is the modifiers that this effect cause on entities of the game
+    public modifiers: Modifier[];
 
-    constructor(sourceID: string, sourceType: Source, selfTarget?: boolean) {
+    constructor(sourceID: string, sourceType: Source) {
         this.sourceID = sourceID;
         this.sourceType = sourceType;
-        this.targetSelf = true;
-        this.modifier = new Modifier();
+        this.modifiers = [new Modifier()];
     }
 }

@@ -2,13 +2,17 @@ import { useState } from 'react';
 import { ModifierEditor } from 'renderer/shared/components/modifier/ModifierEditor.component';
 import { Effect, Period, Trigger } from 'renderer/shared/models/base/Effect.model';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
-import { Box, Button, FormHelperText, Paper, Typography } from '@mui/material';
+import { Box, Button, Chip, Divider, FormHelperText, IconButton, Paper, Tooltip, Typography } from '@mui/material';
 import { CopyClassInstance, FilterPossibleDynamicEntitiesForTriggerType } from 'renderer/shared/utils/General';
 import { useTranslation } from 'react-i18next';
 import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { EffectTriggerSelection } from './EffectTriggerSelection.component';
 import { EffectPeriodSelection } from './EffectPeriodSelection.component';
+import { Modifier } from 'renderer/shared/models/base/Modifier';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+
 interface IProps {
     effect: Effect;
     index: number;
@@ -21,9 +25,8 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
 
     const [expandedOptions, setExpandedOptions] = useState<EntityFilterOptions>(options);
 
-    const onEffectChanged = (key: 'modifier' | 'trigger' | 'conditionTree' | 'periodValue' | 'periodType', value: any) => {
+    const onEffectChanged = (key: 'trigger' | 'conditionTree' | 'periodValue' | 'periodType', value: any) => {
         const newEffect = CopyClassInstance(effect);
-        // @ts-ignore
         newEffect[key] = value;
         if (key === 'trigger') {
             onTriggerTypeChanged(value as Trigger);
@@ -33,6 +36,12 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
             newEffect.periodValue = newEffect.periodType === Period.SPECIFIC_DATE_FROM_TO ? ['', ''] : '';
         }
         onChange(index, newEffect);
+    };
+
+    const onModifierChanged = (modifierIndex: number, modifier: Modifier) => {
+        const updatedEffect = CopyClassInstance(effect);
+        updatedEffect.modifiers[modifierIndex] = modifier;
+        onChange(index, updatedEffect);
     };
 
     const onTriggerTypeChanged = (triggerType: Trigger) => {
@@ -67,9 +76,49 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         onChange(index, updatedEffect);
     };
 
+    const onModifierListAddition = (): void => {
+        const updatedEffect = CopyClassInstance(effect);
+        updatedEffect.modifiers.push(new Modifier());
+        onChange(index, updatedEffect);
+    };
+
+    const onModifierListRemoval = (toRemoveIndex: number) => {
+        const updatedEffect = CopyClassInstance(effect);
+        updatedEffect.modifiers.splice(toRemoveIndex, 1);
+        onChange(index, updatedEffect);
+    };
+
     return (
         <>
-            <ModifierEditor modifier={effect.modifier} onChange={(modifier) => onEffectChanged('modifier', modifier)} options={options} />
+            <Paper sx={{ bgcolor: 'background.default', padding: '10px 20px' }} elevation={1}>
+                <Box sx={{ borderColor: 'text.primary', position: 'relative' }}>
+                    <Typography sx={{ color: 'text.primary' }} variant="h6">
+                        {t('interface.editor.modifier.title')}
+                    </Typography>
+                    <FormHelperText>{t('interface.editor.modifier.subtitle')}</FormHelperText>
+
+                    <Button sx={{ position: 'absolute', right: '0', top: '10px' }} variant="contained" startIcon={<AddIcon />} onClick={onModifierListAddition}>
+                        {t('interface.editor.modifier.button_add_modifier')}
+                    </Button>
+                </Box>
+
+                {effect.modifiers.map((modifier, modifierIndex) => (
+                    <Box sx={{ borderColor: 'text.primary' }} key={`effect_${index}_modifier_$${modifierIndex}`}>
+                        <Divider sx={{ margin: '10px 0', borderColor: 'text.primary' }}>
+                            <Chip label={t('interface.editor.modifier.divider_modifier_label', { index: modifierIndex + 1 })} />
+                            {modifierIndex !== 0 && (
+                                <Tooltip title={t('interface.editor.modifier.button_remove_modifier')}>
+                                    <IconButton sx={{ marginLeft: '5px' }} onClick={() => onModifierListRemoval(index)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+                        </Divider>
+
+                        <ModifierEditor modifier={modifier} onChange={(modifier) => onModifierChanged(modifierIndex, modifier)} options={options} />
+                    </Box>
+                ))}
+            </Paper>
 
             <Paper sx={{ bgcolor: 'background.default', padding: '10px 20px' }} elevation={1}>
                 <Typography sx={{ color: 'text.primary' }} variant="h6">

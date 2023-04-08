@@ -33,7 +33,6 @@ export const en_US = {
                     id_label: 'ID code',
                     id_helper: 'The unique identifier that this trait will have, it is used for quick search and saving into the static files',
                     name_label: 'Name',
-                    default_locale_name_label: 'English Name',
                     name_helper: `The name of the trait to be displayed. Examples: 'Leader', 'Charismatic', 'Shy'`,
                     description_label: 'Description of effects/personality',
                     default_locale_description_label: 'English Description',
@@ -199,6 +198,7 @@ export const en_US = {
                 modifier: {
                     title: 'Modifier Editor',
                     subtitle: 'What this effect will modify on the target entity?',
+                    divider_modifier_label: 'Modifier {{index}}',
                     button_add_modifier: 'Add modifier to effect',
                     button_remove_modifier: 'Remove this modifier from list',
                     input_numeric: 'Value change',
@@ -454,6 +454,8 @@ export const en_US = {
                     residence_location: 'Residence Location',
                     affluence: 'Affluence',
                     height: 'Height',
+                    weight: 'Weight',
+                    fat_percentage: 'Fat Percentage',
                     paperDoll: 'Paper Doll/Sprites',
                     bodyType: 'Body Type',
 
@@ -497,7 +499,7 @@ export const en_US = {
                 },
                 variables: {
                     family: 'Family Situation',
-                    objective: 'Dream Objective',
+                    objective: 'Current Objective',
                     preferred_paths: 'Preferred Career Paths',
                     disliked_paths: 'Disliked Career Paths',
                     potential: 'Individual Potential',
@@ -527,9 +529,10 @@ export const en_US = {
                     persuasion: 'Persuasion',
                     elegancy: 'Elegancy',
                     empathy: 'Empathy',
-                    weight: 'Weight',
-                    fat_percentage: 'Fat Percentage',
                 },
+                groups: {
+                    attributes: 'Attributes'
+                }
             },
             paper_doll: {
                 filters: {
@@ -779,6 +782,7 @@ export const en_US = {
                     allStudioEmployees: 'Everyone on Main Studio',
                     everyCharacter: 'All Characters',
                     self: 'This Character',
+                    selfDreamer: 'This Dreamer',
                     selfProducer: "This Character's Producer",
                     selfFriends: "This Characters's Friends",
                     selfRivals: "This Character's Rivals",

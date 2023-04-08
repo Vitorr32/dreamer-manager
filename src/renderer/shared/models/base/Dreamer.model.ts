@@ -1,4 +1,4 @@
-import { BodyType, Character, CharacterEntityVariables } from './Character.model';
+import { Character, CharacterEntityVariables } from './Character.model';
 import { Variables, VariableType } from './Variable.model';
 
 export enum FamilySituation {
@@ -67,8 +67,6 @@ export enum DreamerVariablesKey {
     PERSUASION = 'persuasion',
     ELEGANCY = 'elegancy',
     EMPATHY = 'empathy',
-    WEIGHT = 'weight',
-    FAT_PERCENTAGE = 'fatPercentage',
 }
 
 export const DreamerEntityVariables: Variables = {
@@ -107,260 +105,269 @@ export const DreamerEntityVariables: Variables = {
     [DreamerVariablesKey.ABILITY_POTENTIAL]: {
         key: DreamerVariablesKey.ABILITY_POTENTIAL,
         displayName: 'model.dreamer.variables.potential',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.INTELLIGENCE]: {
         key: DreamerVariablesKey.INTELLIGENCE,
         displayName: 'model.dreamer.variables.intelligence',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.PHYSICAL_CONDITION]: {
         key: DreamerVariablesKey.PHYSICAL_CONDITION,
         displayName: 'model.dreamer.variables.physical_condition',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.ATTRACTIVENESS]: {
         key: DreamerVariablesKey.ATTRACTIVENESS,
         displayName: 'model.dreamer.variables.attractiveness',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.CONCENTRATION]: {
         key: DreamerVariablesKey.CONCENTRATION,
         displayName: 'model.dreamer.variables.concentration',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.CHARISMA]: {
         key: DreamerVariablesKey.CHARISMA,
         displayName: 'model.dreamer.variables.charisma',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.WILLPOWER]: {
         key: DreamerVariablesKey.WILLPOWER,
         displayName: 'model.dreamer.variables.willpower',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.SINGING]: {
         key: DreamerVariablesKey.SINGING,
         displayName: 'model.dreamer.variables.singing',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.DANCING]: {
         key: DreamerVariablesKey.DANCING,
         displayName: 'model.dreamer.variables.dancing',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.COORDINATION]: {
         key: DreamerVariablesKey.COORDINATION,
         displayName: 'model.dreamer.variables.coordination',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.IMPROVISATION]: {
         key: DreamerVariablesKey.IMPROVISATION,
         displayName: 'model.dreamer.variables.improvisation',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.COMPOSURE]: {
         key: DreamerVariablesKey.COMPOSURE,
         displayName: 'model.dreamer.variables.composure',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.MEMORIZATION]: {
         key: DreamerVariablesKey.MEMORIZATION,
         displayName: 'model.dreamer.variables.memorization',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.BRAVERY]: {
         key: DreamerVariablesKey.BRAVERY,
         displayName: 'model.dreamer.variables.bravery',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.CREATIVITY]: {
         key: DreamerVariablesKey.CREATIVITY,
         displayName: 'model.dreamer.variables.creativity',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.EXPRESSIVITY]: {
         key: DreamerVariablesKey.EXPRESSIVITY,
         displayName: 'model.dreamer.variables.expressivity',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.ACTING]: {
         key: DreamerVariablesKey.ACTING,
         displayName: 'model.dreamer.variables.acting',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.LYRICISM]: {
         key: DreamerVariablesKey.LYRICISM,
         displayName: 'model.dreamer.variables.lyricism',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.SEDUCTION]: {
         key: DreamerVariablesKey.SEDUCTION,
         displayName: 'model.dreamer.variables.seduction',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.ENTERTAINMENT]: {
         key: DreamerVariablesKey.ENTERTAINMENT,
         displayName: 'model.dreamer.variables.entertainment',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.PERSUASION]: {
         key: DreamerVariablesKey.PERSUASION,
         displayName: 'model.dreamer.variables.persuasion',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.ELEGANCY]: {
         key: DreamerVariablesKey.ELEGANCY,
         displayName: 'model.dreamer.variables.elegancy',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.EMPATHY]: {
         key: DreamerVariablesKey.EMPATHY,
         displayName: 'model.dreamer.variables.empathy',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.STAMINA]: {
         key: DreamerVariablesKey.STAMINA,
         displayName: 'model.dreamer.variables.stamina',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.TEAMWORK]: {
         key: DreamerVariablesKey.TEAMWORK,
         displayName: 'model.dreamer.variables.teamwork',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.LEADERSHIP]: {
         key: DreamerVariablesKey.LEADERSHIP,
         displayName: 'model.dreamer.variables.leadership',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
         min: 1,
         read: true,
-        edit: false,
+        edit: true,
     },
     [DreamerVariablesKey.FITNESS]: {
         key: DreamerVariablesKey.FITNESS,
         displayName: 'model.dreamer.variables.fitness',
+        groupBy: 'model.dreamer.groups.attributes',
         type: VariableType.NUMBER,
         max: 20,
-        min: 1,
-        read: true,
-        edit: false,
-    },
-    [DreamerVariablesKey.WEIGHT]: {
-        key: DreamerVariablesKey.WEIGHT,
-        displayName: 'model.character.variables.weight',
-        type: VariableType.NUMBER,
-        max: 20,
-        min: 1,
-        read: true,
-        edit: false,
-    },
-    [DreamerVariablesKey.FAT_PERCENTAGE]: {
-        key: DreamerVariablesKey.FAT_PERCENTAGE,
-        displayName: 'model.character.dreamer.weight',
-        type: VariableType.NUMBER,
-        max: 50,
         min: 1,
         read: true,
         edit: true,
@@ -374,8 +381,6 @@ export class Dreamer extends Character {
     // Family situation that can influence traits and traumas
     public familySituation: FamilySituation;
 
-    public weight: number;
-    public fatPercentage: number;
     // A number, from 50 (Very Bad) to 200 (Perfect) that is distributed between all the dreamers skills trough training and growing up.
     public abilityPotential: number = 50;
     public dreamerObjective: CareerObjective;
@@ -438,37 +443,5 @@ export class Dreamer extends Character {
             (this.teamwork || 0) +
             (this.stamina || 0)
         );
-    }
-
-    public calculateBodyType(): BodyType {
-        if (!this.weight || !this.height || !this.fatPercentage) {
-            console.log('missingProperty');
-            return BodyType.UNDEFINED;
-        }
-
-        const heightInMeters = this.height / 100;
-        const bmi = this.weight / (heightInMeters * heightInMeters);
-
-        if (isNaN(bmi)) {
-            return BodyType.UNDEFINED;
-        }
-
-        if (bmi < 19 && this.fatPercentage < 5) {
-            return BodyType.ANOREXIC;
-        } else if (bmi < 19 && this.fatPercentage < 10) {
-            return BodyType.SKINNY;
-        } else if (bmi < 19) {
-            return BodyType.UNDERWEIGHT;
-        } else if (bmi < 25 && this.fatPercentage < 20) {
-            return BodyType.FIT;
-        } else if (bmi < 25) {
-            return BodyType.AVERAGE;
-        } else if (this.fatPercentage < 20) {
-            return BodyType.MUSCULAR;
-        } else if (this.fatPercentage < 30) {
-            return BodyType.OVERWEIGHT;
-        } else {
-            return BodyType.OBESE;
-        }
     }
 }

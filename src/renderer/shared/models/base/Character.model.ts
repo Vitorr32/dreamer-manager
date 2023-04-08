@@ -89,6 +89,8 @@ export enum CharacterVariablesKey {
     AFFLUENCE = 'standardOfLiving',
     TRAITS = 'traits',
     HEIGHT = 'height',
+    WEIGHT = 'weight',
+    FAT_PERCENTAGE = 'fatPercentage',
     PAPER_DOLL = 'paperDoll',
     BODY_TYPE = 'bodyType',
 
@@ -234,6 +236,20 @@ export const CharacterEntityVariables: Variables = {
         read: true,
         edit: true,
     },
+    [CharacterVariablesKey.WEIGHT]: {
+        key: CharacterVariablesKey.WEIGHT,
+        displayName: 'model.character.variables.weight',
+        type: VariableType.NUMBER,
+        read: true,
+        edit: true,
+    },
+    [CharacterVariablesKey.FAT_PERCENTAGE]: {
+        key: CharacterVariablesKey.FAT_PERCENTAGE,
+        displayName: 'model.character.variables.fat_percentage',
+        type: VariableType.NUMBER,
+        read: true,
+        edit: false,
+    },
     [CharacterVariablesKey.PAPER_DOLL]: {
         key: CharacterVariablesKey.PAPER_DOLL,
         displayName: 'model.character.variables.paperDoll',
@@ -278,6 +294,8 @@ export class Character extends EntityBase {
     public type: CharacterType;
 
     public height: number;
+    public weight: number;
+    public fatPercentage: number;
 
     public bodyType: BodyType;
 
@@ -308,5 +326,37 @@ export class Character extends EntityBase {
         this.surname = surname || '';
         this.nickname = nickname || '';
         this.birthday = birthday;
+    }
+
+    public calculateBodyType(): BodyType {
+        if (!this.weight || !this.height || !this.fatPercentage) {
+            console.log('missingProperty');
+            return BodyType.UNDEFINED;
+        }
+
+        const heightInMeters = this.height / 100;
+        const bmi = this.weight / (heightInMeters * heightInMeters);
+
+        if (isNaN(bmi)) {
+            return BodyType.UNDEFINED;
+        }
+
+        if (bmi < 19 && this.fatPercentage < 5) {
+            return BodyType.ANOREXIC;
+        } else if (bmi < 19 && this.fatPercentage < 10) {
+            return BodyType.SKINNY;
+        } else if (bmi < 19) {
+            return BodyType.UNDERWEIGHT;
+        } else if (bmi < 25 && this.fatPercentage < 20) {
+            return BodyType.FIT;
+        } else if (bmi < 25) {
+            return BodyType.AVERAGE;
+        } else if (this.fatPercentage < 20) {
+            return BodyType.MUSCULAR;
+        } else if (this.fatPercentage < 30) {
+            return BodyType.OVERWEIGHT;
+        } else {
+            return BodyType.OBESE;
+        }
     }
 }

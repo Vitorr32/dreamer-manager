@@ -55,6 +55,8 @@ export function TraitEditor(props: IProps) {
         setCurrentTrait(trait);
     };
 
+    const onSubmitTrait = (): void => {};
+
     const getStepperContent = (index: number): JSX.Element | null => {
         switch (index) {
             case 0:
@@ -62,7 +64,7 @@ export function TraitEditor(props: IProps) {
             case 1:
                 return <EffectsAndConditions trait={currentTrait} onChange={onTraitChange} previousStep={previousStep} nextStep={nextStep} />;
             case 2:
-                return <NewTraitReview trait={currentTrait} />;
+                return <NewTraitReview trait={currentTrait} previousStep={previousStep} onSubmit={onSubmitTrait} />;
             default:
                 return null;
         }
