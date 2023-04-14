@@ -13,6 +13,7 @@ ipcMain.handle('save-as-json', async (_, args: { path: string[]; content: string
 });
 
 ipcMain.handle('save-as-copy', async (_, args: { originPath: string; destinationPath: string[] }) => {
+    const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.destinationPath);
 
     fs.copyFileSync(args.originPath, ASSET_PATH);

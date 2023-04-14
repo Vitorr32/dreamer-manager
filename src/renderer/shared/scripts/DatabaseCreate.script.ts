@@ -50,10 +50,4 @@ export async function CreateDatabaseJSONFile(path: string[], fileName: string, n
     }
 }
 
-export async function InsertIconInAssets(iconPath: string, destinationPath: string[], fileName: string) {
-    const sadads = await window.electron.fileSystem.copyFileToResources(iconPath, [...destinationPath, fileName]);
-
-    console.log(sadads);
-}
-
 export {};

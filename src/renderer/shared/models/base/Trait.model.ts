@@ -1,6 +1,8 @@
 import { Effect } from './Effect.model';
 import { v4 as uuidv4 } from 'uuid';
-import { LANGUAGE_CODE_DEFAULT } from 'renderer/shared/Constants';
+import { LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
+import { ICONS_FOLDER } from 'renderer/shared/Constants';
+import { PLACEHOLDER_TRAIT_ICON } from 'renderer/shared/Constants';
 
 export enum TraitType {
     NORMAL = 'model.trait.type.normal',
@@ -30,6 +32,7 @@ export class Trait {
     constructor() {
         this.id = 'trait_' + uuidv4();
 
+        this.iconPath = [ICONS_FOLDER, TRAIT_DATABASE_FOLDER, PLACEHOLDER_TRAIT_ICON];
         this.localization = {};
         this.type = TraitType.NORMAL;
         this.spawnable = false;
