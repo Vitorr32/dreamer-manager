@@ -9,6 +9,7 @@ import './App.scss';
 import { EventEditor } from './Interface/MainMenu/sub-pages/EventEditor/EventEditor.component';
 import { CharacterEditorContainer } from './Interface/MainMenu/sub-pages/CharacterEditor/CharacterEditorContainer.component';
 import { StartUpPage } from './Interface/MainMenu/page/MainScreen/StartUpPage.component';
+import { BASE_GAME_FOLDER } from './shared/Constants';
 
 export default function App() {
     const theme = createTheme({
@@ -30,7 +31,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <MemoryRouter>
                 <Routes>
-                    <Route index element={<Navigate to="/menu/edit/trait/edit/trait_0" />} />
+                    <Route index element={<Navigate to={`/menu/edit/trait/edit/${BASE_GAME_FOLDER}/trait_0`} />} />
                     <Route path='/startup' element={<StartUpPage/>} />
                     <Route path="/menu" element={<MainScreen />} />
                     <Route path="/menu/edit" element={<EditorScreen />} />

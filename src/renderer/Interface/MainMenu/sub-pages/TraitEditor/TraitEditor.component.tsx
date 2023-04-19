@@ -10,9 +10,10 @@ import { Link, useParams } from 'react-router-dom';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { ICONS_FOLDER, LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
+import { DATABASE_FOLDER, ICONS_FOLDER, LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { GetFileFromResources, GetFileNameFromPath } from 'renderer/shared/utils/StringOperations';
 import { CopyFileToAssetsFolder, IsAbsolutePathTheSameAsRelativePath } from 'renderer/shared/utils/FileOperation';
+import { CreateOrUpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 
 interface IProps {}
 
@@ -28,7 +29,6 @@ export function TraitEditor(props: IProps) {
     const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.traits);
 
     useEffect(() => {
-        console.log(params);
         const IDParameter = params?.id;
 
         if (IDParameter) {
@@ -67,6 +67,8 @@ export function TraitEditor(props: IProps) {
             return;
         }
 
+        const traitRelativePath = [DATABASE_FOLDER, TRAIT_DATABASE_FOLDER, currentTrait.id];
+
         //Check to see if the user changed the image of this trait, if it is, change the relative file path to the new one.
         if (!IsAbsolutePathTheSameAsRelativePath(currentTrait.absoluteIconPath, currentTrait.iconPath)) {
             try {
@@ -78,16 +80,20 @@ export function TraitEditor(props: IProps) {
                 //If the file does not exist in the games folder, we copy it into the game folder
                 //TODO: Add a way to specify which folder should this file be copied to
                 if (!existingFile) {
-                    const newAbsolutePath = await CopyFileToAssetsFolder(currentTrait.absoluteIconPath, newRelativePath);
+                    const newAbsolutePath = await CopyFileToAssetsFolder(currentTrait.absoluteIconPath, newRelativePath, params?.targetFolder);
                     currentTrait.iconPath = newRelativePath;
                     currentTrait.absoluteIconPath = newAbsolutePath;
                 }
-                //Update the relative path, regardless if it's
+                //Then update the icon path to the new relative path
                 currentTrait.iconPath = newRelativePath;
             } catch (error) {
                 console.log(error);
+                return;
             }
         }
+
+        //Update or create the new trait in the json file of the target folder
+        CreateOrUpdateDatabaseJSONFile(params?.targetFolder, TRAIT_DATABASE_FOLDER, currentTrait.id, currentTrait);
     };
 
     const validateTrait = (trait: Trait): boolean => {

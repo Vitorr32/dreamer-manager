@@ -20,7 +20,7 @@ declare global {
                 // Static resources are files that has a metadata file that accompany it with the data for the file to be saved on database.
                 // Such file are paper pieces for now
                 getStaticResourcesOnFoldersAndSubFolders(path: string[]): { resourcePath: string; fileName: string; metadataData: string }[];
-                getFilesFromResourcesDatabase(path: string[]): string[];
+                getFilesFromResourcesDatabase(path: string[]): Promise<{ fileName: string; filePath: string[]; content: string }[]>;
                 saveFileToResources(path: string[], content: string): string;
                 copyFileToResources(originPath: string, destinationPath: string[]): string;
                 getFileInfo(path: string[]): { fileName: string; fullName: string; extension: string };

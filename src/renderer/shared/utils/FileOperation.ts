@@ -16,5 +16,5 @@ export async function CopyFileToAssetsFolder(originalFilePath: string, destinati
         destinationPath = [targetGameFolder, ...destinationPath];
     }
 
-    return await window.electron.fileSystem.copyFileToResources(originalFilePath, destinationPath);
+    return window.electron.fileSystem.copyFileToResources(originalFilePath, destinationPath);
 }

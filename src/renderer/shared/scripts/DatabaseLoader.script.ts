@@ -2,6 +2,7 @@ import { gameLoadUpdate } from 'renderer/redux/database/database.reducer';
 import { store } from 'renderer/redux/store';
 import {
     ATTRIBUTES_DATABASE_FOLDER,
+    BASE_GAME_FOLDER,
     CHARACTERS_FOLDER,
     CITIES_DATABASE_FOLDER,
     DATABASE_FOLDER,
@@ -22,23 +23,24 @@ import { PaperPiece } from '../models/base/PaperPiece.model';
 import { Trait } from '../models/base/Trait.model';
 import { EntityType } from '../models/enums/Entities.enum';
 import { ApplyFileProtocol, GetFileFromResources } from '../utils/StringOperations';
+import { EntityBase } from '../models/base/Entity.model';
 
 export async function GameStartDatabaseLoad(): Promise<void> {
     console.log('On GameStartDatabaseLoad');
 
-    const traits = await GetResourcesFromDatabase<Trait>([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], async (trait: Trait) => {
+    const traits = await GetEntitiesFromDatabaseFile<Trait>([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], BASE_GAME_FOLDER, async (trait: Trait) => {
         const processedPath = await GetFileFromResources(trait.iconPath);
         trait.absoluteIconPath = processedPath.path;
         return trait;
     });
     store.dispatch(gameLoadUpdate({ key: EntityType.TRAITS, value: traits, progress: 0 }));
 
-    const charactersLoaded = await GetResourcesFromDatabase<Character>([DATABASE_FOLDER, CHARACTERS_FOLDER]);
+    const charactersLoaded = await GetEntitiesFromDatabaseFile<Character>([DATABASE_FOLDER, CHARACTERS_FOLDER]);
     store.dispatch(gameLoadUpdate({ key: EntityType.CHARACTERS, value: charactersLoaded, progress: 10 }));
 
     console.log('charactersLoaded', charactersLoaded);
 
-    const paperDollsLoaded = await GetResourcesFromDatabase<PaperDoll>([DATABASE_FOLDER, PAPER_DOLL_FOLDER], async (data: PaperDoll) => {
+    const paperDollsLoaded = await GetEntitiesFromDatabaseFile<PaperDoll>([DATABASE_FOLDER, PAPER_DOLL_FOLDER], BASE_GAME_FOLDER, async (data: PaperDoll) => {
         //If the paper doll uses the paper pieces system, then we don't need to get the absolute path of any custom sprite
         if (!data.isCustom) {
             return data;
@@ -59,16 +61,16 @@ export async function GameStartDatabaseLoad(): Promise<void> {
     });
     store.dispatch(gameLoadUpdate({ key: EntityType.PAPER_DOLL, value: paperDollsLoaded, progress: 15 }));
 
-    const nationsLoaded = await GetResourcesFromDatabase<Nation>([DATABASE_FOLDER, NATIONS_DATABASE_FOLDER]);
+    const nationsLoaded = await GetEntitiesFromDatabaseFile<Nation>([DATABASE_FOLDER, NATIONS_DATABASE_FOLDER]);
     store.dispatch(gameLoadUpdate({ key: EntityType.NATIONS, value: nationsLoaded, progress: 20 }));
 
-    const attributesLoaded = await GetResourcesFromDatabase<Attribute>([DATABASE_FOLDER, ATTRIBUTES_DATABASE_FOLDER]);
+    const attributesLoaded = await GetEntitiesFromDatabaseFile<Attribute>([DATABASE_FOLDER, ATTRIBUTES_DATABASE_FOLDER]);
     store.dispatch(gameLoadUpdate({ key: EntityType.ATTRIBUTES, value: attributesLoaded, progress: 40 }));
 
-    const eventsLoaded = await GetResourcesFromDatabase<Event>([DATABASE_FOLDER, EVENT_DATABASE_FOLDER]);
+    const eventsLoaded = await GetEntitiesFromDatabaseFile<Event>([DATABASE_FOLDER, EVENT_DATABASE_FOLDER]);
     store.dispatch(gameLoadUpdate({ key: EntityType.EVENTS, value: eventsLoaded, progress: 60 }));
 
-    const citiesLoaded = await GetResourcesFromDatabase<City>([DATABASE_FOLDER, CITIES_DATABASE_FOLDER]);
+    const citiesLoaded = await GetEntitiesFromDatabaseFile<City>([DATABASE_FOLDER, CITIES_DATABASE_FOLDER]);
     store.dispatch(gameLoadUpdate({ key: EntityType.CITIES, value: citiesLoaded, progress: 80 }));
 
     const paperPiecesLoaded = await GetStaticResourcesFromDatabase<PaperPiece>([SPRITES_FOLDER, PAPER_PIECES_FOLDER], async (data: PaperPiece, staticResourcePath: string) => {
@@ -80,13 +82,33 @@ export async function GameStartDatabaseLoad(): Promise<void> {
     console.log('On GameStartDatabaseLoaded:', store.getState().database.mappedDatabase);
 }
 
-export async function GetResourcesFromDatabase<T>(path: string[], postProcessingFunction?: (object: T) => Promise<T>): Promise<T[]> {
-    const loadedJSONs: string[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(path);
+export async function GetEntitiesFromDatabaseFile<T>(
+    path: string[],
+    packageFolder: string = BASE_GAME_FOLDER,
+    postProcessingFunction?: (object: T) => Promise<T>
+): Promise<T[]> {
+    const loadedJSONs: { fileName: string; filePath: string[]; content: string }[] = await window.electron.fileSystem.getFilesFromResourcesDatabase(path);
     const loadedObjects: T[] = [];
 
-    loadedJSONs.map((stringObjectList) => {
+    console.log('loadedJSONs', loadedJSONs);
+
+    loadedJSONs.map((loadedEntityFile) => {
         try {
-            loadedObjects.push(...JSON.parse(stringObjectList));
+            const loadedEntitiesArray = JSON.parse(loadedEntityFile.content);
+            loadedObjects.push(
+                ...loadedEntitiesArray.map((entity: EntityBase) => {
+                    entity.metadata = {
+                        ...entity.metadata,
+                        file: {
+                            name: loadedEntityFile.fileName,
+                            path: loadedEntityFile.filePath,
+                            package: packageFolder,
+                        },
+                    };
+                    console.log('entity', entity as T);
+                    return entity as T;
+                })
+            );
         } catch (e) {
             console.error(e);
         }

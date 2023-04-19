@@ -50,7 +50,11 @@ ipcMain.handle('get-db-files', async (_, args: string[]) => {
 
     return filenames.map((file) => {
         try {
-            return fs.readFileSync(path.join(RESOURCES_PATH, ...args, file), 'utf-8');
+            return {
+                fileName: file,
+                filePath: [...args, file],
+                content: fs.readFileSync(path.join(RESOURCES_PATH, ...args, file), 'utf-8'),
+            };
         } catch (e) {
             return e;
         }

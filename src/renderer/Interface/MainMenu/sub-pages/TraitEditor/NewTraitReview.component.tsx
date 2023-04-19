@@ -14,33 +14,6 @@ interface IProps {
 export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onSubmit }: IProps) {
     const { t, i18n } = useTranslation();
 
-
-    // const onSubmit = async () => {
-    //     setLoading(true);
-
-    //     if (!validateTrait(trait)) {
-    //         return;
-    //     }
-
-    //     // TODO: Rewrite the persistence of the trait on database
-    //     // const fileInfo = await GetFileInfoFromPath(ApplyFileProtocol(iconPath));
-
-    //     // if (!fileInfo) {
-    //     //     const newValidation = {
-    //     //         common: t('interface.editor.validation.missing_icon'),
-    //     //     };
-    //     //     setInputValidation(newValidation);
-    //     // }
-
-    //     // const submittedTrait = Object.assign({}, trait);
-    //     // submittedTrait.spritePath = fileInfo?.fullName;
-
-    //     // InsertIconInAssets(RemoveFileProtocol(iconPath), [ICONS_FOLDER, TRAIT_DATABASE_FOLDER], submittedTrait.spritePath);
-    //     // UpdateDatabaseJSONFile([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], BASE_TRAIT_FILE, submittedTrait);
-
-    //     setLoading(false);
-    // };
-
     return (
         <Box sx={{ color: 'text.primary', flex: 1, display: 'flex', flexDirection: 'column' }}>
             <Box>
