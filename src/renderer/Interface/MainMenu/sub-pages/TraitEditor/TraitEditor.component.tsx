@@ -10,10 +10,11 @@ import { Link, useParams } from 'react-router-dom';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { DATABASE_FOLDER, ICONS_FOLDER, LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
+import { BASE_GAME_FOLDER, DATABASE_FOLDER, ICONS_FOLDER, LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { GetFileFromResources, GetFileNameFromPath } from 'renderer/shared/utils/StringOperations';
 import { CopyFileToAssetsFolder, IsAbsolutePathTheSameAsRelativePath } from 'renderer/shared/utils/FileOperation';
 import { CreateOrUpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
+import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {}
 
@@ -25,11 +26,19 @@ export function TraitEditor(props: IProps) {
     const [stepsCompleted, setStepsCompleted] = useState([false, false, false]);
     const [inputValidation, setInputValidation] = useState({});
     const [currentTrait, setCurrentTrait] = useState(new Trait());
+    const [packageFolder, setPackageFolder] = useState<string>();
     const database = useSelector((state: RootState) => state.database);
     const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.traits);
 
     useEffect(() => {
         const IDParameter = params?.id;
+        const targetPackageParameter = params?.package;
+
+        if (targetPackageParameter) {
+            setPackageFolder(targetPackageParameter);
+        } else {
+            setPackageFolder(BASE_GAME_FOLDER);
+        }
 
         if (IDParameter) {
             const toEditEntity = mappedEntities[IDParameter];
@@ -67,33 +76,38 @@ export function TraitEditor(props: IProps) {
             return;
         }
 
-        const traitRelativePath = [DATABASE_FOLDER, TRAIT_DATABASE_FOLDER, currentTrait.id];
+        const finalTrait = CopyClassInstance(currentTrait);
 
         //Check to see if the user changed the image of this trait, if it is, change the relative file path to the new one.
-        if (!IsAbsolutePathTheSameAsRelativePath(currentTrait.absoluteIconPath, currentTrait.iconPath)) {
+        if (!IsAbsolutePathTheSameAsRelativePath(finalTrait.absoluteIconPath, finalTrait.iconPath)) {
             try {
                 //Now check if the file is already present as a game file in the trait icons folder, or is a new one that need to be copied into the game folder
-                const fileName = GetFileNameFromPath(currentTrait.absoluteIconPath);
+                const fileName = GetFileNameFromPath(finalTrait.absoluteIconPath);
                 const newRelativePath = [ICONS_FOLDER, TRAIT_DATABASE_FOLDER, fileName];
                 const existingFile = GetFileFromResources(newRelativePath);
 
                 //If the file does not exist in the games folder, we copy it into the game folder
                 //TODO: Add a way to specify which folder should this file be copied to
                 if (!existingFile) {
-                    const newAbsolutePath = await CopyFileToAssetsFolder(currentTrait.absoluteIconPath, newRelativePath, params?.targetFolder);
-                    currentTrait.iconPath = newRelativePath;
-                    currentTrait.absoluteIconPath = newAbsolutePath;
+                    const newAbsolutePath = await CopyFileToAssetsFolder(finalTrait.absoluteIconPath, newRelativePath, packageFolder);
+                    finalTrait.iconPath = newRelativePath;
+                    finalTrait.absoluteIconPath = newAbsolutePath;
                 }
                 //Then update the icon path to the new relative path
-                currentTrait.iconPath = newRelativePath;
+                finalTrait.iconPath = newRelativePath;
             } catch (error) {
                 console.log(error);
                 return;
             }
         }
 
+        //Cleanup finalTrait from the metadata propertie and the absolute icon path
+        delete finalTrait.metadata;
+        delete finalTrait.absoluteIconPath;
+
         //Update or create the new trait in the json file of the target folder
-        CreateOrUpdateDatabaseJSONFile(params?.targetFolder, TRAIT_DATABASE_FOLDER, currentTrait.id, currentTrait);
+        await CreateOrUpdateDatabaseJSONFile(currentTrait.metadata.file.path, currentTrait, packageFolder, true);
+        //Reload the database for trait
     };
 
     const validateTrait = (trait: Trait): boolean => {

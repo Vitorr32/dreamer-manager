@@ -1,13 +1,17 @@
-export async function CreateOrUpdateDatabaseJSONFile(path: string[], fileName: string, newValue: any, target: string = 'base', overwrite: boolean = false): Promise<void> {
+import { BASE_GAME_FOLDER } from '../Constants';
+
+export async function CreateOrUpdateDatabaseJSONFile(path: string[], newValue: any, targetPackage: string, overwrite: boolean = false): Promise<void> {
+    //Include the package to the path if it's not the base game folder.
+    const finalPath = targetPackage === BASE_GAME_FOLDER ? path : [targetPackage, ...path];
+
     try {
         //Check if the file already exists
-        //TODO: Allow different type of target files like mod folder and so on.
-        const fileInfo: { absolutePath: string; content: string } = await window.electron.fileSystem.getFileFromResources([...path, fileName]);
+        const fileInfo: { absolutePath: string; content: string } = await window.electron.fileSystem.getFileFromResources(finalPath);
         if (fileInfo) {
-            UpdateDatabaseJSONFile([...path, fileName], fileInfo, newValue, overwrite);
+            UpdateDatabaseJSONFile(finalPath, fileInfo, newValue, overwrite);
         }
     } catch (e) {
-        CreateDatabaseJSONFile(path, fileName, newValue);
+        CreateDatabaseJSONFile(finalPath, newValue);
     }
 }
 
@@ -40,11 +44,11 @@ export async function UpdateDatabaseJSONFile(
     }
 }
 
-export async function CreateDatabaseJSONFile(path: string[], fileName: string, newValue: any): Promise<void> {
-    const result = await window.electron.fileSystem.saveFileToResources([...path, fileName], JSON.stringify([newValue], null, '\t'));
+export async function CreateDatabaseJSONFile(path: string[], newValue: any): Promise<void> {
+    const result = await window.electron.fileSystem.saveFileToResources(path, JSON.stringify([newValue], null, '\t'));
 
     if (typeof result === 'boolean' && result) {
-        console.log(`File ${fileName} created/updated`);
+        console.log(`File at ${path.join('/')} created/updated`);
     } else {
         console.error(result);
     }

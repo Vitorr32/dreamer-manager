@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Application } from 'pixi.js';
 
-interface GameLoopState {
+export interface GameLoopState {
   app?: Application;
 }
 

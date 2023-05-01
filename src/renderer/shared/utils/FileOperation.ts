@@ -11,9 +11,9 @@ export async function IsAbsolutePathTheSameAsRelativePath(absolutePath: string, 
     return absolutePathCleaned === relativePathCleaned.absolutePath;
 }
 
-export async function CopyFileToAssetsFolder(originalFilePath: string, destinationPath: string[], targetGameFolder: string = BASE_GAME_FOLDER): Promise<string> {
-    if (targetGameFolder !== BASE_GAME_FOLDER) {
-        destinationPath = [targetGameFolder, ...destinationPath];
+export async function CopyFileToAssetsFolder(originalFilePath: string, destinationPath: string[], targetPackage: string = BASE_GAME_FOLDER): Promise<string> {
+    if (targetPackage !== BASE_GAME_FOLDER) {
+        destinationPath = [targetPackage, ...destinationPath];
     }
 
     return window.electron.fileSystem.copyFileToResources(originalFilePath, destinationPath);

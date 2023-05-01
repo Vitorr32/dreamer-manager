@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { ICONS_FOLDER } from 'renderer/shared/Constants';
 import { PLACEHOLDER_TRAIT_ICON } from 'renderer/shared/Constants';
+import { EntityBase } from './Entity.model';
 
 export enum TraitType {
     NORMAL = 'model.trait.type.normal',
@@ -14,7 +15,7 @@ export enum TraitType {
     SPECIAL = 'model.trait.type.special',
 }
 
-export class Trait {
+export class Trait extends EntityBase {
     public id: string;
     public type: TraitType;
     public spawnable: boolean;
@@ -30,6 +31,8 @@ export class Trait {
     };
 
     constructor() {
+        super();
+
         this.id = 'trait_' + uuidv4();
 
         this.iconPath = [ICONS_FOLDER, TRAIT_DATABASE_FOLDER, PLACEHOLDER_TRAIT_ICON];

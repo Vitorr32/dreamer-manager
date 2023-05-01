@@ -9,10 +9,12 @@ import { PaperPiece } from 'renderer/shared/models/base/PaperPiece.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { Trait } from '../../shared/models/base/Trait.model';
+import { BASE_GAME_FOLDER } from 'renderer/shared/Constants';
 
-interface Database {
+export interface Database {
     isLoadingDatabase: boolean;
     loadProgress: number;
+    packages: string[];
     characters: Character[];
     traits: Trait[];
     attributes: Attribute[];
@@ -38,6 +40,7 @@ interface Database {
 const initialState: Database = {
     isLoadingDatabase: false,
     loadProgress: 0,
+    packages: [BASE_GAME_FOLDER],
     characters: [],
     traits: [],
     attributes: [],
@@ -64,36 +67,40 @@ export const databaseSlice = createSlice({
     name: 'database',
     initialState,
     reducers: {
-        gameLoadUpdate: (
+        databaseSetPackages: (state, action: { type: string; payload: string[] }) => {
+            state.packages = action.payload;
+        },
+        databaseLoadEntity: (
             state,
             action: {
                 type: string;
-                payload: { value: any[]; key: EntityType; progress: number };
+                payload: { value: any[]; key: EntityType; cleanUp?: boolean; progress?: number };
             }
         ) => {
-            switch (action.payload.key) {
+            const { value, key, cleanUp, progress } = action.payload;
+            switch (key) {
                 case EntityType.CHARACTERS:
-                    state.characters = action.payload.value;
+                    state.characters = value;
                     state.characters.forEach((character) => {
-                        if (state.mappedDatabase.nations[character.id]) {
-                            throw new Error('A nation with id ' + character.id + ' is duplicated');
+                        if (state.mappedDatabase.characters[character.id] && !cleanUp) {
+                            throw new Error('A characters with id ' + character.id + ' is duplicated');
                         }
 
                         state.mappedDatabase.characters[character.id] = character;
                     });
                 case EntityType.PAPER_DOLL:
-                    state.paperDolls = action.payload.value;
+                    state.paperDolls = value;
                     state.paperDolls.forEach((paperDoll) => {
-                        if (state.mappedDatabase.nations[paperDoll.id]) {
-                            throw new Error('A nation with id ' + paperDoll.id + ' is duplicated');
+                        if (state.mappedDatabase.paperDolls[paperDoll.id] && !cleanUp) {
+                            throw new Error('A paperDolls with id ' + paperDoll.id + ' is duplicated');
                         }
 
                         state.mappedDatabase.paperDolls[paperDoll.id] = paperDoll;
                     });
                 case EntityType.NATIONS:
-                    state.nations = action.payload.value;
+                    state.nations = value;
                     state.nations.forEach((nation) => {
-                        if (state.mappedDatabase.nations[nation.id]) {
+                        if (state.mappedDatabase.nations[nation.id] && !cleanUp) {
                             throw new Error('A nation with id ' + nation.id + ' is duplicated');
                         }
 
@@ -101,11 +108,11 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case EntityType.TRAITS:
-                    const traits = action.payload.value.map((rawTraitData) => Object.assign(Object.create(Trait.prototype), rawTraitData));
+                    const traits = value.map((rawTraitData) => Object.assign(Object.create(Trait.prototype), rawTraitData));
 
                     state.traits = traits;
                     state.traits.forEach((trait) => {
-                        if (state.mappedDatabase.traits[trait.id]) {
+                        if (state.mappedDatabase.traits[trait.id] && !cleanUp) {
                             throw new Error('A trait with id ' + trait.id + ' is duplicated');
                         }
 
@@ -113,11 +120,11 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case EntityType.ATTRIBUTES:
-                    const attrs = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(Attribute.prototype), rawAttributeData));
+                    const attrs = value.map((rawAttributeData) => Object.assign(Object.create(Attribute.prototype), rawAttributeData));
 
                     state.attributes = attrs;
                     state.attributes.forEach((attr) => {
-                        if (state.mappedDatabase.attributes[attr.id]) {
+                        if (state.mappedDatabase.attributes[attr.id] && !cleanUp) {
                             throw new Error('A attribute with id ' + attr.id + ' is duplicated');
                         }
 
@@ -125,9 +132,9 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case EntityType.CITIES:
-                    state.cities = action.payload.value;
+                    state.cities = value;
                     state.cities.forEach((city) => {
-                        if (state.mappedDatabase.cities[city.id]) {
+                        if (state.mappedDatabase.cities[city.id] && !cleanUp) {
                             throw new Error('A city with id ' + city.id + ' is duplicated');
                         }
 
@@ -135,16 +142,16 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case EntityType.EVENTS:
-                    state.events = action.payload.value;
+                    state.events = value;
                     state.events.forEach((event) => {
-                        if (state.mappedDatabase.events[event.id]) {
+                        if (state.mappedDatabase.events[event.id] && !cleanUp) {
                             throw new Error('A Event with id ' + event.id + ' is duplicated');
                         }
 
                         if (event.flags) {
                             state.flags.push(...event.flags);
                             event.flags.forEach((flag) => {
-                                if (state.mappedDatabase.flags[flag.id]) {
+                                if (state.mappedDatabase.flags[flag.id] && !cleanUp) {
                                     throw new Error('A Flag with id ' + event.id + ' is duplicated');
                                 }
 
@@ -158,11 +165,11 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 case EntityType.PAPER_PIECE:
-                    const entities = action.payload.value.map((rawAttributeData) => Object.assign(Object.create(PaperPiece.prototype), rawAttributeData));
+                    const entities = value.map((rawAttributeData) => Object.assign(Object.create(PaperPiece.prototype), rawAttributeData));
 
                     state.paperPieces = entities;
                     state.paperPieces.forEach((entity) => {
-                        if (state.mappedDatabase.paperPieces[entity.id]) {
+                        if (state.mappedDatabase.paperPieces[entity.id] && !cleanUp) {
                             throw new Error('A Paper Piece with id ' + entity.id + ' is duplicated');
                         }
 
@@ -170,18 +177,23 @@ export const databaseSlice = createSlice({
                     });
                     break;
                 default:
-                    console.error('Unknown load update: ' + action.payload.key);
+                    console.error('Unknown load update: ' + key);
             }
 
-            state.loadProgress = action.payload.progress;
+            if (progress) {
+                state.loadProgress = progress;
+            }
         },
-        gameStartLoad: (state) => {
+        databaseStartLoad: (state) => {
             state.isLoadingDatabase = true;
             state.loadProgress = 0;
+        },
+        databaseEndLoad: (state) => {
+            state.isLoadingDatabase = false;
         },
     },
 });
 
-export const { gameStartLoad, gameLoadUpdate } = databaseSlice.actions;
+export const { databaseSetPackages, databaseStartLoad, databaseLoadEntity, databaseEndLoad } = databaseSlice.actions;
 
 export default databaseSlice.reducer;

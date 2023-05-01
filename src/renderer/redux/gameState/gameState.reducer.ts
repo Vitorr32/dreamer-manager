@@ -3,7 +3,7 @@ import { ATTRIBUTES_DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 'renderer/shar
 import { Character } from 'renderer/shared/models/base/Character.model';
 import { World } from 'renderer/shared/models/base/World.model';
 
-interface GameState {
+export interface GameState {
     world: World;
     characters: Character[];
 }
