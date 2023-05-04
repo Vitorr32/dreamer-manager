@@ -6,7 +6,11 @@ ipcMain.handle('get-file', async (_, args: { path: string[] }) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
     const ASSET_PATH = path.join(RESOURCES_PATH, ...args.path);
 
-    return { absolutePath: ASSET_PATH, content: fs.readFileSync(ASSET_PATH).toString() };
+    try {
+        return { absolutePath: ASSET_PATH, content: fs.readFileSync(ASSET_PATH).toString() };
+    } catch (e) {
+        return { error: true, message: e };
+    }
 });
 
 ipcMain.handle('get-file-info', async (_, args: string) => {

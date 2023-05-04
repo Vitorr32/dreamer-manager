@@ -10,8 +10,6 @@ import { Box } from '@mui/system';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
-import { DynamicEntity } from 'renderer/shared/models/base/EntityVariableValue.model';
 
 interface IProps {
     previousStep: () => void;

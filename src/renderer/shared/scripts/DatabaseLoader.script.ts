@@ -114,7 +114,6 @@ export async function GetEntitiesFromDatabaseFile<T>(
 }
 
 export async function LoadTraitDatabaseFiles(packages: string[], progress = 0) {
-    console.log('packages', packages)
     const allTraits = await Promise.all(
         packages.map(async (packageID) => {
             const traits = await GetEntitiesFromDatabaseFile<Trait>([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], packageID, async (trait: Trait) => {
@@ -129,8 +128,6 @@ export async function LoadTraitDatabaseFiles(packages: string[], progress = 0) {
         console.error(error);
         return [];
     });
-
-    console.log('allTraits', allTraits)
 
     store.dispatch(databaseLoadEntity({ key: EntityType.TRAITS, value: allTraits.flat(), cleanUp: true, progress }));
 }

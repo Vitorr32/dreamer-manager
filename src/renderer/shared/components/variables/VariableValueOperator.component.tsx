@@ -75,7 +75,7 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
         <TextField
             sx={{ minWidth: '300px' }}
             label={t('interface.editor.entity.input_label_operator')}
-            value={t(variableOperator, { variable: t(variable.displayName) })}
+            value={t(variableOperator, { variable: t(variable.displayName) }) || ''}
             disabled
             variant="outlined"
         />

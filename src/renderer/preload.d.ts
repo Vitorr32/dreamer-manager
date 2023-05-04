@@ -9,7 +9,7 @@ declare global {
                 once(channel: string, func: (...args: unknown[]) => void): void;
             };
             fileSystem: {
-                getFileFromResources(path: string[]): { absolutePath: string; content: string };
+                getFileFromResources(path: string[]): { absolutePath: string; content: string } | { error: boolean; message: string };
                 getFilesFromResources(path: string[]): {
                     fileName: string;
                     filePath: string;

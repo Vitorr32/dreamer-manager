@@ -5,7 +5,10 @@ import { RemoveFileProtocol } from './StringOperations';
 //For example: "...\MyProject\MyFile.txt" is the same as the relative path ["MyProject", "MyFile.txt"] after being converted to absolute path
 export async function IsAbsolutePathTheSameAsRelativePath(absolutePath: string, relativePath: string[]): Promise<boolean> {
     const absolutePathCleaned = RemoveFileProtocol(absolutePath);
-    const relativePathCleaned = window.electron.fileSystem.getFileFromResources(relativePath);
+    const relativePathCleaned = await window.electron.fileSystem.getFileFromResources(relativePath);
+
+    console.log('absolutePathCleaned', absolutePathCleaned);
+    console.log('relativePathCleaned', relativePathCleaned.absolutePath);
 
     //Check to see if the cleaned absolute path is equals to the processed path of the relative file
     return absolutePathCleaned === relativePathCleaned.absolutePath;

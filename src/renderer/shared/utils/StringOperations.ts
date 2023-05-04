@@ -28,6 +28,10 @@ export function GetFileNameFromPath(path: string): string {
 
 export async function GetFileFromResources(path: string[]): Promise<{ path: string; content: string }> {
     const file = await window.electron.fileSystem.getFileFromResources(path);
+    if(file.error) {
+        console.log('file', file)
+        throw new Error(file.message);
+    }
     return { path: ApplyFileProtocol(file.absolutePath), content: file.content };
 }
 

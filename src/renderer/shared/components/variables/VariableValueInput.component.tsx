@@ -106,9 +106,13 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                     <Autocomplete
                         fullWidth
                         freeSolo
+                        value={variableValue}
                         sx={{ minWidth: '200px' }}
                         options={getSuggestionsForAutocompleteOfEntity(variable.externalEntity)}
                         renderInput={(params) => <TextField {...params} label={t(variable.externalEntity)} />}
+                        getOptionLabel={(option) => t(option)}
+                        isOptionEqualToValue={(option, value) => option.id === value}
+                        onChange={(_, option: any) => onVariableValueChange(option.id)}
                     />
                 );
             case VariableType.BOOLEAN:

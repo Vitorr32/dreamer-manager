@@ -1,5 +1,5 @@
 import { Box } from '@mui/system';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DynamicEntity, EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
@@ -21,16 +21,26 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
     const { t } = useTranslation();
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
 
+    useEffect(() => {
+        //Populate selected variable from data comming from props.
+        if (entityFilter.entityType && entityFilter.variableKey) {
+            setSelectedVariable(GetVariablesOfEntity(entityFilter.entityType)[entityFilter.variableKey]);
+        } else {
+            setSelectedVariable(null);
+        }
+    }, []);
+
     const onFilterChanged = (key: 'entityType' | 'variableKey' | 'value' | 'operator', newValue: any) => {
         const updatedFilter = CopyClassInstance(entityFilter);
 
         if (key === 'variableKey') {
             setSelectedVariable(GetVariablesOfEntity(entityFilter.entityType)[newValue]);
-            updatedFilter.value = '';
+            updatedFilter.value = null;
         } else if (key === 'entityType') {
             setSelectedVariable(null);
-            updatedFilter.variableKey = '';
-            updatedFilter.value = '';
+            updatedFilter.variableKey = null;
+            updatedFilter.operator = null;
+            updatedFilter.value = null;
 
             //In case the entity type is actually a dynamic entity value, populate the entity type and specify the dynamic entity value.
             if (Object.values(DynamicEntity).includes(newValue as DynamicEntity)) {

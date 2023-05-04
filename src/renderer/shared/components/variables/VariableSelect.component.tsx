@@ -1,8 +1,7 @@
-import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Relationship } from 'renderer/shared/models/base/Relationship.model';
-import { EntityVariable, Variables, VariableType } from 'renderer/shared/models/base/Variable.model';
+import { EntityVariable, Variables } from 'renderer/shared/models/base/Variable.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,7 +15,16 @@ interface IProps {
 
 export function VariableSelect({ entity, entityVariableKey, onVariableChange, isEditor = false }: IProps) {
     const { t } = useTranslation();
+
     const [entityVariables, setEntityVariables] = useState<Variables>();
+    const [suggestions, setSuggestions] = useState<
+        {
+            label: string;
+            value: string;
+            data: EntityVariable;
+            group: string;
+        }[]
+    >();
 
     useEffect(() => {
         if (entity) {
@@ -25,6 +33,14 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange, is
             setEntityVariables(null);
         }
     }, [entity]);
+
+    useEffect(() => {
+        if (entityVariables) {
+            setSuggestions(getVariablesOfEntityAsSuggestions());
+        } else {
+            setSuggestions(null);
+        }
+    }, [entityVariables]);
 
     const getVariablesOfEntityAsSuggestions = (): any[] => {
         return entityVariables
@@ -44,20 +60,25 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange, is
             : [];
     };
 
-    return entityVariableKey && !entityVariables ? null : (
-        <Autocomplete
-            fullWidth
-            sx={{ minWidth: '300px' }}
-            options={getVariablesOfEntityAsSuggestions()}
-            groupBy={(option) => option.group}
-            onChange={(_, option: any) => onVariableChange(entityVariables[option.value])}
-            renderInput={(params) => <TextField {...params} value={entityVariableKey} label={t('interface.editor.modifier.input_label_variable')} />}
-            renderOption={(props, option) => (
-                <li {...props} key={`autocomplete_option_${uuidv4()}`}>
-                    {t(option.label)}
-                </li>
-            )}
-            isOptionEqualToValue={(option, value) => option.value === value.value}
-        />
+    return (
+        entityVariables &&
+        suggestions && (
+            <Autocomplete
+                fullWidth
+                value={suggestions.find((suggestion) => suggestion.value === entityVariableKey) || null}
+                sx={{ minWidth: '300px' }}
+                options={suggestions}
+                groupBy={(option) => option.group}
+                onChange={(_, option: any) => onVariableChange(entityVariables[option.value])}
+                renderInput={(params) => <TextField {...params} value={entityVariableKey} label={t('interface.editor.modifier.input_label_variable')} />}
+                renderOption={(props, option) => (
+                    <li {...props} key={`autocomplete_option_${uuidv4()}`}>
+                        {t(option.label)}
+                    </li>
+                )}
+                getOptionLabel={(option) => t(typeof option === 'string' ? option : option.label)}
+                isOptionEqualToValue={(option, value) => option.value === value?.value}
+            />
+        )
     );
 }

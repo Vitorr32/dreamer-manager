@@ -70,8 +70,6 @@ export function TraitEditor(props: IProps) {
     };
 
     const onSubmitTrait = async (): Promise<void> => {
-        console.log('currentTrait', currentTrait);
-
         if (!validateTrait(currentTrait)) {
             return;
         }
@@ -79,7 +77,8 @@ export function TraitEditor(props: IProps) {
         const finalTrait = CopyClassInstance(currentTrait);
 
         //Check to see if the user changed the image of this trait, if it is, change the relative file path to the new one.
-        if (!IsAbsolutePathTheSameAsRelativePath(finalTrait.absoluteIconPath, finalTrait.iconPath)) {
+        const isSameFile = await IsAbsolutePathTheSameAsRelativePath(finalTrait.absoluteIconPath, finalTrait.iconPath);
+        if (!isSameFile) {
             try {
                 //Now check if the file is already present as a game file in the trait icons folder, or is a new one that need to be copied into the game folder
                 const fileName = GetFileNameFromPath(finalTrait.absoluteIconPath);
@@ -87,7 +86,6 @@ export function TraitEditor(props: IProps) {
                 const existingFile = GetFileFromResources(newRelativePath);
 
                 //If the file does not exist in the games folder, we copy it into the game folder
-                //TODO: Add a way to specify which folder should this file be copied to
                 if (!existingFile) {
                     const newAbsolutePath = await CopyFileToAssetsFolder(finalTrait.absoluteIconPath, newRelativePath, packageFolder);
                     finalTrait.iconPath = newRelativePath;
@@ -102,11 +100,14 @@ export function TraitEditor(props: IProps) {
         }
 
         //Cleanup finalTrait from the metadata propertie and the absolute icon path
+        const finalPath = currentTrait.metadata.file.path;
         delete finalTrait.metadata;
         delete finalTrait.absoluteIconPath;
 
+        console.log('finalPath', finalPath);
+
         //Update or create the new trait in the json file of the target folder
-        await CreateOrUpdateDatabaseJSONFile(currentTrait.metadata.file.path, currentTrait, packageFolder, true);
+        await CreateOrUpdateDatabaseJSONFile(finalPath, finalTrait, packageFolder, true);
         //Reload the database for trait
     };
 
@@ -134,6 +135,8 @@ export function TraitEditor(props: IProps) {
                 return null;
         }
     };
+
+    console.log('currentTrait', currentTrait);
 
     return (
         <Box sx={{ backgroundColor: 'background.default', padding: '20px', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
