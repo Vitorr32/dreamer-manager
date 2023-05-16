@@ -10,9 +10,9 @@ declare global {
             };
             fileSystem: {
                 getFileFromResources(path: string[]): { absolutePath: string; content: string } | { error: boolean; message: string };
-                getFilesFromResources(path: string[]): {
+                getFilesInPath(path: string[]): {
                     fileName: string;
-                    filePath: string;
+                    absolutePath: string;
                     isDirectory: boolean;
                     isImage: boolean;
                     extension: string;

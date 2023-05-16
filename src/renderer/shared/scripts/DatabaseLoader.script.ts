@@ -32,7 +32,7 @@ export async function GameStartDatabaseLoad(packages: string[]): Promise<void> {
     LoadTraitDatabaseFiles(packages);
 
     const charactersLoaded = await GetEntitiesFromDatabaseFile<Character>([DATABASE_FOLDER, CHARACTERS_FOLDER]);
-    store.dispatch(databaseLoadEntity({ key: EntityType.CHARACTERS, value: charactersLoaded, progress: 10 }));
+    store.dispatch(databaseLoadEntity({ key: EntityType.CHARACTERS, value: charactersLoaded, initialization: true, progress: 10 }));
 
     const paperDollsLoaded = await GetEntitiesFromDatabaseFile<PaperDoll>([DATABASE_FOLDER, PAPER_DOLL_FOLDER], BASE_GAME_FOLDER, async (data: PaperDoll) => {
         //If the paper doll uses the paper pieces system, then we don't need to get the absolute path of any custom sprite
@@ -53,25 +53,25 @@ export async function GameStartDatabaseLoad(packages: string[]): Promise<void> {
         }
         return data;
     });
-    store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_DOLL, value: paperDollsLoaded, progress: 15 }));
+    store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_DOLL, value: paperDollsLoaded, initialization: true, progress: 15 }));
 
     const nationsLoaded = await GetEntitiesFromDatabaseFile<Nation>([DATABASE_FOLDER, NATIONS_DATABASE_FOLDER]);
-    store.dispatch(databaseLoadEntity({ key: EntityType.NATIONS, value: nationsLoaded, progress: 20 }));
+    store.dispatch(databaseLoadEntity({ key: EntityType.NATIONS, value: nationsLoaded, initialization: true, progress: 20 }));
 
     const attributesLoaded = await GetEntitiesFromDatabaseFile<Attribute>([DATABASE_FOLDER, ATTRIBUTES_DATABASE_FOLDER]);
-    store.dispatch(databaseLoadEntity({ key: EntityType.ATTRIBUTES, value: attributesLoaded, progress: 40 }));
+    store.dispatch(databaseLoadEntity({ key: EntityType.ATTRIBUTES, value: attributesLoaded, initialization: true, progress: 40 }));
 
     const eventsLoaded = await GetEntitiesFromDatabaseFile<Event>([DATABASE_FOLDER, EVENT_DATABASE_FOLDER]);
-    store.dispatch(databaseLoadEntity({ key: EntityType.EVENTS, value: eventsLoaded, progress: 60 }));
+    store.dispatch(databaseLoadEntity({ key: EntityType.EVENTS, value: eventsLoaded, initialization: true, progress: 60 }));
 
     const citiesLoaded = await GetEntitiesFromDatabaseFile<City>([DATABASE_FOLDER, CITIES_DATABASE_FOLDER]);
-    store.dispatch(databaseLoadEntity({ key: EntityType.CITIES, value: citiesLoaded, progress: 80 }));
+    store.dispatch(databaseLoadEntity({ key: EntityType.CITIES, value: citiesLoaded, initialization: true, progress: 80 }));
 
     const paperPiecesLoaded = await GetStaticResourcesFromDatabase<PaperPiece>([SPRITES_FOLDER, PAPER_PIECES_FOLDER], async (data: PaperPiece, staticResourcePath: string) => {
         data.absolutePath = ApplyFileProtocol(staticResourcePath);
         return data;
     });
-    store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_PIECE, value: paperPiecesLoaded, progress: 90 }));
+    store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_PIECE, value: paperPiecesLoaded, initialization: true, progress: 90 }));
 
     console.log('On GameStartDatabaseLoaded:', store.getState().database.mappedDatabase);
 }
@@ -129,7 +129,7 @@ export async function LoadTraitDatabaseFiles(packages: string[], progress = 0) {
         return [];
     });
 
-    store.dispatch(databaseLoadEntity({ key: EntityType.TRAITS, value: allTraits.flat(), cleanUp: true, progress }));
+    store.dispatch(databaseLoadEntity({ key: EntityType.TRAITS, value: allTraits.flat(), initialization: true, overwrite: true, progress }));
 }
 
 type StaticResourceMetadata = {

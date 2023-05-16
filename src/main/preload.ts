@@ -7,7 +7,7 @@ contextBridge.exposeInMainWorld('electron', {
         getFileFromResources(path: string[] = []) {
             return ipcRenderer.invoke('get-file', { path: path });
         },
-        getFilesFromResources(path: string[] = []) {
+        getFilesInPath(path: string[] = []) {
             return ipcRenderer.invoke('get-files', { path: path });
         },
         // Static resources are files that has a metadata file that accompany it with the data for the file to be saved on database.

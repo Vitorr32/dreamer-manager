@@ -6,10 +6,10 @@ import { RemoveFileProtocol } from './StringOperations';
 export async function IsAbsolutePathTheSameAsRelativePath(absolutePath: string, relativePath: string[]): Promise<boolean> {
     const absolutePathCleaned = RemoveFileProtocol(absolutePath);
     const relativePathCleaned = await window.electron.fileSystem.getFileFromResources(relativePath);
-
-    console.log('absolutePathCleaned', absolutePathCleaned);
-    console.log('relativePathCleaned', relativePathCleaned.absolutePath);
-
+    //Verify if the relative path is valid
+    if ('error' in relativePathCleaned) {
+        return false;
+    }
     //Check to see if the cleaned absolute path is equals to the processed path of the relative file
     return absolutePathCleaned === relativePathCleaned.absolutePath;
 }

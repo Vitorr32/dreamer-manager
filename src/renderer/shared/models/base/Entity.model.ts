@@ -22,4 +22,12 @@ export class EntityBase {
     static addCustomVariablesToEntity(customVariables: CustomVariables): void {
         Object.keys(customVariables).forEach((key) => {});
     }
+
+    public setFileMetadata(path: string[], name: string, targetPackage: string) {
+        this.metadata.file = {
+            path,
+            name,
+            package: targetPackage,
+        };
+    }
 }

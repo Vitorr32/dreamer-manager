@@ -34,6 +34,8 @@ export const en_US = {
                     id_helper: 'The unique identifier that this trait will have, it is used for quick search and saving into the static files',
                     name_label: 'Name',
                     name_helper: `The name of the trait to be displayed. Examples: 'Leader', 'Charismatic', 'Shy'`,
+                    metadata_title: 'Metadata',
+                    metadata_button_file_selection: 'Change Target Trait File',
                     description_label: 'Description of effects/personality',
                     default_locale_description_label: 'English Description',
                     description_helper: `The description of the trait to give better context of it's effects on game play and character personality. Example: " 'Leader' defines the capacity of this character to inspire, command and support his peers in his job and daily life"`,
@@ -95,7 +97,7 @@ export const en_US = {
                     button_filter_add_child: 'Add Child to Node',
                     button_remove_filter: 'Removed Filter Node',
                     node_filters: 'Node Condition',
-                    node_children: 'Node Conditional Sub-nodes'
+                    node_children: 'Node Conditional Sub-nodes',
                 },
                 actor: {
                     input_label_selection: 'Actor Selection',
@@ -351,6 +353,10 @@ export const en_US = {
                     empty: 'Please select a flag by clicking the respective container and selecting the flag, you can search using the input on the top of the modal',
                     selected: 'You selected the flag {{value.flag}} of the event {{value.event}}',
                 },
+                components: {
+                    static_resource_search_label: 'Search Resource Name',
+                    static_resource_search_placeholder: 'BaseGameAttributes.json',
+                },
             },
         },
         model: {
@@ -531,8 +537,8 @@ export const en_US = {
                     empathy: 'Empathy',
                 },
                 groups: {
-                    attributes: 'Attributes'
-                }
+                    attributes: 'Attributes',
+                },
             },
             paper_doll: {
                 filters: {
@@ -671,7 +677,7 @@ export const en_US = {
                     permanent: 'Permanent',
                     specific_period: 'Specific Period',
                     specific_date_to: 'Until Specific Date',
-                    specific_date_from_to: 'From/To Specific Date'
+                    specific_date_from_to: 'From/To Specific Date',
                 },
             },
             nation: {

@@ -7,22 +7,24 @@ import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AreArraysEqual } from 'renderer/shared/utils/General';
+import { BASE_GAME_FOLDER } from 'renderer/shared/Constants';
 
 interface IProps {
-    onResourceSelected: (fileName: string, filePath: string, internalPath: string[]) => void;
+    onResourceSelected: (fileName: string, absolutePath: string, internalPath: string[]) => void;
+    targetPackage: string;
     restriction?: RegExp;
     rootFolder?: string[];
 }
 
 interface ContentView {
     fileName: string;
-    filePath: string;
+    absolutePath: string;
     isDirectory: boolean;
     isImage: boolean;
     extension: string;
 }
 
-export function ResourcesSearch({ rootFolder = null, restriction = null, onResourceSelected }: IProps) {
+export function ResourcesSearch({ rootFolder = null, targetPackage = BASE_GAME_FOLDER, restriction = null, onResourceSelected }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [query, setQuery] = useState<string>();
@@ -33,7 +35,7 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
 
     useEffect(() => {
         async function getCurrentFolderContent() {
-            const files = await window.electron.fileSystem.getFilesFromResources(rootFolder || []);
+            const files = await window.electron.fileSystem.getFilesInPath(rootFolder || []);
 
             setContentView(files);
             setCurrentPath(rootFolder || null);
@@ -44,7 +46,7 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
 
     const navigateIntoFolder = async (folderInfo: ContentView) => {
         const newPath = [...currentPath, folderInfo.fileName];
-        const files = await window.electron.fileSystem.getFilesFromResources(newPath);
+        const files = await window.electron.fileSystem.getFilesInPath(newPath);
 
         setContentView(sortContentView(files));
         setPreviousPath(currentPath);
@@ -63,7 +65,7 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
         const newPath = currentPath.slice();
         newPath.pop();
 
-        const files = await window.electron.fileSystem.getFilesFromResources(newPath);
+        const files = await window.electron.fileSystem.getFilesInPath(newPath);
 
         setContentView(sortContentView(files));
         setPreviousPath(currentPath);
@@ -90,7 +92,7 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
             //TODO: Error messager
             return;
         }
-        onResourceSelected(selectedFile.fileName, selectedFile.filePath, [...currentPath, selectedFile.fileName]);
+        onResourceSelected(selectedFile.fileName, selectedFile.absolutePath, [...currentPath, selectedFile.fileName]);
     };
 
     return (
@@ -135,7 +137,7 @@ export function ResourcesSearch({ rootFolder = null, restriction = null, onResou
                                 className={`resources__file resources__file-image${selectedFile === content ? ' selected' : ''}`}
                                 onClick={(event) => onFileClick(event, content)}
                             >
-                                <img src={ApplyFileProtocol(content.filePath)} />
+                                <img src={ApplyFileProtocol(content.absolutePath)} />
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );

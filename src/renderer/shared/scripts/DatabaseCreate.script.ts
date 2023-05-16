@@ -3,15 +3,13 @@ import { BASE_GAME_FOLDER } from '../Constants';
 export async function CreateOrUpdateDatabaseJSONFile(path: string[], newValue: any, targetPackage: string, overwrite: boolean = false): Promise<void> {
     //Include the package to the path if it's not the base game folder.
     const finalPath = targetPackage === BASE_GAME_FOLDER ? path : [targetPackage, ...path];
+    const fileInfo = await window.electron.fileSystem.getFileFromResources(finalPath);
 
-    try {
-        //Check if the file already exists
-        const fileInfo: { absolutePath: string; content: string } = await window.electron.fileSystem.getFileFromResources(finalPath);
-        if (fileInfo) {
-            UpdateDatabaseJSONFile(finalPath, fileInfo, newValue, overwrite);
-        }
-    } catch (e) {
+    //IF there's a error, it means that the file does not exist, so we have to create a new file.
+    if ('error' in fileInfo) {
         CreateDatabaseJSONFile(finalPath, newValue);
+    } else {
+        UpdateDatabaseJSONFile(finalPath, fileInfo, newValue, overwrite);
     }
 }
 
