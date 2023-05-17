@@ -10,9 +10,10 @@ import './App.scss';
 import { EventEditor } from './Interface/MainMenu/sub-pages/EventEditor/EventEditor.component';
 import { CharacterEditorContainer } from './Interface/MainMenu/sub-pages/CharacterEditor/CharacterEditorContainer.component';
 import { StartUpPage } from './Interface/MainMenu/page/MainScreen/StartUpPage.component';
-import { BASE_GAME_FOLDER } from './shared/Constants';
+import { BASE_GAME_PACKAGE_FILE, BASE_GAME_PACKAGE_ID, MODS_FOLDER } from './shared/Constants';
 import { GameStartDatabaseLoad } from './shared/scripts/DatabaseLoader.script';
 import { databaseSetPackages } from './redux/database/database.reducer';
+import { GetPackages } from './shared/scripts/PackagesLoader.script';
 
 export default function App() {
     const theme = createTheme({
@@ -33,9 +34,9 @@ export default function App() {
     //Startup the game database and mods
     useEffect(() => {
         const startUpDatabase = async () => {
-            //TODO: Get the packages/mods from somewhere (init file?)
-            databaseSetPackages([BASE_GAME_FOLDER]);
-            await GameStartDatabaseLoad([BASE_GAME_FOLDER]);
+            const packages = await GetPackages(BASE_GAME_PACKAGE_FILE, MODS_FOLDER);
+            databaseSetPackages(packages);
+            await GameStartDatabaseLoad(packages);
             setStartingUp(false);
         };
 
@@ -49,7 +50,7 @@ export default function App() {
             ) : (
                 <MemoryRouter>
                     <Routes>
-                        <Route index element={<Navigate to={`/menu/edit/trait/edit/${BASE_GAME_FOLDER}/trait_0`} />} />
+                        <Route index element={<Navigate to={`/menu/edit/trait/edit/trait_0`} />} />
                         <Route path="/startup" element={<StartUpPage />} />
                         <Route path="/menu" element={<MainScreen />} />
                         <Route path="/menu/edit" element={<EditorScreen />} />

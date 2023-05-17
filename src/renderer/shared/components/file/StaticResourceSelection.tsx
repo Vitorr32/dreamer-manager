@@ -1,4 +1,4 @@
-import { Box, Button, InputAdornment, Modal, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Box, Button, InputAdornment, Modal, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
@@ -7,13 +7,14 @@ import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AreArraysEqual } from 'renderer/shared/utils/General';
-import { BASE_GAME_FOLDER } from 'renderer/shared/Constants';
+import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
+import { Package } from 'renderer/shared/models/files/Package.model';
 
 interface IProps {
-    onResourceSelected: (fileName: string, absolutePath: string, internalPath: string[]) => void;
+    onResourceSelected: (fileName: string, absolutePath: string, relativePath: string[], packageData: Package) => void;
     onClose: () => void;
     isOpen: boolean;
-    targetPackage: string;
+    targetPackage: Package;
     restriction?: RegExp;
     rootFolder?: string[];
 }
@@ -28,7 +29,7 @@ interface ContentView {
 
 const style = {};
 
-export function StaticResourceSelection({ rootFolder = null, isOpen = false, onClose, targetPackage = BASE_GAME_FOLDER, restriction = null, onResourceSelected }: IProps) {
+export function StaticResourceSelection({ rootFolder = null, isOpen = false, onClose, targetPackage = BASE_GAME_PACKAGE_ID, restriction = null, onResourceSelected }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [query, setQuery] = useState<string>();
@@ -38,7 +39,7 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
     const [selectedFile, setSelectedFile] = useState<ContentView>();
 
     useEffect(() => {
-        const finalPath = targetPackage === BASE_GAME_FOLDER ? rootFolder || [] : [targetPackage, ...(rootFolder || [])];
+        const finalPath = targetPackage === BASE_GAME_PACKAGE_ID ? rootFolder || [] : [targetPackage, ...(rootFolder || [])];
 
         async function getCurrentFolderContent() {
             const files = await window.electron.fileSystem.getFilesInPath(finalPath);

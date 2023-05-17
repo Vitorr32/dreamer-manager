@@ -6,7 +6,7 @@ import { EntityPicker } from 'renderer/shared/components/entity/EntityPicker.com
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { TraitEditor } from './TraitEditor.component';
-import { BASE_GAME_FOLDER } from 'renderer/shared/Constants';
+import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
 
 export function TraitEditorContainer() {
     const { t, i18n } = useTranslation();
@@ -14,7 +14,7 @@ export function TraitEditorContainer() {
     const navigate = useNavigate();
 
     const onEntitySelected = (entity: Trait) => {
-        navigate(`edit/${BASE_GAME_FOLDER}/${entity.id}`);
+        navigate(`edit/${entity.id}`);
         setStateOfEntityPickerModal(false);
     };
 
@@ -30,7 +30,7 @@ export function TraitEditorContainer() {
                             <Link to="/menu/edit">
                                 <button>Return Menu</button>
                             </Link>
-                            <Link to={`new/${BASE_GAME_FOLDER}`}>
+                            <Link to={`new/${BASE_GAME_PACKAGE_ID}`}>
                                 <button>New Base Trait</button>
                             </Link>
                             <Button onClick={() => setStateOfEntityPickerModal(true)}>Edit Trait</Button>

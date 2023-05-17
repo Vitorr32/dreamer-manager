@@ -7,7 +7,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AreArraysEqual } from 'renderer/shared/utils/General';
-import { BASE_GAME_FOLDER } from 'renderer/shared/Constants';
+import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
 
 interface IProps {
     onResourceSelected: (fileName: string, absolutePath: string, internalPath: string[]) => void;
@@ -24,7 +24,7 @@ interface ContentView {
     extension: string;
 }
 
-export function ResourcesSearch({ rootFolder = null, targetPackage = BASE_GAME_FOLDER, restriction = null, onResourceSelected }: IProps) {
+export function ResourcesSearch({ rootFolder = null, targetPackage = BASE_GAME_PACKAGE_ID, restriction = null, onResourceSelected }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [query, setQuery] = useState<string>();

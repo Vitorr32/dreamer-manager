@@ -1,3 +1,4 @@
+import { Package } from '../files/Package.model';
 import { CustomVariables, Variables } from './Variable.model';
 
 export class EntityBase {
@@ -11,7 +12,8 @@ export class EntityBase {
         file?: {
             path: string[];
             name: string;
-            package: string;
+            packageName: string;
+            packageID: string;
         };
     } = {};
 
@@ -23,11 +25,12 @@ export class EntityBase {
         Object.keys(customVariables).forEach((key) => {});
     }
 
-    public setFileMetadata(path: string[], name: string, targetPackage: string) {
+    public setFileMetadata(path: string[], name: string, targetPackage: Package) {
         this.metadata.file = {
             path,
             name,
-            package: targetPackage,
+            packageName: targetPackage.name,
+            packageID: targetPackage.id,
         };
     }
 }

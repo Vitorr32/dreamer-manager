@@ -3,31 +3,31 @@ import { useTranslation } from 'react-i18next';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { Alert, Button, Paper, Typography } from '@mui/material';
 import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
-import { ResourcesSearch } from 'renderer/shared/components/file/ResourcesSearch';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { StaticResourceSelection } from 'renderer/shared/components/file/StaticResourceSelection';
-import { DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
+import { BASE_GAME_PACKAGE_ID, DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
+import { Package } from 'renderer/shared/models/files/Package.model';
+import { RootState } from 'renderer/redux/store';
+import { useSelector } from 'react-redux';
 
 interface IProps {
     trait: Trait;
     fieldsValidation?: any;
-    currentPackage: string;
     previousStep: () => void;
     onChange: (trait: Trait) => void;
     onSubmit: () => void;
 }
 
-export function NewTraitReview({ trait, fieldsValidation = {}, currentPackage, previousStep, onChange, onSubmit }: IProps) {
+export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onChange, onSubmit }: IProps) {
     const { t, i18n } = useTranslation();
 
-    const [selectedPackage, setSelectedPackage] = useState<string>(currentPackage);
     const [isResourceSelectionOpen, setResourceSelectionState] = useState<boolean>(false);
-    const [originalTrait, setOriginalTrait] = useState<Trait>();
+    const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.packages);
 
-    const onFileMetadataChange = (fileName: string, absolutePath: string, relativePath: string[]) => {
+    const onFileMetadataChange = (fileName: string, absolutePath: string, relativePath: string[], packageData: Package) => {
         const newTrait = CopyClassInstance(trait);
-        newTrait.setFileMetadata(relativePath, fileName, selectedPackage);
+        newTrait.setFileMetadata(relativePath, fileName, packageData);
         onChange(newTrait);
     };
 
@@ -56,12 +56,32 @@ export function NewTraitReview({ trait, fieldsValidation = {}, currentPackage, p
                 <Typography variant="h5">{t('interface.editor.trait.metadata_title')}</Typography>
 
                 <Box sx={{ display: 'flex' }}>
-                    <Button onClick={() => setResourceSelectionState(true)}>{t('interface.editor.trait.metadata_button_file_selection')}</Button>
+                    <Box>
+                        <Typography variant="overline">{t('interface.editor.trait.metadata_package_label')}</Typography>
+                        <Typography>
+                            {trait.metadata?.file
+                                ? [trait.metadata.file.packageName, ...trait.metadata.file.path].join(' / ')
+                                : t('interface.editor.trait.metadata_path_unspecified')}
+                        </Typography>
+                    </Box>
+
+                    <Box>
+                        <Typography variant="overline">{t('interface.editor.trait.metadata_path_label')}</Typography>
+                        <Typography>
+                            {trait.metadata?.file
+                                ? [trait.metadata.file.packageName, ...trait.metadata.file.path].join(' / ')
+                                : t('interface.editor.trait.metadata_path_unspecified')}
+                        </Typography>
+                    </Box>
+
+                    <Button onClick={() => setResourceSelectionState(true)} variant="outlined">
+                        {t('interface.editor.trait.metadata_button_file_selection')}
+                    </Button>
                     <StaticResourceSelection
                         isOpen={isResourceSelectionOpen}
                         onClose={() => setResourceSelectionState(false)}
                         onResourceSelected={onFileMetadataChange}
-                        targetPackage={selectedPackage}
+                        targetPackage={mappedEntities[trait.metadata?.file.packageID || BASE_GAME_PACKAGE_ID]}
                         rootFolder={[DATABASE_FOLDER, TRAIT_DATABASE_FOLDER]}
                     />
                 </Box>

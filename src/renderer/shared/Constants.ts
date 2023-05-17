@@ -1,6 +1,4 @@
 import { EntityVariableValue, ExternalExpandedEntityFilter } from './models/base/EntityVariableValue.model';
-import { VariableOperator } from './models/base/Variable.model';
-import { EntityType } from './models/enums/Entities.enum';
 
 export const MAX_NUMBER_OF_TRAITS_GENERATED = 5;
 export const MAX_NUMBER_OF_TRAITS = 20;
@@ -56,8 +54,8 @@ export const NATIONS_DATABASE_FOLDER = 'nations';
 export const CITIES_DATABASE_FOLDER = 'cities';
 export const EVENT_DATABASE_FOLDER = 'events';
 export const PAPER_PIECES_FOLDER = 'pieces';
-export const BASE_GAME_FOLDER = 'base';
-export const CUSTOM_USER_FOLDER = '';
+export const MODS_FOLDER = 'mods';
+export const BASE_GAME_PACKAGE_ID = 'Dreamer Manager';
 
 ///////////////////////////////
 //BASE GAME FILES
@@ -65,6 +63,7 @@ export const BASE_TRAIT_FILE = 'BaseGameTraits.json';
 export const BASE_EVENT_FILE = 'BaseGameEvents.json';
 export const BASE_CHARACTER_FILE = 'BaseGameCharacters.json';
 export const BASE_PAPER_DOLLS_FILE = 'BaseGamePaperDolls.json';
+export const BASE_GAME_PACKAGE_FILE = 'DreamerManager.json';
 
 ////////////////////////////////
 //RESOURCES FULL QUALIFIED PATH

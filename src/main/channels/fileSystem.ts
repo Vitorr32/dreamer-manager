@@ -27,11 +27,18 @@ ipcMain.handle('get-file-info', async (_, args: string) => {
 
 ipcMain.handle('get-files', async (_, args: { path: string[] }) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
-    let TARGET_PATH = args.path.length === 0 ? RESOURCES_PATH : path.join(RESOURCES_PATH, ...args.path);
+    const TARGET_PATH = args.path.length === 0 ? RESOURCES_PATH : path.join(RESOURCES_PATH, ...args.path);
+    let directoryFileNames = [];
 
-    const filenames = fs.readdirSync(TARGET_PATH);
+    try {
+        directoryFileNames = fs.readdirSync(TARGET_PATH);
+    } catch (e) {
+        return { error: true, message: e };
+    }
 
-    return filenames.map((fileName) => {
+    console.log('directoryFileNames', directoryFileNames)
+
+    return directoryFileNames.map((fileName) => {
         try {
             const filePath = path.join(TARGET_PATH, fileName);
             return {

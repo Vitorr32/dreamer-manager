@@ -9,12 +9,13 @@ import { PaperPiece } from 'renderer/shared/models/base/PaperPiece.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { Trait } from '../../shared/models/base/Trait.model';
-import { BASE_GAME_FOLDER } from 'renderer/shared/Constants';
+import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
+import { Package } from 'renderer/shared/models/files/Package.model';
 
 export interface Database {
     isLoadingDatabase: boolean;
     loadProgress: number;
-    packages: string[];
+    packages: Package[];
     characters: Character[];
     traits: Trait[];
     attributes: Attribute[];
@@ -25,6 +26,7 @@ export interface Database {
     paperPieces: PaperPiece[];
     paperDolls: PaperDoll[];
     mappedDatabase: {
+        packages: { [id: string]: Package };
         attributes: { [id: string]: Attribute };
         traits: { [id: string]: Trait };
         events: { [id: string]: Event };
@@ -40,7 +42,7 @@ export interface Database {
 const initialState: Database = {
     isLoadingDatabase: false,
     loadProgress: 0,
-    packages: [BASE_GAME_FOLDER],
+    packages: [],
     characters: [],
     traits: [],
     attributes: [],
@@ -51,6 +53,7 @@ const initialState: Database = {
     paperPieces: [],
     paperDolls: [],
     mappedDatabase: {
+        packages: {},
         attributes: {},
         traits: {},
         events: {},
@@ -67,8 +70,16 @@ export const databaseSlice = createSlice({
     name: 'database',
     initialState,
     reducers: {
-        databaseSetPackages: (state, action: { type: string; payload: string[] }) => {
+        databaseSetPackages: (state, action: { type: string; payload: Package[] }) => {
             state.packages = action.payload;
+
+            state.packages.forEach((packageData) => {
+                if (state.mappedDatabase.packages[packageData.id] && packageData.id !== BASE_GAME_PACKAGE_ID) {
+                    throw new Error('A package with id ' + packageData.id + ' is duplicated');
+                }
+
+                state.mappedDatabase.packages[packageData.id] = packageData;
+            });
         },
         databaseLoadEntity: (
             state,
