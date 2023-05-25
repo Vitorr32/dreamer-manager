@@ -20,8 +20,8 @@ export function TraitEditorContainer() {
 
     return (
         <Routes>
-            <Route path="new/:package" element={<TraitEditor />} />
-            <Route path="edit/:package/:id" element={<TraitEditor />} />
+            <Route path="new" element={<TraitEditor />} />
+            <Route path="edit/:id" element={<TraitEditor />} />
             <Route
                 path="/"
                 element={

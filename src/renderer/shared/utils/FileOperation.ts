@@ -16,31 +16,38 @@ export async function IsAbsolutePathTheSameAsRelativePath(absolutePath: string, 
     return absolutePathCleaned === relativePathCleaned.absolutePath;
 }
 
-export async function CopyFileToAssetsFolder(originalFilePath: string, destinationPath: string[], targetPackage: string = BASE_GAME_PACKAGE_ID): Promise<string> {
-    if (targetPackage !== BASE_GAME_PACKAGE_ID) {
-        destinationPath = [targetPackage, ...destinationPath];
-    }
+export async function CopyFileToAssetsFolder(originalFilePath: string, destinationPath: string[], targetPackage: Package): Promise<string> {
+    return window.electron.fileSystem.copyFileToResources(originalFilePath, GetPathInPackage(targetPackage, destinationPath));
+}
 
-    return window.electron.fileSystem.copyFileToResources(originalFilePath, destinationPath);
+//Get the path to the asset after dealing with the package location
+export function GetPathInPackage(originPackage: Package, path: string[]): string[] {
+    if (originPackage.id === BASE_GAME_PACKAGE_ID) {
+        return path;
+    } else {
+        return [originPackage.id, ...path];
+    }
 }
 
 export async function GetStaticResourcesFromDatabase<T>(
     staticResourcePath: string[],
+    originPackage: Package,
     postProcessingFunction: (data: T, staticResourcePath: string) => Promise<T>
 ): Promise<T[]> {
-    const loadedObjects: StaticResource[] = await window.electron.fileSystem.getStaticResourcesOnFoldersAndSubFolders(staticResourcePath);
+    const loadedObjects: StaticResource[] = await window.electron.fileSystem.getStaticResourcesOnFoldersAndSubFolders(GetPathInPackage(originPackage, staticResourcePath));
     const incompleteData: StaticResource[] = [];
     const finalData: Promise<T>[] = [];
 
     loadedObjects.forEach(async (object) => {
-        if (!object.metadataData || !object.path) {
+        if (!object.metadata || !object.path) {
             incompleteData.push(object);
         }
 
-        finalData.push(postProcessingFunction(JSON.parse(object.metadataData), object.path));
+        finalData.push(postProcessingFunction(JSON.parse(object.metadata), object.path));
     });
 
     if (incompleteData.length !== 0) {
+        console.log('incompleteData', incompleteData);
         console.error('Some static resources were missing their respective files on the folders, the data is the following:');
         incompleteData.forEach((incomplete, index) => console.log(index, incomplete));
     }

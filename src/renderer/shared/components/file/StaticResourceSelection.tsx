@@ -7,8 +7,8 @@ import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AreArraysEqual } from 'renderer/shared/utils/General';
-import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
 import { Package } from 'renderer/shared/models/files/Package.model';
+import { GetPathInPackage } from 'renderer/shared/utils/FileOperation';
 
 interface IProps {
     onResourceSelected: (fileName: string, absolutePath: string, relativePath: string[], packageData: Package) => void;
@@ -29,7 +29,7 @@ interface ContentView {
 
 const style = {};
 
-export function StaticResourceSelection({ rootFolder = null, isOpen = false, onClose, targetPackage = BASE_GAME_PACKAGE_ID, restriction = null, onResourceSelected }: IProps) {
+export function StaticResourceSelection({ rootFolder = null, isOpen = false, onClose, targetPackage, restriction = null, onResourceSelected }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [query, setQuery] = useState<string>();
@@ -37,12 +37,19 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
     const [currentPath, setCurrentPath] = useState<string[]>();
     const [previousPath, setPreviousPath] = useState<string[]>();
     const [selectedFile, setSelectedFile] = useState<ContentView>();
+    const [selectedPackage, setSelectedPackage] = useState<Package>(targetPackage);
 
     useEffect(() => {
-        const finalPath = targetPackage === BASE_GAME_PACKAGE_ID ? rootFolder || [] : [targetPackage, ...(rootFolder || [])];
+        console.log('targetPackage', targetPackage);
+        const finalPath = GetPathInPackage(targetPackage, rootFolder);
 
         async function getCurrentFolderContent() {
             const files = await window.electron.fileSystem.getFilesInPath(finalPath);
+
+            if ('error' in files) {
+                console.error('Error getting folder content', files.error);
+                return;
+            }
 
             setContentView(files);
             setCurrentPath(finalPath);
@@ -54,6 +61,11 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
     const navigateIntoFolder = async (folderInfo: ContentView) => {
         const newPath = [...currentPath, folderInfo.fileName];
         const files = await window.electron.fileSystem.getFilesInPath(newPath);
+
+        if ('error' in files) {
+            console.error('Error getting folder content', files.error);
+            return;
+        }
 
         setContentView(sortContentView(files));
         setPreviousPath(currentPath);
@@ -73,6 +85,11 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
         newPath.pop();
 
         const files = await window.electron.fileSystem.getFilesInPath(newPath);
+
+        if ('error' in files) {
+            console.error('Error getting folder content', files.error);
+            return;
+        }
 
         setContentView(sortContentView(files));
         setPreviousPath(currentPath);
@@ -96,10 +113,10 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
 
     const onFileSubmit = () => {
         if (restriction && !restriction.test(selectedFile.extension)) {
-            //TODO: Error messager
+            console.error('File did not match restriction:' + selectedFile.fileName + ' restriction: ' + restriction);
             return;
         }
-        onResourceSelected(selectedFile.fileName, selectedFile.absolutePath, [...currentPath, selectedFile.fileName]);
+        onResourceSelected(selectedFile.fileName, selectedFile.absolutePath, [...currentPath, selectedFile.fileName], selectedPackage);
     };
 
     return (

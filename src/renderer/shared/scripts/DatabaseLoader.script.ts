@@ -29,61 +29,64 @@ import { GetStaticResourcesFromDatabase } from '../utils/FileOperation';
 export async function GameStartDatabaseLoad(packages: Package[]): Promise<void> {
     store.dispatch(databaseStartLoad());
 
-    LoadTraitDatabaseFiles(packages);
-
-    packages.forEach(async (packageData) => {
-        const charactersLoaded = await GetEntitiesFromDatabaseFile<Character>([DATABASE_FOLDER, CHARACTERS_FOLDER], packageData);
-        store.dispatch(databaseLoadEntity({ key: EntityType.CHARACTERS, value: charactersLoaded, initialization: true, progress: 10 }));
-
-        const paperDollsLoaded = await GetEntitiesFromDatabaseFile<PaperDoll>([DATABASE_FOLDER, PAPER_DOLL_FOLDER], packageData, async (data: PaperDoll) => {
-            //If the paper doll uses the paper pieces system, then we don't need to get the absolute path of any custom sprite
-            if (!data.isCustom) {
-                return data;
-            }
-
-            for (let emotion in Emotion) {
-                const currentEmotion: Emotion = Emotion[emotion as keyof typeof Emotion];
-                const currentEmotionPaperDoll = data.emotions[currentEmotion];
-
-                if (!currentEmotionPaperDoll) {
-                    continue;
-                }
-
-                const { path } = await GetFileFromResources(currentEmotionPaperDoll.customFilePath);
-                data.emotions[currentEmotion].customFileAbsolutePath = ApplyFileProtocol(path);
-            }
-            return data;
-        });
-        store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_DOLL, value: paperDollsLoaded, initialization: true, progress: 15 }));
-
-        const nationsLoaded = await GetEntitiesFromDatabaseFile<Nation>([DATABASE_FOLDER, NATIONS_DATABASE_FOLDER], packageData);
-        store.dispatch(databaseLoadEntity({ key: EntityType.NATIONS, value: nationsLoaded, initialization: true, progress: 20 }));
-
-        const attributesLoaded = await GetEntitiesFromDatabaseFile<Attribute>([DATABASE_FOLDER, ATTRIBUTES_DATABASE_FOLDER], packageData);
-        store.dispatch(databaseLoadEntity({ key: EntityType.ATTRIBUTES, value: attributesLoaded, initialization: true, progress: 40 }));
-
-        const eventsLoaded = await GetEntitiesFromDatabaseFile<Event>([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], packageData);
-        store.dispatch(databaseLoadEntity({ key: EntityType.EVENTS, value: eventsLoaded, initialization: true, progress: 60 }));
-
-        const citiesLoaded = await GetEntitiesFromDatabaseFile<City>([DATABASE_FOLDER, CITIES_DATABASE_FOLDER], packageData);
-        store.dispatch(databaseLoadEntity({ key: EntityType.CITIES, value: citiesLoaded, initialization: true, progress: 80 }));
-
-        const paperPiecesLoaded = await GetStaticResourcesFromDatabase<PaperPiece>(
-            [SPRITES_FOLDER, PAPER_PIECES_FOLDER],
-            async (data: PaperPiece, staticResourcePath: string) => {
-                data.absolutePath = ApplyFileProtocol(staticResourcePath);
-                return data;
-            }
-        );
-        store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_PIECE, value: paperPiecesLoaded, initialization: true, progress: 90 }));
+    const traitsLoaded = await LoadDatabaseFilesFromPackages<Trait>([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], packages, async (trait: Trait) => {
+        const processedPath = await GetFileFromResources(trait.iconPath);
+        trait.absoluteIconPath = processedPath.path;
+        return trait;
     });
+    store.dispatch(databaseLoadEntity({ key: EntityType.TRAITS, value: traitsLoaded, overwrite: true, initialization: true, progress: 0 }));
+
+    const nationsLoaded = await LoadDatabaseFilesFromPackages<Nation>([DATABASE_FOLDER, NATIONS_DATABASE_FOLDER], packages);
+    store.dispatch(databaseLoadEntity({ key: EntityType.NATIONS, value: nationsLoaded, overwrite: true, initialization: true, progress: 10 }));
+
+    const charactersLoaded = await LoadDatabaseFilesFromPackages<Character>([DATABASE_FOLDER, CHARACTERS_FOLDER], packages);
+    store.dispatch(databaseLoadEntity({ key: EntityType.CHARACTERS, value: charactersLoaded, overwrite: true, initialization: true, progress: 20 }));
+
+    const paperDollsLoaded = await LoadDatabaseFilesFromPackages<PaperDoll>([DATABASE_FOLDER, PAPER_DOLL_FOLDER], packages, async (data: PaperDoll) => {
+        //If the paper doll uses the paper pieces system, then we don't need to get the absolute path of any custom sprite
+        if (!data.isCustom) {
+            return data;
+        }
+
+        for (let emotion in Emotion) {
+            const currentEmotion: Emotion = Emotion[emotion as keyof typeof Emotion];
+            const currentEmotionPaperDoll = data.emotions[currentEmotion];
+
+            if (!currentEmotionPaperDoll) {
+                continue;
+            }
+
+            const { path } = await GetFileFromResources(currentEmotionPaperDoll.customFilePath);
+            data.emotions[currentEmotion].customFileAbsolutePath = ApplyFileProtocol(path);
+        }
+        return data;
+    });
+    store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_DOLL, value: paperDollsLoaded, overwrite: true, initialization: true, progress: 30 }));
+
+    const attributesLoaded = await LoadDatabaseFilesFromPackages<Attribute>([DATABASE_FOLDER, ATTRIBUTES_DATABASE_FOLDER], packages);
+    store.dispatch(databaseLoadEntity({ key: EntityType.ATTRIBUTES, value: attributesLoaded, overwrite: true, initialization: true, progress: 40 }));
+
+    const eventsLoaded = await LoadDatabaseFilesFromPackages<Event>([DATABASE_FOLDER, EVENT_DATABASE_FOLDER], packages);
+    store.dispatch(databaseLoadEntity({ key: EntityType.EVENTS, value: eventsLoaded, overwrite: true, initialization: true, progress: 60 }));
+
+    const citiesLoaded = await LoadDatabaseFilesFromPackages<City>([DATABASE_FOLDER, CITIES_DATABASE_FOLDER], packages);
+    store.dispatch(databaseLoadEntity({ key: EntityType.CITIES, value: citiesLoaded, overwrite: true, initialization: true, progress: 80 }));
+
+    // const paperPiecesLoaded = await GetStaticResourcesFromDatabase<PaperPiece>(
+    //     [SPRITES_FOLDER, PAPER_PIECES_FOLDER],
+    //     packages,
+    //     async (data: PaperPiece, staticResourcePath: string) => {
+    //         data.absolutePath = ApplyFileProtocol(staticResourcePath);
+    //         return data;
+    //     }
+    // );
+    // store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_PIECE, value: paperPiecesLoaded, initialization: true, progress: 90 }));
 
     console.log('On GameStartDatabaseLoaded:', store.getState().database.mappedDatabase);
 }
 
 export async function GetEntitiesFromDatabaseFile<T>(path: string[], originPackage: Package, postProcessingFunction?: (object: T) => Promise<T>): Promise<T[]> {
     const loadedJSONs = await window.electron.fileSystem.getFilesFromResourcesDatabase(path);
-    console.log(loadedJSONs);
     if ('error' in loadedJSONs) {
         console.error(`Failed to load entities from package's ${originPackage.name} database.`);
         return [];
@@ -104,7 +107,7 @@ export async function GetEntitiesFromDatabaseFile<T>(path: string[], originPacka
                             packageID: originPackage.id,
                         },
                     };
-                    return entity as T;
+                    return entity;
                 })
             );
         } catch (e) {
@@ -120,21 +123,15 @@ export async function GetEntitiesFromDatabaseFile<T>(path: string[], originPacka
     return loadedObjects;
 }
 
-export async function LoadTraitDatabaseFiles(packages: Package[], progress = 0) {
-    const allTraits = await Promise.all(
-        packages.map(async (packageID) => {
-            const traits = await GetEntitiesFromDatabaseFile<Trait>([DATABASE_FOLDER, TRAIT_DATABASE_FOLDER], packageID, async (trait: Trait) => {
-                const processedPath = await GetFileFromResources(trait.iconPath);
-                trait.absoluteIconPath = processedPath.path;
-                return trait;
-            });
-
-            return traits;
+export async function LoadDatabaseFilesFromPackages<T>(path: string[], packages: Package[], postProcessingFunction?: (object: T) => Promise<T>) {
+    const allEntities: T[][] = await Promise.all(
+        packages.map(async (targetPackage) => {
+            return GetEntitiesFromDatabaseFile<T>(path, targetPackage, postProcessingFunction);
         })
-    ).catch((error) => {
-        console.error(error);
+    ).catch((err) => {
+        console.error(err);
         return [];
     });
 
-    store.dispatch(databaseLoadEntity({ key: EntityType.TRAITS, value: allTraits.flat(), initialization: true, overwrite: true, progress }));
+    return allEntities.flat();
 }

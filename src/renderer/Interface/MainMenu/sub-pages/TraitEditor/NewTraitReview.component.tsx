@@ -23,13 +23,15 @@ export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onC
     const { t, i18n } = useTranslation();
 
     const [isResourceSelectionOpen, setResourceSelectionState] = useState<boolean>(false);
-    const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.packages);
+    const mappedEntities = useSelector((state: RootState) => state.database);
 
     const onFileMetadataChange = (fileName: string, absolutePath: string, relativePath: string[], packageData: Package) => {
         const newTrait = CopyClassInstance(trait);
         newTrait.setFileMetadata(relativePath, fileName, packageData);
         onChange(newTrait);
     };
+
+    console.log('mappedEntities', mappedEntities);
 
     return (
         <Box sx={{ color: 'text.primary', flex: 1, display: 'flex', flexDirection: 'column' }}>

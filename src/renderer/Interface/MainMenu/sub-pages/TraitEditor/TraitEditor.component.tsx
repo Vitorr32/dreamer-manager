@@ -27,14 +27,13 @@ export function TraitEditor(props: IProps) {
     const [inputValidation, setInputValidation] = useState({});
     const [currentTrait, setCurrentTrait] = useState(new Trait());
     const [originalTrait, setOriginalTrait] = useState<Trait>();
-    const database = useSelector((state: RootState) => state.database);
-    const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase.traits);
+    const database = useSelector((state: RootState) => state.database.mappedDatabase);
 
     useEffect(() => {
         const IDParameter = params?.id;
 
         if (IDParameter) {
-            const toEditEntity = mappedEntities[IDParameter];
+            const toEditEntity = database.traits[IDParameter];
 
             setCurrentTrait(toEditEntity);
             setOriginalTrait(toEditEntity);
@@ -84,7 +83,11 @@ export function TraitEditor(props: IProps) {
                 finalTrait.absoluteIconPath = existingFile.path;
             } catch (error) {
                 //If the file does not exist in the games folder, we will get an error, we need to copy it into the assets folder
-                const newAbsolutePath = await CopyFileToAssetsFolder(RemoveFileProtocol(finalTrait.absoluteIconPath), newRelativePath, packageFolder);
+                const newAbsolutePath = await CopyFileToAssetsFolder(
+                    RemoveFileProtocol(finalTrait.absoluteIconPath),
+                    newRelativePath,
+                    database.packages[finalTrait.metadata.file.packageID]
+                );
                 finalTrait.absoluteIconPath = newAbsolutePath;
             }
 
@@ -100,14 +103,14 @@ export function TraitEditor(props: IProps) {
         console.log('finalTrait', finalTrait);
 
         //Update or create the new trait in the json file of the target folder
-        await CreateOrUpdateDatabaseJSONFile(finalPath, finalTrait, packageFolder, true);
+        await CreateOrUpdateDatabaseJSONFile(finalPath, finalTrait, database.packages[finalTrait.metadata.file.packageID], true);
         //Reload the database for trait
     };
 
     const validateTrait = (trait: Trait): boolean => {
         const validation: any = {};
 
-        validation.id = database.mappedDatabase.traits[trait.id] ? t('interface.editor..duplicated_id') : undefined;
+        validation.id = database.traits[trait.id] ? t('interface.editor..duplicated_id') : undefined;
         validation.name = !trait.localization[LANGUAGE_CODE_DEFAULT].name ? t('interface.editor.validation.missing_name') : undefined;
         validation.description = !trait.localization[LANGUAGE_CODE_DEFAULT].description ? t('interface.editor.validation.missing_description') : undefined;
 
@@ -124,14 +127,7 @@ export function TraitEditor(props: IProps) {
                 return <EffectsAndConditions trait={currentTrait} onChange={onTraitChange} previousStep={previousStep} nextStep={nextStep} />;
             case 2:
                 return (
-                    <NewTraitReview
-                        trait={currentTrait}
-                        currentPackage={packageFolder}
-                        previousStep={previousStep}
-                        onChange={onTraitChange}
-                        onSubmit={onSubmitTrait}
-                        fieldsValidation={inputValidation}
-                    />
+                    <NewTraitReview trait={currentTrait} previousStep={previousStep} onChange={onTraitChange} onSubmit={onSubmitTrait} fieldsValidation={inputValidation} />
                 );
             default:
                 return null;

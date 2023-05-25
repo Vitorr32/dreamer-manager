@@ -36,7 +36,7 @@ ipcMain.handle('get-files', async (_, args: { path: string[] }) => {
         return { error: true, message: e };
     }
 
-    console.log('directoryFileNames', directoryFileNames)
+    console.log('directoryFileNames', directoryFileNames);
 
     return directoryFileNames.map((fileName) => {
         try {
@@ -74,7 +74,7 @@ ipcMain.handle('get-db-files', async (_, args: string[]) => {
 
 ipcMain.handle('get-static-files', async (_, args: string[]) => {
     const RESOURCES_PATH = app.isPackaged ? path.join(process.resourcesPath, 'assets') : path.join(__dirname, '../../../assets');
-    const files: { [fileName: string]: { resourcePath: string; fileName: string; metadataData: any } } = {};
+    const files: { [fileName: string]: { path: string; fileName: string; metadata: any } } = {};
 
     function throughDirectory(directory: any) {
         fs.readdirSync(directory).forEach((file) => {
@@ -83,13 +83,13 @@ ipcMain.handle('get-static-files', async (_, args: string[]) => {
             //Get only the filename from the path, and them create entry of the files object.
             const fileName = path.basename(absolutePath, path.extname(absolutePath));
             if (!files[fileName]) {
-                files[fileName] = { resourcePath: '', fileName: fileName, metadataData: null };
+                files[fileName] = { path: '', fileName: fileName, metadata: null };
             }
 
             if (/\.(?:ico|gif|png|jpg|jpeg|webp)$/.test(path.extname(absolutePath))) {
-                return (files[fileName].resourcePath = absolutePath);
+                return (files[fileName].path = absolutePath);
             } else if (path.extname(absolutePath) === '.json') {
-                return (files[fileName].metadataData = fs.readFileSync(absolutePath, 'utf-8'));
+                return (files[fileName].metadata = fs.readFileSync(absolutePath, 'utf-8'));
             }
             return;
         });

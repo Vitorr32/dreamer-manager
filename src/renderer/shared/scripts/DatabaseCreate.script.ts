@@ -1,8 +1,9 @@
-import { BASE_GAME_PACKAGE_ID } from '../Constants';
+import { Package } from '../models/files/Package.model';
+import { GetPathInPackage } from '../utils/FileOperation';
 
-export async function CreateOrUpdateDatabaseJSONFile(path: string[], newValue: any, targetPackage: string, overwrite: boolean = false): Promise<void> {
+export async function CreateOrUpdateDatabaseJSONFile(path: string[], newValue: any, targetPackage: Package, overwrite: boolean = false): Promise<void> {
     //Include the package to the path if it's not the base game folder.
-    const finalPath = targetPackage === BASE_GAME_PACKAGE_ID ? path : [targetPackage, ...path];
+    const finalPath = GetPathInPackage(targetPackage, path);
     const fileInfo = await window.electron.fileSystem.getFileFromResources(finalPath);
 
     //IF there's a error, it means that the file does not exist, so we have to create a new file.

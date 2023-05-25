@@ -4,6 +4,7 @@ import { EditorScreen } from './Interface/MainMenu/page/EditorScreen/EditorScree
 import { MainScreen } from './Interface/MainMenu/page/MainScreen/MainScreen.component';
 import { TraitEditorContainer } from './Interface/MainMenu/sub-pages/TraitEditor/TraitEditorContainer.component';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { store } from 'renderer/redux/store';
 
 import '@fontsource/roboto';
 import './App.scss';
@@ -12,8 +13,8 @@ import { CharacterEditorContainer } from './Interface/MainMenu/sub-pages/Charact
 import { StartUpPage } from './Interface/MainMenu/page/MainScreen/StartUpPage.component';
 import { BASE_GAME_PACKAGE_FILE, BASE_GAME_PACKAGE_ID, MODS_FOLDER } from './shared/Constants';
 import { GameStartDatabaseLoad } from './shared/scripts/DatabaseLoader.script';
-import { databaseSetPackages } from './redux/database/database.reducer';
 import { GetPackages } from './shared/scripts/PackagesLoader.script';
+import { databaseSetPackages } from './redux/database/database.reducer';
 
 export default function App() {
     const theme = createTheme({
@@ -35,7 +36,7 @@ export default function App() {
     useEffect(() => {
         const startUpDatabase = async () => {
             const packages = await GetPackages(BASE_GAME_PACKAGE_FILE, MODS_FOLDER);
-            databaseSetPackages(packages);
+            store.dispatch(databaseSetPackages(packages));
             await GameStartDatabaseLoad(packages);
             setStartingUp(false);
         };

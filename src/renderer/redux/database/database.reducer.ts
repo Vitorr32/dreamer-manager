@@ -73,6 +73,8 @@ export const databaseSlice = createSlice({
         databaseSetPackages: (state, action: { type: string; payload: Package[] }) => {
             state.packages = action.payload;
 
+            console.log('action.payload', action.payload);
+
             state.packages.forEach((packageData) => {
                 if (state.mappedDatabase.packages[packageData.id] && packageData.id !== BASE_GAME_PACKAGE_ID) {
                     throw new Error('A package with id ' + packageData.id + ' is duplicated');
