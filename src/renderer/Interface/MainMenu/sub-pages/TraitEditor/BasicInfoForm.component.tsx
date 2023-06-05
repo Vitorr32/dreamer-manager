@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { MenuItem, TextField, FormControlLabel, Switch, Button, Typography, FormControl, InputLabel, Select, FormHelperText } from '@mui/material';
+import { MenuItem, TextField, Button, Typography, FormControl, InputLabel, Select, FormHelperText } from '@mui/material';
 import { Trait, TraitType } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
-import { MAX_NUMBER_OF_TRAITS_GENERATED, PLACEHOLDER_TRAIT_ICON, TRAITS } from 'renderer/shared/Constants';
 import { ApplyFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 
 interface IProps {
     nextStep: () => void;
+    isNew: boolean;
     trait: Trait;
     onChange: (trait: Trait) => void;
 }
 
-export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
+export function BasicInfoForm({ nextStep, trait, isNew, onChange }: IProps) {
     const { t, i18n } = useTranslation();
 
     const [errorState, setErrorState] = useState<{ [key: string]: boolean }>();
@@ -56,13 +56,14 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
     }
 
     return (
-        <Box sx={{ paddingTop: '20px' }}>
+        <Box sx={{ paddingTop: '20px', color: 'text.primary', display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
             <TextField
                 required
                 label={t('interface.editor.trait.id_label')}
                 helperText={t('interface.editor.trait.id_helper')}
                 variant="outlined"
                 value={trait.id}
+                disabled={!isNew}
                 onChange={(event) => onInputChange('id', event.target.value)}
             />
 
@@ -84,10 +85,9 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
                 rows={4}
                 value={trait.getDescription(i18n.language)}
                 onChange={(event) => onDescriptionChange(event.target.value)}
-                sx={{ marginTop: '20px' }}
             />
 
-            <FormControl required sx={{ marginTop: '20px' }}>
+            <FormControl required>
                 <InputLabel>{t('interface.editor.trait.type_label')}</InputLabel>
                 <Select value={trait.type || ''} label={t('interface.editor.trait.type_label')} onChange={(ev) => onInputChange('type', ev.target.value)}>
                     <MenuItem disabled value="">
@@ -102,25 +102,7 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
                 <FormHelperText>{t('interface.editor.trait.type_helper')}</FormHelperText>
             </FormControl>
 
-            <Box className="basic-info__field">
-                <FormControlLabel
-                    value="start"
-                    control={
-                        <Switch
-                            disabled={trait.type === TraitType.NATIONAL}
-                            value={trait.spawnable}
-                            onChange={(event) => onInputChange('spawnable', event.target.checked)}
-                            color="primary"
-                        />
-                    }
-                    label={t('interface.editor.trait.spawn_label') as string}
-                    labelPlacement="start"
-                    sx={{ color: 'text.primary', marginLeft: '0' }}
-                />
-                <FormHelperText sx={{ marginLeft: '14px' }}>{t('interface.editor.trait.spawn_helper', { max: MAX_NUMBER_OF_TRAITS_GENERATED })}</FormHelperText>
-            </Box>
-
-            <Box className="basic-info__image-input">
+            <Box>
                 <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     {t('interface.editor.trait.icon_label')}
                 </Typography>
@@ -137,8 +119,10 @@ export function BasicInfoForm({ nextStep, trait, onChange }: IProps) {
                 <FormHelperText sx={{ marginLeft: '14px' }}>{t('interface.editor.trait.icon_helper')}</FormHelperText>
             </Box>
 
-            <Box className="basic-info__footer">
-                <Button onClick={nextStep}>{t('interface.commons.next')}</Button>
+            <Box sx={{ flex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+                <Button color="primary" onClick={nextStep}>
+                    {t('interface.commons.next')}
+                </Button>
             </Box>
         </Box>
     );

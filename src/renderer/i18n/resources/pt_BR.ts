@@ -26,7 +26,6 @@ export const pt_BR = {
                     description_helper: `The description of the trait to give better context of it's effects on game play and character personality. Example: " 'Leader' defines the capacity of this character to inspire, command and support his peers in his job and daily life"`,
                     type_label: 'Type category of the Trait',
                     type_helper: 'The type of the trait, it defines the category that the trait will be presented and in what type of situation it can be obtainable',
-                    spawn_label: 'Spawnable',
                     spawn_helper: `Whatever this trait can be found on generated Dreamers, otherwise it can be obtainable only by events (Do note that traits of type 'National' will always be spawned), generated dreamers will have up to {{max}}
                     traits on generation.`,
                     icon_label: 'Avatar Icon',

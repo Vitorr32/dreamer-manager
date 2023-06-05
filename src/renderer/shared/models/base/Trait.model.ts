@@ -18,7 +18,6 @@ export enum TraitType {
 export class Trait extends EntityBase {
     public id: string;
     public type: TraitType;
-    public spawnable: boolean;
     public effects: Effect[];
     public iconPath: string[];
     public absoluteIconPath?: string;
@@ -38,7 +37,6 @@ export class Trait extends EntityBase {
         this.iconPath = [ICONS_FOLDER, TRAIT_DATABASE_FOLDER, PLACEHOLDER_TRAIT_ICON];
         this.localization = {};
         this.type = TraitType.NORMAL;
-        this.spawnable = false;
         this.effects = [];
     }
 

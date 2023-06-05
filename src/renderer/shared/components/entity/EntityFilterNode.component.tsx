@@ -27,7 +27,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
 
     const onLogicOperatorChange = (operator: LogicOperator): void => {
         const updatedFilterNode = CopyClassInstance(filterNode);
-        filterNode.logicOperator = operator;
+        updatedFilterNode.logicOperator = operator;
 
         onFilterNodeChange(updatedFilterNode, index);
     };
@@ -110,7 +110,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                 )}
             </Box>
 
-            <Box sx={{ marginTop: '10px' }}>
+            <Box sx={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <Typography> {t('interface.editor.entity.node_filters')}</Typography>
                 {filterNode.entityFilters.map((entityFilter, index) => {
                     return (

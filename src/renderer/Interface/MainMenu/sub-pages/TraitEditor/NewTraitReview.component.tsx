@@ -23,7 +23,7 @@ export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onC
     const { t, i18n } = useTranslation();
 
     const [isResourceSelectionOpen, setResourceSelectionState] = useState<boolean>(false);
-    const mappedEntities = useSelector((state: RootState) => state.database);
+    const mappedEntities = useSelector((state: RootState) => state.database.mappedDatabase);
 
     const onFileMetadataChange = (fileName: string, absolutePath: string, relativePath: string[], packageData: Package) => {
         const newTrait = CopyClassInstance(trait);
@@ -31,30 +31,35 @@ export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onC
         onChange(newTrait);
     };
 
-    console.log('mappedEntities', mappedEntities);
-
     return (
         <Box sx={{ color: 'text.primary', flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <Box>
-                <img src={trait.absoluteIconPath} alt={`${trait.id}_icon`} />
-                <Box>
-                    <Typography variant="overline">{t('interface.editor.trait.id_label')}</Typography>
-                    <Typography>{trait.id}</Typography>
-                    <Typography variant="subtitle1">{fieldsValidation.id}</Typography>
+            <Paper sx={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
+                <img className="utils__contain-image utils__full-height" src={trait.absoluteIconPath} alt={`${trait.id}_icon`} />
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginLeft: '20px' }}>
+                    <Box>
+                        <Typography variant="overline">{t('interface.editor.trait.id_label')}</Typography>
+                        <Typography>{trait.id}</Typography>
+                        <Typography variant="subtitle1">{fieldsValidation.id}</Typography>
+                    </Box>
+                    <Box>
+                        <Typography variant="overline">{t('interface.editor.trait.name_label')}</Typography>
+                        <Typography>{trait.getName(i18n.language)}</Typography>
+                        <Typography variant="subtitle1">{fieldsValidation.name}</Typography>
+                    </Box>
+                    <Box>
+                        <Typography variant="overline">{t('interface.editor.trait.type_label')}</Typography>
+                        <Typography>{t(trait.type)}</Typography>
+                        <Typography variant="subtitle1">{fieldsValidation.type}</Typography>
+                    </Box>
+                    <Box sx={{ width: '100%' }}>
+                        <Typography variant="overline">{t('interface.editor.trait.description_label')}</Typography>
+                        <Typography>{trait.getDescription(i18n.language)}</Typography>
+                        {fieldsValidation.description && <Alert severity="error">{fieldsValidation.description}</Alert>}
+                    </Box>
                 </Box>
-                <Box>
-                    <Typography variant="overline">{t('interface.editor.trait.name_label')}</Typography>
-                    <Typography>{trait.getName(i18n.language)}</Typography>
-                    <Typography variant="subtitle1">{fieldsValidation.name}</Typography>
-                </Box>
-                <Box>
-                    <Typography variant="overline">{t('interface.editor.trait.description_label')}</Typography>
-                    <Typography>{trait.getDescription(i18n.language)}</Typography>
-                    {fieldsValidation.description && <Alert severity="error">{fieldsValidation.description}</Alert>}
-                </Box>
-            </Box>
+            </Paper>
 
-            <Paper sx={{ padding: '10px' }}>
+            <Paper sx={{ padding: '10px', marginTop: '10px' }}>
                 <Typography variant="h5">{t('interface.editor.trait.metadata_title')}</Typography>
 
                 <Box sx={{ display: 'flex' }}>
@@ -83,22 +88,11 @@ export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onC
                         isOpen={isResourceSelectionOpen}
                         onClose={() => setResourceSelectionState(false)}
                         onResourceSelected={onFileMetadataChange}
-                        targetPackage={mappedEntities[trait.metadata?.file.packageID || BASE_GAME_PACKAGE_ID]}
+                        targetPackage={mappedEntities.packages[trait.metadata?.file.packageID || BASE_GAME_PACKAGE_ID]}
                         rootFolder={[DATABASE_FOLDER, TRAIT_DATABASE_FOLDER]}
                     />
                 </Box>
             </Paper>
-            <Box>
-                <Box>
-                    <Typography variant="overline">{t('interface.editor.trait.type_label')}</Typography>
-                    <Typography>{t(trait.type)}</Typography>
-                    <Typography variant="subtitle1">{fieldsValidation.type}</Typography>
-                </Box>
-                <Box>
-                    <Typography variant="overline">{t('interface.editor.trait.spawn_label')}</Typography>
-                    <Typography>{trait.spawnable ? t('interface.editor.trait.is_spawnable') : t('interface.editor.trait.not_spawnable')}</Typography>
-                </Box>
-            </Box>
 
             <Box>
                 {trait.effects.map((effect, index) => (

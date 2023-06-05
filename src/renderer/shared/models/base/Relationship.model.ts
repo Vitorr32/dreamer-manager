@@ -12,6 +12,11 @@ export enum RelationshipParameter {
     RESPECT = 'model.relationship.variable.respect',
 }
 
+export enum RelationshipVariablesKey {
+    ID = 'id',
+    FAVOR = 'favor'
+}
+
 export const RelationshipEntityVariables: Variables = {
     favor: { key: 'favor', displayName: 'model.relationship.variable.favor', type: VariableType.NUMBER, read: true, edit: true },
     love: { key: 'love', displayName: 'model.relationship.variable.love', type: VariableType.NUMBER, read: true, edit: true },

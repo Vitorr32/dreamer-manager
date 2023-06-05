@@ -53,8 +53,6 @@ export class Effect {
     public sourceID: string;
     //What trigger the check for this effect
     public trigger: Trigger;
-    //Operator that checks the desired result of the Condition Tree
-    public conditionFilterLogicOperator: ConditionFilterOperator;
     //What is the condition for the activation of this effect when the trigger is triggered, it also may always happen.
     public conditionTree: EntityFilterTree;
     //After the effect was activated, for how much time does it take effect?

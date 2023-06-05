@@ -1,7 +1,7 @@
 import { EntityBase } from './Entity.model';
 import { Variables } from './Variable.model';
 
-//All of the current save world metadat
+//All of the current save world metadata
 export class World extends EntityBase {
     static get _variables() {
         return {};

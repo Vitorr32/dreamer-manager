@@ -36,8 +36,6 @@ ipcMain.handle('get-files', async (_, args: { path: string[] }) => {
         return { error: true, message: e };
     }
 
-    console.log('directoryFileNames', directoryFileNames);
-
     return directoryFileNames.map((fileName) => {
         try {
             const filePath = path.join(TARGET_PATH, fileName);

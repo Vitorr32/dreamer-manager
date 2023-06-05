@@ -127,23 +127,21 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
                 <FormHelperText>{t('interface.editor.condition.helper_text')}</FormHelperText>
 
                 <Box sx={{ display: 'flex', columnGap: '20px', alignItems: 'center', marginTop: '10px' }}>
-                    {!effect.conditionTree && (
-                        <>
-                            <Button variant="contained" onClick={onAddConditionTree}>
-                                {t('interface.editor.condition.add_condition_label')}
-                            </Button>
-
-                            <FormHelperText>{t('interface.editor.condition.add_condition_helper')}</FormHelperText>
-                        </>
-                    )}
-
-                    {effect.conditionTree && (
+                    {effect.conditionTree ? (
                         <>
                             <Button variant="contained" onClick={onRemoveConditionTree}>
                                 {t('interface.editor.condition.remove_condition_label')}
                             </Button>
 
                             <FormHelperText>{t('interface.editor.condition.remove_condition_helper')}</FormHelperText>
+                        </>
+                    ) : (
+                        <>
+                            <Button variant="contained" onClick={onAddConditionTree}>
+                                {t('interface.editor.condition.add_condition_label')}
+                            </Button>
+
+                            <FormHelperText>{t('interface.editor.condition.add_condition_helper')}</FormHelperText>
                         </>
                     )}
                 </Box>

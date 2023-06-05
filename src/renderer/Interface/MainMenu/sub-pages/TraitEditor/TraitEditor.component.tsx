@@ -122,7 +122,7 @@ export function TraitEditor(props: IProps) {
     const getStepperContent = (index: number): JSX.Element | null => {
         switch (index) {
             case 0:
-                return <BasicInfoForm trait={currentTrait} onChange={onTraitChange} nextStep={nextStep} />;
+                return <BasicInfoForm trait={currentTrait} isNew={!originalTrait} onChange={onTraitChange} nextStep={nextStep} />;
             case 1:
                 return <EffectsAndConditions trait={currentTrait} onChange={onTraitChange} previousStep={previousStep} nextStep={nextStep} />;
             case 2:

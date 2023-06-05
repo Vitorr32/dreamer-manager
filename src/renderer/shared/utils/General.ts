@@ -81,6 +81,8 @@ export function GetEntityTypeOfDynamicEntity(dynamicEntity: DynamicEntity): Enti
         case DynamicEntity.MC_AGENCY:
         case DynamicEntity.SELF_AGENCY:
             return EntityType.AGENCY;
+        case DynamicEntity.SPECIFIC_FILTER:
+            return null;
         default:
             console.error('Unknown dynamic entity:', dynamicEntity);
             return null;

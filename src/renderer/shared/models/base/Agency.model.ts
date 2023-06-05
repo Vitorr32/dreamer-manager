@@ -1,8 +1,12 @@
 import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
 
+export enum AgencyVariablesKey {
+    ID = 'id',
+}
+
 export const AgencyEntityVariables: Variables = {
-    id: { key: 'id', displayName: 'model.id', type: VariableType.TEXT, read: true, edit: false },
+    id: { key: AgencyVariablesKey.ID, displayName: 'model.id', type: VariableType.TEXT, read: true, edit: false },
 };
 
 export class Agency extends EntityBase {
