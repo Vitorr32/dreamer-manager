@@ -1,16 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ATTRIBUTES_DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { Character } from 'renderer/shared/models/base/Character.model';
 import { World } from 'renderer/shared/models/base/World.model';
+import { MappedDatabase } from '../database/database.reducer';
 
 export interface GameState {
+    //Determine if the game is currently running or not
+    isActive: boolean;
     world: World;
-    characters: Character[];
 }
 
 const initialState: GameState = {
+    isActive: false,
     world: new World(),
-    characters: [],
 };
 
 export const gameSlice = createSlice({

@@ -36,8 +36,8 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
                           VariableOperator.NOT_EQUALS_TO,
                           VariableOperator.BIGGER_THAN,
                           VariableOperator.EQUAL_OR_BIGGER_THAN,
-                          VariableOperator.SMALLER_THAN,
-                          VariableOperator.EQUAL_OR_SMALLER_THAN,
+                          VariableOperator.LESS_THAN,
+                          VariableOperator.EQUAL_OR_LESS_THAN,
                       ];
         }
     };

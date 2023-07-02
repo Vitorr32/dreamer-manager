@@ -10,6 +10,7 @@ import { EntityFilterEditor } from './EntityFilterEditor.component';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
+import { useEffect } from 'react';
 
 interface IProps {
     filterNode: FilterNode;
@@ -24,6 +25,21 @@ interface IProps {
 
 export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf, index, parentIndex = 0, depth = 0, isRoot = false, entityFilterOptions }: IProps) {
     const { t } = useTranslation();
+
+    //Verify if the there is a locked entity type, and then assign it's values to all the filter nodes
+    useEffect(() => {
+        if (entityFilterOptions?.isLookingForSpecificEntity) {
+            const updatedFilterNode = CopyClassInstance(filterNode);
+
+            updatedFilterNode.entityFilters.forEach((filter, index) => {
+                if (filter.entityType !== entityFilterOptions.isLookingForSpecificEntity) {
+                    updatedFilterNode.entityFilters[index].entityType = entityFilterOptions.isLookingForSpecificEntity;
+                }
+            });
+
+            onFilterNodeChange(updatedFilterNode, index);
+        }
+    }, []);
 
     const onLogicOperatorChange = (operator: LogicOperator): void => {
         const updatedFilterNode = CopyClassInstance(filterNode);

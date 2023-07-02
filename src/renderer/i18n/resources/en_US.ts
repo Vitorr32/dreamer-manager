@@ -829,6 +829,9 @@ export const en_US = {
                 defaultAgent: '*Unset Character*',
                 defaultSelector: 'Select the selector to get the summary of the condition.',
             },
+            modifier: {
+
+            },
             node: {
                 logic: {
                     if: 'If the following is true',

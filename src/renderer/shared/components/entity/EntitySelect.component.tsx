@@ -38,7 +38,7 @@ export function EntitySelect({ entity, onEntityChange, disabled = false, entityF
         <FormControl fullWidth sx={{ minWidth: '200px' }}>
             <InputLabel>{t('interface.editor.modifier.input_label_entity')}</InputLabel>
             <Select
-                value={entity?.specifiedDynamicEntity || entity?.entityType || ''}
+                value={entityFilterOptions?.isLookingForSpecificEntity || entity?.specifiedDynamicEntity || entity?.entityType || ''}
                 disabled={disabled}
                 label={t('interface.editor.modifier.input_label_entity')}
                 onChange={(e) => onEntityChange(e.target.value as string)}

@@ -12,6 +12,19 @@ import { Trait } from '../../shared/models/base/Trait.model';
 import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
 import { Package } from 'renderer/shared/models/files/Package.model';
 
+export interface MappedDatabase {
+    packages: { [id: string]: Package };
+    attributes: { [id: string]: Attribute };
+    traits: { [id: string]: Trait };
+    events: { [id: string]: Event };
+    flags: { [id: string]: Flag };
+    characters: { [id: string]: Character };
+    paperPieces: { [id: string]: PaperPiece };
+    paperDolls: { [id: string]: PaperDoll };
+    nations: { [id: string]: Nation };
+    cities: { [id: string]: City };
+}
+
 export interface Database {
     isLoadingDatabase: boolean;
     loadProgress: number;
@@ -25,18 +38,7 @@ export interface Database {
     cities: City[];
     paperPieces: PaperPiece[];
     paperDolls: PaperDoll[];
-    mappedDatabase: {
-        packages: { [id: string]: Package };
-        attributes: { [id: string]: Attribute };
-        traits: { [id: string]: Trait };
-        events: { [id: string]: Event };
-        flags: { [id: string]: Flag };
-        characters: { [id: string]: Character };
-        paperPieces: { [id: string]: PaperPiece };
-        paperDolls: { [id: string]: PaperDoll };
-        nations: { [id: string]: Nation };
-        cities: { [id: string]: City };
-    };
+    mappedDatabase: MappedDatabase;
 }
 
 const initialState: Database = {

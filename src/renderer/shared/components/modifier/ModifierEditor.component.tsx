@@ -200,7 +200,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                         ...DEFAULT_EXTERNAL_ENTITY_FILTER,
                         entityType: EntityType.RELATIONSHIP,
                         variableKey: Relationship.getEntityVariables()['favor'].key,
-                        operator: VariableOperator.EQUAL_OR_SMALLER_THAN,
+                        operator: VariableOperator.EQUAL_OR_LESS_THAN,
                         value: 0,
                     },
                     {
@@ -250,7 +250,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                     <CompositeEntityFilter
                         filterTree={modifier.targetEntityFilter || new EntityFilterTree()}
                         onFilterTreeChange={onModifierTargetConditionTreeChanged}
-                        entityFilterOptions={{ ...options, isLookingForSpecifiEntity: true }}
+                        entityFilterOptions={{ ...options, isLookingForSpecificEntity: modifier.modifiedEntityVariables?.entityType }}
                     />
                 </Box>
             )}

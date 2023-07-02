@@ -60,7 +60,12 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
     return (
         <Box sx={{ display: 'flex', gap: '20px' }}>
             {/* ENTITY SELECT */}
-            <EntitySelect entity={entityFilter} onEntityChange={(entityType) => onFilterChanged('entityType', entityType)} entityFilterOptions={entityFilterOptions} />
+            <EntitySelect
+                entity={entityFilter}
+                onEntityChange={(entityType) => onFilterChanged('entityType', entityType)}
+                disabled={!!entityFilterOptions.isLookingForSpecificEntity}
+                entityFilterOptions={entityFilterOptions}
+            />
 
             {/* VARIABLE SELECT */}
             {entityFilter.entityType && (
