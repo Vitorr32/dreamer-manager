@@ -16,7 +16,7 @@ export class FilterNode {
 
     //Evaluate if the conditions of this node are met, if the node has children, evaluate if the children are met
     //If the node has no conditions or children, return true
-    public resolveFilterNode(worldState: GameState, entitiesFiltered?: any[]) {
+    public resolveFilterNode(currentDatabase: MappedDatabase, entitiesFiltered?: any[]) {
         //No empty node allowed
         if (this.entityFilters.length === 0) return false;
 
@@ -63,15 +63,26 @@ export class FilterNode {
         //Failed to find anything that match the filters, therefore returning a false evalutation to the node conditions.
         const nodeFiltersResult = entitiesFound.length !== 0;
 
+        let childrenEvaluations: boolean[] = [];
         if (this.children.length > 0) {
-            //TODO: Implement child evaluation
+            childrenEvaluations = this.children.map((childNode) => childNode.resolveFilterNode(currentDatabase, entitiesFound));
         }
-        return true;
+
+        switch (this.logicOperator) {
+            case LogicOperator.AND:
+                return nodeFiltersResult && childrenEvaluations.every((value) => value === true);
+            case LogicOperator.OR:
+                return nodeFiltersResult || childrenEvaluations.every((value) => value === true);
+            case LogicOperator.IF:
+                return nodeFiltersResult;
+        }
     }
 }
 
 export class EntityFilterTree {
     public root: FilterNode = new FilterNode();
 
-    public resolveFilterTree(database: MappedDatabase) {}
+    public resolveFilterTree(database: MappedDatabase) {
+        return this.root.resolveFilterNode(database);
+    }
 }

@@ -2,8 +2,9 @@ import { Category } from '../enums/Category.enum';
 import { Growth } from '../enums/Growth.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { LANGUAGE_CODE_DEFAULT } from 'renderer/shared/Constants';
+import { EntityBase } from './Entity.model';
 
-export class Attribute {
+export class Attribute extends EntityBase {
     public category: Category = Category.UNDEFINED;
     public growth: Growth = Growth.UNDEFINED;
 
@@ -23,6 +24,8 @@ export class Attribute {
     };
 
     constructor(name: string, description: string, hidden: boolean = false, category: Category, growth: Growth) {
+        super();
+
         this.id = 'attr_' + uuidv4();
         this.localization[LANGUAGE_CODE_DEFAULT] = {
             name,

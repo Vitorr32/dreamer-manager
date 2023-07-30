@@ -2,7 +2,6 @@ import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { Alert, Button, Paper, Typography } from '@mui/material';
-import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 import { useState } from 'react';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { StaticResourceSelection } from 'renderer/shared/components/file/StaticResourceSelection';
@@ -10,6 +9,7 @@ import { BASE_GAME_PACKAGE_ID, DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 're
 import { Package } from 'renderer/shared/models/files/Package.model';
 import { RootState } from 'renderer/redux/store';
 import { useSelector } from 'react-redux';
+import { DescribeEffect } from 'renderer/shared/components/summary/DescribeEffect.component';
 
 interface IProps {
     trait: Trait;
@@ -96,7 +96,7 @@ export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onC
 
             <Box>
                 {trait.effects.map((effect, index) => (
-                    <EffectSummary key={'effect_' + index} effect={effect} />
+                    <DescribeEffect key={'effect_' + index} effect={effect} />
                 ))}
             </Box>
 

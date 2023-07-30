@@ -829,9 +829,7 @@ export const en_US = {
                 defaultAgent: '*Unset Character*',
                 defaultSelector: 'Select the selector to get the summary of the condition.',
             },
-            modifier: {
-
-            },
+            modifier: {},
             node: {
                 logic: {
                     if: 'If the following is true',
@@ -847,7 +845,18 @@ export const en_US = {
             },
             effect: {
                 trigger: 'Trigger',
-                triggers: {},
+                triggers: {
+                    always_active: 'Always',
+                    on_day_end: 'On Day End',
+                    on_week_end: 'On Week End',
+                    on_month_end: 'On Month End',
+                    on_year_end: 'On Year End',
+                    on_interaction_start: 'On Interaction Start',
+                    on_event_start: 'On Event Start',
+                    on_training_start: 'On Training Start',
+                    on_record_start: 'On Record Start',
+                    on_show_start: 'On Show Start',
+                },
                 period: 'Period',
                 periods: {
                     permanent: 'This effect is permanent once triggered',

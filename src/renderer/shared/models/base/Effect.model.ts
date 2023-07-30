@@ -1,3 +1,4 @@
+import { EntityType } from '../enums/Entities.enum';
 import { EntityFilterTree } from './EntityFilterTree.model';
 import { Modifier } from './Modifier';
 
@@ -17,14 +18,7 @@ export enum Period {
     PERMANENT = 'model.effect.period.permanent',
     SPECIFIC_PERIOD = 'model.effect.period.specific_period',
     SPECIFIC_DATE = 'model.effect.period.specific_date_to',
-    SPECIFIC_DATE_FROM_TO = 'model.effect.period.specific_date_from_to'
-}
-
-export enum Source {
-    TRAIT,
-    RACE,
-    ITEM,
-    EVENT,
+    SPECIFIC_DATE_FROM_TO = 'model.effect.period.specific_date_from_to',
 }
 
 export enum ConditionFilterOperator {
@@ -48,9 +42,7 @@ export enum TimeSelector {
 
 export class Effect {
     //Source is with item/trait/race is the source of the effect, used to associate the effect to parent
-    public sourceType: Source;
-    //Source ID, used to get the source of the effect
-    public sourceID: string;
+    public source: { id: string; type: EntityType };
     //What trigger the check for this effect
     public trigger: Trigger;
     //What is the condition for the activation of this effect when the trigger is triggered, it also may always happen.
@@ -63,9 +55,11 @@ export class Effect {
     //What is the modifiers that this effect cause on entities of the game
     public modifiers: Modifier[];
 
-    constructor(sourceID: string, sourceType: Source) {
-        this.sourceID = sourceID;
-        this.sourceType = sourceType;
+    constructor(sourceID: string, sourceType: EntityType) {
+        this.source = {
+            id: sourceID,
+            type: sourceType,
+        };
         this.modifiers = [new Modifier()];
     }
 }

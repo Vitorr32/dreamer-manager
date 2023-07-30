@@ -24,7 +24,7 @@ import { NewEventFlag } from './NewEventFlag.component';
 import { GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { InsertIconInAssets, UpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
-import { Effect, Source } from 'renderer/shared/models/base/Effect.model';
+import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { EffectEditor } from 'renderer/shared/components/effects/EffectEditor.component';
 import { EventInfoModal } from './EventInfoModal.component';
 import { useSelector } from 'react-redux';
@@ -295,13 +295,10 @@ export function NewEvent({}: IProps) {
                                 index={editEffectIndex}
                                 effect={currentEvent.effects[editEffectIndex]}
                                 options={{
-                                    sourceType: Source.EVENT,
-                                    sourceID: currentEvent.id,
                                     specifiedEntities: {
-                                        [EntityType.ACTORS]: currentEvent.actors,
-                                        [EntityType.FLAGS]: currentEvent.flags,
+                                        [EntityType.ACTORS]: currentEvent.actors.map((actor) => ({ label: actor.alias, data: actor })),
+                                        [EntityType.FLAGS]: currentEvent.flags.map((flag) => ({ label: flag.displayName, data: flag })),
                                     },
-                                    allowConditionTree: true,
                                 }}
                             />
                         )}

@@ -27,7 +27,7 @@ export function DescribeEffect({ effect }: IProps) {
             case Period.SPECIFIC_DATE:
                 return t('interface.model.effect.specific_date_to', { date: new Date(effect.periodValue).toDateString() });
             case Period.SPECIFIC_PERIOD:
-                return t('interface.model.effect.specific_period')
+                return t('interface.model.effect.specific_period');
             case Period.SPECIFIC_DATE_FROM_TO:
             default:
                 return t('interface.model.effect.permanent');
@@ -40,7 +40,7 @@ export function DescribeEffect({ effect }: IProps) {
                 <Typography>{t('interface.summary.effect.trigger')}</Typography>
                 <Typography>{t(effect.trigger)}</Typography>
             </Box>
-            <DescribeFilterNode filterNode={effect.conditionTree.root} isRoot />
+            {effect.conditionTree && <DescribeFilterNode filterNode={effect.conditionTree.root} isRoot />}
             <Box>
                 <Typography>{t('interface.summary.effect.period')}</Typography>
                 <Typography>{t(effect.periodType)}</Typography>

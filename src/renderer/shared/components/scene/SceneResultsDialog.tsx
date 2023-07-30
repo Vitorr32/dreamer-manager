@@ -99,9 +99,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                                 index={index}
                                                 onChange={(index, effect) => sceneResultsModified(index, 'effect', effect)}
                                                 options={{
-                                                    isEventEffect: true,
-                                                    specifiedActors: !!actors ? actors : [],
-                                                    allowConditionTree: true,
+                                                    specifiedActors: !!actors ? actors : []
                                                 }}
                                             />
                                         )}

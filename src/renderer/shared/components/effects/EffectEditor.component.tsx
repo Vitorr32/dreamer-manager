@@ -48,7 +48,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         setExpandedOptions({
             ...(options || {}),
             ...(expandedOptions || {}),
-            filteredDynamicEntities: FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.sourceType),
+            filteredDynamicEntities: FilterPossibleDynamicEntitiesForTriggerType(triggerType, effect.source?.type),
         });
     };
 
@@ -150,7 +150,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
                     <Box sx={{ marginTop: '20px', display: 'flex', flexDirection: 'column', rowGap: '10px' }}>
                         <EffectTriggerSelection
                             effectTrigger={effect.trigger}
-                            effectSource={effect.sourceType}
+                            effectSource={effect.source}
                             onTriggerChange={(trigger) => onEffectChanged('trigger', trigger)}
                         />
 
@@ -165,7 +165,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
                         <EffectPeriodSelection
                             effectPeriod={effect.periodType}
                             effectPeriodValue={effect.periodValue}
-                            effectSource={effect.sourceType}
+                            effectSource={effect.source}
                             onPeriodChange={(periodType) => onEffectChanged('periodType', periodType)}
                             onPeriodValueChange={(value) => onEffectChanged('periodValue', value)}
                         />

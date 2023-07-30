@@ -11,6 +11,8 @@ import { Relationship } from '../models/base/Relationship.model';
 import { VariableOperator, Variables } from '../models/base/Variable.model';
 import { World } from '../models/base/World.model';
 import { EntityType } from '../models/enums/Entities.enum';
+import { Trait } from '../models/base/Trait.model';
+import { Attribute } from '../models/base/Attribute.model';
 
 export function AreArraysEqual(array1: any[], array2: any[]): boolean {
     if (!array1 && !array2) {
@@ -34,6 +36,10 @@ export function GetVariablesOfEntity(entity: EntityType): Variables {
     switch (entity) {
         case EntityType.CHARACTERS:
             return Character.getEntityVariables();
+        case EntityType.TRAITS:
+            return Trait.getEntityVariables();
+        case EntityType.ATTRIBUTES:
+            return Attribute.getEntityVariables();
         case EntityType.DREAMER:
             return Dreamer.getEntityVariables();
         case EntityType.ACTORS:
@@ -89,7 +95,7 @@ export function GetEntityTypeOfDynamicEntity(dynamicEntity: DynamicEntity): Enti
     }
 }
 
-export function FilterPossibleDynamicEntitiesForTriggerType(effectTriggerType: Trigger, effectSource: Source): DynamicEntity[] {
+export function FilterPossibleDynamicEntitiesForTriggerType(effectTriggerType: Trigger, effectSource: EntityType): DynamicEntity[] {
     switch (effectTriggerType) {
         case Trigger.ON_INTERACTION_START:
             return [DynamicEntity.SELF, DynamicEntity.SELF_FRIENDS, DynamicEntity.SELF_RIVALS];

@@ -1,4 +1,3 @@
-import { Source } from '../base/Effect.model';
 import { DynamicEntity } from '../base/EntityVariableValue.model';
 import { EntityType } from '../enums/Entities.enum';
 export interface EntityFilterOptions {
@@ -17,8 +16,4 @@ export interface EntityFilterOptions {
     filteredAttributes?: {
         [key in EntityType]?: string[];
     };
-    fixedEntity?: EntityType;
-    allowConditionTree?: boolean;
-    sourceType?: Source;
-    sourceID?: string;
 }

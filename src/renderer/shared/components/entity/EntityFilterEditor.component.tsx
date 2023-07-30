@@ -30,6 +30,12 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
         }
     }, []);
 
+    useEffect(() => {
+        if (entityFilterOptions?.isLookingForSpecificEntity && entityFilter.entityType !== entityFilterOptions?.isLookingForSpecificEntity) {
+            onFilterChanged('entityType', entityFilterOptions.isLookingForSpecificEntity);
+        }
+    }, [entityFilterOptions?.isLookingForSpecificEntity]);
+
     const onFilterChanged = (key: 'entityType' | 'variableKey' | 'value' | 'operator', newValue: any) => {
         const updatedFilter = CopyClassInstance(entityFilter);
 
@@ -63,7 +69,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
             <EntitySelect
                 entity={entityFilter}
                 onEntityChange={(entityType) => onFilterChanged('entityType', entityType)}
-                disabled={!!entityFilterOptions.isLookingForSpecificEntity}
+                disabled={!!entityFilterOptions?.isLookingForSpecificEntity}
                 entityFilterOptions={entityFilterOptions}
             />
 

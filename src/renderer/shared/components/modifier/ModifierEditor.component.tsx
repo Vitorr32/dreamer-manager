@@ -30,6 +30,10 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         const newModifier = CopyClassInstance(modifier);
         newModifier.modifiedEntityVariables = entityFilter;
 
+        if (newModifier.modifiedEntityVariables.entityType !== modifier.modifiedEntityVariables.entityType) {
+            newModifier.targetEntityFilter = new EntityFilterTree();
+        }
+
         if (
             newModifier.modifiedEntityVariables?.specifiedDynamicEntity &&
             newModifier.modifiedEntityVariables?.specifiedDynamicEntity !== modifier.modifiedEntityVariables?.specifiedDynamicEntity

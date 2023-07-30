@@ -3,12 +3,13 @@ import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Period, Source } from 'renderer/shared/models/base/Effect.model';
+import { Period } from 'renderer/shared/models/base/Effect.model';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 
 interface IProps {
     effectPeriod: Period;
     effectPeriodValue: any;
-    effectSource: Source;
+    effectSource: { id: string; type: EntityType };
     onPeriodChange: (period: Period) => any;
     onPeriodValueChange: (value: any) => any;
 }

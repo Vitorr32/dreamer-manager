@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Effect, Source } from 'renderer/shared/models/base/Effect.model';
+import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { MAX_NUMBER_OF_EFFECTS } from 'renderer/shared/Constants';
 import { EffectEditor } from '../../../../shared/components/effects/EffectEditor.component';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
-import { EffectSummary } from 'renderer/shared/components/summary/EffectSummary.component';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
+import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
+import { DescribeEffect } from 'renderer/shared/components/summary/DescribeEffect.component';
 
 interface IProps {
     previousStep: () => void;
@@ -25,7 +26,7 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
 
     const onNewEffectAddedToList = (): void => {
         const newTrait = CopyClassInstance(trait);
-        newTrait.effects.push(new Effect(trait.id, Source.TRAIT));
+        newTrait.effects.push(new Effect(trait.id, EntityType.TRAITS));
 
         onChange(newTrait);
     };
@@ -60,20 +61,10 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
                 ) : null}
             </Box>
 
-            {editEffectIndex !== -1 && (
-                <EffectEditor
-                    onChange={onEditEffect}
-                    index={editEffectIndex}
-                    effect={trait.effects[editEffectIndex]}
-                    options={{
-                        sourceType: Source.TRAIT,
-                        sourceID: trait.id,
-                    }}
-                />
-            )}
+            {editEffectIndex !== -1 && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={trait.effects[editEffectIndex]} />}
 
             {trait.effects.map((effect, index) => (
-                <EffectSummary key={'effect_' + index} effect={effect} />
+                <DescribeEffect key={'effect_summary_' + index} effect={effect} />
             ))}
 
             <Box sx={{ flex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
