@@ -824,26 +824,15 @@ export const en_US = {
             },
         },
         summary: {
-            common: {
-                defaultValue: '*Unset*',
-                defaultAgent: '*Unset Character*',
-                defaultSelector: 'Select the selector to get the summary of the condition.',
-            },
-            modifier: {},
             node: {
                 logic: {
                     if: 'If the following is true',
                     and: 'If all of the following is true',
                     or: 'If any of the following is true',
                 },
-                numeric_selector: {
-                    between: '{{main}} is between {{value1}} and {{value2}}',
-                    higher: '{{main}} is higher than {{value}}',
-                    lesser: '{{main}}less than {{value}}',
-                    exactly: 'is exactly {{value}}',
-                },
             },
             effect: {
+                modifier: 'Following modifiers will be applied:',
                 trigger: 'Trigger',
                 triggers: {
                     always_active: 'Always',
@@ -857,12 +846,13 @@ export const en_US = {
                     on_record_start: 'On Record Start',
                     on_show_start: 'On Show Start',
                 },
+                condition: 'If the following conditions are met:',
                 period: 'Period',
                 periods: {
                     permanent: 'This effect is permanent once triggered',
                     specific_period: 'This effect will last for {{period}} after being triggered',
                     specific_date_to: 'This effect will last until {{date}}',
-                    specific_date_from_to: 'From/To Specific Date',
+                    specific_date_from_to: 'This effect will from {{startDate}} until {{endDate}}',
                 },
                 increase: 'Increase the {{value}} by {{change}}',
                 decrease: 'Decrease the {{value}} by {{change}}',
