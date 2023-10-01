@@ -1,4 +1,4 @@
-export function JoinArrayOfString(array: string[], emptyMessage: string = 'None', removeDuplicate: boolean = true): string {
+export function JoinArrayOfString(array: string[], emptyMessage = 'None', removeDuplicate = true): string {
     if (array.length === 0) {
         return emptyMessage;
     }

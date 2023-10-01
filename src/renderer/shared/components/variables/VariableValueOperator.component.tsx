@@ -46,10 +46,10 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
         const variableOperators = getOperatorsOfVariableType(type);
         if (variableOperators.length === 0) {
             return false;
-        } else if (variableOperators.length === 1 && variableOperator !== variableOperators[0]) {
+        } if (variableOperators.length === 1 && variableOperator !== variableOperators[0]) {
             setTimeout(() => onOperatorChange(variableOperators[0]));
             return false;
-        } else if (variableOperators.length === 1 && variableOperator === variableOperators[0]) {
+        } if (variableOperators.length === 1 && variableOperator === variableOperators[0]) {
             return false;
         }
 

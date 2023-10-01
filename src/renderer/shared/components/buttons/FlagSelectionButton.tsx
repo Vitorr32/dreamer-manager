@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { TraitPicker } from '../tools/TraitPicker';
 import { Flag } from 'renderer/shared/models/base/Event.model';
+import { TraitPicker } from '../tools/TraitPicker';
 import { FlagsPicker } from '../tools/FlagsPicker';
 
 interface IProps {
@@ -40,12 +40,12 @@ export function FlagSelectionButton({ displayIDs, onChange, returnData, multi, g
     };
 
     return (
-        <React.Fragment>
+        <>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
                 {selectedValue === undefined || displayIDs.length === 0 ? t('interface.editor.condition.flag_selector_placeholder') : displayIDs.map((displayID) => mappedDatabase.flags[displayID].displayName)}
             </Button>
 
             <FlagsPicker showTool={showTool} onSelection={onValueSelected} multi={multi} global={global} />
-        </React.Fragment>
+        </>
     );
 }

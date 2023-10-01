@@ -17,11 +17,11 @@ import { Attribute } from '../models/base/Attribute.model';
 export function AreArraysEqual(array1: any[], array2: any[]): boolean {
     if (!array1 && !array2) {
         return true;
-    } else if (!array1 || !array2) {
+    } if (!array1 || !array2) {
         return false;
-    } else {
+    } 
         return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
-    }
+    
 }
 
 export function CopyClassInstance<T>(object: T): T {
@@ -64,7 +64,7 @@ export function GetEntitiesOfEntity(entity: EntityType): any[] {
         case EntityType.FLAGS:
             return store.getState().database.flags;
         default:
-            console.error('Searched for unknown entity: ' + entity);
+            console.error(`Searched for unknown entity: ${  entity}`);
             return [];
     }
 }
@@ -139,7 +139,7 @@ export function EvaluateVariableOperator(variableOperator: VariableOperator, ent
         case VariableOperator.IS_NOT_EMPTY:
             return entityValue.length > 0;
         default:
-            console.error('Unsupported variable operator: ' + variableOperator);
+            console.error(`Unsupported variable operator: ${  variableOperator}`);
             return false;
     }
 }

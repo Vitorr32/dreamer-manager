@@ -1,6 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
 import { EntityBase } from './Entity.model';
 import { Variables, VariableType } from './Variable.model';
-import { v4 as uuidv4 } from 'uuid';
 import { EntityType } from '../enums/Entities.enum';
 import { EntityFilterTree } from './EntityFilterTree.model';
 
@@ -51,16 +51,22 @@ export class Actor extends EntityBase {
     static get _variables() {
         return ActorEntityVariables;
     }
-    //If this event actors are pooled on the moment that the event happens.
+
+    // If this event actors are pooled on the moment that the event happens.
     actorType: ActorType;
+
     // Generic sprite path
     spriteFilePath?: string[];
-    //If the actor is a specific character, just put the id here.
+
+    // If the actor is a specific character, just put the id here.
     characterID?: string;
-    //Condition to be checked to select the actor in case of dynamic casting
+
+    // Condition to be checked to select the actor in case of dynamic casting
     actorCastingFilter?: EntityFilterTree;
+
     // Actor object ID
     id: string;
+
     // Actor alias that the user may change to better edit the event, or if the actor is generic, the name that will appear on the dialogue screen.
     alias?: string;
 

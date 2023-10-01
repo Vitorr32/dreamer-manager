@@ -53,9 +53,9 @@ export const ConvertDurationStringToTargetDate = (originalDate: Date, durationSt
 
 export const ConvertDurationStringToReadableString = (durationString: string) => {
     const durationPieces = durationString.split(' ');
-    let accumulatedDays: number = 0;
-    let durationHours: number = 0;
-    let durationMinutes: number = 0;
+    let accumulatedDays = 0;
+    let durationHours = 0;
+    let durationMinutes = 0;
 
     durationPieces.forEach((durationPiece) => {
         const durationUnit = durationPiece.toLowerCase().replaceAll(/[^0-9]/, '') as PERIOD_UNIT;
@@ -105,7 +105,7 @@ export const ConvertDurationStringToReadableString = (durationString: string) =>
         }
     });
 
-    return `${accumulatedDays !== 0 ? accumulatedDays + ' days, ' : ''}${durationHours !== 0 ? durationHours + ' hours,' : ''}${
-        durationMinutes !== 0 ? durationMinutes + ' minutes' : ''
+    return `${accumulatedDays !== 0 ? `${accumulatedDays  } days, ` : ''}${durationHours !== 0 ? `${durationHours  } hours,` : ''}${
+        durationMinutes !== 0 ? `${durationMinutes  } minutes` : ''
     }`.trim();
 };

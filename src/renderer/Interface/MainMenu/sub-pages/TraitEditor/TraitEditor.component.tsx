@@ -1,10 +1,6 @@
 import { Button, Stepper, Step, StepButton, Box, Typography, Paper } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useEffect, useState } from 'react';
-import { BasicInfoForm } from './BasicInfoForm.component';
-import { Trait } from '../../../../shared/models/base/Trait.model';
-import { EffectsAndConditions } from './EffectsAndConditions.component';
-import { NewTraitReview } from './NewTraitReview.component';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
@@ -15,6 +11,10 @@ import { GetFileFromResources, GetFileNameFromPath, RemoveFileProtocol } from 'r
 import { CopyFileToAssetsFolder, IsAbsolutePathTheSameAsRelativePath } from 'renderer/shared/utils/FileOperation';
 import { CreateOrUpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
+import { NewTraitReview } from './NewTraitReview.component';
+import { EffectsAndConditions } from './EffectsAndConditions.component';
+import { Trait } from '../../../../shared/models/base/Trait.model';
+import { BasicInfoForm } from './BasicInfoForm.component';
 
 interface IProps {}
 
@@ -70,19 +70,19 @@ export function TraitEditor(props: IProps) {
 
         const finalTrait = CopyClassInstance(currentTrait);
 
-        //Check to see if the user changed the image of this trait, if it is, change the relative file path to the new one.
+        // Check to see if the user changed the image of this trait, if it is, change the relative file path to the new one.
         const isSameFile = await IsAbsolutePathTheSameAsRelativePath(finalTrait.absoluteIconPath, finalTrait.iconPath);
         if (!isSameFile) {
-            //Now check if the file is already present as a game file in the trait icons folder, or is a new one that need to be copied into the game folder
+            // Now check if the file is already present as a game file in the trait icons folder, or is a new one that need to be copied into the game folder
             const fileName = GetFileNameFromPath(finalTrait.absoluteIconPath);
             const newRelativePath = [ICONS_FOLDER, TRAIT_DATABASE_FOLDER, fileName];
 
             try {
-                //Try to get the file from the assets folder, if it's a icon that is already on the asset folder, we don't need to copy into the folder.
+                // Try to get the file from the assets folder, if it's a icon that is already on the asset folder, we don't need to copy into the folder.
                 const existingFile = await GetFileFromResources(newRelativePath);
                 finalTrait.absoluteIconPath = existingFile.path;
             } catch (error) {
-                //If the file does not exist in the games folder, we will get an error, we need to copy it into the assets folder
+                // If the file does not exist in the games folder, we will get an error, we need to copy it into the assets folder
                 const newAbsolutePath = await CopyFileToAssetsFolder(
                     RemoveFileProtocol(finalTrait.absoluteIconPath),
                     newRelativePath,
@@ -91,20 +91,20 @@ export function TraitEditor(props: IProps) {
                 finalTrait.absoluteIconPath = newAbsolutePath;
             }
 
-            //Now with thte absolute path corrected, we can update the icon path to the new relative path
+            // Now with thte absolute path corrected, we can update the icon path to the new relative path
             finalTrait.iconPath = newRelativePath;
         }
 
-        //Cleanup finalTrait from the metadata propertie and the absolute icon path
+        // Cleanup finalTrait from the metadata propertie and the absolute icon path
         const finalPath = originalTrait ? originalTrait.metadata.file.path : [DATABASE_FOLDER, TRAIT_DATABASE_FOLDER];
         delete finalTrait.metadata;
         delete finalTrait.absoluteIconPath;
 
         console.log('finalTrait', finalTrait);
 
-        //Update or create the new trait in the json file of the target folder
+        // Update or create the new trait in the json file of the target folder
         await CreateOrUpdateDatabaseJSONFile(finalPath, finalTrait, database.packages[finalTrait.metadata.file.packageID], true);
-        //Reload the database for trait
+        // Reload the database for trait
     };
 
     const validateTrait = (trait: Trait): boolean => {

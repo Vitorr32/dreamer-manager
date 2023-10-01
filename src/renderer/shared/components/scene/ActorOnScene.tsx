@@ -70,7 +70,7 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
         }
 
         const initialAnimationStep = animations[0];
-        //Mount initial state of the actor on screen
+        // Mount initial state of the actor on screen
         const initialState: TargetAndTransition = {
             left: `${initialAnimationStep.xAxisOffset}%`,
             top: `${initialAnimationStep.yAxisOffset}%`,
@@ -91,7 +91,7 @@ export function ActorOnScene({ actor, animations, isGameCharacter = false, playA
                 times: animations.map((_animation, index) => {
                     if (index === 0) {
                         return 0;
-                    } else if (index === animations.length - 1) {
+                    } if (index === animations.length - 1) {
                         return 1;
                     }
 

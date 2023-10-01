@@ -3,16 +3,16 @@ import { Package } from '../models/files/Package.model';
 import { StaticResource } from '../models/files/StaticResource.model';
 import { RemoveFileProtocol } from './StringOperations';
 
-//Check if the absolute path is the same as the relative path
-//For example: "...\MyProject\MyFile.txt" is the same as the relative path ["MyProject", "MyFile.txt"] after being converted to absolute path
+// Check if the absolute path is the same as the relative path
+// For example: "...\MyProject\MyFile.txt" is the same as the relative path ["MyProject", "MyFile.txt"] after being converted to absolute path
 export async function IsAbsolutePathTheSameAsRelativePath(absolutePath: string, relativePath: string[]): Promise<boolean> {
     const absolutePathCleaned = RemoveFileProtocol(absolutePath);
     const relativePathCleaned = await window.electron.fileSystem.getFileFromResources(relativePath);
-    //Verify if the relative path is valid
+    // Verify if the relative path is valid
     if ('error' in relativePathCleaned) {
         return false;
     }
-    //Check to see if the cleaned absolute path is equals to the processed path of the relative file
+    // Check to see if the cleaned absolute path is equals to the processed path of the relative file
     return absolutePathCleaned === relativePathCleaned.absolutePath;
 }
 
@@ -20,13 +20,13 @@ export async function CopyFileToAssetsFolder(originalFilePath: string, destinati
     return window.electron.fileSystem.copyFileToResources(originalFilePath, GetPathInPackage(targetPackage, destinationPath));
 }
 
-//Get the path to the asset after dealing with the package location
+// Get the path to the asset after dealing with the package location
 export function GetPathInPackage(originPackage: Package, path: string[]): string[] {
     if (originPackage.id === BASE_GAME_PACKAGE_ID) {
         return path;
-    } else {
+    } 
         return [originPackage.id, ...path];
-    }
+    
 }
 
 export async function GetStaticResourcesFromDatabase<T>(

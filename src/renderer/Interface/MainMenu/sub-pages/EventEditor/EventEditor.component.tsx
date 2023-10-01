@@ -1,10 +1,9 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes , useNavigate } from 'react-router-dom';
+import { Event } from 'renderer/shared/models/base/Event.model';
 import { NewEvent } from '../NewEvent/NewEvent.component';
 import { EventPicker } from './EventPicker.component';
-import { useNavigate } from 'react-router-dom';
-import { Event } from 'renderer/shared/models/base/Event.model';
 
 export function EventEditor() {
     const [openEventSelectionModal, setEventSelectionModalState] = useState<boolean>(false);

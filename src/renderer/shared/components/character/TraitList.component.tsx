@@ -3,10 +3,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
-import { TraitPicker } from '../tools/TraitPicker';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
-import { TraitViewer } from './TraitViewer.component';
 import { useState } from 'react';
+import { TraitPicker } from '../tools/TraitPicker';
+import { TraitViewer } from './TraitViewer.component';
 
 interface IProps {
     traitList: string[];

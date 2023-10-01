@@ -25,7 +25,7 @@ export async function GetPackages(rootPackageFileName: string, modsFolder: strin
                 packages.push(JSON.parse(fileData.content));
             } catch (error) {
                 console.error(error);
-                return;
+                
             }
         }
     });

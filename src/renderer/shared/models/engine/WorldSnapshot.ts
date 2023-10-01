@@ -7,6 +7,7 @@ import { World } from '../base/World.model';
  */
 export class WorldSnapshot {
     activeCharacter: Character[];
+
     passiveCharacter: Character[];
 
     worldState: World;

@@ -96,7 +96,7 @@ export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onC
 
             <Box>
                 {trait.effects.map((effect, index) => (
-                    <DescribeEffect key={'effect_' + index} effect={effect} />
+                    <DescribeEffect key={`effect_${  index}`} effect={effect} />
                 ))}
             </Box>
 

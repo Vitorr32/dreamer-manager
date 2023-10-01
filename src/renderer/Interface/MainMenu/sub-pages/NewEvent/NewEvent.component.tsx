@@ -19,20 +19,20 @@ import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EditableScene } from 'renderer/shared/components/scene/EditableScene';
 import { ActorsCasting } from 'renderer/shared/components/scene/ActorsCasting';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { EventLinkModal } from './EventLinkModal.component';
-import { NewEventFlag } from './NewEventFlag.component';
 import { GetFileInfoFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { InsertIconInAssets, UpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { EffectEditor } from 'renderer/shared/components/effects/EffectEditor.component';
-import { EventInfoModal } from './EventInfoModal.component';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { EventTreeRender } from './EventTreeRender.component';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
+import { EventTreeRender } from './EventTreeRender.component';
+import { EventInfoModal } from './EventInfoModal.component';
+import { NewEventFlag } from './NewEventFlag.component';
+import { EventLinkModal } from './EventLinkModal.component';
 
 interface IProps {}
 
@@ -108,7 +108,7 @@ export function NewEvent({}: IProps) {
         setEditedNode(scene);
     };
 
-    const onNodeEdited = (scene: Scene, closeModal: boolean = false) => {
+    const onNodeEdited = (scene: Scene, closeModal = false) => {
         const modifiedVisualNovel = CopyClassInstance(currentVN);
         modifiedVisualNovel.updateScene(scene);
 
@@ -134,7 +134,7 @@ export function NewEvent({}: IProps) {
         setCurrentEvent(updatedEvent);
     };
 
-    const onConnectionEdited = (sceneConnection: SceneConnection, closeModal: boolean = false) => {
+    const onConnectionEdited = (sceneConnection: SceneConnection, closeModal = false) => {
         if (!sceneConnection) {
             setSceneLinkEditInfo(null);
             return;
@@ -173,7 +173,7 @@ export function NewEvent({}: IProps) {
     };
 
     const onAddEffectsToEvent = (): void => {
-        const modifiedEvent = Object.assign({}, currentEvent);
+        const modifiedEvent = { ...currentEvent};
         modifiedEvent.effects = [];
 
         setCurrentEvent(modifiedEvent);
@@ -181,21 +181,21 @@ export function NewEvent({}: IProps) {
     };
 
     const onNewEffectAddedToList = (): void => {
-        const modifiedEvent = Object.assign({}, currentEvent);
+        const modifiedEvent = { ...currentEvent};
         modifiedEvent.effects.push(new Effect());
 
         setCurrentEvent(modifiedEvent);
     };
 
     const onEditEffect = (index: number, effect: Effect): void => {
-        const modifiedEvent = Object.assign({}, currentEvent);
+        const modifiedEvent = { ...currentEvent};
         modifiedEvent.effects[index] = effect;
 
         setCurrentEvent(modifiedEvent);
     };
 
     const onDeleteEffectFromList = (index: number): void => {
-        const modifiedEvent = Object.assign({}, currentEvent);
+        const modifiedEvent = { ...currentEvent};
         modifiedEvent.effects.splice(index, 1);
 
         setCurrentEvent(modifiedEvent);
@@ -206,13 +206,13 @@ export function NewEvent({}: IProps) {
         const toSubmitEvent = CopyClassInstance(currentEvent);
         const toSubmitVN = currentVN ? CopyClassInstance(currentVN) : null;
 
-        //TODO: Make the checks to see if all the event content is correct.
+        // TODO: Make the checks to see if all the event content is correct.
         if (false) {
             return;
         }
 
         if (toSubmitVN) {
-            //Copy temporary files into the game static files, then update the references on the objects to internal paths.
+            // Copy temporary files into the game static files, then update the references on the objects to internal paths.
             Object.keys(tempImagesPath).forEach(async (key) => {
                 const tempImagePath = tempImagesPath[key];
                 const fileInfo = await GetFileInfoFromPath(tempImagePath);

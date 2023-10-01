@@ -15,8 +15,11 @@ export class Agency extends EntityBase {
     }
 
     id: string;
+
     treasury: number;
-    //First number the amount, second the interest and third is the ID of the institution that lent the money.
+
+    // First number the amount, second the interest and third is the ID of the institution that lent the money.
     debt: [number, number, string][];
+
     buildings: string[];
 }

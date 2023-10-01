@@ -22,7 +22,7 @@ export function CompositeEntityFilter({ filterTree, onFilterTreeChange, entityFi
 
     return (
         filterTree && (
-            <EntityFilterNode filterNode={filterTree.root} index={0} isRoot={true} onFilterNodeChange={onRootFilterChange} entityFilterOptions={entityFilterOptions} />
+            <EntityFilterNode filterNode={filterTree.root} index={0} isRoot onFilterNodeChange={onRootFilterChange} entityFilterOptions={entityFilterOptions} />
         )
     );
 }

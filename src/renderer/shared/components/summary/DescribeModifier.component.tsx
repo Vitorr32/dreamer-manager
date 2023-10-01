@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { DescribeFilterNode } from './DescribeFilterNode.component';
 import { Typography } from '@mui/material';
+import { DescribeFilterNode } from './DescribeFilterNode.component';
 
 interface IProps {
     modifier: Modifier;

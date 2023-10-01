@@ -4,9 +4,11 @@ import { ConnectionType, Scene, SceneConnection } from './Scene.model';
 
 export class VisualNovel {
     rootScene: string;
+
     currentScene: string;
 
     private allScenes: Scene[] | null = null;
+
     private mappedScenes: { [key: string]: Scene } | null = null;
 
     constructor(root: Scene | null = null) {
@@ -20,7 +22,7 @@ export class VisualNovel {
     }
 
     addScene(parentScene: Scene | null, newScene: Scene) {
-        //If theres no current root, or the added scene is orphan, add it as the root scene
+        // If theres no current root, or the added scene is orphan, add it as the root scene
         if (!this.rootScene || !parentScene) {
             this.rootScene = newScene.id;
             this.allScenes = [newScene];
@@ -50,14 +52,14 @@ export class VisualNovel {
     }
 
     removeScene(parentScene: Scene, deletedScene: Scene) {
-        //If there's nothing in the tree, there's nothing to remove
+        // If there's nothing in the tree, there's nothing to remove
         if (!this.rootScene || !this.allScenes || !this.mappedScenes) {
             console.error('removeScene() - Tried to remove node from a empty VN tree');
             return;
         }
 
-        //Modify the parent by removing the children from the scene results
-        const newParent = Object.assign({}, parentScene);
+        // Modify the parent by removing the children from the scene results
+        const newParent = { ...parentScene};
         newParent.sceneConnections = newParent.sceneConnections.filter((result) => result.resultingScene !== deletedScene.id);
 
         const parentIndex = this.getSceneIndex(newParent.id);
@@ -101,9 +103,9 @@ export class VisualNovel {
         if (parentIndex === -1) {
             console.error(`getParentScene(${id}) - No parent for the child ID, maybe broken scene search in action`);
             return null;
-        } else {
+        } 
             return { scene: this.allScenes[parentIndex], index: parentIndex };
-        }
+        
     }
 
     getChildrenScenes(parentID: string): Scene[] {

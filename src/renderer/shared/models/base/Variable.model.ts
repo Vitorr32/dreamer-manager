@@ -16,7 +16,7 @@ export enum VariableType {
 
 export enum VariableOperator {
     NONE = 'model.undefined',
-    //Filter for Numbers/Floats
+    // Filter for Numbers/Floats
     BIGGER_THAN = 'model.variable.operator.bigger_than',
     EQUAL_OR_BIGGER_THAN = 'model.variable.operator.equal_or_bigger_than',
     LESS_THAN = 'model.variable.operator.lesser_than',
@@ -24,7 +24,7 @@ export enum VariableOperator {
     EQUALS_TO = 'model.variable.operator.equals_to',
     NOT_EQUALS_TO = 'model.variable.operator.dont_equals_to',
 
-    //Filter for Arrays or Strings
+    // Filter for Arrays or Strings
     STARTS_WITH = 'model.variable.operator.starts_with',
     ENDS_WITH = 'model.variable.operator.ends_with',
     CONTAINS = 'model.variable.operator.contains',
@@ -32,7 +32,7 @@ export enum VariableOperator {
     IS_EMPTY = 'model.variable.opeartor.is_empty',
     IS_NOT_EMPTY = 'model.variable.operator.is_not_empty',
 
-    //Edit Operators, that are used when creating modifiers.
+    // Edit Operators, that are used when creating modifiers.
     CHANGE_BY = 'model.variable.operator.change_by',
     CHANGE_TO = 'model.variable.operator.change_to',
     INSERT_INTO_ARRAY = 'model.variable.operator.insert_into_array',
@@ -46,7 +46,7 @@ export interface EntityVariable {
     displayName: string;
     // The type defines what operations and values are accepted to the variable.
     type: VariableType;
-    //Group this variable for easier searching on Autocomplete, Optional
+    // Group this variable for easier searching on Autocomplete, Optional
     groupBy?: string;
     // If it is a variable with type External Key or External List, it means it points to another entity, like the external key of a SQL table.
     // It should also contains which entity is the external key pointing to.
@@ -66,5 +66,5 @@ export interface Variables {
     [key: string]: EntityVariable;
 }
 
-//TODO: How to make the custom variable to be dynamically added to the game trough mod import?
-export interface CustomVariables extends Variables {}
+// TODO: How to make the custom variable to be dynamically added to the game trough mod import?
+export type CustomVariables = Variables

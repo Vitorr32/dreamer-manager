@@ -8,10 +8,10 @@ import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 
 interface IProps {
     entity: EntityType;
-    //Labels from the i18next
+    // Labels from the i18next
     pickerTitle: string;
     pickerLabel: string;
-    //Key for data display
+    // Key for data display
     getDisplayName: (entity: any) => string;
     getImagePath?: (entity: any) => string;
 

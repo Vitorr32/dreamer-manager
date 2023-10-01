@@ -3,9 +3,9 @@ import React from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
-import { AttributePicker } from '../tools/AttributePicker.tool';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
+import { AttributePicker } from '../tools/AttributePicker.tool';
 
 interface IProps {
     displayIDs: string[];
@@ -35,7 +35,7 @@ export function AttributeSelectionButton({ displayIDs, onChange, multi }: IProps
     };
 
     return (
-        <React.Fragment>
+        <>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
                 {selectedAttribute === undefined || displayIDs.length === 0
                     ? t('interface.editor.condition.attr_selector_placeholder')
@@ -43,6 +43,6 @@ export function AttributeSelectionButton({ displayIDs, onChange, multi }: IProps
             </Button>
 
             <AttributePicker showTool={showTool} onSelection={onAttributeSelected} multi={multi} />
-        </React.Fragment>
+        </>
     );
 }

@@ -40,8 +40,8 @@ ipcMain.handle('get-files', async (_, args: { path: string[] }) => {
         try {
             const filePath = path.join(TARGET_PATH, fileName);
             return {
-                fileName: fileName,
-                filePath: filePath,
+                fileName,
+                filePath,
                 isDirectory: fs.statSync(filePath).isDirectory(),
                 isImage: /\.(?:ico|gif|png|jpg|jpeg|webp)$/.test(path.extname(filePath)),
                 extension: path.extname(filePath),
@@ -78,18 +78,18 @@ ipcMain.handle('get-static-files', async (_, args: string[]) => {
         fs.readdirSync(directory).forEach((file) => {
             const absolutePath = path.join(directory, file);
             if (fs.statSync(absolutePath).isDirectory()) return throughDirectory(absolutePath);
-            //Get only the filename from the path, and them create entry of the files object.
+            // Get only the filename from the path, and them create entry of the files object.
             const fileName = path.basename(absolutePath, path.extname(absolutePath));
             if (!files[fileName]) {
-                files[fileName] = { path: '', fileName: fileName, metadata: null };
+                files[fileName] = { path: '', fileName, metadata: null };
             }
 
             if (/\.(?:ico|gif|png|jpg|jpeg|webp)$/.test(path.extname(absolutePath))) {
                 return (files[fileName].path = absolutePath);
-            } else if (path.extname(absolutePath) === '.json') {
+            } if (path.extname(absolutePath) === '.json') {
                 return (files[fileName].metadata = fs.readFileSync(absolutePath, 'utf-8'));
             }
-            return;
+            
         });
     }
     throughDirectory(path.join(RESOURCES_PATH, ...args));

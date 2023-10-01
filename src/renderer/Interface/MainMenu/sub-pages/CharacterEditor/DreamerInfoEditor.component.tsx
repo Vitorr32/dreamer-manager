@@ -28,15 +28,15 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
     const getPotentialLabel = (potential: number): string => {
         if (percentOfMaximumPotential(potential) >= 90) {
             return t('interface.editor.dreamer.potential_ultimate');
-        } else if (percentOfMaximumPotential(potential) >= 80) {
+        } if (percentOfMaximumPotential(potential) >= 80) {
             return t('interface.editor.dreamer.potential_very_high');
-        } else if (percentOfMaximumPotential(potential) >= 65) {
+        } if (percentOfMaximumPotential(potential) >= 65) {
             return t('interface.editor.dreamer.potential_high');
-        } else if (percentOfMaximumPotential(potential) >= 50) {
+        } if (percentOfMaximumPotential(potential) >= 50) {
             return t('interface.editor.dreamer.potential_medium');
-        } else if (percentOfMaximumPotential(potential) >= 35) {
+        } if (percentOfMaximumPotential(potential) >= 35) {
             return t('interface.editor.dreamer.potential_below_average');
-        } else if (percentOfMaximumPotential(potential) >= 20) {
+        } if (percentOfMaximumPotential(potential) >= 20) {
             return t('interface.editor.dreamer.potential_weak');
         }
         return t('interface.editor.dreamer.potential_very_weak');
@@ -161,7 +161,7 @@ export function DreamerInfoEditor({ dreamer, onChange, onNextStep, onPreviousSte
             />
 
             <Typography sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }} variant="body2">
-                {t('interface.editor.dreamer.body_type_label') + ` ${getBodyTypeLabel()}`}
+                {`${t('interface.editor.dreamer.body_type_label')  } ${getBodyTypeLabel()}`}
             </Typography>
 
             <Stack spacing={2} direction="column" sx={{ marginTop: '20px' }} alignItems="center">

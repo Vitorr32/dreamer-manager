@@ -8,6 +8,6 @@ export function getDateLocale(localeString: string) {
     return dateLocales[localeString];
 }
 
-export function getLocaleLabel(localeString: string, long: boolean = false) {
+export function getLocaleLabel(localeString: string, long = false) {
     return LANGUAGE_NAME[localeString];
 }

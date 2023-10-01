@@ -41,7 +41,7 @@ export const RelationshipEntityVariables: Variables = {
     },
 };
 
-//Relationship would be a read-only Entity that is not actually instantiated in game, since the Relationship Modifiers would be calculated in real time.
+// Relationship would be a read-only Entity that is not actually instantiated in game, since the Relationship Modifiers would be calculated in real time.
 export class Relationship extends EntityBase {
     static get _variables() {
         return RelationshipEntityVariables;
@@ -55,14 +55,19 @@ export class Relationship extends EntityBase {
      *  receptorCharacter: External Key, Ethnicity equals to Caucasian
      * */
     favor: number;
+
     love: number;
+
     power: number;
+
     attraction: number;
+
     respect: number;
 
-    //As in, the character that holds the opinion (X respect for Y is 50, X would be the origin character)
+    // As in, the character that holds the opinion (X respect for Y is 50, X would be the origin character)
     originCharacter: string;
-    //And this would be the character that "receives" the opinion (X respect for Y is 50, Y would be the target character).
+
+    // And this would be the character that "receives" the opinion (X respect for Y is 50, Y would be the target character).
     targetCharacter: string;
 
     constructor() {

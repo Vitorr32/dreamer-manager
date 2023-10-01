@@ -19,7 +19,7 @@ export function DescribeFilterNode({ filterNode, isRoot = false, depth = 0 }: IP
     const renderModifierLine = (modifier: Modifier[]) => {};
 
     const getEntityString = ({ modifiedEntityVariables }: Modifier) => {
-        //Check to see if the value of the modifier is a dynamic entity that needs to be mapped using the database of the game.
+        // Check to see if the value of the modifier is a dynamic entity that needs to be mapped using the database of the game.
         if (Object.values(DynamicEntity).includes(modifiedEntityVariables.value)) {
             switch (modifiedEntityVariables.value) {
                 case DynamicEntity.SELF:

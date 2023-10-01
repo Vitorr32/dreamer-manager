@@ -1,6 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Character } from './Character.model';
 import { ConditionTree } from './ConditionTree';
-import { v4 as uuidv4 } from 'uuid';
 import { Effect } from './Effect.model';
 
 export enum Sprite {
@@ -49,7 +49,7 @@ export interface Animation {
 export interface SceneConnection {
     type: ConnectionType;
     choiceCondition?: ConditionTree | null;
-    //ID of the resulting scene
+    // ID of the resulting scene
     resultingScene: string;
     localization?: {
         [key: string]: {
@@ -64,7 +64,7 @@ export enum SceneResultType {
     APPLY_EFFECT_TO_WORLD,
 }
 
-//The resulting changes on the game actors/data from the respective scene end. these effects will be applied on the end of every scene with contains a result.
+// The resulting changes on the game actors/data from the respective scene end. these effects will be applied on the end of every scene with contains a result.
 export interface SceneResult {
     type: SceneResultType;
     flagID?: string;
@@ -91,25 +91,27 @@ export class Scene {
 
     public sceneResults: SceneResult[] | null = null;
 
-    //The string that will appear as the content of the dialog box
+    // The string that will appear as the content of the dialog box
     public dialog: string | null = null;
-    //The string that will appear as the "Speaker" of the scene, above the dialog box, may be empty
+
+    // The string that will appear as the "Speaker" of the scene, above the dialog box, may be empty
     public speakerString: string | null = null;
 
-    //Which actors will appear on the scene
+    // Which actors will appear on the scene
     public actorsState: {
         [key: string]: {
-            //Is the actor currently talking?
+            // Is the actor currently talking?
             isHighlighted: boolean;
-            //The positioning and animation that this actors will go trough on this scene.
+            // The positioning and animation that this actors will go trough on this scene.
             animations: Animation[];
         };
     } = {};
-    //The source path of the background image
+
+    // The source path of the background image
     public backgroundImagePath: string[] | null = null;
 
     constructor(id?: string) {
-        this.id = id || 'scene_' + uuidv4();
+        this.id = id || `scene_${  uuidv4()}`;
     }
 
     public runScene(actors: Character[], event: Event) {}

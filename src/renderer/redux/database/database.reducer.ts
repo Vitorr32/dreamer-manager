@@ -8,9 +8,9 @@ import { PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
 import { PaperPiece } from 'renderer/shared/models/base/PaperPiece.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
-import { Trait } from '../../shared/models/base/Trait.model';
 import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
 import { Package } from 'renderer/shared/models/files/Package.model';
+import { Trait } from '../../shared/models/base/Trait.model';
 
 export interface MappedDatabase {
     packages: { [id: string]: Package };
@@ -79,7 +79,7 @@ export const databaseSlice = createSlice({
 
             state.packages.forEach((packageData) => {
                 if (state.mappedDatabase.packages[packageData.id] && packageData.id !== BASE_GAME_PACKAGE_ID) {
-                    throw new Error('A package with id ' + packageData.id + ' is duplicated');
+                    throw new Error(`A package with id ${  packageData.id  } is duplicated`);
                 }
 
                 state.mappedDatabase.packages[packageData.id] = packageData;
@@ -99,7 +99,7 @@ export const databaseSlice = createSlice({
                     state.characters = initialization ? newCharacters : [...state.nations, ...newCharacters];
                     state.characters.forEach((character) => {
                         if (state.mappedDatabase.characters[character.id] && !overwrite) {
-                            throw new Error('A characters with id ' + character.id + ' is duplicated');
+                            throw new Error(`A characters with id ${  character.id  } is duplicated`);
                         }
 
                         state.mappedDatabase.characters[character.id] = character;
@@ -110,7 +110,7 @@ export const databaseSlice = createSlice({
                     state.paperDolls = initialization ? newPaperDolls : [...state.paperDolls, ...newPaperDolls];
                     state.paperDolls.forEach((paperDoll) => {
                         if (state.mappedDatabase.paperDolls[paperDoll.id] && !overwrite) {
-                            throw new Error('A paperDolls with id ' + paperDoll.id + ' is duplicated');
+                            throw new Error(`A paperDolls with id ${  paperDoll.id  } is duplicated`);
                         }
 
                         state.mappedDatabase.paperDolls[paperDoll.id] = paperDoll;
@@ -121,7 +121,7 @@ export const databaseSlice = createSlice({
                     state.nations = initialization ? newNations : [...state.nations, ...newNations];
                     state.nations.forEach((nation) => {
                         if (state.mappedDatabase.nations[nation.id] && !overwrite) {
-                            throw new Error('A nation with id ' + nation.id + ' is duplicated');
+                            throw new Error(`A nation with id ${  nation.id  } is duplicated`);
                         }
 
                         state.mappedDatabase.nations[nation.id] = nation;
@@ -132,7 +132,7 @@ export const databaseSlice = createSlice({
                     state.traits = initialization ? newTraits : [...state.traits, ...newTraits];
                     state.traits.forEach((trait) => {
                         if (state.mappedDatabase.traits[trait.id] && !overwrite) {
-                            throw new Error('A trait with id ' + trait.id + ' is duplicated');
+                            throw new Error(`A trait with id ${  trait.id  } is duplicated`);
                         }
 
                         state.mappedDatabase.traits[trait.id] = trait;
@@ -143,7 +143,7 @@ export const databaseSlice = createSlice({
                     state.attributes = initialization ? newAttributes : [...state.attributes, ...newAttributes];
                     state.attributes.forEach((attr) => {
                         if (state.mappedDatabase.attributes[attr.id] && !overwrite) {
-                            throw new Error('A attribute with id ' + attr.id + ' is duplicated');
+                            throw new Error(`A attribute with id ${  attr.id  } is duplicated`);
                         }
 
                         state.mappedDatabase.attributes[attr.id] = attr;
@@ -154,7 +154,7 @@ export const databaseSlice = createSlice({
                     state.cities = initialization ? newCities : [...state.cities, ...newCities];
                     state.cities.forEach((city) => {
                         if (state.mappedDatabase.cities[city.id] && !overwrite) {
-                            throw new Error('A city with id ' + city.id + ' is duplicated');
+                            throw new Error(`A city with id ${  city.id  } is duplicated`);
                         }
 
                         state.mappedDatabase.cities[city.id] = city;
@@ -164,21 +164,21 @@ export const databaseSlice = createSlice({
                     state.events = value;
                     state.events.forEach((event) => {
                         if (state.mappedDatabase.events[event.id] && !overwrite) {
-                            throw new Error('A Event with id ' + event.id + ' is duplicated');
+                            throw new Error(`A Event with id ${  event.id  } is duplicated`);
                         }
 
                         if (event.flags) {
                             state.flags.push(...event.flags);
                             event.flags.forEach((flag) => {
                                 if (state.mappedDatabase.flags[flag.id] && !overwrite) {
-                                    throw new Error('A Flag with id ' + event.id + ' is duplicated');
+                                    throw new Error(`A Flag with id ${  event.id  } is duplicated`);
                                 }
 
                                 state.mappedDatabase.flags[flag.id] = flag;
                             });
                         }
 
-                        //Map the visual novel data to a newly created instance using the prototype.
+                        // Map the visual novel data to a newly created instance using the prototype.
                         event.visualNovel = Object.assign(Object.create(VisualNovel.prototype), event.visualNovel);
                         state.mappedDatabase.events[event.id] = event;
                     });
@@ -189,14 +189,14 @@ export const databaseSlice = createSlice({
                     state.paperPieces = entities;
                     state.paperPieces.forEach((entity) => {
                         if (state.mappedDatabase.paperPieces[entity.id] && !overwrite) {
-                            throw new Error('A Paper Piece with id ' + entity.id + ' is duplicated');
+                            throw new Error(`A Paper Piece with id ${  entity.id  } is duplicated`);
                         }
 
                         state.mappedDatabase.paperPieces[entity.id] = entity;
                     });
                     break;
                 default:
-                    console.error('Unknown load update: ' + key);
+                    console.error(`Unknown load update: ${  key}`);
                     break;
             }
 

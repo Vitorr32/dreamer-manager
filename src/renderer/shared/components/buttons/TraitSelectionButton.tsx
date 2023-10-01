@@ -34,7 +34,7 @@ export function TraitSelectionButton({ displayIDs, onChange, multi }: IProps) {
     };
 
     return (
-        <React.Fragment>
+        <>
             <Button variant="contained" endIcon={<ArrowDropDown />} onClick={() => setShowTool(!showTool)}>
                 {selectedValue === undefined || displayIDs.length === 0
                     ? t('interface.editor.condition.trait_selector_placeholder')
@@ -42,6 +42,6 @@ export function TraitSelectionButton({ displayIDs, onChange, multi }: IProps) {
             </Button>
 
             <TraitPicker showTool={showTool} onSelection={onValueSelected} multi={multi} />
-        </React.Fragment>
+        </>
     );
 }

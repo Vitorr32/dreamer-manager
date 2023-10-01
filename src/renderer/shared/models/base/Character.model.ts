@@ -94,7 +94,7 @@ export enum CharacterVariablesKey {
     PAPER_DOLL = 'paperDoll',
     BODY_TYPE = 'bodyType',
 
-    //Languages
+    // Languages
     ELBEAN = 'elbean',
     WAKOKUAN = 'wakokuan',
     LECHIAN = 'lechian',
@@ -272,49 +272,72 @@ export class Character extends EntityBase {
     static get _variables() {
         return CharacterEntityVariables;
     }
+
     // ID Pattern : CHAR_*NUMBER*
     public id: string;
+
     public name: string;
+
     public surname: string;
+
     public nickname: string;
+
     public age: number;
+
     public birthday: Date;
+
     public paperDoll: string;
+
     // If this character is available if they have the correct age, otherwise they will only appear after a event effect.
     public isActive: boolean;
+
     // The id of the Nation that this character has citizenship.
     public nationality: string;
+
     // The id of City where this character was born and raised.
     public hometown: string;
+
     // The id of the the City where the character currently lives in
     public residenceLocation: string;
+
     // How wealth is the standard of living of this character.
     public standardOfLiving: Affluence;
+
     // The type of character, currently it can be a Staff, Dreamer or a Retired Dreamer (That can be a staff)
     public type: CharacterType;
 
     public height: number;
+
     public weight: number;
+
     public fatPercentage: number;
 
     public bodyType: BodyType;
 
     public isPlayer: boolean;
-    //The character may be unemployed
+
+    // The character may be unemployed
     public agency?: string;
 
-    //What languages does this character know, and what is his fluency on them?
+    // What languages does this character know, and what is his fluency on them?
     public elbean: LanguageFluency;
+
     public wakokuan: LanguageFluency;
+
     public lechian: LanguageFluency;
 
     public ethnicity: Ethnicity;
+
     public culture: Culture;
+
     public gender: Gender = Gender.FEMALE;
 
     public traits: string[] = [];
+
     public flags: string[] = [];
+
     public sprites: string[] = [];
+
     public relationshipsModifiers: string[] = [];
 
     constructor(id?: string, sprites?: string[], name?: string, surname?: string, nickname?: string, birthday?: Date) {
@@ -343,20 +366,20 @@ export class Character extends EntityBase {
 
         if (bmi < 19 && this.fatPercentage < 5) {
             return BodyType.ANOREXIC;
-        } else if (bmi < 19 && this.fatPercentage < 10) {
+        } if (bmi < 19 && this.fatPercentage < 10) {
             return BodyType.SKINNY;
-        } else if (bmi < 19) {
+        } if (bmi < 19) {
             return BodyType.UNDERWEIGHT;
-        } else if (bmi < 25 && this.fatPercentage < 20) {
+        } if (bmi < 25 && this.fatPercentage < 20) {
             return BodyType.FIT;
-        } else if (bmi < 25) {
+        } if (bmi < 25) {
             return BodyType.AVERAGE;
-        } else if (this.fatPercentage < 20) {
+        } if (this.fatPercentage < 20) {
             return BodyType.MUSCULAR;
-        } else if (this.fatPercentage < 30) {
+        } if (this.fatPercentage < 30) {
             return BodyType.OVERWEIGHT;
-        } else {
+        } 
             return BodyType.OBESE;
-        }
+        
     }
 }

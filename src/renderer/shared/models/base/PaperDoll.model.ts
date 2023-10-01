@@ -101,15 +101,20 @@ export class PaperDoll extends EntityBase {
     }
 
     id: string;
+
     isCustom: boolean;
 
-    //The hair/face/body piece of the paper doll are subdivided based on their emotions
+    // The hair/face/body piece of the paper doll are subdivided based on their emotions
     emotions: DollPieces;
 
     upperUnderwear: string;
+
     lowerUnderwear: string;
+
     upperClothing: string;
+
     lowerClothing: string;
+
     fullBodyClothing: string;
 
     constructor(gender: Gender, id?: string, baseBody?: BodyPiece, baseFace?: FacePiece, baseHair?: HairPiece) {

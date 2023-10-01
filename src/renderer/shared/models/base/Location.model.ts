@@ -29,9 +29,9 @@ export interface Dimension {
 }
 
 export interface LocationFeatures {
-    //ID of the owner of this location.
+    // ID of the owner of this location.
     ownedBy?: string;
-    //Capacity of occupants for shows
+    // Capacity of occupants for shows
     capacity?: number;
 }
 
@@ -39,14 +39,17 @@ export class Location {
     id: string;
 
     position: Position;
+
     dimension: Dimension;
+
     features: LocationFeatures;
 
     type: LocationType;
+
     outside: boolean;
 
     constructor() {
-        this.id = 'location_' + uuidv4();
+        this.id = `location_${  uuidv4()}`;
 
         this.position = {
             x: 0,

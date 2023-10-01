@@ -20,7 +20,7 @@ export function AttributeTooltip({ attribute, children }: PropsWithChildren<IPro
                 </>
             }
         >
-            {children ? children : null}
+            {children || null}
         </Tooltip>
     );
 }

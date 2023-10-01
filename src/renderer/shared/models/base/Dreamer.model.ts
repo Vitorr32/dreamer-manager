@@ -40,7 +40,7 @@ export enum DreamerVariablesKey {
     DREAMER_OBJECTIVE = 'dreamerObjective',
     PREFERRED_PATH = 'preferredCareerPath',
     DISLIKED_PATH = 'dislikedCareerPath',
-    //Keys for dynamic attributes should be the same as their ID on the Database.
+    // Keys for dynamic attributes should be the same as their ID on the Database.
     INTELLIGENCE = 'intelligence',
     PHYSICAL_CONDITION = 'physicalCondition',
     ATTRACTIVENESS = 'attractiveness',
@@ -378,40 +378,70 @@ export class Dreamer extends Character {
     static get _variables(): Variables {
         return { ...CharacterEntityVariables, ...DreamerEntityVariables };
     }
+
     // Family situation that can influence traits and traumas
     public familySituation: FamilySituation;
 
     // A number, from 50 (Very Bad) to 200 (Perfect) that is distributed between all the dreamers skills trough training and growing up.
     public abilityPotential: number = 50;
+
     public dreamerObjective: CareerObjective;
+
     public preferredCareerPath: CareerPath[] = [];
+
     public dislikedCareerPath: CareerPath[] = [];
-    //Dynamic Attributes of a Dreamer, they can grow and decrease over time and with events.
+
+    // Dynamic Attributes of a Dreamer, they can grow and decrease over time and with events.
     public intelligence: number = 1;
+
     public physicalCondition: number = 1;
+
     public attractiveness: number = 1;
+
     public charisma: number = 1;
+
     public willpower: number = 1;
+
     public singing: number = 1;
+
     public dancing: number = 1;
+
     public coordination: number = 1;
+
     public concentration: number = 1;
+
     public improvisation: number = 1;
+
     public composure: number = 1;
+
     public memorization: number = 1;
+
     public bravery: number = 1;
+
     public creativity: number = 1;
+
     public expressivity: number = 1;
+
     public acting: number = 1;
+
     public lyricism: number = 1;
+
     public seduction: number = 1;
+
     public entertainment: number = 1;
+
     public persuasion: number = 1;
+
     public elegancy: number = 1;
+
     public empathy: number = 1;
+
     public leadership: number = 1;
+
     public fitness: number = 1;
+
     public teamwork: number = 1;
+
     public stamina: number = 1;
 
     public getCurrentAbility(): number {

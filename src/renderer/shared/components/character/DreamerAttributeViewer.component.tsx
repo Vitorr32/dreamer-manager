@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
 import { Dreamer, DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
-import { AttributeTooltip } from '../tooltip/AttributeTooltip.component';
 import { Category } from 'renderer/shared/models/enums/Category.enum';
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import SunlightIcon from '@mui/icons-material/Brightness7';
@@ -11,6 +10,7 @@ import StarlightIcon from '@mui/icons-material/AutoAwesome';
 import NightsIcon from '@mui/icons-material/NightsStay';
 import BasicIcon from '@mui/icons-material/Person';
 import { useState } from 'react';
+import { AttributeTooltip } from '../tooltip/AttributeTooltip.component';
 
 interface IProps {
     dreamer: Dreamer;
@@ -67,8 +67,8 @@ export function DreamerAttributeViewer({ dreamer, editable = false, hasError = f
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: '1fr 1fr', columnGap: '10px', rowGap: '10px' }}>
             {/* SUNLIGHT ATTRIBUTES */}
             <Stack
-                spacing={'2px'}
-                direction={'column'}
+                spacing="2px"
+                direction="column"
                 sx={{
                     padding: '10px',
                     borderRadius: '10px',
@@ -86,8 +86,8 @@ export function DreamerAttributeViewer({ dreamer, editable = false, hasError = f
 
             {/* STARLIGHT ATTRIBUTES */}
             <Stack
-                spacing={'2px'}
-                direction={'column'}
+                spacing="2px"
+                direction="column"
                 sx={{
                     padding: '10px',
                     borderRadius: '10px',
@@ -105,8 +105,8 @@ export function DreamerAttributeViewer({ dreamer, editable = false, hasError = f
 
             {/* MOONLIGHT ATTRIBUTES */}
             <Stack
-                spacing={'2px'}
-                direction={'column'}
+                spacing="2px"
+                direction="column"
                 sx={{
                     padding: '10px',
                     borderRadius: '10px',
@@ -124,8 +124,8 @@ export function DreamerAttributeViewer({ dreamer, editable = false, hasError = f
 
             {/* BASIC ATTRIBUTES */}
             <Stack
-                spacing={'2px'}
-                direction={'column'}
+                spacing="2px"
+                direction="column"
                 sx={{
                     padding: '10px',
                     borderRadius: '10px',

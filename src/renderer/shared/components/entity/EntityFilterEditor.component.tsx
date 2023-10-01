@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { DynamicEntity, EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
 import { CopyClassInstance, GetEntityTypeOfDynamicEntity, GetVariablesOfEntity } from 'renderer/shared/utils/General';
+import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { EntitySelect } from './EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
 import { VariableValueOperator } from '../variables/VariableValueOperator.component';
 import { VariableValueInput } from '../variables/VariableValueInput.component';
-import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 
 interface IProps {
     entityFilter: EntityVariableValue;
@@ -22,7 +22,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
 
     useEffect(() => {
-        //Populate selected variable from data comming from props.
+        // Populate selected variable from data comming from props.
         if (entityFilter.entityType && entityFilter.variableKey) {
             setSelectedVariable(GetVariablesOfEntity(entityFilter.entityType)[entityFilter.variableKey]);
         } else {
@@ -48,15 +48,15 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
             updatedFilter.operator = null;
             updatedFilter.value = null;
 
-            //In case the entity type is actually a dynamic entity value, populate the entity type and specify the dynamic entity value.
+            // In case the entity type is actually a dynamic entity value, populate the entity type and specify the dynamic entity value.
             if (Object.values(DynamicEntity).includes(newValue as DynamicEntity)) {
                 updatedFilter.specifiedDynamicEntity = newValue as DynamicEntity;
                 updatedFilter.entityType = GetEntityTypeOfDynamicEntity(newValue as DynamicEntity);
                 onFilterChange(updatedFilter);
                 return;
-            } else {
+            } 
                 updatedFilter.specifiedDynamicEntity = null;
-            }
+            
         }
 
         updatedFilter[key] = newValue;

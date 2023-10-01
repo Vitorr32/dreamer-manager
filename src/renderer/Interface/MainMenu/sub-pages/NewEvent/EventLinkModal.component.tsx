@@ -4,6 +4,7 @@ import { CompositeEntityFilter } from 'renderer/shared/components/entity/Composi
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { ConnectionType, Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
+
 interface IProps {
     open: boolean;
     onClose: () => any;

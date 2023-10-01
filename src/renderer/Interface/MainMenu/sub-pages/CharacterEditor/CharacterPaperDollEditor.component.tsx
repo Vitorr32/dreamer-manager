@@ -57,7 +57,7 @@ export function CharacterPaperDollEditor({ character, paperDoll, onChange, onPre
                 </Select>
             </FormControl>
 
-            <Grid container spacing={2} justifyContent={'center'}>
+            <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={8}>
                     <PaperDollViewer
                         character={character}

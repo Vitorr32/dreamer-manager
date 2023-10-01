@@ -461,7 +461,7 @@ export const en_US = {
                     paperDoll: 'Paper Doll/Sprites',
                     bodyType: 'Body Type',
 
-                    //Language Knowledge
+                    // Language Knowledge
                     elbean: 'Elbean',
                     wakokuan: 'Wakokuan',
                     lechian: 'Lechian',
@@ -720,7 +720,7 @@ export const en_US = {
             },
             variable: {
                 operator: {
-                    //Filtering Operator
+                    // Filtering Operator
                     bigger_than: 'Bigger than',
                     equal_or_bigger_than: 'Equal or bigger than',
                     lesser_than: 'Less than',
@@ -730,7 +730,7 @@ export const en_US = {
                     contains: 'Contains / Has',
                     dont_contain: "Does not contain / Don't have",
                     starts_with: 'Starts with',
-                    //Editor Operator
+                    // Editor Operator
                     change_by: 'Change {{variable}} value by',
                     change_to: 'Change {{variable}} value to',
                     insert_into_array: 'Insert into {{variable}} list',

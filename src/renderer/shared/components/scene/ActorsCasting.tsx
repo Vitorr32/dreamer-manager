@@ -27,11 +27,11 @@ import { GENERIC_SPRITES_FOLDER, PLACEHOLDER_ACTOR_SPRITE, PLAYER_CHARACTER, SPR
 import { Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
-import { ResourcesSearch } from '../file/ResourcesSearch';
 import { Actor, ActorType } from 'renderer/shared/models/base/Actor.model';
 import { Character } from 'renderer/shared/models/base/Character.model';
-import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
+import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
+import { ResourcesSearch } from '../file/ResourcesSearch';
 
 interface IProps {
     event: Event;
@@ -97,8 +97,8 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
     };
 
     const onActorConditionEdited = (originalActor: Actor, indexOfActor: number, updatedTree: EntityFilterTree): void => {
-        const newActor = Object.assign({}, originalActor);
-        const modifiedEvent = Object.assign({}, event);
+        const newActor = { ...originalActor};
+        const modifiedEvent = { ...event};
 
         newActor.actorCastingFilter = updatedTree;
         modifiedEvent.actors[indexOfActor] = newActor;
@@ -116,7 +116,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
     };
 
     const addActorConditionToActor = (originalActor: Actor, index: number): void => {
-        const newActor = Object.assign({}, originalActor);
+        const newActor = { ...originalActor};
         const modifiedEvent = CopyClassInstance(event);
 
         newActor.actorCastingFilter = new EntityFilterTree();
@@ -181,18 +181,18 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
         setSelectedActorIndex(index);
     };
 
-    const onSpriteSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal: boolean = true): Promise<void> => {
+    const onSpriteSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal = true): Promise<void> => {
         if (!fileName || !filePath) {
             return;
         }
 
-        let setFilePath = internal
+        const setFilePath = internal
             ? (await GetFileFromResources(internalPath)).path
             : ApplyFileProtocol(await window.electron.fileSystem.saveFilesToTempFolder([{ name: fileName, path: filePath }]));
 
-        //If the file selected is not internal, it should be added to the temp paths as it was copied to temp folder.
+        // If the file selected is not internal, it should be added to the temp paths as it was copied to temp folder.
         if (!internal) {
-            const newTempPaths = Object.assign({}, pathOfTempImages);
+            const newTempPaths = { ...pathOfTempImages};
             newTempPaths[selectedActor.id] = setFilePath;
 
             setPathOfTempImages(newTempPaths);

@@ -38,7 +38,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
     const [selectedSceneResult, setSelectedSceneResult] = useState<number>();
 
     const addResultToScene = (resultToAdd: SceneResultType): void => {
-        const updatedSceneResults: SceneResult[] = !!sceneResults ? CopyClassInstance(sceneResults) : [];
+        const updatedSceneResults: SceneResult[] = sceneResults ? CopyClassInstance(sceneResults) : [];
 
         switch (resultToAdd) {
             case SceneResultType.APPLY_EFFECT_TO_WORLD:
@@ -78,7 +78,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
     };
 
     return (
-        <Dialog className={`scene-result__dialog`} PaperProps={{ sx: sceneHasResult() ? { width: '95vw', maxWidth: 'unset' } : {} }} open={isOpen} onClose={onClose}>
+        <Dialog className="scene-result__dialog" PaperProps={{ sx: sceneHasResult() ? { width: '95vw', maxWidth: 'unset' } : {} }} open={isOpen} onClose={onClose}>
             <DialogContent>
                 <Typography variant="h5">{t('interface.editor.event.scene_effect_heading')}</Typography>
 
@@ -99,7 +99,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                                 index={index}
                                                 onChange={(index, effect) => sceneResultsModified(index, 'effect', effect)}
                                                 options={{
-                                                    specifiedActors: !!actors ? actors : []
+                                                    specifiedActors: actors || []
                                                 }}
                                             />
                                         )}
@@ -108,7 +108,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                             <FormControl fullWidth variant="filled">
                                                 <InputLabel>{t('interface.editor.event.scene_effect_label_flags_select')}</InputLabel>
                                                 <Select value={sceneResult.flagID || ''} onChange={(event) => sceneResultsModified(index, 'flagID', event.target.value)}>
-                                                    <MenuItem value=""></MenuItem>
+                                                    <MenuItem value="" />
                                                     {flags.map((flag) => (
                                                         <MenuItem value={flag.id}>{flag.displayName}</MenuItem>
                                                     ))}
@@ -121,7 +121,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                             <FormControl fullWidth variant="filled">
                                                 <InputLabel>{t('interface.editor.event.scene_effect_label_actors_select')}</InputLabel>
                                                 <Select value={sceneResult.actorID || ''} onChange={(event) => sceneResultsModified(index, 'actorID', event.target.value)}>
-                                                    <MenuItem value=""></MenuItem>
+                                                    <MenuItem value="" />
                                                     {actors?.map((actor) => (
                                                         <MenuItem value={actor.id}>{actor.alias}</MenuItem>
                                                     ))}

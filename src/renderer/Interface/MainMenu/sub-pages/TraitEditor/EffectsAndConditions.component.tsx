@@ -3,7 +3,6 @@ import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { MAX_NUMBER_OF_EFFECTS } from 'renderer/shared/Constants';
-import { EffectEditor } from '../../../../shared/components/effects/EffectEditor.component';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
@@ -11,6 +10,7 @@ import { EffectList } from 'renderer/shared/components/effects/EffectList.compon
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { DescribeEffect } from 'renderer/shared/components/summary/DescribeEffect.component';
+import { EffectEditor } from '../../../../shared/components/effects/EffectEditor.component';
 
 interface IProps {
     previousStep: () => void;
@@ -64,7 +64,7 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
             {editEffectIndex !== -1 && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={trait.effects[editEffectIndex]} />}
 
             {trait.effects.map((effect, index) => (
-                <DescribeEffect key={'effect_summary_' + index} effect={effect} />
+                <DescribeEffect key={`effect_summary_${  index}`} effect={effect} />
             ))}
 
             <Box sx={{ flex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>

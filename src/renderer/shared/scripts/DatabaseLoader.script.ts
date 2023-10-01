@@ -43,12 +43,12 @@ export async function GameStartDatabaseLoad(packages: Package[]): Promise<void> 
     store.dispatch(databaseLoadEntity({ key: EntityType.CHARACTERS, value: charactersLoaded, overwrite: true, initialization: true, progress: 20 }));
 
     const paperDollsLoaded = await LoadDatabaseFilesFromPackages<PaperDoll>([DATABASE_FOLDER, PAPER_DOLL_FOLDER], packages, async (data: PaperDoll) => {
-        //If the paper doll uses the paper pieces system, then we don't need to get the absolute path of any custom sprite
+        // If the paper doll uses the paper pieces system, then we don't need to get the absolute path of any custom sprite
         if (!data.isCustom) {
             return data;
         }
 
-        for (let emotion in Emotion) {
+        for (const emotion in Emotion) {
             const currentEmotion: Emotion = Emotion[emotion as keyof typeof Emotion];
             const currentEmotionPaperDoll = data.emotions[currentEmotion];
 
@@ -116,7 +116,7 @@ export async function GetEntitiesFromDatabaseFile<T>(path: string[], originPacka
     });
 
     if (postProcessingFunction) {
-        const processedObjects = loadedObjects.map(async (object) => await postProcessingFunction(object));
+        const processedObjects = loadedObjects.map(async (object) => postProcessingFunction(object));
         return Promise.all(processedObjects);
     }
 

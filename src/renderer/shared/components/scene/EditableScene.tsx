@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { BACKGROUND_IMAGES_FOLDER, EVENT_BACKGROUND_IMAGES_FOLDER, IMAGES_FOLDER, PLACEHOLDER_EVENT_BACKGROUND, SPRITES_FOLDER } from 'renderer/shared/Constants';
 import { Scene, SceneResult } from 'renderer/shared/models/base/Scene.model';
 import { ApplyFileProtocol, GetFileFromResources } from 'renderer/shared/utils/StringOperations';
-import { ResourcesSearch } from '../file/ResourcesSearch';
 import { Actor, Event } from 'renderer/shared/models/base/Event.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { ActorOnScene } from './ActorOnScene';
 import EditIcon from '@mui/icons-material/Edit';
+import { ActorOnScene } from './ActorOnScene';
+import { ResourcesSearch } from '../file/ResourcesSearch';
 import { SceneResultsDialog } from './SceneResultsDialog';
 import { AnimationEditDialog } from './AnimationEditDialog';
 
@@ -79,18 +79,18 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         });
     };
 
-    const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal: boolean = true): Promise<void> => {
+    const onBackgroundSelected = async (fileName: string, filePath: string, internalPath: string[] = [], internal = true): Promise<void> => {
         if (!fileName || !filePath) {
             return;
         }
 
-        let setFilePath = internal
+        const setFilePath = internal
             ? (await GetFileFromResources(internalPath)).path
             : ApplyFileProtocol(await window.electron.fileSystem.saveFilesToTempFolder([{ name: fileName, path: filePath }]));
 
-        //If the file selected is not internal, it should be added to the temp paths as it was copied to temp folder.
+        // If the file selected is not internal, it should be added to the temp paths as it was copied to temp folder.
         if (!internal) {
-            const newTempPaths = Object.assign({}, pathOfTempImages);
+            const newTempPaths = { ...pathOfTempImages};
             newTempPaths[scene.id] = setFilePath;
 
             setPathOfTempImages(newTempPaths);
@@ -102,7 +102,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
         }
 
         setBackgroundSelectState(false);
-        setImagePaths(Object.assign({}, imagePaths, { scene: setFilePath }));
+        setImagePaths({ ...imagePaths, scene: setFilePath});
         setGalleryState(false);
     };
 
@@ -182,7 +182,7 @@ export function EditableScene({ event, scene, onSceneEdited, pathOfTempImages, s
                         <Button onClick={() => setBackgroundSelectState(true)}>{t('interface.editor.event.edit_background_cta')}</Button>
                     </Box>
                     {/* Background render on the stage ////////////////////////////////// */}
-                    <img className="scene__background utils__full-width-absolute-child utils__full-height" src={imagePaths?.scene}></img>
+                    <img className="scene__background utils__full-width-absolute-child utils__full-height" src={imagePaths?.scene} />
 
                     {/* Actors render on the stage ////////////////////////////////////// */}
                     {Object.keys(scene.actorsState).map((actorID, index) => {

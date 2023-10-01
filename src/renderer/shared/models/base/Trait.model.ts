@@ -1,8 +1,6 @@
-import { Effect } from './Effect.model';
 import { v4 as uuidv4 } from 'uuid';
-import { LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
-import { ICONS_FOLDER } from 'renderer/shared/Constants';
-import { PLACEHOLDER_TRAIT_ICON } from 'renderer/shared/Constants';
+import { LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER , ICONS_FOLDER , PLACEHOLDER_TRAIT_ICON } from 'renderer/shared/Constants';
+import { Effect } from './Effect.model';
 import { EntityBase } from './Entity.model';
 
 export enum TraitType {
@@ -17,9 +15,13 @@ export enum TraitType {
 
 export class Trait extends EntityBase {
     public id: string;
+
     public type: TraitType;
+
     public effects: Effect[];
+
     public iconPath: string[];
+
     public absoluteIconPath?: string;
 
     public localization: {
@@ -32,7 +34,7 @@ export class Trait extends EntityBase {
     constructor() {
         super();
 
-        this.id = 'trait_' + uuidv4();
+        this.id = `trait_${  uuidv4()}`;
 
         this.iconPath = [ICONS_FOLDER, TRAIT_DATABASE_FOLDER, PLACEHOLDER_TRAIT_ICON];
         this.localization = {};

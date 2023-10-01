@@ -5,13 +5,13 @@ import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilter
 import { Box, Button, Chip, Divider, FormHelperText, IconButton, Paper, Tooltip, Typography } from '@mui/material';
 import { CopyClassInstance, FilterPossibleDynamicEntitiesForTriggerType } from 'renderer/shared/utils/General';
 import { useTranslation } from 'react-i18next';
-import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
-import { EffectTriggerSelection } from './EffectTriggerSelection.component';
-import { EffectPeriodSelection } from './EffectPeriodSelection.component';
 import { Modifier } from 'renderer/shared/models/base/Modifier';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import { EffectPeriodSelection } from './EffectPeriodSelection.component';
+import { EffectTriggerSelection } from './EffectTriggerSelection.component';
+import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 
 interface IProps {
     effect: Effect;
@@ -53,7 +53,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
     };
 
     const onAddConditionTree = () => {
-        if (!!effect.conditionTree) {
+        if (effect.conditionTree) {
             console.error('Tree already is there');
             return;
         }

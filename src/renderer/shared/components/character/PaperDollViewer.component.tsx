@@ -65,7 +65,7 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
             case Emotion.SCARED:
             case Emotion.ANNOYED:
             case Emotion.EMBARRASSED:
-                return !!paperDoll.emotions[emotion] ? emotion : Emotion.NEUTRAL;
+                return paperDoll.emotions[emotion] ? emotion : Emotion.NEUTRAL;
             default:
                 return Emotion.NEUTRAL;
         }
@@ -108,14 +108,14 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
         console.log('emotionSprite.customFilePath.pop()', emotionSprite.customFilePath?.pop());
         console.log('GetFileNameFromPath(emotionSprite.customFileAbsolutePath)', GetFileNameFromPath(emotionSprite.customFileAbsolutePath));
 
-        //If there is no original custom file before the current one.
+        // If there is no original custom file before the current one.
         if (!emotionSprite.customFilePath || emotionSprite.customFilePath.length === 0) {
             updatedPaperDoll.emotions[emotion].customFileAbsolutePath = null;
             onPaperDollChange(updatedPaperDoll);
             return;
         }
 
-        //If there is a original custom file that is different from the current one, rollback to that one.
+        // If there is a original custom file that is different from the current one, rollback to that one.
         if (GetFileNameFromPath(emotionSprite.customFileAbsolutePath) !== emotionSprite.customFilePath.pop()) {
             const originalFileInfo = await GetFileFromResources(emotionSprite.customFilePath);
             updatedPaperDoll.emotions[emotion].customFileAbsolutePath = ApplyFileProtocol(originalFileInfo.path);
@@ -123,7 +123,7 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
             return;
         }
 
-        //If the image removed is the original one
+        // If the image removed is the original one
         if (GetFileNameFromPath(emotionSprite.customFileAbsolutePath) === emotionSprite.customFilePath.pop()) {
             updatedPaperDoll.emotions[emotion].customFileAbsolutePath = null;
             updatedPaperDoll.emotions[emotion].customFilePath = null;
@@ -151,9 +151,9 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
 
             {!paperDoll.isCustom && (
                 <>
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.BODY)?.absolutePath}></img>
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.HAIR)?.absolutePath}></img>
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.FACE)?.absolutePath}></img>
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.BODY)?.absolutePath} />
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.HAIR)?.absolutePath} />
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.FACE)?.absolutePath} />
                 </>
             )}
         </Stack>

@@ -51,7 +51,7 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
             ...errorState,
         };
 
-        //Required Check
+        // Required Check
         [
             CharacterVariablesKey.ID,
             CharacterVariablesKey.TYPE,
@@ -65,7 +65,7 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
             CharacterVariablesKey.CULTURE,
             CharacterVariablesKey.TRAITS,
         ].forEach((fieldKey) => {
-            let fieldHasError = character[fieldKey] ? false : true;
+            const fieldHasError = !character[fieldKey];
             updatedInfoErrors[fieldKey] = fieldHasError;
 
             if (fieldHasError && !hasError) {
@@ -81,7 +81,7 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
         onNextStep();
     };
 
-    const onInputChange = (key: CharacterVariablesKey, value: any, isNumberInput: boolean = false) => {
+    const onInputChange = (key: CharacterVariablesKey, value: any, isNumberInput = false) => {
         if (isNumberInput) {
             try {
                 value = parseFloat(value);
@@ -91,11 +91,11 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
         }
 
         onChange(key, value);
-        setErrorState({ ...errorState, [key]: value ? false : true });
+        setErrorState({ ...errorState, [key]: !value });
     };
 
     return (
-        <Stack direction="column" component={'form'} noValidate autoComplete="off" onSubmit={onBasicInfoSubmit}>
+        <Stack direction="column" component="form" noValidate autoComplete="off" onSubmit={onBasicInfoSubmit}>
             <TextField
                 label={t('interface.editor.character.input_label_id')}
                 required

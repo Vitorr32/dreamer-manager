@@ -4,7 +4,7 @@ import { World } from 'renderer/shared/models/base/World.model';
 import { MappedDatabase } from '../database/database.reducer';
 
 export interface GameState {
-    //Determine if the game is currently running or not
+    // Determine if the game is currently running or not
     isActive: boolean;
     world: World;
 }

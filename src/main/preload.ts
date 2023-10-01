@@ -5,10 +5,10 @@ export type Channels = 'ipc-example';
 contextBridge.exposeInMainWorld('electron', {
     fileSystem: {
         getFileFromResources(path: string[] = []) {
-            return ipcRenderer.invoke('get-file', { path: path });
+            return ipcRenderer.invoke('get-file', { path });
         },
         getFilesInPath(path: string[] = []) {
-            return ipcRenderer.invoke('get-files', { path: path });
+            return ipcRenderer.invoke('get-files', { path });
         },
         // Static resources are files that has a metadata file that accompany it with the data for the file to be saved on database.
         // Such file are paper pieces for now
@@ -22,10 +22,10 @@ contextBridge.exposeInMainWorld('electron', {
             return ipcRenderer.invoke('save-temp-files', files);
         },
         saveFileToResources(path: string[], content: any) {
-            return ipcRenderer.invoke('save-as-json', { path: path, content: content });
+            return ipcRenderer.invoke('save-as-json', { path, content });
         },
         copyFileToResources(originPath: string, destinationPath: string[]) {
-            return ipcRenderer.invoke('save-as-copy', { originPath: originPath, destinationPath: destinationPath });
+            return ipcRenderer.invoke('save-as-copy', { originPath, destinationPath });
         },
         getFileInfo(path: string[]) {
             return ipcRenderer.invoke('get-file-info', path);

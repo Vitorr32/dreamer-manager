@@ -1,5 +1,6 @@
 export class FileOperationError {
     error: boolean;
+
     message: string;
 
     constructor(error: boolean, message: string) {

@@ -30,7 +30,7 @@ export function ActorSelection({ actorPool, onSelection, addEveryoneOption = fal
             <InputLabel>{t('interface.editor.modifier.input_label_actor_selection')}</InputLabel>
             <Select value={selectedActors || multiple ? [] : ''} onChange={(event) => onSelectChange(event.target.value as any)} multiple={multiple}>
                 {addEveryoneOption && (
-                    <MenuItem key={`origin_actor_option_all`} value={'ALL'}>
+                    <MenuItem key="origin_actor_option_all" value="ALL">
                         {t('interface.editor.actor.option_actor_all')}
                     </MenuItem>
                 )}

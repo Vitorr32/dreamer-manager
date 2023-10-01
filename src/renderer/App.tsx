@@ -1,10 +1,10 @@
 import { MemoryRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { store } from 'renderer/redux/store';
 import { EditorScreen } from './Interface/MainMenu/page/EditorScreen/EditorScreen.component';
 import { MainScreen } from './Interface/MainMenu/page/MainScreen/MainScreen.component';
 import { TraitEditorContainer } from './Interface/MainMenu/sub-pages/TraitEditor/TraitEditorContainer.component';
-import { createTheme, ThemeProvider } from '@mui/material';
-import { store } from 'renderer/redux/store';
 
 import '@fontsource/roboto';
 import './App.scss';
@@ -32,7 +32,7 @@ export default function App() {
 
     const [startingUp, setStartingUp] = useState<boolean>(true);
 
-    //Startup the game database and mods
+    // Startup the game database and mods
     useEffect(() => {
         const startUpDatabase = async () => {
             const packages = await GetPackages(BASE_GAME_PACKAGE_FILE, MODS_FOLDER);
@@ -51,7 +51,7 @@ export default function App() {
             ) : (
                 <MemoryRouter>
                     <Routes>
-                        <Route index element={<Navigate to={`/menu/edit/trait/edit/trait_0`} />} />
+                        <Route index element={<Navigate to="/menu/edit/trait/edit/trait_0" />} />
                         <Route path="/startup" element={<StartUpPage />} />
                         <Route path="/menu" element={<MainScreen />} />
                         <Route path="/menu/edit" element={<EditorScreen />} />

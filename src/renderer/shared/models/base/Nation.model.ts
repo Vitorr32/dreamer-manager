@@ -41,14 +41,18 @@ export class Nation extends EntityBase {
     }
 
     id: string;
+
     name: string;
 
     primaryCulture: Culture;
+
     secondaryCultures: Culture[];
-    //Distribution of the population between the primary and secondary cultures
+
+    // Distribution of the population between the primary and secondary cultures
     populationDistribution: number[];
 
     population: number;
+
     effects: Effect[] = [];
 
     levelOfDevelopment: LevelOfDevelopment;

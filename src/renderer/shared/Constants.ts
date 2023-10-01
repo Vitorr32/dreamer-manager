@@ -36,8 +36,8 @@ export const LANGUAGE_NAME: { [key: string]: string } = {
 export const MINIMUM_DREAMER_POTENTIAL = 50;
 export const MAXIMUM_DREAMER_POTENTIAL = 300;
 
-///////////////////////////////
-//RESOURCES FOLDER NAME
+/// ////////////////////////////
+// RESOURCES FOLDER NAME
 export const DATABASE_FOLDER = 'database';
 export const ICONS_FOLDER = 'icons';
 export const TRAIT_DATABASE_FOLDER = 'traits';
@@ -57,21 +57,21 @@ export const PAPER_PIECES_FOLDER = 'pieces';
 export const MODS_FOLDER = 'mods';
 export const BASE_GAME_PACKAGE_ID = 'Dreamer Manager';
 
-///////////////////////////////
-//BASE GAME FILES
+/// ////////////////////////////
+// BASE GAME FILES
 export const BASE_TRAIT_FILE = 'BaseGameTraits.json';
 export const BASE_EVENT_FILE = 'BaseGameEvents.json';
 export const BASE_CHARACTER_FILE = 'BaseGameCharacters.json';
 export const BASE_PAPER_DOLLS_FILE = 'BaseGamePaperDolls.json';
 export const BASE_GAME_PACKAGE_FILE = 'DreamerManager.json';
 
-////////////////////////////////
-//RESOURCES FULL QUALIFIED PATH
+/// /////////////////////////////
+// RESOURCES FULL QUALIFIED PATH
 export const ICONS = 'icons';
 export const TRAITS = 'traits';
 
-////////////////////////////////
-//PLACEHOLDER RESOURCES.
+/// /////////////////////////////
+// PLACEHOLDER RESOURCES.
 export const PLACEHOLDER_TRAIT_ICON = 'trait_placeholder.png';
 export const PLACEHOLDER_EVENT_BACKGROUND = 'event_placeholder.png';
 export const PLACEHOLDER_ACTOR_SPRITE = 'male_0.png';

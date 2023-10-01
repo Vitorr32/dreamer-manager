@@ -5,7 +5,7 @@ import { createApplication } from '../../redux/game-loop/game-loop.reducer';
 export function PixiRenderer(): any {
     const dispatch = useDispatch();
 
-    //Create the application for the pixi.js engine, and position it absolutely as the entire screen background
+    // Create the application for the pixi.js engine, and position it absolutely as the entire screen background
     const dreamerManager = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight });
     dreamerManager.renderer.view.style.position = 'fixed';
     dreamerManager.renderer.view.style.display = 'block';

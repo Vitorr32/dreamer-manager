@@ -91,10 +91,10 @@ export function EventTreeRender({
         const containerX = ('clientX' in event ? event.clientX : 0) - containerBounds.left;
         const containerY = ('clientY' in event ? event.clientY : 0) - containerBounds.top;
         updateTooltip({
-            tooltipOpen: tooltipOpen,
+            tooltipOpen,
             tooltipLeft: containerX,
             tooltipTop: containerY,
-            tooltipData: tooltipData,
+            tooltipData,
         });
     };
 

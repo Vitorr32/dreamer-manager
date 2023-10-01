@@ -105,7 +105,7 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
     const onFileClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, clickedFileInfo: ContentView): void => {
         setSelectedFile(clickedFileInfo);
 
-        //If double click, immediately submit the file
+        // If double click, immediately submit the file
         if (event.detail === 2 && clickedFileInfo === selectedFile) {
             onFileSubmit();
         }
@@ -113,7 +113,7 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
 
     const onFileSubmit = () => {
         if (restriction && !restriction.test(selectedFile.extension)) {
-            console.error('File did not match restriction:' + selectedFile.fileName + ' restriction: ' + restriction);
+            console.error(`File did not match restriction:${  selectedFile.fileName  } restriction: ${  restriction}`);
             return;
         }
         onResourceSelected(selectedFile.fileName, selectedFile.absolutePath, [...currentPath, selectedFile.fileName], selectedPackage);
@@ -171,7 +171,7 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
                                     <Typography className="resources__file-name">{content.fileName}</Typography>
                                 </Box>
                             );
-                        } else if (content.isImage) {
+                        } if (content.isImage) {
                             return (
                                 <Box
                                     key={`content_${content.fileName}`}
@@ -182,7 +182,7 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
                                     <Typography className="resources__file-name">{content.fileName}</Typography>
                                 </Box>
                             );
-                        } else {
+                        } 
                             return (
                                 <Box
                                     key={`content_${content.fileName}`}
@@ -193,7 +193,7 @@ export function StaticResourceSelection({ rootFolder = null, isOpen = false, onC
                                     <Typography className="resources__file-name">{content.fileName}</Typography>
                                 </Box>
                             );
-                        }
+                        
                     })}
                 </Box>
                 <Button onClick={onFileSubmit} disabled={!selectedFile}>

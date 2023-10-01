@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Effect, Period } from 'renderer/shared/models/base/Effect.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { DescribeFilterNode } from './DescribeFilterNode.component';
 import { Typography } from '@mui/material';
 import { ConvertDurationStringToReadableString } from 'renderer/shared/utils/DateOperations';
+import { DescribeFilterNode } from './DescribeFilterNode.component';
 import { DescribeModifier } from './DescribeModifier.component';
 
 interface IProps {
@@ -27,9 +27,10 @@ export function DescribeEffect({ effect }: IProps) {
                 return t('interface.model.effect.specific_date_to', { date: new Date(effect.periodValue).toDateString() });
             case Period.SPECIFIC_PERIOD:
                 return t('interface.model.effect.specific_period', { period: ConvertDurationStringToReadableString(effect.periodValue) });
-            case Period.SPECIFIC_DATE_FROM_TO:
+            case Period.SPECIFIC_DATE_FROM_TO: {
                 const [startDate, endDate] = effect.periodValue;
                 return t('interface.model.effect.specific_date_from_to', { startDate: new Date(startDate), endDate: new Date(endDate) });
+            }
             default:
                 return t('interface.model.effect.permanent');
         }

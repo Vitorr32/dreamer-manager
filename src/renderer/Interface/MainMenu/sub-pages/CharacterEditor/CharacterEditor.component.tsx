@@ -4,18 +4,18 @@ import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
-import { CharacterBasicInfoEditor } from './CharacterBasicInfoEditor.component';
 import { Character, CharacterType, CharacterVariablesKey, Gender } from 'renderer/shared/models/base/Character.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { Dreamer, DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
-import { DreamerInfoEditor } from './DreamerInfoEditor.component';
-import { CharacterPaperDollEditor } from './CharacterPaperDollEditor.component';
 import { Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
 import { ApplyFileProtocol, GetFileNameFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { BASE_CHARACTER_FILE, BASE_PAPER_DOLLS_FILE, CHARACTERS_FOLDER, CUSTOM_FOLDER, DATABASE_FOLDER, PAPER_DOLL_FOLDER, SPRITES_FOLDER } from 'renderer/shared/Constants';
 import { CreateOrUpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';
+import { CharacterPaperDollEditor } from './CharacterPaperDollEditor.component';
+import { DreamerInfoEditor } from './DreamerInfoEditor.component';
+import { CharacterBasicInfoEditor } from './CharacterBasicInfoEditor.component';
 
 interface IProps {}
 
@@ -52,7 +52,7 @@ export function CharacterEditor({}: IProps) {
         }
     }, []);
 
-    const onCharacterVariableUpdated = (key: CharacterVariablesKey | DreamerVariablesKey, value: any, isNumberInput: boolean = false) => {
+    const onCharacterVariableUpdated = (key: CharacterVariablesKey | DreamerVariablesKey, value: any, isNumberInput = false) => {
         if (key === CharacterVariablesKey.TYPE && value === CharacterType.ACTIVE_DREAMER) {
             const convertedToDreamer = Object.assign(new Dreamer(), currentCharacter);
 
@@ -128,10 +128,10 @@ export function CharacterEditor({}: IProps) {
         const updatedPaperDoll = CopyClassInstance(currentPaperDoll);
 
         if (updatedPaperDoll.isCustom) {
-            for (let emotion in Emotion) {
+            for (const emotion in Emotion) {
                 const currentEmotion: Emotion = Emotion[emotion as keyof typeof Emotion];
                 const currentEmotionPaperDoll = updatedPaperDoll.emotions[currentEmotion];
-                //Check if the current emotion has any configuration set
+                // Check if the current emotion has any configuration set
                 if (!currentEmotionPaperDoll) {
                     continue;
                 }
@@ -139,7 +139,7 @@ export function CharacterEditor({}: IProps) {
                 const currentCustomFileName = currentEmotionPaperDoll.customFilePath?.pop() || '';
                 const newCustomFileName = GetFileNameFromPath(currentEmotionPaperDoll.customFileAbsolutePath);
 
-                //Check if the custom character sprite has changed;
+                // Check if the custom character sprite has changed;
                 if ((!currentCustomFileName && newCustomFileName) || currentCustomFileName !== newCustomFileName) {
                     const newCustomPath = [SPRITES_FOLDER, CUSTOM_FOLDER, generateGenericNameForCustomSprite(currentEmotion, newCustomFileName)];
 
@@ -148,7 +148,7 @@ export function CharacterEditor({}: IProps) {
                         newCustomPath
                     );
 
-                    //Update the current character paper doll for the respective emotion and with the new paths
+                    // Update the current character paper doll for the respective emotion and with the new paths
                     updatedPaperDoll.emotions[currentEmotion] = {
                         ...updatedPaperDoll.emotions[currentEmotion],
                         customFilePath: newCustomPath,
@@ -159,7 +159,7 @@ export function CharacterEditor({}: IProps) {
         }
 
         if (!validateCharacterVariables(updatedCharacter)) {
-            //TODO: Show error on submit
+            // TODO: Show error on submit
             return;
         }
 
@@ -168,9 +168,9 @@ export function CharacterEditor({}: IProps) {
     };
 
     const generateGenericNameForCustomSprite = (emotion: Emotion, fileName: string) => {
-        //Regex to get the extension of the filename
+        // Regex to get the extension of the filename
         const regex = /(?:\.([^.]+))?$/;
-        //Get the emotion as a index
+        // Get the emotion as a index
         const indexOfEmotion = Object.values(Emotion).indexOf(emotion);
         return `${currentCharacter.name}_${currentCharacter.id}_${indexOfEmotion}.${regex.exec(fileName)[1]}`;
     };

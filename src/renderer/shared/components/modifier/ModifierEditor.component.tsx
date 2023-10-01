@@ -5,16 +5,15 @@ import { DynamicEntity, EntityVariableValue } from 'renderer/shared/models/base/
 import { Modifier } from 'renderer/shared/models/base/Modifier';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { EntityFilterEditor } from '../entity/EntityFilterEditor.component';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { VariableOperator } from 'renderer/shared/models/base/Variable.model';
 import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
 import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
 import { Agency, AgencyVariablesKey } from 'renderer/shared/models/base/Agency.model';
 import { DEFAULT_EXTERNAL_ENTITY_FILTER, PLAYER_AGENCY } from 'renderer/shared/Constants';
-import { Actor } from 'renderer/shared/models/base/Actor.model';
-import { ActorVariablesKey } from 'renderer/shared/models/base/Actor.model';
+import { Actor , ActorVariablesKey } from 'renderer/shared/models/base/Actor.model';
 import { Relationship, RelationshipVariablesKey } from 'renderer/shared/models/base/Relationship.model';
+import { EntityFilterEditor } from '../entity/EntityFilterEditor.component';
 import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 
 interface IProps {
@@ -136,7 +135,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                         }
                     );
                 } else {
-                    //TODO: Maybe put a feedback message on the front-end?
+                    // TODO: Maybe put a feedback message on the front-end?
                     console.error('Tried to select all actors when no such entity exists yet.');
                 }
             case DynamicEntity.PROTAGONIST:
@@ -203,21 +202,21 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                     {
                         ...DEFAULT_EXTERNAL_ENTITY_FILTER,
                         entityType: EntityType.RELATIONSHIP,
-                        variableKey: Relationship.getEntityVariables()['favor'].key,
+                        variableKey: Relationship.getEntityVariables().favor.key,
                         operator: VariableOperator.EQUAL_OR_LESS_THAN,
                         value: 0,
                     },
                     {
                         ...DEFAULT_EXTERNAL_ENTITY_FILTER,
                         entityType: EntityType.RELATIONSHIP,
-                        variableKey: Relationship.getEntityVariables()['respect'].key,
+                        variableKey: Relationship.getEntityVariables().respect.key,
                         operator: VariableOperator.EQUAL_OR_BIGGER_THAN,
                         value: 50,
                     }
                 );
                 break;
             default:
-                console.error('No entity selected, or uknown entity' + modifier.modifiedEntityVariables.entityType);
+                console.error(`No entity selected, or uknown entity${  modifier.modifiedEntityVariables.entityType}`);
                 break;
         }
 
@@ -225,12 +224,12 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
     };
 
     const isTargetFilterNecessary = (): boolean => {
-        //Check if the values for the modifier target are non-null
+        // Check if the values for the modifier target are non-null
         if (!modifier.modifiedEntityVariables.entityType && !modifier.modifiedEntityVariables.specifiedDynamicEntity) {
             return false;
         }
-        //In case that the user choose a specific dynamic entity, but it's value it SPECIFIC_FILTER, it means that the user wants to create a filter himself.
-        const specifiedDynamicEntity = modifier.modifiedEntityVariables.specifiedDynamicEntity;
+        // In case that the user choose a specific dynamic entity, but it's value it SPECIFIC_FILTER, it means that the user wants to create a filter himself.
+        const {specifiedDynamicEntity} = modifier.modifiedEntityVariables;
         if (specifiedDynamicEntity === DynamicEntity.SPECIFIC_FILTER) {
             return true;
         }

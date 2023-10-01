@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, TextField, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Event } from 'renderer/shared/models/base/Event.model';
+
 interface IProps {
     open: boolean;
     event: Event;
