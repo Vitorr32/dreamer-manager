@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
+import { VariableType } from '../enums/VariableType';
 import { BodyType, Ethnicity, Gender, Style } from './Character.model';
 import { EntityBase } from './Entity.model';
-import { Emotion } from './PaperDoll.model';
-import { Variables, VariableType } from './Variable.model';
+import { Emotion } from '../enums/sprite/Emotion.enum';
+import { Variables } from './Variable.model';
 
 export enum PieceType {
     HAIR = 'model.paper_piece.type.hair',
@@ -86,7 +87,7 @@ export const PaperPieceEntityVariables: Variables = {
 };
 
 export class PaperPiece extends EntityBase {
-    static get _variables() {
+    static get variables() {
         return PaperPieceEntityVariables;
     }
 

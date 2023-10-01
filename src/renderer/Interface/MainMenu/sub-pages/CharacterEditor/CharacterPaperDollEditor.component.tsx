@@ -6,7 +6,8 @@ import { Character, CharacterVariablesKey, Gender } from 'renderer/shared/models
 import { DreamerVariablesKey } from 'renderer/shared/models/base/Dreamer.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { PaperDollViewer } from 'renderer/shared/components/character/PaperDollViewer.component';
-import { Emotion, PaperDoll, PaperDollVariablesKey } from 'renderer/shared/models/base/PaperDoll.model';
+import { PaperDoll, PaperDollVariablesKey } from 'renderer/shared/models/base/PaperDoll.model';
+import { Emotion } from 'renderer/shared/models/enums/sprite/Emotion.enum';
 import { PiecesSelector } from 'renderer/shared/components/character/PiecesSelector.component';
 
 interface IProps {

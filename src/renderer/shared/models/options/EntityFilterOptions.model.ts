@@ -1,4 +1,4 @@
-import { DynamicEntity } from '../base/EntityVariableValue.model';
+import { DynamicEntity } from '../enums/DynamicEntity.enum';
 import { EntityType } from '../enums/Entities.enum';
 
 export interface EntityFilterOptions {

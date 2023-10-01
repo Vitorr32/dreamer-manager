@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { EntityBase } from './Entity.model';
-import { EntityFilter } from './EntityVariableValue.model';
+import { EntityFilterTree } from './EntityFilterTree.model';
 import { RelationshipParameter } from './Relationship.model';
 
 export class RelationshipModifier extends EntityBase {
-    static get _variables() {
+    static get variables() {
         return {};
     }
 
@@ -12,7 +12,7 @@ export class RelationshipModifier extends EntityBase {
 
     originCharacter: string;
 
-    receptorCharacters: EntityFilter;
+    receptorCharacters: EntityFilterTree;
 
     // bothWays: If the value of the modifier should be applied on both relationship parameters of the origin and receptors
     bothWays: boolean;

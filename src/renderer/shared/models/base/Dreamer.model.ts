@@ -1,5 +1,6 @@
+import { VariableType } from '../enums/VariableType';
 import { Character, CharacterEntityVariables } from './Character.model';
-import { Variables, VariableType } from './Variable.model';
+import { Variables } from './Variable.model';
 
 export enum FamilySituation {
     SUPPORTIVE = 'model.dreamer.family.supportive',
@@ -375,7 +376,7 @@ export const DreamerEntityVariables: Variables = {
 };
 
 export class Dreamer extends Character {
-    static get _variables(): Variables {
+    static get variables(): Variables {
         return { ...CharacterEntityVariables, ...DreamerEntityVariables };
     }
 

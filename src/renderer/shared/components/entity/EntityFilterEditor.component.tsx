@@ -1,7 +1,8 @@
 import { Box } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DynamicEntity, EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
+import { EntityVariableValue } from 'renderer/shared/models/interfaces/EntityVariableValue.interface';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
 import { CopyClassInstance, GetEntityTypeOfDynamicEntity, GetVariablesOfEntity } from 'renderer/shared/utils/General';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
@@ -54,9 +55,8 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
                 updatedFilter.entityType = GetEntityTypeOfDynamicEntity(newValue as DynamicEntity);
                 onFilterChange(updatedFilter);
                 return;
-            } 
-                updatedFilter.specifiedDynamicEntity = null;
-            
+            }
+            updatedFilter.specifiedDynamicEntity = null;
         }
 
         updatedFilter[key] = newValue;

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, InputAdornment, List, ListItemButton, ListItemText, Modal, OutlinedInput, Typography } from '@mui/material';
+import { Box, Button, InputAdornment, List, ListItemButton, ListItemText, Modal, OutlinedInput, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import Placeholder from '@mui/icons-material/VerifiedUser';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { Event, Flag } from 'renderer/shared/models/base/Event.model';
+import { Event } from 'renderer/shared/models/base/Event.model';
+import { Flag } from 'renderer/shared/models/interfaces/Flag.interface';
 import { JoinArrayOfString } from 'renderer/shared/utils/StringOperations';
 
 interface IProps {
@@ -32,7 +33,9 @@ export function FlagsPicker({ onSelection, multi, showTool, global }: IProps) {
     }, [query]);
 
     const filterListByQuery = (query: string): Event[] => {
-        return secondaryValueList.filter((value) => value.id?.includes(query) || value.displayName?.toLowerCase().includes(query)).sort((a: Event, b: Event) => a.displayName.localeCompare(b.displayName));
+        return secondaryValueList
+            .filter((value) => value.id?.includes(query) || value.displayName?.toLowerCase().includes(query))
+            .sort((a: Event, b: Event) => a.displayName.localeCompare(b.displayName));
     };
 
     const onToggleSelection = (toggled: Flag): void => {
@@ -106,7 +109,11 @@ export function FlagsPicker({ onSelection, multi, showTool, global }: IProps) {
                     <div className="modal__grid modal__grid-columns">
                         {filtered.map((value) => {
                             return (
-                                <div className={`cell cell-flag ${selectedEvent.some((event) => event.id === value.id) ? 'cell-selected' : ''}`} key={value.id} onClick={() => setCurrentEvent(value)}>
+                                <Box
+                                    className={`cell cell-flag ${selectedEvent.some((event) => event.id === value.id) ? 'cell-selected' : ''}`}
+                                    key={value.id}
+                                    onClick={() => setCurrentEvent(value)}
+                                >
                                     <div className="cell__header">
                                         <Typography className="cell__title" variant="h5">
                                             {value.displayName}
@@ -129,7 +136,7 @@ export function FlagsPicker({ onSelection, multi, showTool, global }: IProps) {
                                             <Typography variant="body2">{value.displayName}</Typography>
                                         </div>
                                     </div>
-                                </div>
+                                </Box>
                             );
                         })}
 

@@ -3,7 +3,8 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
+import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
+import { VariableType } from 'renderer/shared/models/enums/VariableType';
 
 interface IProps {
     variable: EntityVariable;

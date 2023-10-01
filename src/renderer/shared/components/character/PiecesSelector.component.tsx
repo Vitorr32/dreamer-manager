@@ -5,7 +5,7 @@ import { useAppSelector } from 'renderer/redux/hooks';
 import { PaperPiece, PieceType } from 'renderer/shared/models/base/PaperPiece.model';
 import { useEffect, useState } from 'react';
 import { BodyType, Ethnicity, Style } from 'renderer/shared/models/base/Character.model';
-import { Emotion } from 'renderer/shared/models/base/PaperDoll.model';
+import { Emotion } from 'renderer/shared/models/enums/sprite/Emotion.enum';
 
 interface IProps {
     selectedPieces?: PaperPiece[];

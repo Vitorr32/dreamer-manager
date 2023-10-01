@@ -1,7 +1,8 @@
 import { Culture } from '../enums/Culture.enum';
+import { VariableType } from '../enums/VariableType';
 import { Effect } from './Effect.model';
 import { EntityBase } from './Entity.model';
-import { Variables, VariableType } from './Variable.model';
+import { Variables } from './Variable.model';
 
 export enum LevelOfDevelopment {
     PRIMITIVE,
@@ -36,7 +37,7 @@ export const NationEntityVariables: Variables = {
 };
 
 export class Nation extends EntityBase {
-    static get _variables() {
+    static get variables() {
         return NationEntityVariables;
     }
 

@@ -97,8 +97,8 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
     };
 
     const onActorConditionEdited = (originalActor: Actor, indexOfActor: number, updatedTree: EntityFilterTree): void => {
-        const newActor = { ...originalActor};
-        const modifiedEvent = { ...event};
+        const newActor = { ...originalActor };
+        const modifiedEvent = { ...event };
 
         newActor.actorCastingFilter = updatedTree;
         modifiedEvent.actors[indexOfActor] = newActor;
@@ -116,7 +116,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
     };
 
     const addActorConditionToActor = (originalActor: Actor, index: number): void => {
-        const newActor = { ...originalActor};
+        const newActor = { ...originalActor };
         const modifiedEvent = CopyClassInstance(event);
 
         newActor.actorCastingFilter = new EntityFilterTree();
@@ -192,7 +192,7 @@ export function ActorsCasting({ event, onEventEdited, pathOfTempImages, setPathO
 
         // If the file selected is not internal, it should be added to the temp paths as it was copied to temp folder.
         if (!internal) {
-            const newTempPaths = { ...pathOfTempImages};
+            const newTempPaths = { ...pathOfTempImages };
             newTempPaths[selectedActor.id] = setFilePath;
 
             setPathOfTempImages(newTempPaths);

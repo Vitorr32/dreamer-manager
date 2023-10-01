@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { ModifierEditor } from 'renderer/shared/components/modifier/ModifierEditor.component';
-import { Effect, Period, Trigger } from 'renderer/shared/models/base/Effect.model';
+import { Effect } from 'renderer/shared/models/base/Effect.model';
+import { Period } from 'renderer/shared/models/enums/Period.enum';
+import { Trigger } from 'renderer/shared/models/enums/Trigger.enum';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { Box, Button, Chip, Divider, FormHelperText, IconButton, Paper, Tooltip, Typography } from '@mui/material';
 import { CopyClassInstance, FilterPossibleDynamicEntitiesForTriggerType } from 'renderer/shared/utils/General';
 import { useTranslation } from 'react-i18next';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
-import { Modifier } from 'renderer/shared/models/base/Modifier';
+import { Modifier } from 'renderer/shared/models/base/Modifier.model';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { EffectPeriodSelection } from './EffectPeriodSelection.component';

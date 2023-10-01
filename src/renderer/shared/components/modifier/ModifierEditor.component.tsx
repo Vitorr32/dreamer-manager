@@ -1,17 +1,18 @@
 import { Box, FormHelperText, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
-import { DynamicEntity, EntityVariableValue } from 'renderer/shared/models/base/EntityVariableValue.model';
-import { Modifier } from 'renderer/shared/models/base/Modifier';
+import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
+import { EntityVariableValue } from 'renderer/shared/models/interfaces/EntityVariableValue.interface';
+import { Modifier } from 'renderer/shared/models/base/Modifier.model';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
-import { VariableOperator } from 'renderer/shared/models/base/Variable.model';
+import { VariableOperator } from 'renderer/shared/models/enums/VariableOperator';
 import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
 import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
 import { Agency, AgencyVariablesKey } from 'renderer/shared/models/base/Agency.model';
 import { DEFAULT_EXTERNAL_ENTITY_FILTER, PLAYER_AGENCY } from 'renderer/shared/Constants';
-import { Actor , ActorVariablesKey } from 'renderer/shared/models/base/Actor.model';
+import { Actor, ActorVariablesKey } from 'renderer/shared/models/base/Actor.model';
 import { Relationship, RelationshipVariablesKey } from 'renderer/shared/models/base/Relationship.model';
 import { EntityFilterEditor } from '../entity/EntityFilterEditor.component';
 import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
@@ -216,7 +217,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                 );
                 break;
             default:
-                console.error(`No entity selected, or uknown entity${  modifier.modifiedEntityVariables.entityType}`);
+                console.error(`No entity selected, or uknown entity${modifier.modifiedEntityVariables.entityType}`);
                 break;
         }
 
@@ -229,7 +230,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             return false;
         }
         // In case that the user choose a specific dynamic entity, but it's value it SPECIFIC_FILTER, it means that the user wants to create a filter himself.
-        const {specifiedDynamicEntity} = modifier.modifiedEntityVariables;
+        const { specifiedDynamicEntity } = modifier.modifiedEntityVariables;
         if (specifiedDynamicEntity === DynamicEntity.SPECIFIC_FILTER) {
             return true;
         }

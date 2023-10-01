@@ -17,7 +17,8 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
-import { Actor, Flag } from 'renderer/shared/models/base/Event.model';
+import { Actor } from 'renderer/shared/models/base/Event.model';
+import { Flag } from 'renderer/shared/models/interfaces/Flag.interface';
 import { Scene, SceneResult, SceneResultType } from 'renderer/shared/models/base/Scene.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EffectEditor } from '../effects/EffectEditor.component';
@@ -99,7 +100,7 @@ export function SceneResultsDialog({ isOpen, onClose, sceneResults, onResultModi
                                                 index={index}
                                                 onChange={(index, effect) => sceneResultsModified(index, 'effect', effect)}
                                                 options={{
-                                                    specifiedActors: actors || []
+                                                    specifiedActors: actors || [],
                                                 }}
                                             />
                                         )}

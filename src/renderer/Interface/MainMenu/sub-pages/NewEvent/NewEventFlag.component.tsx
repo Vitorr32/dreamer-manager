@@ -17,7 +17,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Event, Flag } from 'renderer/shared/models/base/Event.model';
+import { Event } from 'renderer/shared/models/base/Event.model';
+import { Flag } from 'renderer/shared/models/interfaces/Flag.interface';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { v4 as uuidv4 } from 'uuid';

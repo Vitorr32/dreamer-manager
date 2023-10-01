@@ -8,10 +8,10 @@ export function JoinArrayOfString(array: string[], emptyMessage = 'None', remove
     }
 
     if (!removeDuplicate) {
-        return array.reduce((a, b, i, array) => a + (i < array.length - 1 ? ', ' : ' and ') + b);
+        return array.reduce((a, b, i, originalArray) => a + (i < originalArray.length - 1 ? ', ' : ' and ') + b);
     }
 
-    return [...new Set(array)].reduce((a, b, i, array) => a + (i < array.length - 1 ? ', ' : ' and ') + b);
+    return [...new Set(array)].reduce((a, b, i, originalArray) => a + (i < originalArray.length - 1 ? ', ' : ' and ') + b);
 }
 
 export function ApplyFileProtocol(path: string): string {

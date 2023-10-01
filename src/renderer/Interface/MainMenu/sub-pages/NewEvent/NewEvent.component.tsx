@@ -13,7 +13,8 @@ import {
     SPRITES_FOLDER,
 } from 'renderer/shared/Constants';
 import { useEffect, useState } from 'react';
-import { Event, Flag } from 'renderer/shared/models/base/Event.model';
+import { Event } from 'renderer/shared/models/base/Event.model';
+import { Flag } from 'renderer/shared/models/interfaces/Flag.interface';
 import { Scene, SceneConnection } from 'renderer/shared/models/base/Scene.model';
 import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EditableScene } from 'renderer/shared/components/scene/EditableScene';
@@ -173,7 +174,7 @@ export function NewEvent({}: IProps) {
     };
 
     const onAddEffectsToEvent = (): void => {
-        const modifiedEvent = { ...currentEvent};
+        const modifiedEvent = { ...currentEvent };
         modifiedEvent.effects = [];
 
         setCurrentEvent(modifiedEvent);
@@ -181,21 +182,21 @@ export function NewEvent({}: IProps) {
     };
 
     const onNewEffectAddedToList = (): void => {
-        const modifiedEvent = { ...currentEvent};
+        const modifiedEvent = { ...currentEvent };
         modifiedEvent.effects.push(new Effect());
 
         setCurrentEvent(modifiedEvent);
     };
 
     const onEditEffect = (index: number, effect: Effect): void => {
-        const modifiedEvent = { ...currentEvent};
+        const modifiedEvent = { ...currentEvent };
         modifiedEvent.effects[index] = effect;
 
         setCurrentEvent(modifiedEvent);
     };
 
     const onDeleteEffectFromList = (index: number): void => {
-        const modifiedEvent = { ...currentEvent};
+        const modifiedEvent = { ...currentEvent };
         modifiedEvent.effects.splice(index, 1);
 
         setCurrentEvent(modifiedEvent);

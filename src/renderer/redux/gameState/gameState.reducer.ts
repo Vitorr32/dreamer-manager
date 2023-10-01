@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Character } from 'renderer/shared/models/base/Character.model';
 import { World } from 'renderer/shared/models/base/World.model';
-import { MappedDatabase } from '../database/database.reducer';
 
 export interface GameState {
     // Determine if the game is currently running or not

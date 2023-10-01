@@ -1,6 +1,6 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Trigger } from 'renderer/shared/models/base/Effect.model';
+import { Trigger } from 'renderer/shared/models/enums/Trigger.enum';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 
 interface IProps {

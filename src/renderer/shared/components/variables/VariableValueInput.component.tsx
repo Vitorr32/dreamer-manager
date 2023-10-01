@@ -3,12 +3,13 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Autocomplete, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, TextField, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { EntityVariable, VariableType } from 'renderer/shared/models/base/Variable.model';
+import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { GetEntitiesOfEntity } from 'renderer/shared/utils/General';
 import LoopIcon from '@mui/icons-material/Loop';
 import { useState } from 'react';
+import { VariableType } from 'renderer/shared/models/enums/VariableType';
 import { ResourcesSearch } from '../file/ResourcesSearch';
 
 interface IProps {
@@ -36,8 +37,8 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                             label={t('interface.editor.modifier.input_label_value_change')}
                             onChange={(e) => onVariableValueChange(e.target.value)}
                         >
-                            {variable.options.map((option, index) => (
-                                <MenuItem key={`entity_var_${index}`} value={option}>
+                            {variable.options.map((option) => (
+                                <MenuItem key={`entity_var_${option}`} value={option}>
                                     {t(option)}
                                 </MenuItem>
                             ))}

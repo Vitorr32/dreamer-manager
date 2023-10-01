@@ -2,9 +2,12 @@ import { Package } from '../files/Package.model';
 import { CustomVariables, Variables } from './Variable.model';
 
 export class EntityBase {
-    static get _variables() {
+    static get variables() {
         return {};
     }
+
+    // Entity ID
+    public id: string;
 
     // Custom variables should be added to the entity, and it's values should be saved on the customVariables property here.
     public customVariables: any;
@@ -20,11 +23,15 @@ export class EntityBase {
     } = {};
 
     static getEntityVariables(): Variables {
-        return this._variables;
+        return this.variables;
     }
 
     static addCustomVariablesToEntity(customVariables: CustomVariables): void {
         Object.keys(customVariables).forEach((key) => {});
+    }
+
+    public getVariableValueByName(variableName: string) {
+        return (this as any)[variableName]; // eslint-disable-line
     }
 
     public setFileMetadata(path: string[], name: string, targetPackage: Package) {

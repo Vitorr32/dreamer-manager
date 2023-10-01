@@ -1,5 +1,6 @@
+import { VariableType } from '../enums/VariableType';
 import { EntityBase } from './Entity.model';
-import { Variables, VariableType } from './Variable.model';
+import { Variables } from './Variable.model';
 
 export enum AgencyVariablesKey {
     ID = 'id',
@@ -10,7 +11,7 @@ export const AgencyEntityVariables: Variables = {
 };
 
 export class Agency extends EntityBase {
-    static get _variables() {
+    static get variables() {
         return AgencyEntityVariables;
     }
 

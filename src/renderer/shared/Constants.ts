@@ -1,4 +1,5 @@
-import { EntityVariableValue, ExternalExpandedEntityFilter } from './models/base/EntityVariableValue.model';
+import { ExternalExpandedEntityFilter } from './models/interfaces/ExternalExpandedEntityFilter.interface';
+import { EntityVariableValue } from './models/interfaces/EntityVariableValue.interface';
 
 export const MAX_NUMBER_OF_TRAITS_GENERATED = 5;
 export const MAX_NUMBER_OF_TRAITS = 20;

@@ -1,6 +1,7 @@
 import { FormControl, InputLabel, ListSubheader, MenuItem, Select } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { EntityVariableValue, DynamicEntity } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
+import { EntityVariableValue } from 'renderer/shared/models/interfaces/EntityVariableValue.interface';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 
@@ -19,16 +20,15 @@ export function EntitySelect({ entity, onEntityChange, disabled = false, entityF
             <ListSubheader key="dynamic-subheader">{t('interface.editor.modifier.input_group_dynamic_entities')}</ListSubheader>,
             ...Object.values(DynamicEntity)
                 .filter((obj: any) => (entityFilterOptions?.filteredDynamicEntities ? entityFilterOptions?.filteredDynamicEntities.indexOf(obj) !== -1 : true))
-                .map((entity) => (
-                    <MenuItem key={entity} value={entity}>
-                        {t(entity)}
+                .map((dynamicEntity) => (
+                    <MenuItem key={dynamicEntity} value={dynamicEntity}>
+                        {t(dynamicEntity)}
                     </MenuItem>
                 )),
-            ,
             <ListSubheader key="entities-subheader">{t('interface.editor.modifier.input_group_entities')}</ListSubheader>,
-            ...Object.values(EntityType).map((entity) => (
-                <MenuItem key={entity} value={entity}>
-                    {t(entity)}
+            ...Object.values(EntityType).map((entityTypes) => (
+                <MenuItem key={entityTypes} value={entityTypes}>
+                    {t(entityTypes)}
                 </MenuItem>
             )),
         ];

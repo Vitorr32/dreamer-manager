@@ -1,6 +1,8 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { EntityVariable, VariableOperator, VariableType } from 'renderer/shared/models/base/Variable.model';
+import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
+import { VariableOperator } from 'renderer/shared/models/enums/VariableOperator';
+import { VariableType } from 'renderer/shared/models/enums/VariableType';
 
 interface IProps {
     variable: EntityVariable;
@@ -28,7 +30,7 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
             <InputLabel>{t('interface.editor.modifier.input_label_value_change')}</InputLabel>
             <Select value={variableOperator} label={t('interface.editor.modifier.input_label_value_change')} onChange={(e) => onOperatorChange(e.target.value)}>
                 {getOperatorsOfVariableType(variable.type).map((option, index) => (
-                    <MenuItem key={`entity_var_${index}`} value={option}>
+                    <MenuItem key={`entity_var_${uuidv}`} value={option}>
                         {t(option)}
                     </MenuItem>
                 ))}

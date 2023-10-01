@@ -1,0 +1,12 @@
+export enum VariableType {
+    TEXT,
+    NUMBER,
+    PERCENTAGE_OR_MULTIPLIER,
+    ENUMERATOR,
+    ENUMERATOR_LIST,
+    DATE,
+    FILE_PATH,
+    EXTERNAL_KEY,
+    EXTERNAL_KEY_LIST,
+    BOOLEAN,
+}

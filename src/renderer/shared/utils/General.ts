@@ -3,25 +3,27 @@ import { store } from 'renderer/redux/store';
 import { Actor } from '../models/base/Actor.model';
 import { Character } from '../models/base/Character.model';
 import { Dreamer } from '../models/base/Dreamer.model';
-import { Trigger, Source } from '../models/base/Effect.model';
-import { DynamicEntity } from '../models/base/EntityVariableValue.model';
+import { Trigger } from '../models/enums/Trigger.enum';
+import { DynamicEntity } from '../models/enums/DynamicEntity.enum';
 import { PaperDoll } from '../models/base/PaperDoll.model';
 import { PaperPiece } from '../models/base/PaperPiece.model';
 import { Relationship } from '../models/base/Relationship.model';
-import { VariableOperator, Variables } from '../models/base/Variable.model';
+import { Variables } from '../models/base/Variable.model';
+import { VariableOperator } from '../models/enums/VariableOperator';
 import { World } from '../models/base/World.model';
 import { EntityType } from '../models/enums/Entities.enum';
 import { Trait } from '../models/base/Trait.model';
 import { Attribute } from '../models/base/Attribute.model';
+import { EntityBase } from '../models/base/Entity.model';
 
 export function AreArraysEqual(array1: any[], array2: any[]): boolean {
     if (!array1 && !array2) {
         return true;
-    } if (!array1 || !array2) {
+    }
+    if (!array1 || !array2) {
         return false;
-    } 
-        return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
-    
+    }
+    return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
 }
 
 export function CopyClassInstance<T>(object: T): T {
@@ -57,14 +59,12 @@ export function GetVariablesOfEntity(entity: EntityType): Variables {
     }
 }
 
-export function GetEntitiesOfEntity(entity: EntityType): any[] {
+export function GetEntitiesOfEntity(entity: EntityType): EntityBase[] {
     switch (entity) {
         case EntityType.CHARACTERS:
             return store.getState().database.characters;
-        case EntityType.FLAGS:
-            return store.getState().database.flags;
         default:
-            console.error(`Searched for unknown entity: ${  entity}`);
+            console.error(`Searched for unknown entity: ${entity}`);
             return [];
     }
 }
@@ -139,7 +139,7 @@ export function EvaluateVariableOperator(variableOperator: VariableOperator, ent
         case VariableOperator.IS_NOT_EMPTY:
             return entityValue.length > 0;
         default:
-            console.error(`Unsupported variable operator: ${  variableOperator}`);
+            console.error(`Unsupported variable operator: ${variableOperator}`);
             return false;
     }
 }

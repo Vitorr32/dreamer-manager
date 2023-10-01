@@ -1,21 +1,14 @@
-export enum PERIOD_UNIT {
-    YEAR = 'y',
-    MONTH = 'm',
-    WEEK = 'w',
-    DAY = 'd',
-    HOUR = 'h',
-    MINUTE = 'min',
-}
+import { PeriodUnit } from '../models/enums/PeriodUnit.enum';
 
 export const ConvertDurationStringToTargetDate = (originalDate: Date, durationString: string) => {
     const durationPieces = durationString.split(' ');
 
     durationPieces.forEach((durationPiece) => {
-        const durationUnit = durationPiece.toLowerCase().replaceAll(/[^0-9]/, '') as PERIOD_UNIT;
+        const durationUnit = durationPiece.toLowerCase().replaceAll(/[^0-9]/, '') as PeriodUnit;
         let durationValue;
 
         try {
-            durationValue = parseInt(durationValue);
+            durationValue = parseInt(durationValue, 10);
         } catch (error) {
             durationValue = -1;
         }
@@ -25,22 +18,22 @@ export const ConvertDurationStringToTargetDate = (originalDate: Date, durationSt
         }
 
         switch (durationUnit) {
-            case PERIOD_UNIT.YEAR:
+            case PeriodUnit.YEAR:
                 originalDate.setFullYear(originalDate.getFullYear() + durationValue);
                 break;
-            case PERIOD_UNIT.MONTH:
+            case PeriodUnit.MONTH:
                 originalDate.setMonth(originalDate.getMonth() + durationValue);
                 break;
-            case PERIOD_UNIT.WEEK:
+            case PeriodUnit.WEEK:
                 originalDate.setDate((originalDate.getDate() + durationValue) * 7);
                 break;
-            case PERIOD_UNIT.DAY:
+            case PeriodUnit.DAY:
                 originalDate.setDate(originalDate.getDate() + durationValue);
                 break;
-            case PERIOD_UNIT.HOUR:
+            case PeriodUnit.HOUR:
                 originalDate.setHours(originalDate.getHours() + durationValue);
                 break;
-            case PERIOD_UNIT.MINUTE:
+            case PeriodUnit.MINUTE:
                 originalDate.setMinutes(originalDate.getMinutes() + durationValue);
                 break;
             default:
@@ -58,10 +51,10 @@ export const ConvertDurationStringToReadableString = (durationString: string) =>
     let durationMinutes = 0;
 
     durationPieces.forEach((durationPiece) => {
-        const durationUnit = durationPiece.toLowerCase().replaceAll(/[^0-9]/, '') as PERIOD_UNIT;
+        const durationUnit = durationPiece.toLowerCase().replaceAll(/[^0-9]/, '') as PeriodUnit;
         let durationValue;
         try {
-            durationValue = parseInt(durationValue);
+            durationValue = parseInt(durationValue, 10);
         } catch (error) {
             durationValue = -1;
         }
@@ -71,19 +64,19 @@ export const ConvertDurationStringToReadableString = (durationString: string) =>
         }
 
         switch (durationUnit) {
-            case PERIOD_UNIT.YEAR:
+            case PeriodUnit.YEAR:
                 accumulatedDays += durationValue * 365;
                 break;
-            case PERIOD_UNIT.MONTH:
+            case PeriodUnit.MONTH:
                 accumulatedDays += durationValue * 30;
                 break;
-            case PERIOD_UNIT.WEEK:
+            case PeriodUnit.WEEK:
                 accumulatedDays += durationValue * 7;
                 break;
-            case PERIOD_UNIT.DAY:
+            case PeriodUnit.DAY:
                 accumulatedDays += durationValue;
                 break;
-            case PERIOD_UNIT.HOUR:
+            case PeriodUnit.HOUR:
                 durationHours += durationValue;
 
                 if (durationHours >= 24) {
@@ -92,7 +85,7 @@ export const ConvertDurationStringToReadableString = (durationString: string) =>
                 }
 
                 break;
-            case PERIOD_UNIT.MINUTE:
+            case PeriodUnit.MINUTE:
                 durationMinutes += durationValue;
 
                 if (durationMinutes >= 60) {
@@ -105,7 +98,7 @@ export const ConvertDurationStringToReadableString = (durationString: string) =>
         }
     });
 
-    return `${accumulatedDays !== 0 ? `${accumulatedDays  } days, ` : ''}${durationHours !== 0 ? `${durationHours  } hours,` : ''}${
-        durationMinutes !== 0 ? `${durationMinutes  } minutes` : ''
+    return `${accumulatedDays !== 0 ? `${accumulatedDays} days, ` : ''}${durationHours !== 0 ? `${durationHours} hours,` : ''}${
+        durationMinutes !== 0 ? `${durationMinutes} minutes` : ''
     }`.trim();
 };

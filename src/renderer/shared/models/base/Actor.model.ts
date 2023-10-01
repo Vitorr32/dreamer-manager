@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import { EntityBase } from './Entity.model';
-import { Variables, VariableType } from './Variable.model';
 import { EntityType } from '../enums/Entities.enum';
+import { VariableType } from '../enums/VariableType';
+import { EntityBase } from './Entity.model';
 import { EntityFilterTree } from './EntityFilterTree.model';
+import { Variables } from './Variable.model';
 
 export enum ActorType {
     PLAYER_CHARACTER = 'interface.editor.event.casting_player',
@@ -48,7 +49,7 @@ export const ActorEntityVariables: Variables = {
 };
 
 export class Actor extends EntityBase {
-    static get _variables() {
+    static get variables() {
         return ActorEntityVariables;
     }
 
@@ -63,9 +64,6 @@ export class Actor extends EntityBase {
 
     // Condition to be checked to select the actor in case of dynamic casting
     actorCastingFilter?: EntityFilterTree;
-
-    // Actor object ID
-    id: string;
 
     // Actor alias that the user may change to better edit the event, or if the actor is generic, the name that will appear on the dialogue screen.
     alias?: string;

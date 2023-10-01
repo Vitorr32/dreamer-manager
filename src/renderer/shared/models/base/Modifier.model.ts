@@ -1,6 +1,6 @@
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EntityFilterTree } from './EntityFilterTree.model';
-import { EntityVariableValue } from './EntityVariableValue.model';
+import { EntityVariableValue } from '../interfaces/EntityVariableValue.interface';
 
 export class Modifier {
     public modifiedEntityVariables: EntityVariableValue;

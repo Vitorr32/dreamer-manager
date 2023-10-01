@@ -3,7 +3,7 @@ import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Period } from 'renderer/shared/models/base/Effect.model';
+import { Period } from 'renderer/shared/models/enums/Period.enum';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 
 interface IProps {

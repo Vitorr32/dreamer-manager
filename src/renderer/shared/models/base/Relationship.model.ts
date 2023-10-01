@@ -1,6 +1,7 @@
 import { EntityType } from '../enums/Entities.enum';
+import { VariableType } from '../enums/VariableType';
 import { EntityBase } from './Entity.model';
-import { Variables, VariableType } from './Variable.model';
+import { Variables } from './Variable.model';
 
 export enum RelationshipParameter {
     UNDEFINED = 'model.undefined',
@@ -14,7 +15,7 @@ export enum RelationshipParameter {
 
 export enum RelationshipVariablesKey {
     ID = 'id',
-    FAVOR = 'favor'
+    FAVOR = 'favor',
 }
 
 export const RelationshipEntityVariables: Variables = {
@@ -43,7 +44,7 @@ export const RelationshipEntityVariables: Variables = {
 
 // Relationship would be a read-only Entity that is not actually instantiated in game, since the Relationship Modifiers would be calculated in real time.
 export class Relationship extends EntityBase {
-    static get _variables() {
+    static get variables() {
         return RelationshipEntityVariables;
     }
 
@@ -69,8 +70,4 @@ export class Relationship extends EntityBase {
 
     // And this would be the character that "receives" the opinion (X respect for Y is 50, Y would be the target character).
     targetCharacter: string;
-
-    constructor() {
-        super();
-    }
 }

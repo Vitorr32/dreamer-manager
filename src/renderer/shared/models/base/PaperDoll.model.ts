@@ -7,10 +7,12 @@ import {
     PLACEHOLDER_PIECE_HAIR_MALE,
 } from 'renderer/shared/Constants';
 import { v4 as uuidv4 } from 'uuid';
+import { VariableType } from '../enums/VariableType';
 import { Gender } from './Character.model';
+import { Emotion } from '../enums/sprite/Emotion.enum';
 import { EntityBase } from './Entity.model';
 import { BodyPiece, FacePiece, HairPiece } from './PaperPiece.model';
-import { Variables, VariableType } from './Variable.model';
+import { Variables } from './Variable.model';
 
 /**
  * Paper Dolls are the pre-generated sprites of the generated characters of the game, they are subdivided in the following sections, and when together form a full
@@ -46,8 +48,6 @@ export enum PaperDollVariablesKey {
     LOWER_CLOTHING = 'lowerClothing',
     FULL_BODY_CLOTHING = 'fullBodyClothing',
 }
-
-export enum CLOTHING_STATE {}
 
 export const PaperDollEntityVariables: Variables = {
     [PaperDollVariablesKey.ID]: { key: PaperDollVariablesKey.ID, displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
@@ -96,7 +96,7 @@ export const PaperDollEntityVariables: Variables = {
 };
 
 export class PaperDoll extends EntityBase {
-    static get _variables() {
+    static get variables() {
         return PaperDollEntityVariables;
     }
 
@@ -130,23 +130,4 @@ export class PaperDoll extends EntityBase {
             },
         } as DollPieces;
     }
-}
-
-export enum Emotion {
-    NEUTRAL = 'model.paper_doll.emotion.neutral',
-
-    HAPPY = 'model.paper_doll.emotion.happy',
-    EUPHORIC = 'model.paper_doll.emotion.euphoric',
-
-    SCARED = 'model.paper_doll.emotion.scared',
-    TERRIFIED = 'model.paper_doll.emotion.terrified',
-
-    SAD = 'model.paper_doll.emotion.sad',
-    DEPRESSED = 'model.paper_doll.emotion.depressed',
-
-    EMBARRASSED = 'model.paper_doll.emotion.embarrassed',
-    ASHAMED = 'model.paper_doll.emotion.ashamed',
-
-    ANNOYED = 'model.paper_doll.emotion.annoyed',
-    ANGRY = 'model.paper_doll.emotion.angry',
 }

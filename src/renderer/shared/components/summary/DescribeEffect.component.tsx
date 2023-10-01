@@ -1,11 +1,13 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
-import { Effect, Period } from 'renderer/shared/models/base/Effect.model';
+import { Effect } from 'renderer/shared/models/base/Effect.model';
+import { Period } from 'renderer/shared/models/enums/Period.enum';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { Typography } from '@mui/material';
 import { ConvertDurationStringToReadableString } from 'renderer/shared/utils/DateOperations';
-import { DescribeFilterNode } from './DescribeFilterNode.component';
+import { DescribeFilterTreeNode } from './DescribeFilterTreeNode.component';
 import { DescribeModifier } from './DescribeModifier.component';
 
 interface IProps {
@@ -36,6 +38,15 @@ export function DescribeEffect({ effect }: IProps) {
         }
     };
 
+    const groupModifierLinesByTarget = (): JSX.Element => {
+        const modifiersOfEffect = effect.modifiers;
+        const modifiersSeparatedByTarget = [];
+
+        modifiersOfEffect.forEach((modifier) => {
+            const targetEntity = modifier.targetEntityFilter.resolveFilterTree(database.mappedDatabase);
+        });
+    };
+
     return (
         <Box sx={{ color: 'text.primary' }}>
             {effect.trigger && (
@@ -48,7 +59,7 @@ export function DescribeEffect({ effect }: IProps) {
             {effect.conditionTree && (
                 <Box>
                     <Typography>{t('summary.effect.condition')}</Typography>
-                    <DescribeFilterNode filterNode={effect.conditionTree.root} isRoot />
+                    <DescribeFilterTreeNode filterNode={effect.conditionTree.root} isRoot />
                 </Box>
             )}
 
@@ -64,7 +75,7 @@ export function DescribeEffect({ effect }: IProps) {
                 <Box>
                     <Typography>{t('summary.effect.trigger')}</Typography>
                     {effect.modifiers.map((modifier) => {
-                        return <DescribeModifier modifier={modifier} />;
+                        return <DescribeModifier key={`modifier_summary_${uuidv4()}`} modifier={modifier} />;
                     })}
                 </Box>
             )}

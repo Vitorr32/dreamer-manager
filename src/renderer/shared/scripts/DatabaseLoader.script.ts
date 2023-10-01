@@ -17,7 +17,8 @@ import { Character } from '../models/base/Character.model';
 import { City } from '../models/base/City.model';
 import { Event } from '../models/base/Event.model';
 import { Nation } from '../models/base/Nation.model';
-import { Emotion, PaperDoll } from '../models/base/PaperDoll.model';
+import { PaperDoll } from '../models/base/PaperDoll.model';
+import { Emotion } from '../models/enums/sprite/Emotion.enum';
 import { PaperPiece } from '../models/base/PaperPiece.model';
 import { Trait } from '../models/base/Trait.model';
 import { EntityType } from '../models/enums/Entities.enum';
@@ -25,6 +26,57 @@ import { ApplyFileProtocol, GetFileFromResources } from '../utils/StringOperatio
 import { EntityBase } from '../models/base/Entity.model';
 import { Package } from '../models/files/Package.model';
 import { GetStaticResourcesFromDatabase } from '../utils/FileOperation';
+
+export async function GetEntitiesFromDatabaseFile<T>(path: string[], originPackage: Package, postProcessingFunction?: (object: T) => Promise<T>): Promise<T[]> {
+    const loadedJSONs = await window.electron.fileSystem.getFilesFromResourcesDatabase(path);
+    if ('error' in loadedJSONs) {
+        console.error(`Failed to load entities from package's ${originPackage.name} database.`);
+        return [];
+    }
+    const loadedObjects: T[] = [];
+
+    loadedJSONs.map((loadedEntityFile) => {
+        try {
+            const loadedEntitiesArray = JSON.parse(loadedEntityFile.content);
+            loadedObjects.push(
+                ...loadedEntitiesArray.map((entity: EntityBase) => {
+                    entity.metadata = {
+                        ...entity.metadata,
+                        file: {
+                            name: loadedEntityFile.fileName,
+                            path: loadedEntityFile.filePath,
+                            packageName: originPackage.name,
+                            packageID: originPackage.id,
+                        },
+                    };
+                    return entity;
+                })
+            );
+        } catch (e) {
+            console.error(e);
+        }
+    });
+
+    if (postProcessingFunction) {
+        const processedObjects = loadedObjects.map(async (object) => postProcessingFunction(object));
+        return Promise.all(processedObjects);
+    }
+
+    return loadedObjects;
+}
+
+export async function LoadDatabaseFilesFromPackages<T>(path: string[], packages: Package[], postProcessingFunction?: (object: T) => Promise<T>) {
+    const allEntities: T[][] = await Promise.all(
+        packages.map(async (targetPackage) => {
+            return GetEntitiesFromDatabaseFile<T>(path, targetPackage, postProcessingFunction);
+        })
+    ).catch((err) => {
+        console.error(err);
+        return [];
+    });
+
+    return allEntities.flat();
+}
 
 export async function GameStartDatabaseLoad(packages: Package[]): Promise<void> {
     store.dispatch(databaseStartLoad());
@@ -83,55 +135,4 @@ export async function GameStartDatabaseLoad(packages: Package[]): Promise<void> 
     // store.dispatch(databaseLoadEntity({ key: EntityType.PAPER_PIECE, value: paperPiecesLoaded, initialization: true, progress: 90 }));
 
     console.log('On GameStartDatabaseLoaded:', store.getState().database.mappedDatabase);
-}
-
-export async function GetEntitiesFromDatabaseFile<T>(path: string[], originPackage: Package, postProcessingFunction?: (object: T) => Promise<T>): Promise<T[]> {
-    const loadedJSONs = await window.electron.fileSystem.getFilesFromResourcesDatabase(path);
-    if ('error' in loadedJSONs) {
-        console.error(`Failed to load entities from package's ${originPackage.name} database.`);
-        return [];
-    }
-    const loadedObjects: T[] = [];
-
-    loadedJSONs.map((loadedEntityFile) => {
-        try {
-            const loadedEntitiesArray = JSON.parse(loadedEntityFile.content);
-            loadedObjects.push(
-                ...loadedEntitiesArray.map((entity: EntityBase) => {
-                    entity.metadata = {
-                        ...entity.metadata,
-                        file: {
-                            name: loadedEntityFile.fileName,
-                            path: loadedEntityFile.filePath,
-                            packageName: originPackage.name,
-                            packageID: originPackage.id,
-                        },
-                    };
-                    return entity;
-                })
-            );
-        } catch (e) {
-            console.error(e);
-        }
-    });
-
-    if (postProcessingFunction) {
-        const processedObjects = loadedObjects.map(async (object) => postProcessingFunction(object));
-        return Promise.all(processedObjects);
-    }
-
-    return loadedObjects;
-}
-
-export async function LoadDatabaseFilesFromPackages<T>(path: string[], packages: Package[], postProcessingFunction?: (object: T) => Promise<T>) {
-    const allEntities: T[][] = await Promise.all(
-        packages.map(async (targetPackage) => {
-            return GetEntitiesFromDatabaseFile<T>(path, targetPackage, postProcessingFunction);
-        })
-    ).catch((err) => {
-        console.error(err);
-        return [];
-    });
-
-    return allEntities.flat();
 }

@@ -1,22 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Button } from '@mui/material';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 export function EditorScreen(_: any) {
     return (
         <menu>
-            <Link to="/menu/edit/trait" >
-                <button>Edit Traits</button>
+            <Link to="/menu/edit/trait">
+                <Button>Edit Traits</Button>
             </Link>
-            <Link to="/menu/edit/event" >
-                <button>New Event</button>
+            <Link to="/menu/edit/event">
+                <Button>New Event</Button>
             </Link>
-            <Link to="/menu/edit/character" >
-                <button>New Character</button>
+            <Link to="/menu/edit/character">
+                <Button>New Character</Button>
             </Link>
-            <Link to="/menu" >
-                <button>Return Menu</button>
+            <Link to="/menu">
+                <Button>Return Menu</Button>
             </Link>
-
         </menu>
-    )
+    );
 }

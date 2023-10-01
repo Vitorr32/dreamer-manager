@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Modifier } from 'renderer/shared/models/base/Modifier';
+import { Modifier } from 'renderer/shared/models/base/Modifier.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { FilterNode } from 'renderer/shared/models/base/EntityFilterTree.model';
-import { DynamicEntity } from 'renderer/shared/models/base/EntityVariableValue.model';
+import { FilterNode } from 'renderer/shared/models/base/FilterNode.model';
+import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
 
 interface IProps {
     filterNode: FilterNode;
@@ -11,7 +11,7 @@ interface IProps {
     depth?: number;
 }
 
-export function DescribeFilterNode({ filterNode, isRoot = false, depth = 0 }: IProps) {
+export function DescribeFilterTreeNode({ filterNode, isRoot = false, depth = 0 }: IProps) {
     const { t } = useTranslation();
 
     const database = useSelector((state: RootState) => state.database);
@@ -23,13 +23,12 @@ export function DescribeFilterNode({ filterNode, isRoot = false, depth = 0 }: IP
         if (Object.values(DynamicEntity).includes(modifiedEntityVariables.value)) {
             switch (modifiedEntityVariables.value) {
                 case DynamicEntity.SELF:
-                // return
-                // break;
+                    // return
+                    break;
                 default:
                     return 'Yolo';
             }
         }
-        modifiedEntityVariables.value;
         return '';
     };
 

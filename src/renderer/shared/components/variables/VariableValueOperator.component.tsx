@@ -1,6 +1,9 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
+import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { EntityVariable, VariableOperator, VariableType } from 'renderer/shared/models/base/Variable.model';
+import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
+import { VariableOperator } from 'renderer/shared/models/enums/VariableOperator';
+import { VariableType } from 'renderer/shared/models/enums/VariableType';
 
 interface IProps {
     variable: EntityVariable;
@@ -39,6 +42,8 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
                           VariableOperator.LESS_THAN,
                           VariableOperator.EQUAL_OR_LESS_THAN,
                       ];
+            default:
+                return [];
         }
     };
 
@@ -46,10 +51,12 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
         const variableOperators = getOperatorsOfVariableType(type);
         if (variableOperators.length === 0) {
             return false;
-        } if (variableOperators.length === 1 && variableOperator !== variableOperators[0]) {
+        }
+        if (variableOperators.length === 1 && variableOperator !== variableOperators[0]) {
             setTimeout(() => onOperatorChange(variableOperators[0]));
             return false;
-        } if (variableOperators.length === 1 && variableOperator === variableOperators[0]) {
+        }
+        if (variableOperators.length === 1 && variableOperator === variableOperators[0]) {
             return false;
         }
 
@@ -64,8 +71,8 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
                 label={t('interface.editor.entity.input_label_operator')}
                 onChange={(e) => onOperatorChange(e.target.value as VariableOperator)}
             >
-                {getOperatorsOfVariableType(variable.type).map((option, index) => (
-                    <MenuItem key={`entity_var_${index}`} value={option}>
+                {getOperatorsOfVariableType(variable.type).map((option) => (
+                    <MenuItem key={`entity_var_${uuidv4()}`} value={option}>
                         {t(option, { variable: t(variable.displayName) })}
                     </MenuItem>
                 ))}

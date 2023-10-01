@@ -2,7 +2,8 @@ import { Button, Stack, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
-import { Emotion, PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
+import { PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
+import { Emotion } from 'renderer/shared/models/enums/sprite/Emotion.enum';
 import { Character } from 'renderer/shared/models/base/Character.model';
 import { PaperPiece, PieceType } from 'renderer/shared/models/base/PaperPiece.model';
 import { useState } from 'react';
@@ -45,6 +46,8 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
                 return paperPieces[paperDoll.lowerUnderwear];
             case PieceType.UPPER_UNDERWEAR:
                 return paperPieces[paperDoll.upperUnderwear];
+            default:
+                return {};
         }
     };
 
@@ -142,7 +145,7 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
 
             {paperDoll.isCustom && getCustomSprite(paperDoll, emotion) && (
                 <>
-                    <img src={getCustomSprite(paperDoll, emotion)} />
+                    <img src={getCustomSprite(paperDoll, emotion)} alt="" />
                     <Button variant="contained" onClick={onImageRemoved}>
                         <CloseIcon />
                     </Button>
@@ -151,9 +154,9 @@ export function PaperDollViewer({ character, paperDoll, emotion, editable = fals
 
             {!paperDoll.isCustom && (
                 <>
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.BODY)?.absolutePath} />
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.HAIR)?.absolutePath} />
-                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.FACE)?.absolutePath} />
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.BODY)?.absolutePath} alt="" />
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.HAIR)?.absolutePath} alt="" />
+                    <img src={getPieceOfTypeForEmotion(paperDoll, emotion, PieceType.FACE)?.absolutePath} alt="" />
                 </>
             )}
         </Stack>

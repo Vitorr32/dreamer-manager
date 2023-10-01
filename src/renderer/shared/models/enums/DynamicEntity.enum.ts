@@ -1,6 +1,3 @@
-import { EntityType } from '../enums/Entities.enum';
-import { VariableOperator } from './Variable.model';
-
 export enum DynamicEntity {
     // Allow user to insert a composite filter for the dynamic entity.
     SPECIFIC_FILTER = 'model.modifier.targeting.specific_filter',
@@ -21,20 +18,4 @@ export enum DynamicEntity {
     SELF_AGENCY = 'model.modifier.targeting.selfAgency',
     // Actors entities shortcuts
     ALL_ACTORS = 'model.modifier.targeting.allActors',
-}
-
-export interface EntityVariableValue {
-    entityType?: EntityType;
-    specifiedDynamicEntities?: string[]; // Only used on run-time, this are the entities that were pooled when validating the EntityVariableValue.
-    specifiedDynamicEntity?: DynamicEntity;
-    variableKey?: string;
-    operator?: VariableOperator;
-    value: any;
-}
-
-export interface ExternalExpandedEntityFilter extends EntityVariableValue {
-    isFilteringExternalKey: boolean;
-    externalEntityFilter: EntityVariableValue[];
-    isComparingEntities: boolean;
-    comparingEntityFilter: EntityVariableValue[];
 }
