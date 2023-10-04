@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
 import { EntityVariableValue } from 'renderer/shared/models/interfaces/EntityVariableValue.interface';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
-import { CopyClassInstance, GetEntityTypeOfDynamicEntity, GetVariablesOfEntity } from 'renderer/shared/utils/General';
+import { CopyClassInstance, GetEntityTypeOfDynamicEntity } from 'renderer/shared/utils/General';
+import { GetVariablesOfEntity } from 'renderer/shared/utils/EntityHelpers';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { EntitySelect } from './EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
@@ -29,7 +30,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
         } else {
             setSelectedVariable(null);
         }
-    }, []);
+    }, [entityFilter]);
 
     useEffect(() => {
         if (entityFilterOptions?.isLookingForSpecificEntity && entityFilter.entityType !== entityFilterOptions?.isLookingForSpecificEntity) {

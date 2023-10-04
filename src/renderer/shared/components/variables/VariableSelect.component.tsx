@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, Variables } from 'renderer/shared/models/base/Variable.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
-import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
+import { GetVariablesOfEntity } from 'renderer/shared/utils/EntityHelpers';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IProps {
@@ -12,19 +12,18 @@ interface IProps {
     onVariableChange: (variable: EntityVariable) => void;
     isEditor?: boolean;
 }
+interface SuggestionObject {
+    label: string;
+    value: string;
+    data: EntityVariable;
+    group: string;
+}
 
 export function VariableSelect({ entity, entityVariableKey, onVariableChange, isEditor = false }: IProps) {
     const { t } = useTranslation();
 
     const [entityVariables, setEntityVariables] = useState<Variables>();
-    const [suggestions, setSuggestions] = useState<
-        {
-            label: string;
-            value: string;
-            data: EntityVariable;
-            group: string;
-        }[]
-    >();
+    const [suggestions, setSuggestions] = useState<SuggestionObject[]>();
 
     useEffect(() => {
         if (entity) {
@@ -35,30 +34,30 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange, is
     }, [entity]);
 
     useEffect(() => {
+        const getVariablesOfEntityAsSuggestions = (): SuggestionObject[] => {
+            return entityVariables
+                ? Object.keys(entityVariables)
+                      .map((variableID) => {
+                          return {
+                              label: entityVariables[variableID].displayName,
+                              value: entityVariables[variableID].key,
+                              data: entityVariables[variableID],
+                              group: entityVariables[variableID].groupBy ? entityVariables[variableID].groupBy : '',
+                          };
+                      })
+                      .filter((variable) => {
+                          return isEditor ? variable.data.edit : true;
+                      })
+                      .sort((a, b) => (a.group !== b.group ? 1 : -1))
+                : [];
+        };
+
         if (entityVariables) {
             setSuggestions(getVariablesOfEntityAsSuggestions());
         } else {
             setSuggestions(null);
         }
-    }, [entityVariables]);
-
-    const getVariablesOfEntityAsSuggestions = (): any[] => {
-        return entityVariables
-            ? Object.keys(entityVariables)
-                  .map((variableID) => {
-                      return {
-                          label: t(entityVariables[variableID].displayName),
-                          value: entityVariables[variableID].key,
-                          data: entityVariables[variableID],
-                          group: entityVariables[variableID].groupBy ? t(entityVariables[variableID].groupBy) : '',
-                      };
-                  })
-                  .filter((variable) => {
-                      return isEditor ? variable.data.edit : true;
-                  })
-                  .sort((a, b) => (a.group !== b.group ? 1 : -1))
-            : [];
-    };
+    }, [entityVariables, isEditor]);
 
     return (
         entityVariables &&
@@ -68,7 +67,7 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange, is
                 value={suggestions.find((suggestion) => suggestion.value === entityVariableKey) || null}
                 sx={{ minWidth: '300px' }}
                 options={suggestions}
-                groupBy={(option) => option.group}
+                groupBy={(option) => t(option.group)}
                 onChange={(_, option: any) => onVariableChange(entityVariables[option.value])}
                 renderInput={(params) => <TextField {...params} value={entityVariableKey} label={t('interface.editor.modifier.input_label_variable')} />}
                 renderOption={(props, option) => (
@@ -76,7 +75,7 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange, is
                         {t(option.label)}
                     </li>
                 )}
-                getOptionLabel={(option) => t(typeof option === 'string' ? option : option.label)}
+                getOptionLabel={(option) => t(typeof option === 'string' ? option : t(option.label))}
                 isOptionEqualToValue={(option, value) => option.value === value?.value}
             />
         )

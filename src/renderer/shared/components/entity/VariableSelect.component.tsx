@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable, Variables } from 'renderer/shared/models/base/Variable.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
-import { GetVariablesOfEntity } from 'renderer/shared/utils/General';
+import { GetVariablesOfEntity } from 'renderer/shared/utils/EntityHelpers';
 
 interface IProps {
     entity: EntityType;

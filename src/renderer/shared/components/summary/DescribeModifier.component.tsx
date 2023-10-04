@@ -17,7 +17,7 @@ export function DescribeModifier({ modifier }: IProps) {
 
     return (
         <Box sx={{ color: 'text.primary' }}>
-            <Box></Box>
+            <Box />
         </Box>
     );
 }

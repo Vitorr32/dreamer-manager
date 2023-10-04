@@ -1,6 +1,7 @@
 import { DEFAULT_EXTERNAL_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EvaluateVariableOperator, GetEntitiesOfEntity } from 'renderer/shared/utils/General';
 import { MappedDatabase } from 'renderer/redux/interfaces/MappedDatabase.interface';
+import { findCommonItemsOnObjectArrays, mergeArraysAndRemoveDuplicates } from 'renderer/shared/utils/ArrayOperations';
 import { ExternalExpandedEntityFilter } from '../interfaces/ExternalExpandedEntityFilter.interface';
 import { LogicOperator } from '../enums/LogicOperator.enum';
 import { EntityBase } from './Entity.model';
@@ -25,7 +26,7 @@ export class FilterNode {
         // Unless this node parent already filtered some entities, then use the previously filtered entites for the array.
         let entitiesFound = entitiesFiltered || GetEntitiesOfEntity(this.entityFilters[0].entityType);
 
-        // Evalute this nodes entity filters.
+        // Evaluate this nodes entity filters.
         switch (this.logicOperator) {
             case LogicOperator.IF: {
                 // Evaluate if logic operator, the filter will only apply to the entity filter of index 0.
@@ -61,21 +62,22 @@ export class FilterNode {
                 break;
         }
 
-        const mappedEntities = {};
+        // All filtered entities at this point.
+        const allEvaluations: EntityBase[][] = [entitiesFound];
 
-        // if(LogicOperator.IF)
-
-        let childrenEvaluations: EntityBase[] = [];
+        // Get the filtered entities from its children, note that the initial entities list sent to the children is the entities found a the parent node.
         if (this.children.length > 0) {
-            childrenEvaluations = this.children.map((childNode) => childNode.resolveFilterNode(currentDatabase, entitiesFound));
+            this.children.forEach((childNode) => allEvaluations.push(childNode.resolveFilterNode(currentDatabase, entitiesFound)));
         }
 
         switch (this.logicOperator) {
+            // Get only entities that are present in all of the sub-arrays
             case LogicOperator.AND:
-                return [entitiesFound, childrenEvaluations].flat();
+                return findCommonItemsOnObjectArrays<EntityBase>(allEvaluations, (a, b) => a.id === b.id);
             case LogicOperator.OR:
-                return entitiesFound || childrenEvaluations.every((value) => value.length !== 0);
+                return mergeArraysAndRemoveDuplicates<EntityBase>(allEvaluations, (a, b) => a.id === b.id);
             case LogicOperator.IF:
+            default:
                 return entitiesFound;
         }
     }
