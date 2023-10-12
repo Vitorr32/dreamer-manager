@@ -12,9 +12,10 @@ import { DescribeModifier } from './DescribeModifier.component';
 
 interface IProps {
     effect: Effect;
+    isRuntime: boolean;
 }
 
-export function DescribeEffect({ effect }: IProps) {
+export function DescribeEffect({ effect, isRuntime = false }: IProps) {
     const { t } = useTranslation();
 
     const database = useSelector((state: RootState) => state.database);
@@ -44,6 +45,7 @@ export function DescribeEffect({ effect }: IProps) {
 
         modifiersOfEffect.forEach((modifier) => {
             const targetEntity = modifier.targetEntityFilter.resolveFilterTree(database.mappedDatabase);
+
         });
     };
 

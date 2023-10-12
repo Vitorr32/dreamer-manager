@@ -5,6 +5,11 @@ import { findCommonItemsOnObjectArrays, mergeArraysAndRemoveDuplicates } from 'r
 import { ExternalExpandedEntityFilter } from '../interfaces/ExternalExpandedEntityFilter.interface';
 import { LogicOperator } from '../enums/LogicOperator.enum';
 import { EntityBase } from './Entity.model';
+import { t } from 'i18next';
+import { GetVariablesOfEntity } from 'renderer/shared/utils/EntityHelpers';
+import { EntityVariableValue } from '../interfaces/EntityVariableValue.interface';
+import { EntityVariable } from './Variable.model';
+import { HighlightSharp } from '@mui/icons-material';
 
 export class FilterNode {
     // The logic operator of this node, will define how the evaluation of the nodes conditions/children will be evaluated
@@ -80,5 +85,34 @@ export class FilterNode {
             default:
                 return entitiesFound;
         }
+    }
+
+    public describeFilterNode(): string {
+        const nodeLogicOperator = t(this.logicOperator);
+
+        const nodeConditions = this.entityFilters.map((entityFilter) => {
+            const target = entityFilter.specifiedDynamicEntity ? t(entityFilter.specifiedDynamicEntity) : t(entityFilter.entityType);
+            const variable = entityFilter.variableKey ? GetVariablesOfEntity(entityFilter.entityType)[entityFilter.variableKey] : '';
+            const operator = t(entityFilter.operator);
+            const value = entityFilter.value;
+
+            return {
+                origin: entityFilter.externalEntityFilter ? entityFilter.externalEntityFilter.map((evv) => this.describeEntityVariableValueObject(evv)) : [],
+                target,
+                variable,
+                operator,
+                value,
+            };
+        });
+
+        return '';
+    }
+
+    public describeEntityVariableValueObject(evv: EntityVariableValue): { target: string; variable: EntityVariable; operator: string; value: string } {
+        const target = evv.specifiedDynamicEntity ? t(evv.specifiedDynamicEntity) : t(evv.entityType);
+        const variable = evv.entityType && evv.variableKey ? GetVariablesOfEntity(evv.entityType)[evv.variableKey] : null;
+        const operator = evv.operator ? t(evv.operator) : 'NO_OPERATOR';
+        const value = evv.value ? evv.value : 'NO_VALUE';
+        return { target, variable, operator, value };
     }
 }

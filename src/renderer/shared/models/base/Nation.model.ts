@@ -26,11 +26,19 @@ export enum NationVariablesKey {
 export const NationEntityVariables: Variables = {
     id: { key: NationVariablesKey.ID, displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
     name: { key: NationVariablesKey.NAME, displayName: 'model.character.variables.name', type: VariableType.TEXT, read: true, edit: true },
-    primaryCulture: { key: NationVariablesKey.PRIMARY_CULTURE, displayName: 'model.character.variables.surname', type: VariableType.ENUMERATOR, read: true, edit: true },
+    primaryCulture: {
+        key: NationVariablesKey.PRIMARY_CULTURE,
+        displayName: 'model.character.variables.surname',
+        type: VariableType.ENUMERATOR,
+        options: Object.values(Culture).map((value) => value),
+        read: true,
+        edit: true,
+    },
     secondaryCultures: {
         key: NationVariablesKey.SECONDARY_CULTURE,
         displayName: 'model.character.variables.nickname',
         type: VariableType.ENUMERATOR_LIST,
+        options: Object.values(Culture).map((value) => value),
         read: true,
         edit: true,
     },

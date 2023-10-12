@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -38,7 +39,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                             onChange={(e) => onVariableValueChange(e.target.value)}
                         >
                             {variable.options.map((option) => (
-                                <MenuItem key={`entity_var_${option}`} value={option}>
+                                <MenuItem key={`entity_var_${uuidv4()}`} value={option}>
                                     {t(option)}
                                 </MenuItem>
                             ))}

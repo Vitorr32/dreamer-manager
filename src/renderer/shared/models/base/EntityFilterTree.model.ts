@@ -7,6 +7,12 @@ export class EntityFilterTree {
     public resolveFilterTree(database: MappedDatabase): string[] {
         const filteredEntities = this.root.resolveFilterNode(database);
 
+        console.log("filteredEntities", filteredEntities);
+
         return filteredEntities.map((entity) => entity.id);
+    }
+
+    public describeFilterTree(): string {
+        return this.root.describeFilterNode();
     }
 }
