@@ -9,7 +9,8 @@ import { Box } from '@mui/system';
 import { EffectList } from 'renderer/shared/components/effects/EffectList.component';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
-import { DescribeEffect } from 'renderer/shared/components/summary/DescribeEffect.component';
+import { DescribeEffectSkeleton } from 'renderer/shared/components/summary/DescribeEffectSkeleton.component';
+import { v4 as uuidv4 } from 'uuid';
 import { EffectEditor } from '../../../../shared/components/effects/EffectEditor.component';
 
 interface IProps {
@@ -63,8 +64,8 @@ export function EffectsAndConditions({ previousStep, nextStep, onChange, trait }
 
             {editEffectIndex !== -1 && <EffectEditor onChange={onEditEffect} index={editEffectIndex} effect={trait.effects[editEffectIndex]} />}
 
-            {trait.effects.map((effect, index) => (
-                <DescribeEffect key={`effect_summary_${  index}`} effect={effect} />
+            {trait.effects.map((effect) => (
+                <DescribeEffectSkeleton key={`effect_summary_${uuidv4()}`} effect={effect} />
             ))}
 
             <Box sx={{ flex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>

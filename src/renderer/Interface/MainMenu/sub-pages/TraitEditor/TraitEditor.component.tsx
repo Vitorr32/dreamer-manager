@@ -6,7 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import { LanguageToggle } from 'renderer/shared/components/util/LanguageToggle.component';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { BASE_GAME_PACKAGE_ID, DATABASE_FOLDER, ICONS_FOLDER, LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
+import { DATABASE_FOLDER, ICONS_FOLDER, LANGUAGE_CODE_DEFAULT, TRAIT_DATABASE_FOLDER } from 'renderer/shared/Constants';
 import { GetFileFromResources, GetFileNameFromPath, RemoveFileProtocol } from 'renderer/shared/utils/StringOperations';
 import { CopyFileToAssetsFolder, IsAbsolutePathTheSameAsRelativePath } from 'renderer/shared/utils/FileOperation';
 import { CreateOrUpdateDatabaseJSONFile } from 'renderer/shared/scripts/DatabaseCreate.script';

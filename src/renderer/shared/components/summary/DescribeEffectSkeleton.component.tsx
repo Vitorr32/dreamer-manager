@@ -3,22 +3,18 @@ import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { Period } from 'renderer/shared/models/enums/Period.enum';
-import { useSelector } from 'react-redux';
-import { RootState } from 'renderer/redux/store';
-import { Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import { ConvertDurationStringToReadableString } from 'renderer/shared/utils/DateOperations';
 import { DescribeFilterTreeNode } from './DescribeFilterTreeNode.component';
-import { DescribeModifier } from './DescribeModifier.component';
+import { DescribeModifierSkeleton } from './DescribeModifierSkeleton';
+import { Modifier } from 'renderer/shared/models/base/Modifier.model';
 
 interface IProps {
     effect: Effect;
-    isRuntime: boolean;
 }
 
-export function DescribeEffect({ effect, isRuntime = false }: IProps) {
+export function DescribeEffectSkeleton({ effect }: IProps) {
     const { t } = useTranslation();
-
-    const database = useSelector((state: RootState) => state.database);
 
     const getPeriodSummary = (): string => {
         if (!effect.periodType) return '';
@@ -39,18 +35,32 @@ export function DescribeEffect({ effect, isRuntime = false }: IProps) {
         }
     };
 
-    const groupModifierLinesByTarget = (): JSX.Element => {
-        const modifiersOfEffect = effect.modifiers;
-        const modifiersSeparatedByTarget = [];
+    const groupModifiersByTarget = (modifiers: Modifier[]): Modifier[][] => {
+        if (!modifiers || modifiers.length === 0) {
+            return [];
+        }
 
-        modifiersOfEffect.forEach((modifier) => {
-            const targetEntity = modifier.targetEntityFilter.resolveFilterTree(database.mappedDatabase);
+        if (modifiers.length === 1) {
+            return [modifiers];
+        }
 
+        const groupedModifiers: { [key: string]: Modifier[] } = {};
+
+        modifiers.forEach((modifier) => {
+            const value = JSON.stringify(modifier.targetEntityFilter);
+            groupedModifiers[value] = groupedModifiers[value] || [];
+            groupedModifiers[value].push(modifier);
         });
+
+        return Object.values(groupedModifiers);
+    };
+
+    const getModifierSummary = (modifier: Modifier) => {
+        // if(modifier.modifiedEntityVariables.)
     };
 
     return (
-        <Box sx={{ color: 'text.primary' }}>
+        <Box id={`describe_effect_${uuidv4()}`} sx={{ color: 'text.primary' }}>
             {effect.trigger && (
                 <Box>
                     <Typography>{t('summary.effect.trigger')}</Typography>
@@ -73,14 +83,22 @@ export function DescribeEffect({ effect, isRuntime = false }: IProps) {
                 </Box>
             )}
 
-            {effect.modifiers && effect.modifiers.length !== 0 && (
-                <Box>
-                    <Typography>{t('summary.effect.trigger')}</Typography>
-                    {effect.modifiers.map((modifier) => {
-                        return <DescribeModifier key={`modifier_summary_${uuidv4()}`} modifier={modifier} />;
-                    })}
-                </Box>
-            )}
+            {effect.modifiers && effect.modifiers.length !== 0
+                ? groupModifiersByTarget(effect.modifiers).map((modifierGroup) => {
+                      const targetDisplayName = modifierGroup[0].targetEntityFilter;
+
+                      return (
+                          <Box>
+                              {/* <Typography>{t('summary.effect.modifier')}</Typography>
+                              {effect.modifiers.map((modifier) => {
+                                  <Paper>
+                                      <Typography></Typography>
+                                  </Paper>;
+                              })} */}
+                          </Box>
+                      );
+                  })
+                : null}
         </Box>
     );
 }

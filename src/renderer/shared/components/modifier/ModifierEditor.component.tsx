@@ -24,37 +24,9 @@ interface IProps {
 }
 
 export function ModifierEditor({ modifier, onChange, options }: IProps) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
-    const onEntityModifierChanged = (entityFilter: EntityVariableValue): void => {
-        const newModifier = CopyClassInstance(modifier);
-        newModifier.modifiedEntityVariables = entityFilter;
-
-        if (newModifier.modifiedEntityVariables.entityType !== modifier.modifiedEntityVariables.entityType) {
-            newModifier.targetEntityFilter = new EntityFilterTree();
-        }
-
-        if (
-            newModifier.modifiedEntityVariables?.specifiedDynamicEntity &&
-            newModifier.modifiedEntityVariables?.specifiedDynamicEntity !== modifier.modifiedEntityVariables?.specifiedDynamicEntity
-        ) {
-            newModifier.targetEntityFilter = getDynamicEntityFilterData(newModifier.modifiedEntityVariables.specifiedDynamicEntity, true);
-        }
-        onChange(newModifier);
-    };
-
-    const onModifierTargetConditionTreeChanged = (conditionTree: EntityFilterTree): void => {
-        const newModifier = CopyClassInstance(modifier);
-        newModifier.targetEntityFilter = conditionTree;
-
-        if (newModifier?.targetEntityFilter?.root.entityFilters.length === 0) {
-            newModifier.targetEntityFilter = undefined;
-        }
-
-        onChange(newModifier);
-    };
-
-    const getDynamicEntityFilterData = (dynamicEntity: DynamicEntity, isTarget: boolean): EntityFilterTree => {
+    const getDynamicEntityFilterData = (dynamicEntity: DynamicEntity): EntityFilterTree => {
         const dynamicEntityFilterTree: EntityFilterTree = new EntityFilterTree();
 
         switch (dynamicEntity) {
@@ -139,6 +111,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                     // TODO: Maybe put a feedback message on the front-end?
                     console.error('Tried to select all actors when no such entity exists yet.');
                 }
+                break;
             case DynamicEntity.PROTAGONIST:
                 dynamicEntityFilterTree.root.entityFilters.push({
                     ...DEFAULT_EXTERNAL_ENTITY_FILTER,
@@ -217,11 +190,39 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
                 );
                 break;
             default:
-                console.error(`No entity selected, or uknown entity${modifier.modifiedEntityVariables.entityType}`);
+                console.error(`No entity selected, or unknown entity${modifier.modifiedEntityVariables.entityType}`);
                 break;
         }
 
         return dynamicEntityFilterTree;
+    };
+
+    const onEntityModifierChanged = (entityFilter: EntityVariableValue): void => {
+        const newModifier = CopyClassInstance(modifier);
+        newModifier.modifiedEntityVariables = entityFilter;
+
+        if (newModifier.modifiedEntityVariables.entityType !== modifier.modifiedEntityVariables.entityType) {
+            newModifier.targetEntityFilter = new EntityFilterTree();
+        }
+
+        if (
+            newModifier.modifiedEntityVariables?.specifiedDynamicEntity &&
+            newModifier.modifiedEntityVariables?.specifiedDynamicEntity !== modifier.modifiedEntityVariables?.specifiedDynamicEntity
+        ) {
+            newModifier.targetEntityFilter = getDynamicEntityFilterData(newModifier.modifiedEntityVariables.specifiedDynamicEntity, true);
+        }
+        onChange(newModifier);
+    };
+
+    const onModifierTargetConditionTreeChanged = (conditionTree: EntityFilterTree): void => {
+        const newModifier = CopyClassInstance(modifier);
+        newModifier.targetEntityFilter = conditionTree;
+
+        if (newModifier?.targetEntityFilter?.root.entityFilters.length === 0) {
+            newModifier.targetEntityFilter = undefined;
+        }
+
+        onChange(newModifier);
     };
 
     const isTargetFilterNecessary = (): boolean => {

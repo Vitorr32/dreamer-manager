@@ -3,9 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { LANGUAGE_CODES } from 'renderer/shared/Constants';
 import { getLocaleLabel } from 'renderer/shared/utils/Localization';
 
-interface IProps {}
-
-export function LanguageToggle({}: IProps) {
+export function LanguageToggle() {
     const { t, i18n } = useTranslation();
     return (
         <TextField label={t('interface.commons.language')} value={i18n.language} variant="outlined" select onChange={(event) => i18n.changeLanguage(event.target.value)}>

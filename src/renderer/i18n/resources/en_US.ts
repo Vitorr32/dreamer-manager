@@ -726,9 +726,9 @@ export const en_US = {
                     lesser_than: 'Less than',
                     equal_or_lesser_than: 'Equal or less than',
                     equals_to: 'Equals to / Is',
-                    dont_equals_to: 'Does not equals to / Is Not',
+                    not_equals_to: 'Does not equals to / Is Not',
                     contains: 'Contains / Has',
-                    dont_contain: "Does not contain / Don't have",
+                    not_contain: "Does not contain / Don't have",
                     starts_with: 'Starts with',
                     // Editor Operator
                     change_by: 'Change {{variable}} value by',
@@ -858,6 +858,10 @@ export const en_US = {
                 decrease: 'Decrease the {{value}} by {{change}}',
                 increase_with_targets: 'Increase the {{value}} of {{targets}} by {{change}}',
                 decrease_with_targets: 'Decrease the {{value}} of {{targets}} by {{change}}',
+            },
+            modifier: {
+                equals_to: '{{target}} {{variableName}} value is {{value1}}',
+                between: '{{target}} {{variableName}} value is between {{value1}} and {{value2}}',
             },
             agent: {
                 unknown_self: `this character`,

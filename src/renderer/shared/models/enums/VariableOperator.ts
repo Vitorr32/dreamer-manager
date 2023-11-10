@@ -6,14 +6,14 @@ export enum VariableOperator {
     LESS_THAN = 'model.variable.operator.lesser_than',
     EQUAL_OR_LESS_THAN = 'model.variable.operator.equal_or_lesser_than',
     EQUALS_TO = 'model.variable.operator.equals_to',
-    NOT_EQUALS_TO = 'model.variable.operator.dont_equals_to',
+    NOT_EQUALS_TO = 'model.variable.operator.not_equals_to',
 
     // Filter for Arrays or Strings
     STARTS_WITH = 'model.variable.operator.starts_with',
     ENDS_WITH = 'model.variable.operator.ends_with',
     CONTAINS = 'model.variable.operator.contains',
-    DONT_CONTAINS = 'model.variable.operator.dont_contain',
-    IS_EMPTY = 'model.variable.opeartor.is_empty',
+    NOT_CONTAINS = 'model.variable.operator.not_contain',
+    IS_EMPTY = 'model.variable.operator.is_empty',
     IS_NOT_EMPTY = 'model.variable.operator.is_not_empty',
 
     // Edit Operators, that are used when creating modifiers.

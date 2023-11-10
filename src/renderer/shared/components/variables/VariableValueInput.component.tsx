@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
-import { GetEntitiesOfEntity } from 'renderer/shared/utils/General';
+import { GetEntitiesOfType } from 'renderer/shared/utils/DatabaseOperations';
 import LoopIcon from '@mui/icons-material/Loop';
 import { useState } from 'react';
 import { VariableType } from 'renderer/shared/models/enums/VariableType';
@@ -131,7 +131,7 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
     };
 
     const getSuggestionsForAutocompleteOfEntity = (entity: EntityType): any[] => {
-        const allEntities = GetEntitiesOfEntity(entity);
+        const allEntities = GetEntitiesOfType(entity);
 
         if (options && options.specifiedEntities && options.specifiedEntities[entity]) {
             allEntities.push(...options.specifiedEntities[entity]);

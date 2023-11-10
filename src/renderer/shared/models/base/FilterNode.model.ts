@@ -1,5 +1,6 @@
 import { DEFAULT_EXTERNAL_ENTITY_FILTER } from 'renderer/shared/Constants';
-import { EvaluateVariableOperator, GetEntitiesOfEntity } from 'renderer/shared/utils/General';
+import { EvaluateVariableOperator } from 'renderer/shared/utils/General';
+import { GetEntitiesOfType } from 'renderer/shared/utils/DatabaseOperations';
 import { MappedDatabase } from 'renderer/redux/interfaces/MappedDatabase.interface';
 import { findCommonItemsOnObjectArrays, mergeArraysAndRemoveDuplicates } from 'renderer/shared/utils/ArrayOperations';
 import { ExternalExpandedEntityFilter } from '../interfaces/ExternalExpandedEntityFilter.interface';
@@ -7,9 +8,7 @@ import { LogicOperator } from '../enums/LogicOperator.enum';
 import { EntityBase } from './Entity.model';
 import { t } from 'i18next';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/EntityHelpers';
-import { EntityVariableValue } from '../interfaces/EntityVariableValue.interface';
-import { EntityVariable } from './Variable.model';
-import { HighlightSharp } from '@mui/icons-material';
+import { SummarizeEntityVariableValueObject } from 'renderer/shared/utils/Summary';
 
 export class FilterNode {
     // The logic operator of this node, will define how the evaluation of the nodes conditions/children will be evaluated
@@ -28,8 +27,8 @@ export class FilterNode {
         if (this.entityFilters.length === 0) return [];
 
         // Get all the entities on the database for this node's entity type, then filter them out using the entity filters of this node.
-        // Unless this node parent already filtered some entities, then use the previously filtered entites for the array.
-        let entitiesFound = entitiesFiltered || GetEntitiesOfEntity(this.entityFilters[0].entityType);
+        // Unless this node parent already filtered some entities, then use the previously filtered entities for the array.
+        let entitiesFound = entitiesFiltered || GetEntitiesOfType(this.entityFilters[0].entityType);
 
         // Evaluate this nodes entity filters.
         switch (this.logicOperator) {
@@ -43,7 +42,7 @@ export class FilterNode {
                 break;
             }
             case LogicOperator.AND:
-                // Go trough every entity filter of this node and apply to the entitesFound array, so we can filter all of the entity filters.
+                // Go trough every entity filter of this node and apply to the entities Found array, so we can filter all of the entity filters.
                 // Returns true when the filters did not find any entity, otherwise continues filtering the array of entities.
                 this.entityFilters.some((entityFilter) => {
                     if (entitiesFound.length === 0) return true;
@@ -91,28 +90,12 @@ export class FilterNode {
         const nodeLogicOperator = t(this.logicOperator);
 
         const nodeConditions = this.entityFilters.map((entityFilter) => {
-            const target = entityFilter.specifiedDynamicEntity ? t(entityFilter.specifiedDynamicEntity) : t(entityFilter.entityType);
-            const variable = entityFilter.variableKey ? GetVariablesOfEntity(entityFilter.entityType)[entityFilter.variableKey] : '';
-            const operator = t(entityFilter.operator);
-            const value = entityFilter.value;
-
             return {
-                origin: entityFilter.externalEntityFilter ? entityFilter.externalEntityFilter.map((evv) => this.describeEntityVariableValueObject(evv)) : [],
-                target,
-                variable,
-                operator,
-                value,
+                ...SummarizeEntityVariableValueObject(entityFilter),
+                externalEntityFilter: entityFilter.externalEntityFilter ? entityFilter.externalEntityFilter.map((evv) => SummarizeEntityVariableValueObject(evv)) : [],
             };
         });
 
         return '';
-    }
-
-    public describeEntityVariableValueObject(evv: EntityVariableValue): { target: string; variable: EntityVariable; operator: string; value: string } {
-        const target = evv.specifiedDynamicEntity ? t(evv.specifiedDynamicEntity) : t(evv.entityType);
-        const variable = evv.entityType && evv.variableKey ? GetVariablesOfEntity(evv.entityType)[evv.variableKey] : null;
-        const operator = evv.operator ? t(evv.operator) : 'NO_OPERATOR';
-        const value = evv.value ? evv.value : 'NO_VALUE';
-        return { target, variable, operator, value };
     }
 }

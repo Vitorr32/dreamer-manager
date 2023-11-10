@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { Trait } from 'renderer/shared/models/base/Trait.model';
@@ -9,7 +10,7 @@ import { BASE_GAME_PACKAGE_ID, DATABASE_FOLDER, TRAIT_DATABASE_FOLDER } from 're
 import { Package } from 'renderer/shared/models/files/Package.model';
 import { RootState } from 'renderer/redux/store';
 import { useSelector } from 'react-redux';
-import { DescribeEffect } from 'renderer/shared/components/summary/DescribeEffect.component';
+import { DescribeEffectSkeleton } from 'renderer/shared/components/summary/DescribeEffectSkeleton.component';
 
 interface IProps {
     trait: Trait;
@@ -95,8 +96,8 @@ export function NewTraitReview({ trait, fieldsValidation = {}, previousStep, onC
             </Paper>
 
             <Box>
-                {trait.effects.map((effect, index) => (
-                    <DescribeEffect key={`effect_${  index}`} effect={effect} />
+                {trait.effects.map((effect) => (
+                    <DescribeEffectSkeleton key={`trait_effect_description_${uuidv4()}`} effect={effect} />
                 ))}
             </Box>
 

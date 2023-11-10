@@ -1,10 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { store } from 'renderer/redux/store';
 import { Trigger } from '../models/enums/Trigger.enum';
 import { DynamicEntity } from '../models/enums/DynamicEntity.enum';
 import { VariableOperator } from '../models/enums/VariableOperator';
 import { EntityType } from '../models/enums/Entities.enum';
-import { EntityBase } from '../models/base/Entity.model';
 
 export function AreArraysEqual(array1: any[], array2: any[]): boolean {
     if (!array1 && !array2) {
@@ -22,16 +20,6 @@ export function CopyClassInstance<T>(object: T): T {
     }
 
     return Object.assign(Object.create(Object.getPrototypeOf(object)), cloneDeep(object));
-}
-
-export function GetEntitiesOfEntity(entity: EntityType): EntityBase[] {
-    switch (entity) {
-        case EntityType.CHARACTERS:
-            return store.getState().database.characters;
-        default:
-            console.error(`Searched for unknown entity: ${entity}`);
-            return [];
-    }
 }
 
 export function GetEntityTypeOfDynamicEntity(dynamicEntity: DynamicEntity): EntityType {
@@ -93,7 +81,7 @@ export function EvaluateVariableOperator(variableOperator: VariableOperator, ent
             return entityValue !== filterValue;
         case VariableOperator.CONTAINS:
             return entityValue.includes(filterValue);
-        case VariableOperator.DONT_CONTAINS:
+        case VariableOperator.NOT_CONTAINS:
             return !entityValue.includes(filterValue);
         case VariableOperator.STARTS_WITH:
             return entityValue.startsWith(filterValue);

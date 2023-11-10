@@ -24,11 +24,11 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
                 return isEditor ? [VariableOperator.CHANGE_TO] : [VariableOperator.EQUALS_TO, VariableOperator.NOT_EQUALS_TO];
             case VariableType.ENUMERATOR_LIST:
             case VariableType.EXTERNAL_KEY_LIST:
-                return isEditor ? [VariableOperator.INSERT_INTO_ARRAY, VariableOperator.REMOVE_FROM_ARRAY] : [VariableOperator.CONTAINS, VariableOperator.DONT_CONTAINS];
+                return isEditor ? [VariableOperator.INSERT_INTO_ARRAY, VariableOperator.REMOVE_FROM_ARRAY] : [VariableOperator.CONTAINS, VariableOperator.NOT_CONTAINS];
             case VariableType.TEXT:
                 return isEditor
                     ? [VariableOperator.CHANGE_TO]
-                    : [VariableOperator.STARTS_WITH, VariableOperator.EQUALS_TO, VariableOperator.NOT_EQUALS_TO, VariableOperator.CONTAINS, VariableOperator.DONT_CONTAINS];
+                    : [VariableOperator.STARTS_WITH, VariableOperator.EQUALS_TO, VariableOperator.NOT_EQUALS_TO, VariableOperator.CONTAINS, VariableOperator.NOT_CONTAINS];
             case VariableType.PERCENTAGE_OR_MULTIPLIER:
             case VariableType.NUMBER:
             case VariableType.DATE:
