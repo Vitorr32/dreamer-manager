@@ -1,10 +1,10 @@
 export enum VariableOperator {
     NONE = 'model.undefined',
     // Filter for Numbers/Floats
-    BIGGER_THAN = 'model.variable.operator.bigger_than',
-    EQUAL_OR_BIGGER_THAN = 'model.variable.operator.equal_or_bigger_than',
-    LESS_THAN = 'model.variable.operator.lesser_than',
-    EQUAL_OR_LESS_THAN = 'model.variable.operator.equal_or_lesser_than',
+    GREATER_THAN = 'model.variable.operator.greater_than',
+    EQUAL_OR_GREATER_THAN = 'model.variable.operator.equal_or_greater_than',
+    LESSER_THAN = 'model.variable.operator.lesser_than',
+    EQUAL_OR_LESSER_THAN = 'model.variable.operator.equal_or_lesser_than',
     EQUALS_TO = 'model.variable.operator.equals_to',
     NOT_EQUALS_TO = 'model.variable.operator.not_equals_to',
 

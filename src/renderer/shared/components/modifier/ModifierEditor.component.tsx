@@ -6,14 +6,7 @@ import { EntityVariableValue } from 'renderer/shared/models/interfaces/EntityVar
 import { Modifier } from 'renderer/shared/models/base/Modifier.model';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
-import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
-import { VariableOperator } from 'renderer/shared/models/enums/VariableOperator';
-import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
-import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
-import { Agency, AgencyVariablesKey } from 'renderer/shared/models/base/Agency.model';
-import { DEFAULT_EXTERNAL_ENTITY_FILTER, PLAYER_AGENCY } from 'renderer/shared/Constants';
-import { Actor, ActorVariablesKey } from 'renderer/shared/models/base/Actor.model';
-import { Relationship, RelationshipVariablesKey } from 'renderer/shared/models/base/Relationship.model';
+import { getDynamicEntityFilterDataAsFilterTree } from 'renderer/shared/utils/DynamicEntities';
 import { EntityFilterEditor } from '../entity/EntityFilterEditor.component';
 import { CompositeEntityFilter } from '../entity/CompositeEntityFilter.component';
 
@@ -25,177 +18,6 @@ interface IProps {
 
 export function ModifierEditor({ modifier, onChange, options }: IProps) {
     const { t } = useTranslation();
-
-    const getDynamicEntityFilterData = (dynamicEntity: DynamicEntity): EntityFilterTree => {
-        const dynamicEntityFilterTree: EntityFilterTree = new EntityFilterTree();
-
-        switch (dynamicEntity) {
-            case DynamicEntity.EVERYONE:
-                // To set the Everyone filter, just get all character of age bigger than 0, which means everyone currently instantiated in game.
-                dynamicEntityFilterTree.root.entityFilters[0].entityType = EntityType.CHARACTERS;
-                dynamicEntityFilterTree.root.entityFilters[0].operator = VariableOperator.BIGGER_THAN;
-                dynamicEntityFilterTree.root.entityFilters[0].variableKey = Character.getEntityVariables()[CharacterVariablesKey.AGE].key;
-                dynamicEntityFilterTree.root.entityFilters[0].value = 0;
-                break;
-            case DynamicEntity.ALL_DREAMERS_OF_STUDIO:
-                dynamicEntityFilterTree.root.logicOperator = LogicOperator.AND;
-
-                dynamicEntityFilterTree.root.entityFilters[0].entityType = EntityType.CHARACTERS;
-                dynamicEntityFilterTree.root.entityFilters[0].variableKey = Character.getEntityVariables()[CharacterVariablesKey.AGENCY].key;
-                dynamicEntityFilterTree.root.entityFilters[0].isFilteringExternalKey = true;
-                dynamicEntityFilterTree.root.entityFilters[0].externalEntityFilter = [
-                    {
-                        entityType: EntityType.AGENCY,
-                        variableKey: Agency.getEntityVariables()[AgencyVariablesKey.ID].key,
-                        operator: VariableOperator.EQUALS_TO,
-                        value: PLAYER_AGENCY,
-                    },
-                ];
-
-                dynamicEntityFilterTree.root.entityFilters.push(DEFAULT_EXTERNAL_ENTITY_FILTER);
-                dynamicEntityFilterTree.root.entityFilters[1].entityType = EntityType.CHARACTERS;
-                dynamicEntityFilterTree.root.entityFilters[1].variableKey = Character.getEntityVariables()[CharacterVariablesKey.TYPE].key;
-                dynamicEntityFilterTree.root.entityFilters[1].operator = VariableOperator.EQUALS_TO;
-                dynamicEntityFilterTree.root.entityFilters[1].value = CharacterType.STAFF;
-                break;
-            case DynamicEntity.ALL_STAFF_OF_AGENCY:
-                dynamicEntityFilterTree.root.logicOperator = LogicOperator.AND;
-
-                dynamicEntityFilterTree.root.entityFilters[0].entityType = EntityType.CHARACTERS;
-                dynamicEntityFilterTree.root.entityFilters[0].variableKey = Character.getEntityVariables()[CharacterVariablesKey.AGENCY].key;
-                dynamicEntityFilterTree.root.entityFilters[0].isFilteringExternalKey = true;
-                dynamicEntityFilterTree.root.entityFilters[0].externalEntityFilter = [
-                    {
-                        entityType: EntityType.AGENCY,
-                        variableKey: Agency.getEntityVariables()[AgencyVariablesKey.ID].key,
-                        operator: VariableOperator.EQUALS_TO,
-                        value: PLAYER_AGENCY,
-                    },
-                ];
-
-                dynamicEntityFilterTree.root.entityFilters.push(DEFAULT_EXTERNAL_ENTITY_FILTER);
-                dynamicEntityFilterTree.root.entityFilters[1].entityType = EntityType.CHARACTERS;
-                dynamicEntityFilterTree.root.entityFilters[1].variableKey = Character.getEntityVariables()[CharacterVariablesKey.TYPE].key;
-                dynamicEntityFilterTree.root.entityFilters[1].operator = VariableOperator.EQUALS_TO;
-                dynamicEntityFilterTree.root.entityFilters[1].value = CharacterType.STAFF;
-                break;
-            case DynamicEntity.EVERYONE_ON_AGENCY:
-                dynamicEntityFilterTree.root.entityFilters[0].entityType = EntityType.CHARACTERS;
-                dynamicEntityFilterTree.root.entityFilters[0].variableKey = Character.getEntityVariables()[CharacterVariablesKey.AGENCY].key;
-                dynamicEntityFilterTree.root.entityFilters[0].isFilteringExternalKey = true;
-                dynamicEntityFilterTree.root.entityFilters[0].externalEntityFilter = [
-                    {
-                        entityType: EntityType.AGENCY,
-                        variableKey: Agency.getEntityVariables()[AgencyVariablesKey.ID].key,
-                        operator: VariableOperator.EQUALS_TO,
-                        value: PLAYER_AGENCY,
-                    },
-                ];
-                break;
-            case DynamicEntity.ALL_ACTORS:
-                dynamicEntityFilterTree.root.logicOperator = LogicOperator.OR;
-
-                if (options.specifiedEntities[EntityType.ACTORS]) {
-                    dynamicEntityFilterTree.root.entityFilters = options.specifiedEntities[EntityType.ACTORS].map(
-                        ({ label, data, shortcut }: { label: string; data: any; shortcut?: DynamicEntity }) => {
-                            return {
-                                ...DEFAULT_EXTERNAL_ENTITY_FILTER,
-                                entity: EntityType.ACTORS,
-                                variableKey: Actor.getEntityVariables()[ActorVariablesKey.ID].key,
-                                operator: VariableOperator.EQUALS_TO,
-                                value: data.id,
-                            };
-                        }
-                    );
-                } else {
-                    // TODO: Maybe put a feedback message on the front-end?
-                    console.error('Tried to select all actors when no such entity exists yet.');
-                }
-                break;
-            case DynamicEntity.PROTAGONIST:
-                dynamicEntityFilterTree.root.entityFilters.push({
-                    ...DEFAULT_EXTERNAL_ENTITY_FILTER,
-                    entityType: EntityType.CHARACTERS,
-                    variableKey: Character.getEntityVariables()[CharacterVariablesKey.IS_PLAYER].key,
-                    operator: VariableOperator.EQUALS_TO,
-                    value: true,
-                });
-                break;
-            case DynamicEntity.SELF:
-                dynamicEntityFilterTree.root.entityFilters.push({
-                    ...DEFAULT_EXTERNAL_ENTITY_FILTER,
-                    entityType: EntityType.CHARACTERS,
-                    variableKey: Character.getEntityVariables()[CharacterVariablesKey.ID].key,
-                    operator: VariableOperator.EQUALS_TO,
-                    value: DynamicEntity.SELF,
-                });
-                break;
-            case DynamicEntity.SELF_FRIENDS:
-                dynamicEntityFilterTree.root.logicOperator = LogicOperator.AND;
-
-                dynamicEntityFilterTree.root.entityFilters.push(
-                    {
-                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
-                        entityType: EntityType.RELATIONSHIP,
-                        variableKey: Character.getEntityVariables()[CharacterVariablesKey.ID].key,
-                        externalEntityFilter: [
-                            {
-                                entityType: EntityType.CHARACTERS,
-                                operator: VariableOperator.EQUALS_TO,
-                                variableKey: Actor.getEntityVariables()[CharacterVariablesKey.ID].key,
-                                value: DynamicEntity.SELF,
-                            },
-                        ],
-                    },
-                    {
-                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
-                        entityType: EntityType.RELATIONSHIP,
-                        variableKey: Relationship.getEntityVariables()[RelationshipVariablesKey.FAVOR].key,
-                        operator: VariableOperator.EQUAL_OR_BIGGER_THAN,
-                        value: 50,
-                    }
-                );
-                break;
-            case DynamicEntity.SELF_RIVALS:
-                dynamicEntityFilterTree.root.logicOperator = LogicOperator.AND;
-
-                dynamicEntityFilterTree.root.entityFilters.push(
-                    {
-                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
-                        entityType: EntityType.RELATIONSHIP,
-                        variableKey: Actor.getEntityVariables()[ActorVariablesKey.CHARACTER_ID].key,
-                        externalEntityFilter: [
-                            {
-                                entityType: EntityType.CHARACTERS,
-                                operator: VariableOperator.EQUALS_TO,
-                                variableKey: Actor.getEntityVariables()[ActorVariablesKey.ID].key,
-                                value: DynamicEntity.SELF,
-                            },
-                        ],
-                    },
-                    {
-                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
-                        entityType: EntityType.RELATIONSHIP,
-                        variableKey: Relationship.getEntityVariables().favor.key,
-                        operator: VariableOperator.EQUAL_OR_LESS_THAN,
-                        value: 0,
-                    },
-                    {
-                        ...DEFAULT_EXTERNAL_ENTITY_FILTER,
-                        entityType: EntityType.RELATIONSHIP,
-                        variableKey: Relationship.getEntityVariables().respect.key,
-                        operator: VariableOperator.EQUAL_OR_BIGGER_THAN,
-                        value: 50,
-                    }
-                );
-                break;
-            default:
-                console.error(`No entity selected, or unknown entity${modifier.modifiedEntityVariables.entityType}`);
-                break;
-        }
-
-        return dynamicEntityFilterTree;
-    };
 
     const onEntityModifierChanged = (entityFilter: EntityVariableValue): void => {
         const newModifier = CopyClassInstance(modifier);
@@ -209,7 +31,7 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
             newModifier.modifiedEntityVariables?.specifiedDynamicEntity &&
             newModifier.modifiedEntityVariables?.specifiedDynamicEntity !== modifier.modifiedEntityVariables?.specifiedDynamicEntity
         ) {
-            newModifier.targetEntityFilter = getDynamicEntityFilterData(newModifier.modifiedEntityVariables.specifiedDynamicEntity, true);
+            newModifier.targetEntityFilter = getDynamicEntityFilterDataAsFilterTree(newModifier.modifiedEntityVariables.specifiedDynamicEntity, options);
         }
         onChange(newModifier);
     };

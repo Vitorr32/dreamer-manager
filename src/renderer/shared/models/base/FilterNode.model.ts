@@ -6,9 +6,6 @@ import { findCommonItemsOnObjectArrays, mergeArraysAndRemoveDuplicates } from 'r
 import { ExternalExpandedEntityFilter } from '../interfaces/ExternalExpandedEntityFilter.interface';
 import { LogicOperator } from '../enums/LogicOperator.enum';
 import { EntityBase } from './Entity.model';
-import { t } from 'i18next';
-import { GetVariablesOfEntity } from 'renderer/shared/utils/EntityHelpers';
-import { SummarizeEntityVariableValueObject } from 'renderer/shared/utils/Summary';
 
 export class FilterNode {
     // The logic operator of this node, will define how the evaluation of the nodes conditions/children will be evaluated
@@ -84,18 +81,5 @@ export class FilterNode {
             default:
                 return entitiesFound;
         }
-    }
-
-    public describeFilterNode(): string {
-        const nodeLogicOperator = t(this.logicOperator);
-
-        const nodeConditions = this.entityFilters.map((entityFilter) => {
-            return {
-                ...SummarizeEntityVariableValueObject(entityFilter),
-                externalEntityFilter: entityFilter.externalEntityFilter ? entityFilter.externalEntityFilter.map((evv) => SummarizeEntityVariableValueObject(evv)) : [],
-            };
-        });
-
-        return '';
     }
 }

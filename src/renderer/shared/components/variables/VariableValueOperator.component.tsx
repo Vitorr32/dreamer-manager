@@ -37,10 +37,10 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
                     : [
                           VariableOperator.EQUALS_TO,
                           VariableOperator.NOT_EQUALS_TO,
-                          VariableOperator.BIGGER_THAN,
-                          VariableOperator.EQUAL_OR_BIGGER_THAN,
-                          VariableOperator.LESS_THAN,
-                          VariableOperator.EQUAL_OR_LESS_THAN,
+                          VariableOperator.GREATER_THAN,
+                          VariableOperator.EQUAL_OR_GREATER_THAN,
+                          VariableOperator.LESSER_THAN,
+                          VariableOperator.EQUAL_OR_LESSER_THAN,
                       ];
             default:
                 return [];

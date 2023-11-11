@@ -1,9 +1,11 @@
 import { t } from 'i18next';
 import { EntityVariable } from '../models/base/Variable.model';
 import { VariableOperator } from '../models/enums/VariableOperator';
-import { VariableType } from '../models/enums/VariableType';
 import { EntityVariableValue } from '../models/interfaces/EntityVariableValue.interface';
 import { GetVariablesOfEntity } from './EntityHelpers';
+import { Modifier } from '../models/base/Modifier.model';
+import { EntityFilterTree } from '../models/base/EntityFilterTree.model';
+import { ExternalExpandedEntityFilter } from '../models/interfaces/ExternalExpandedEntityFilter.interface';
 
 export const SummarizeEntityVariableValueObject = (evv: EntityVariableValue): { target: string; variable: EntityVariable; operator: string; value: string } => {
     const target = evv.specifiedDynamicEntity ? t(evv.specifiedDynamicEntity) : t(evv.entityType);
@@ -13,12 +15,70 @@ export const SummarizeEntityVariableValueObject = (evv: EntityVariableValue): { 
     return { target, variable, operator, value };
 };
 
+export const SummarizeExternalExpandedEntityFilterObject = (eee: ExternalExpandedEntityFilter) => {
+    const summarizedEvv = SummarizeEntityVariableValueObject(eee);
+    const summarizedEvvOfComparingEntity = eee.externalEntityFilter.map((eeeFilter) => SummarizeEntityVariableValueObject(eeeFilter));
+
+    return {
+        ...summarizedEvv,
+        isFilteringExternalKey: eee.isFilteringExternalKey,
+        isComparingEntities: eee.isComparingEntities,
+        externalEntityFilterSummarized: summarizedEvvOfComparingEntity,
+    };
+};
+
 // Summarize the EVV object into a single string representation, note that this include both filter and edit operations.
-export const SummarizeEntityVariableValueToStringLine = (target: string, variable: EntityVariable, operator: VariableOperator, value: any, origin?: string): string => {
+export const SummarizeEntityVariableValueToStringLine = (variable: EntityVariable, operator: VariableOperator, value: any): string => {
+    const variableName = t(variable.displayName);
+
     switch (operator) {
+        // Filter Operators
         case VariableOperator.EQUALS_TO:
-            return t('summary.modifier.equals_to', { target, variableName: variable.displayName, value1: value });
+            return t('summary.evv.equals_to', { variable: variableName, value });
+        case VariableOperator.NOT_EQUALS_TO:
+            return t('summary.evv.not_equals_to', { variable: variableName, value });
+        case VariableOperator.GREATER_THAN:
+            return t('summary.evv.greater_than', { variable: variableName, value });
+        case VariableOperator.EQUAL_OR_GREATER_THAN:
+            return t('summary.evv.equal_or_greater_than', { variable: variableName, value });
+        case VariableOperator.LESSER_THAN:
+            return t('summary.evv.less_than', { variable: variableName, value });
+        case VariableOperator.EQUAL_OR_LESSER_THAN:
+            return t('summary.evv.equal_or_lesser_than', { variable: variableName, value });
+        case VariableOperator.CONTAINS:
+            return t('summary.evv.contains', { variable: variableName, value });
+        case VariableOperator.NOT_CONTAINS:
+            return t('summary.evv.not_contains', { variable: variableName, value });
+        case VariableOperator.IS_EMPTY:
+            return t('summary.evv.empty', { variable: variableName });
+        case VariableOperator.IS_NOT_EMPTY:
+            return t('summary.evv.empty', { variable: variableName });
+
+        // Edit Operators
+        case VariableOperator.CHANGE_BY:
+            return t('summary.evv.change_by', { variable: variableName, value });
+        case VariableOperator.CHANGE_TO:
+            return t('summary.evv.change_to', { variable: variableName, value });
+        case VariableOperator.REMOVE_FROM_ARRAY:
+            return t('summary.evv.remove_from_array', { variable: variableName, value });
+        case VariableOperator.INSERT_INTO_ARRAY:
+            return t('summary.evv.add_to_array', { variable: variableName, value });
         default:
             return '';
     }
 };
+
+export const SummarizeEntityFilterTreeAsDynamicEntity = (entityFilter: EntityFilterTree) => {
+    // entityFilter.root.entityFilters[]
+};
+
+export const SummarizeModifierChange = (modifier: Modifier): string => {
+    if (!modifier || !modifier.modifiedEntityVariables || !modifier.modifiedEntityVariables.operator) {
+        return '';
+    }
+
+    const { variable, value } = SummarizeEntityVariableValueObject(modifier.modifiedEntityVariables);
+    return SummarizeEntityVariableValueToStringLine(variable, modifier.modifiedEntityVariables.operator, value);
+};
+
+export const SummarizeTargetEntity = (entityFilter: EntityFilterTree): string => {};

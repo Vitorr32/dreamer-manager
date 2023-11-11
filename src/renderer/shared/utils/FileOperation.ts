@@ -16,17 +16,16 @@ export async function IsAbsolutePathTheSameAsRelativePath(absolutePath: string, 
     return absolutePathCleaned === relativePathCleaned.absolutePath;
 }
 
-export async function CopyFileToAssetsFolder(originalFilePath: string, destinationPath: string[], targetPackage: Package): Promise<string> {
-    return window.electron.fileSystem.copyFileToResources(originalFilePath, GetPathInPackage(targetPackage, destinationPath));
-}
-
 // Get the path to the asset after dealing with the package location
 export function GetPathInPackage(originPackage: Package, path: string[]): string[] {
     if (originPackage.id === BASE_GAME_PACKAGE_ID) {
         return path;
-    } 
-        return [originPackage.id, ...path];
-    
+    }
+    return [originPackage.id, ...path];
+}
+
+export async function CopyFileToAssetsFolder(originalFilePath: string, destinationPath: string[], targetPackage: Package): Promise<string> {
+    return window.electron.fileSystem.copyFileToResources(originalFilePath, GetPathInPackage(targetPackage, destinationPath));
 }
 
 export async function GetStaticResourcesFromDatabase<T>(

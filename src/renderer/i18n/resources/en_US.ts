@@ -721,8 +721,8 @@ export const en_US = {
             variable: {
                 operator: {
                     // Filtering Operator
-                    bigger_than: 'Bigger than',
-                    equal_or_bigger_than: 'Equal or bigger than',
+                    greater_than: 'Bigger than',
+                    equal_or_greater_than: 'Equal or bigger than',
                     lesser_than: 'Less than',
                     equal_or_lesser_than: 'Equal or less than',
                     equals_to: 'Equals to / Is',
@@ -731,10 +731,10 @@ export const en_US = {
                     not_contain: "Does not contain / Don't have",
                     starts_with: 'Starts with',
                     // Editor Operator
-                    change_by: 'Change {{variable}} value by',
-                    change_to: 'Change {{variable}} value to',
-                    insert_into_array: 'Insert into {{variable}} list',
-                    remove_from_array: 'Remove from {{variable}} list',
+                    change_by: 'Change value by',
+                    change_to: 'Change value to',
+                    insert_into_array: 'Insert into list',
+                    remove_from_array: 'Remove from list',
                 },
             },
             modifier: {
@@ -859,9 +859,23 @@ export const en_US = {
                 increase_with_targets: 'Increase the {{value}} of {{targets}} by {{change}}',
                 decrease_with_targets: 'Decrease the {{value}} of {{targets}} by {{change}}',
             },
-            modifier: {
-                equals_to: '{{target}} {{variableName}} value is {{value1}}',
-                between: '{{target}} {{variableName}} value is between {{value1}} and {{value2}}',
+            evv: {
+                // Edit operators of evv
+                change_by: 'Change {{variable}} value by {{value}}',
+                change_to: 'Change {{variable}} value to {{value}}',
+                insert_into_array: 'Insert {{value}} into {{variable}} list',
+                remove_from_array: 'Remove {{value}} from {{variable}} list',
+                // Filter operators of evv
+                equals_to: '{{variable}} value is {{value}}',
+                not_equals_to: '{{variable}} value is NOT {{value}}',
+                greater_than: '{{variable}} is bigger than {{value}}',
+                equal_or_greater_than: '{{variable}} is equal or bigger than {{value}}',
+                lesser_than: '{{variable}} is lesser than {{value}}',
+                equal_or_lesser_than: '{{variable}} is equal or lesser than {{value}}',
+                contains: '{{variable}} list includes {{value}}',
+                not_contains: '{{variable}} list does NOT include {{value}}',
+                empty: '{{variable}} is empty',
+                not_empty: '{{variable}} is not empty',
             },
             agent: {
                 unknown_self: `this character`,
@@ -877,11 +891,11 @@ export const en_US = {
             },
             condition: {
                 between: '{{activeAgent}} {{variable}} is between {{lowerValue}} and {{higherValue}}',
-                bigger_than: 'The {{variable}} of the {{activeAgent}} is bigger than {{parameter}}',
-                bigger_than_target: `The {{variable}} of {{activeAgent}} is bigger than the {{passiveAgent}}`,
+                greater_than: 'The {{variable}} of the {{activeAgent}} is bigger than {{parameter}}',
+                greater_than_target: `The {{variable}} of {{activeAgent}} is bigger than the {{passiveAgent}}`,
                 exactly: `The {{activeAgent}} {{variable}} is exactly than {{parameter}}`,
-                smaller_than: 'The {{variable}} of the {{activeAgent}} is smaller than {{parameter}}',
-                smaller_than_target: `The {{variable}} of {{activeAgent}} is smaller than the {{passiveAgent}}`,
+                lesser_than: 'The {{variable}} of the {{activeAgent}} is smaller than {{parameter}}',
+                lesser_than_target: `The {{variable}} of {{activeAgent}} is smaller than the {{passiveAgent}}`,
                 has_trait: 'The {{passiveAgent}} has the trait {{variable}}',
                 has_trait_plural: 'The {{passiveAgent}} has the following traits: {{variable}}',
                 no_trait: 'The {{passiveAgent}} does not have the trait {{variable}}',

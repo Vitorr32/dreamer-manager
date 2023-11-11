@@ -3,11 +3,11 @@ import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { Effect } from 'renderer/shared/models/base/Effect.model';
 import { Period } from 'renderer/shared/models/enums/Period.enum';
-import { Paper, Typography } from '@mui/material';
+import { Divider, List, ListItem, ListSubheader, Typography } from '@mui/material';
 import { ConvertDurationStringToReadableString } from 'renderer/shared/utils/DateOperations';
-import { DescribeFilterTreeNode } from './DescribeFilterTreeNode.component';
-import { DescribeModifierSkeleton } from './DescribeModifierSkeleton';
 import { Modifier } from 'renderer/shared/models/base/Modifier.model';
+import { SummarizeModifierChange } from 'renderer/shared/utils/Summary';
+import { DescribeFilterTreeNode } from './DescribeFilterTreeNode.component';
 
 interface IProps {
     effect: Effect;
@@ -55,10 +55,6 @@ export function DescribeEffectSkeleton({ effect }: IProps) {
         return Object.values(groupedModifiers);
     };
 
-    const getModifierSummary = (modifier: Modifier) => {
-        // if(modifier.modifiedEntityVariables.)
-    };
-
     return (
         <Box id={`describe_effect_${uuidv4()}`} sx={{ color: 'text.primary' }}>
             {effect.trigger && (
@@ -83,22 +79,30 @@ export function DescribeEffectSkeleton({ effect }: IProps) {
                 </Box>
             )}
 
-            {effect.modifiers && effect.modifiers.length !== 0
-                ? groupModifiersByTarget(effect.modifiers).map((modifierGroup) => {
-                      const targetDisplayName = modifierGroup[0].targetEntityFilter;
+            {effect.modifiers && effect.modifiers.length !== 0 ? (
+                <List>
+                    {...groupModifiersByTarget(effect.modifiers).map((modifierGroup) => {
+                        const targetDisplayName = modifierGroup[0].targetEntityFilter;
+                        const modifierDescriptions = modifierGroup.map((modifier) => SummarizeModifierChange(modifier));
 
-                      return (
-                          <Box>
-                              {/* <Typography>{t('summary.effect.modifier')}</Typography>
-                              {effect.modifiers.map((modifier) => {
-                                  <Paper>
-                                      <Typography></Typography>
-                                  </Paper>;
-                              })} */}
-                          </Box>
-                      );
-                  })
-                : null}
+                        return (
+                            <>
+                                <ListSubheader>
+                                    <DescribeFilterTreeNode filterNode={modifierGroup[0].targetEntityFilter.root} />
+                                </ListSubheader>
+                                <ListItem>
+                                    <List disablePadding>
+                                        {...modifierDescriptions.map((description) => {
+                                            return <ListItem>{description}</ListItem>;
+                                        })}
+                                    </List>
+                                </ListItem>
+                                <Divider />
+                            </>
+                        );
+                    })}
+                </List>
+            ) : null}
         </Box>
     );
 }
