@@ -13,6 +13,7 @@ import { EntityFilterOptions } from '../models/options/EntityFilterOptions.model
 
 export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEntity, options?: EntityFilterOptions): EntityFilterTree => {
     const dynamicEntityFilterTree: EntityFilterTree = new EntityFilterTree();
+    dynamicEntityFilterTree.filterShortcut = dynamicEntity;
 
     switch (dynamicEntity) {
         case DynamicEntity.EVERYONE:

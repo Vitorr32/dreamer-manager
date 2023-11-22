@@ -5,15 +5,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { FilterNode } from 'renderer/shared/models/base/FilterNode.model';
 import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
-import { List, ListItem, ListSubheader } from '@mui/material';
-import { SummarizeEntityVariableValueObject } from 'renderer/shared/utils/Summary';
+import { Box, List, ListItem, ListSubheader, Typography } from '@mui/material';
+import { SummarizeEntityVariableValueObject, SummarizeEntityVariableValueToStringLine, SummarizeExternalExpandedEntityFilterObject } from 'renderer/shared/utils/Summary';
+import { ExternalExpandedEntityFilter } from 'renderer/shared/models/interfaces/ExternalExpandedEntityFilter.interface';
 
 interface IProps {
     filterNode: FilterNode;
-    isRoot?: boolean;
 }
 
-export function DescribeFilterTreeNode({ filterNode, isRoot = false }: IProps) {
+export function DescribeFilterTreeNode({ filterNode }: IProps) {
     const { t } = useTranslation();
 
     const database = useSelector((state: RootState) => state.database);
@@ -32,14 +32,60 @@ export function DescribeFilterTreeNode({ filterNode, isRoot = false }: IProps) {
         return '';
     };
 
+    const formatSummaryOfNodeFilter = (entityFilter: ExternalExpandedEntityFilter) => {
+        if (!entityFilter || !entityFilter.entityType || !entityFilter.variableKey) {
+            return <></>;
+        }
+
+        const summarizedObject = SummarizeExternalExpandedEntityFilterObject(entityFilter);
+        const evvSummarized = SummarizeEntityVariableValueToStringLine(summarizedObject.variable, entityFilter.operator, entityFilter.value);
+
+        if (entityFilter.isComparingToExternalEntity || entityFilter.isFilteringExternalKey) {
+            const externalsEvvSummarizedArray = entityFilter.externalEntityFilter.map((externalEntityFilter) => {
+                const externalSummarizedObject = SummarizeEntityVariableValueObject(entityFilter);
+                return SummarizeEntityVariableValueToStringLine(externalSummarizedObject.variable, externalEntityFilter.operator, externalSummarizedObject.value);
+            });
+
+            if (entityFilter.isComparingToExternalEntity) {
+                return (
+                    <Box sx={{ display: 'flex' }}>
+                        <Typography>{summarizedObject.target}</Typography>
+                        <Typography>{evvSummarized}</Typography>
+                        <List>
+                            <ListSubheader>{t('summary.node.comparison', { entity: t(entityFilter.externalEntityFilter[0].entityType) })}</ListSubheader>
+                            <List>
+                                {...externalsEvvSummarizedArray.map((externalSummary) => {
+                                    return <ListItem key={`comparator_${uuidv4()}`}>{externalSummary}</ListItem>;
+                                })}
+                            </List>
+                        </List>
+                    </Box>
+                );
+            }
+
+            return (
+                <List>
+                    <ListSubheader>{t('summary.node.comparison', { entity: t(entityFilter.externalEntityFilter[0].entityType) })}</ListSubheader>
+                    <List>
+                        {...externalsEvvSummarizedArray.map((externalSummary) => {
+                            return <ListItem key={`comparator_${uuidv4()}`}>{externalSummary}</ListItem>;
+                        })}
+                    </List>
+                </List>
+            );
+        }
+
+        return <></>;
+    };
+
     return (
         <List>
             <ListSubheader>{t(filterNode.logicOperator)}</ListSubheader>
-            {/* <List>
+            <List>
                 {...filterNode.entityFilters.map((entityFilter) => {
-                    return <ListItem>{SummarizeEntityVariableValueObject(entityFilter)}</ListItem>;
+                    return <ListItem key={`list_item_${uuidv4()}`}>{formatSummaryOfNodeFilter(entityFilter)}</ListItem>;
                 })}
-            </List> */}
+            </List>
             {filterNode.children.length !== 0 ? (
                 <List>
                     {...filterNode.children.map((childNode) => (

@@ -6,6 +6,9 @@ import { GetVariablesOfEntity } from './EntityHelpers';
 import { Modifier } from '../models/base/Modifier.model';
 import { EntityFilterTree } from '../models/base/EntityFilterTree.model';
 import { ExternalExpandedEntityFilter } from '../models/interfaces/ExternalExpandedEntityFilter.interface';
+import { getDynamicEntityFilterDataAsFilterTree } from './DynamicEntities';
+import { DynamicEntity } from '../models/enums/DynamicEntity.enum';
+import { FilterNode } from '../models/base/FilterNode.model';
 
 export const SummarizeEntityVariableValueObject = (evv: EntityVariableValue): { target: string; variable: EntityVariable; operator: string; value: string } => {
     const target = evv.specifiedDynamicEntity ? t(evv.specifiedDynamicEntity) : t(evv.entityType);
@@ -22,7 +25,7 @@ export const SummarizeExternalExpandedEntityFilterObject = (eee: ExternalExpande
     return {
         ...summarizedEvv,
         isFilteringExternalKey: eee.isFilteringExternalKey,
-        isComparingEntities: eee.isComparingEntities,
+        isComparingEntities: eee.isComparingToExternalEntity,
         externalEntityFilterSummarized: summarizedEvvOfComparingEntity,
     };
 };
@@ -68,10 +71,6 @@ export const SummarizeEntityVariableValueToStringLine = (variable: EntityVariabl
     }
 };
 
-export const SummarizeEntityFilterTreeAsDynamicEntity = (entityFilter: EntityFilterTree) => {
-    // entityFilter.root.entityFilters[]
-};
-
 export const SummarizeModifierChange = (modifier: Modifier): string => {
     if (!modifier || !modifier.modifiedEntityVariables || !modifier.modifiedEntityVariables.operator) {
         return '';
@@ -80,5 +79,3 @@ export const SummarizeModifierChange = (modifier: Modifier): string => {
     const { variable, value } = SummarizeEntityVariableValueObject(modifier.modifiedEntityVariables);
     return SummarizeEntityVariableValueToStringLine(variable, modifier.modifiedEntityVariables.operator, value);
 };
-
-export const SummarizeTargetEntity = (entityFilter: EntityFilterTree): string => {};

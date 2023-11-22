@@ -8,6 +8,7 @@ module.exports = {
         'prettier/prettier': 0,
         'max-classes-per-file': 'off',
         'default-case': 'off',
+        'no-nested-ternary': 'off',
         'import/prefer-default-export': 'off',
         'react/require-default-props': 'off',
         'react/jsx-props-no-spreading': 'off',

@@ -11,7 +11,7 @@ import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
 
 interface IProps {
     onResourceSelected: (fileName: string, absolutePath: string, internalPath: string[]) => void;
-    targetPackage: string;
+    targetPackage?: string;
     restriction?: RegExp;
     rootFolder?: string[];
 }
@@ -130,7 +130,8 @@ export function ResourcesSearch({ rootFolder = null, targetPackage = BASE_GAME_P
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
-                    } if (content.isImage) {
+                    }
+                    if (content.isImage) {
                         return (
                             <Box
                                 key={`content_${content.fileName}`}
@@ -141,18 +142,17 @@ export function ResourcesSearch({ rootFolder = null, targetPackage = BASE_GAME_P
                                 <Typography className="resources__file-name">{content.fileName}</Typography>
                             </Box>
                         );
-                    } 
-                        return (
-                            <Box
-                                key={`content_${content.fileName}`}
-                                className={`resources__file resources__file-file${selectedFile === content ? ' selected' : ''}`}
-                                onClick={(event) => onFileClick(event, content)}
-                            >
-                                <InsertDriveFileIcon />
-                                <Typography className="resources__file-name">{content.fileName}</Typography>
-                            </Box>
-                        );
-                    
+                    }
+                    return (
+                        <Box
+                            key={`content_${content.fileName}`}
+                            className={`resources__file resources__file-file${selectedFile === content ? ' selected' : ''}`}
+                            onClick={(event) => onFileClick(event, content)}
+                        >
+                            <InsertDriveFileIcon />
+                            <Typography className="resources__file-name">{content.fileName}</Typography>
+                        </Box>
+                    );
                 })}
             </Box>
             <Button onClick={onFileSubmit} disabled={!selectedFile}>

@@ -20,7 +20,7 @@ export const DEFAULT_ENTITY_FILTER: EntityVariableValue = {
 };
 export const DEFAULT_EXTERNAL_ENTITY_FILTER: ExternalExpandedEntityFilter = {
     ...DEFAULT_ENTITY_FILTER,
-    isComparingEntities: false,
+    isComparingToExternalEntity: false,
     isFilteringExternalKey: false,
     externalEntityFilter: [],
 };

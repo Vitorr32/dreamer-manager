@@ -6,6 +6,8 @@ export function GetEntitiesOfType(entity: EntityType): EntityBase[] {
     switch (entity) {
         case EntityType.CHARACTERS:
             return store.getState().database.characters;
+        case EntityType.TRAITS:
+            return store.getState().database.traits;
         default:
             console.error(`Searched for unknown entity: ${entity}`);
             return [];

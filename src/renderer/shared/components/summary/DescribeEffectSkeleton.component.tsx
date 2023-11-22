@@ -67,7 +67,7 @@ export function DescribeEffectSkeleton({ effect }: IProps) {
             {effect.conditionTree && (
                 <Box>
                     <Typography>{t('summary.effect.condition')}</Typography>
-                    <DescribeFilterTreeNode filterNode={effect.conditionTree.root} isRoot />
+                    <DescribeFilterTreeNode filterNode={effect.conditionTree.root} />
                 </Box>
             )}
 
@@ -82,13 +82,21 @@ export function DescribeEffectSkeleton({ effect }: IProps) {
             {effect.modifiers && effect.modifiers.length !== 0 ? (
                 <List>
                     {...groupModifiersByTarget(effect.modifiers).map((modifierGroup) => {
-                        const targetDisplayName = modifierGroup[0].targetEntityFilter;
+                        const { targetEntityFilter } = modifierGroup[0];
                         const modifierDescriptions = modifierGroup.map((modifier) => SummarizeModifierChange(modifier));
 
                         return (
                             <>
                                 <ListSubheader>
-                                    <DescribeFilterTreeNode filterNode={modifierGroup[0].targetEntityFilter.root} />
+                                    {targetEntityFilter ? (
+                                        targetEntityFilter.filterShortcut ? (
+                                            t(targetEntityFilter.filterShortcut)
+                                        ) : (
+                                            <DescribeFilterTreeNode filterNode={targetEntityFilter.root} />
+                                        )
+                                    ) : (
+                                        <>{t('summary.node.target.unknown')}</>
+                                    )}
                                 </ListSubheader>
                                 <ListItem>
                                     <List disablePadding>

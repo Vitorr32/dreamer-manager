@@ -830,6 +830,10 @@ export const en_US = {
                     and: 'If all of the following is true',
                     or: 'If any of the following is true',
                 },
+                target: {
+                    unknown: 'Unspecified Target Entity',
+                },
+                comparison: '{{entity}} that satisfies the following filter:',
             },
             effect: {
                 modifier: 'Following modifiers will be applied:',

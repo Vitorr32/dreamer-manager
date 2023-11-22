@@ -26,6 +26,16 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
 
     const [alternativeInput, setInputType] = useState<boolean>(false);
 
+    const getSuggestionsForAutocompleteOfEntity = (entity: EntityType): any[] => {
+        const allEntities = GetEntitiesOfType(entity);
+
+        if (options && options.specifiedEntities && options.specifiedEntities[entity]) {
+            allEntities.push(...options.specifiedEntities[entity].map((specifiedEntity) => specifiedEntity.data));
+        }
+
+        return allEntities.map((singularEntity) => ({ label: singularEntity.id, id: singularEntity.id, data: singularEntity }));
+    };
+
     const getInputOfVariableType = (type: VariableType): JSX.Element | null => {
         switch (type) {
             case VariableType.ENUMERATOR_LIST:
@@ -128,16 +138,6 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
             case VariableType.FILE_PATH:
                 return <ResourcesSearch onResourceSelected={(fileName, filePath, path) => onVariableValueChange(path)} rootFolder={[]} />;
         }
-    };
-
-    const getSuggestionsForAutocompleteOfEntity = (entity: EntityType): any[] => {
-        const allEntities = GetEntitiesOfType(entity);
-
-        if (options && options.specifiedEntities && options.specifiedEntities[entity]) {
-            allEntities.push(...options.specifiedEntities[entity]);
-        }
-
-        return allEntities.map((singularEntity) => ({ label: singularEntity.displayName, id: singularEntity.id, data: singularEntity }));
     };
 
     return getInputOfVariableType(variable.type);
