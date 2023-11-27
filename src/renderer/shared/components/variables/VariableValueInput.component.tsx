@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Autocomplete, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, TextField, useTheme } from '@mui/material';
+import { Autocomplete, Box, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
@@ -12,15 +12,17 @@ import LoopIcon from '@mui/icons-material/Loop';
 import { useState } from 'react';
 import { VariableType } from 'renderer/shared/models/enums/VariableType';
 import { ResourcesSearch } from '../file/ResourcesSearch';
+import { EntityComparisonModal } from '../entity/EntityComparisonModal.component';
 
 interface IProps {
     variable: EntityVariable;
     variableValue: any;
     onVariableValueChange: (value: any) => void;
+    isEditor: boolean;
     options?: EntityFilterOptions;
 }
 
-export function VariableValueInput({ variable, variableValue, onVariableValueChange, options }: IProps) {
+export function VariableValueInput({ variable, variableValue, onVariableValueChange, isEditor, options }: IProps) {
     const { t } = useTranslation();
     const theme = useTheme();
 
@@ -137,6 +139,9 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                 );
             case VariableType.FILE_PATH:
                 return <ResourcesSearch onResourceSelected={(fileName, filePath, path) => onVariableValueChange(path)} rootFolder={[]} />;
+            default:
+                console.error(`Unknown variable type ${type}`);
+                return null;
         }
     };
 

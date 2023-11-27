@@ -1,4 +1,3 @@
-import { ExternalExpandedEntityFilter } from './models/interfaces/ExternalExpandedEntityFilter.interface';
 import { EntityVariableValue } from './models/interfaces/EntityVariableValue.interface';
 
 export const MAX_NUMBER_OF_TRAITS_GENERATED = 5;
@@ -17,11 +16,6 @@ export const DEFAULT_ENTITY_FILTER: EntityVariableValue = {
     operator: null,
     value: '',
     variableKey: '',
-};
-export const DEFAULT_EXTERNAL_ENTITY_FILTER: ExternalExpandedEntityFilter = {
-    ...DEFAULT_ENTITY_FILTER,
-    isComparingToExternalEntity: false,
-    isFilteringExternalKey: false,
     externalEntityFilter: [],
 };
 

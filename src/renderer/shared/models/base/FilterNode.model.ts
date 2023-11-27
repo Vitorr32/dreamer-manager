@@ -1,11 +1,11 @@
-import { DEFAULT_EXTERNAL_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { EvaluateVariableOperator } from 'renderer/shared/utils/General';
 import { GetEntitiesOfType } from 'renderer/shared/utils/DatabaseOperations';
 import { MappedDatabase } from 'renderer/redux/interfaces/MappedDatabase.interface';
+import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { findCommonItemsOnObjectArrays, mergeArraysAndRemoveDuplicates } from 'renderer/shared/utils/ArrayOperations';
-import { ExternalExpandedEntityFilter } from '../interfaces/ExternalExpandedEntityFilter.interface';
 import { LogicOperator } from '../enums/LogicOperator.enum';
 import { EntityBase } from './Entity.model';
+import { EntityVariableValue } from '../interfaces/EntityVariableValue.interface';
 
 export class FilterNode {
     // The logic operator of this node, will define how the evaluation of the nodes conditions/children will be evaluated
@@ -15,7 +15,7 @@ export class FilterNode {
     public children: FilterNode[] = [];
 
     // The list of conditions of this specific node, together with the logic operator, will define the evaluation of this node
-    public entityFilters: ExternalExpandedEntityFilter[] = [DEFAULT_EXTERNAL_ENTITY_FILTER];
+    public entityFilters: EntityVariableValue[] = [DEFAULT_ENTITY_FILTER];
 
     // Evaluate if the conditions of this node are met, if the node has children, evaluate if the children are met
     // If the node has no conditions or children, return true

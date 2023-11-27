@@ -9,6 +9,7 @@ import { World } from '../models/base/World.model';
 import { EntityType } from '../models/enums/Entities.enum';
 import { Trait } from '../models/base/Trait.model';
 import { Attribute } from '../models/base/Attribute.model';
+import { Agency } from '../models/base/Agency.model';
 
 export function GetVariablesOfEntity(entity: EntityType): Variables {
     switch (entity) {
@@ -30,7 +31,10 @@ export function GetVariablesOfEntity(entity: EntityType): Variables {
             return PaperDoll.getEntityVariables();
         case EntityType.PAPER_PIECE:
             return PaperPiece.getEntityVariables();
+        case EntityType.AGENCY:
+            return Agency.getEntityVariables();
         default:
+            console.error(`Can't get variables of entity ${entity}`);
             return null;
     }
 }

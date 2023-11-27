@@ -1,14 +1,15 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_EXTERNAL_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { FilterNode } from 'renderer/shared/models/base/FilterNode.model';
-import { ExternalExpandedEntityFilter } from 'renderer/shared/models/interfaces/ExternalExpandedEntityFilter.interface';
 import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
 import { CopyClassInstance } from 'renderer/shared/utils/General';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
+import { EntityVariableValue } from 'renderer/shared/models/interfaces/EntityVariableValue.interface';
+import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { useEffect } from 'react';
 import { EntityFilterEditor } from './EntityFilterEditor.component';
 
@@ -31,15 +32,15 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
         if (entityFilterOptions?.isLookingForSpecificEntity) {
             const updatedFilterNode = CopyClassInstance(filterNode);
 
-            updatedFilterNode.entityFilters.forEach((filter, index) => {
+            updatedFilterNode.entityFilters.forEach((filter, indexOfFilter) => {
                 if (filter.entityType !== entityFilterOptions.isLookingForSpecificEntity) {
-                    updatedFilterNode.entityFilters[index].entityType = entityFilterOptions.isLookingForSpecificEntity;
+                    updatedFilterNode.entityFilters[indexOfFilter].entityType = entityFilterOptions.isLookingForSpecificEntity;
                 }
             });
 
             onFilterNodeChange(updatedFilterNode, index);
         }
-    }, []);
+    });
 
     const onLogicOperatorChange = (operator: LogicOperator): void => {
         const updatedFilterNode = CopyClassInstance(filterNode);
@@ -71,7 +72,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
         onFilterNodeChange(updatedFilterNode, index);
     };
 
-    const onNodeFilterChange = (filter: ExternalExpandedEntityFilter, filterListIndex: number) => {
+    const onNodeFilterChange = (filter: EntityVariableValue, filterListIndex: number) => {
         const updatedFilterNode = CopyClassInstance(filterNode);
         updatedFilterNode.entityFilters[filterListIndex] = filter;
         onFilterNodeChange(updatedFilterNode, index);
@@ -90,7 +91,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
         }
 
         const updatedFilterNode = CopyClassInstance(filterNode);
-        updatedFilterNode.entityFilters.push(DEFAULT_EXTERNAL_ENTITY_FILTER);
+        updatedFilterNode.entityFilters.push(DEFAULT_ENTITY_FILTER);
         onFilterNodeChange(updatedFilterNode, index);
     };
 
@@ -128,15 +129,15 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
 
             <Box sx={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <Typography> {t('interface.editor.entity.node_filters')}</Typography>
-                {filterNode.entityFilters.map((entityFilter, index) => {
+                {filterNode.entityFilters.map((entityFilter, indexOfFilter) => {
                     return (
-                        <Box key={`entity_filter_${depth}_${parentIndex}${index}`} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Box key={`entity_filter_${depth}_${parentIndex}${uuidv4()}`} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <EntityFilterEditor
                                 entityFilter={entityFilter}
-                                onFilterChange={(updatedFilter) => onNodeFilterChange({ ...DEFAULT_EXTERNAL_ENTITY_FILTER, ...updatedFilter }, index)}
+                                onFilterChange={(updatedFilter) => onNodeFilterChange({ ...DEFAULT_ENTITY_FILTER, ...updatedFilter }, indexOfFilter)}
                                 entityFilterOptions={entityFilterOptions}
                             />
-                            <Button onClick={() => onNodeFilterRemoval(index)}>
+                            <Button onClick={() => onNodeFilterRemoval(indexOfFilter)}>
                                 <CloseIcon />
                             </Button>
                         </Box>
@@ -146,15 +147,15 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
 
             <Box sx={{ marginTop: '10px' }}>
                 <Typography>{t('interface.editor.entity.node_children')}</Typography>
-                {filterNode.children.map((entityFilter, index) => {
+                {filterNode.children.map((entityFilter, indexOfFilter) => {
                     return (
                         <EntityFilterNode
-                            key={`filter_node_${depth}_${parentIndex}${index}`}
-                            parentIndex={index}
+                            key={`filter_node_${depth}_${parentIndex}${uuidv4()}`}
+                            parentIndex={indexOfFilter}
                             depth={depth + 1}
-                            index={index}
+                            index={indexOfFilter}
                             filterNode={entityFilter}
-                            onFilterNodeChange={(filterNode) => onChildNodeChange(filterNode, index)}
+                            onFilterNodeChange={(updatedFilter) => onChildNodeChange(updatedFilter, indexOfFilter)}
                             onRemoveSelf={onChildNodeRemoval}
                             entityFilterOptions={entityFilterOptions}
                         />

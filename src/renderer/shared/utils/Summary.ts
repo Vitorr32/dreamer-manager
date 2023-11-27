@@ -4,30 +4,22 @@ import { VariableOperator } from '../models/enums/VariableOperator';
 import { EntityVariableValue } from '../models/interfaces/EntityVariableValue.interface';
 import { GetVariablesOfEntity } from './EntityHelpers';
 import { Modifier } from '../models/base/Modifier.model';
-import { EntityFilterTree } from '../models/base/EntityFilterTree.model';
-import { ExternalExpandedEntityFilter } from '../models/interfaces/ExternalExpandedEntityFilter.interface';
-import { getDynamicEntityFilterDataAsFilterTree } from './DynamicEntities';
-import { DynamicEntity } from '../models/enums/DynamicEntity.enum';
-import { FilterNode } from '../models/base/FilterNode.model';
 
-export const SummarizeEntityVariableValueObject = (evv: EntityVariableValue): { target: string; variable: EntityVariable; operator: string; value: string } => {
+interface EVVSummaryObject {
+    target: string;
+    variable: EntityVariable;
+    operator: string;
+    value: string;
+    external: EVVSummaryObject[];
+}
+
+export const SummarizeEntityVariableValueObject = (evv: EntityVariableValue): EVVSummaryObject => {
     const target = evv.specifiedDynamicEntity ? t(evv.specifiedDynamicEntity) : t(evv.entityType);
     const variable = evv.entityType && evv.variableKey ? GetVariablesOfEntity(evv.entityType)[evv.variableKey] : null;
     const operator = evv.operator ? t(evv.operator) : 'NO_OPERATOR';
     const value = evv.value ? evv.value : 'NO_VALUE';
-    return { target, variable, operator, value };
-};
-
-export const SummarizeExternalExpandedEntityFilterObject = (eee: ExternalExpandedEntityFilter) => {
-    const summarizedEvv = SummarizeEntityVariableValueObject(eee);
-    const summarizedEvvOfComparingEntity = eee.externalEntityFilter.map((eeeFilter) => SummarizeEntityVariableValueObject(eeeFilter));
-
-    return {
-        ...summarizedEvv,
-        isFilteringExternalKey: eee.isFilteringExternalKey,
-        isComparingEntities: eee.isComparingToExternalEntity,
-        externalEntityFilterSummarized: summarizedEvvOfComparingEntity,
-    };
+    const externalEntitiesSummaryObjects = evv.externalEntityFilter.map((eeeFilter) => SummarizeEntityVariableValueObject(eeeFilter));
+    return { target, variable, operator, value, external: externalEntitiesSummaryObjects };
 };
 
 // Summarize the EVV object into a single string representation, note that this include both filter and edit operations.

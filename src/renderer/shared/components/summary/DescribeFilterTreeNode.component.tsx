@@ -1,13 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useTranslation } from 'react-i18next';
-import { Modifier } from 'renderer/shared/models/base/Modifier.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
 import { FilterNode } from 'renderer/shared/models/base/FilterNode.model';
-import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
 import { Box, List, ListItem, ListSubheader, Typography } from '@mui/material';
-import { SummarizeEntityVariableValueObject, SummarizeEntityVariableValueToStringLine, SummarizeExternalExpandedEntityFilterObject } from 'renderer/shared/utils/Summary';
-import { ExternalExpandedEntityFilter } from 'renderer/shared/models/interfaces/ExternalExpandedEntityFilter.interface';
+import { SummarizeEntityVariableValueObject, SummarizeEntityVariableValueToStringLine } from 'renderer/shared/utils/Summary';
+import { EntityVariableValue } from 'renderer/shared/models/interfaces/EntityVariableValue.interface';
+import { VariableType } from 'renderer/shared/models/enums/VariableType';
 
 interface IProps {
     filterNode: FilterNode;
@@ -18,35 +17,21 @@ export function DescribeFilterTreeNode({ filterNode }: IProps) {
 
     const database = useSelector((state: RootState) => state.database);
 
-    const getEntityString = ({ modifiedEntityVariables }: Modifier) => {
-        // Check to see if the value of the modifier is a dynamic entity that needs to be mapped using the database of the game.
-        if (Object.values(DynamicEntity).includes(modifiedEntityVariables.value)) {
-            switch (modifiedEntityVariables.value) {
-                case DynamicEntity.SELF:
-                    // return
-                    break;
-                default:
-                    return 'Yolo';
-            }
-        }
-        return '';
-    };
-
-    const formatSummaryOfNodeFilter = (entityFilter: ExternalExpandedEntityFilter) => {
+    const formatSummaryOfNodeFilter = (entityFilter: EntityVariableValue) => {
         if (!entityFilter || !entityFilter.entityType || !entityFilter.variableKey) {
             return <></>;
         }
 
-        const summarizedObject = SummarizeExternalExpandedEntityFilterObject(entityFilter);
+        const summarizedObject = SummarizeEntityVariableValueObject(entityFilter);
         const evvSummarized = SummarizeEntityVariableValueToStringLine(summarizedObject.variable, entityFilter.operator, entityFilter.value);
 
-        if (entityFilter.isComparingToExternalEntity || entityFilter.isFilteringExternalKey) {
+        if (entityFilter.externalEntityFilter.length !== 0) {
             const externalsEvvSummarizedArray = entityFilter.externalEntityFilter.map((externalEntityFilter) => {
                 const externalSummarizedObject = SummarizeEntityVariableValueObject(entityFilter);
                 return SummarizeEntityVariableValueToStringLine(externalSummarizedObject.variable, externalEntityFilter.operator, externalSummarizedObject.value);
             });
 
-            if (entityFilter.isComparingToExternalEntity) {
+            if (summarizedObject.variable.type !== VariableType.EXTERNAL_KEY && summarizedObject.variable.type !== VariableType.EXTERNAL_KEY_LIST) {
                 return (
                     <Box sx={{ display: 'flex' }}>
                         <Typography>{summarizedObject.target}</Typography>
@@ -75,7 +60,11 @@ export function DescribeFilterTreeNode({ filterNode }: IProps) {
             );
         }
 
-        return <></>;
+        return (
+            <Typography>
+                {summarizedObject.target} {evvSummarized}
+            </Typography>
+        );
     };
 
     return (
