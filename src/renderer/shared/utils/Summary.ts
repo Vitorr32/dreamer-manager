@@ -14,12 +14,12 @@ interface EVVSummaryObject {
 }
 
 export const SummarizeEntityVariableValueObject = (evv: EntityVariableValue): EVVSummaryObject => {
-    const target = evv.specifiedDynamicEntity ? t(evv.specifiedDynamicEntity) : t(evv.entityType);
+    const target = evv.targetDynamicEntity ? t(evv.targetDynamicEntity) : t(evv.entityType);
     const variable = evv.entityType && evv.variableKey ? GetVariablesOfEntity(evv.entityType)[evv.variableKey] : null;
     const operator = evv.operator ? t(evv.operator) : 'NO_OPERATOR';
     const value = evv.value ? evv.value : 'NO_VALUE';
-    const externalEntitiesSummaryObjects = evv.externalEntityFilter.map((eeeFilter) => SummarizeEntityVariableValueObject(eeeFilter));
-    return { target, variable, operator, value, external: externalEntitiesSummaryObjects };
+    const external = evv.externalEntityFilter.map((eeeFilter) => SummarizeEntityVariableValueObject(eeeFilter));
+    return { target, variable, operator, value, external };
 };
 
 // Summarize the EVV object into a single string representation, note that this include both filter and edit operations.

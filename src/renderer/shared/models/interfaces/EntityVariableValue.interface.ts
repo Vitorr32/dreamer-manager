@@ -5,7 +5,7 @@ import { DynamicEntity } from '../enums/DynamicEntity.enum';
 // EVV for short, this interface is the basic object used to filtering and applying modifiers to entities.
 export interface EntityVariableValue {
     entityType?: EntityType;
-    specifiedDynamicEntity?: DynamicEntity;
+    targetDynamicEntity?: DynamicEntity;
     variableKey?: string;
     operator?: VariableOperator;
     value: any; // eslint-disable-line

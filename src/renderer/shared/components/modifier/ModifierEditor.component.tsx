@@ -28,10 +28,10 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
         }
 
         if (
-            newModifier.modifiedEntityVariables?.specifiedDynamicEntity &&
-            newModifier.modifiedEntityVariables?.specifiedDynamicEntity !== modifier.modifiedEntityVariables?.specifiedDynamicEntity
+            newModifier.modifiedEntityVariables?.targetDynamicEntity &&
+            newModifier.modifiedEntityVariables?.targetDynamicEntity !== modifier.modifiedEntityVariables?.targetDynamicEntity
         ) {
-            newModifier.targetEntityFilter = getDynamicEntityFilterDataAsFilterTree(newModifier.modifiedEntityVariables.specifiedDynamicEntity, options);
+            newModifier.targetEntityFilter = getDynamicEntityFilterDataAsFilterTree(newModifier.modifiedEntityVariables.targetDynamicEntity, options);
         }
         onChange(newModifier);
     };
@@ -49,16 +49,16 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
 
     const isTargetFilterNecessary = (): boolean => {
         // Check if the values for the modifier target are non-null
-        if (!modifier.modifiedEntityVariables.entityType && !modifier.modifiedEntityVariables.specifiedDynamicEntity) {
+        if (!modifier.modifiedEntityVariables.entityType && !modifier.modifiedEntityVariables.targetDynamicEntity) {
             return false;
         }
         // In case that the user choose a specific dynamic entity, but it's value it SPECIFIC_FILTER, it means that the user wants to create a filter himself.
-        const { specifiedDynamicEntity } = modifier.modifiedEntityVariables;
-        if (specifiedDynamicEntity === DynamicEntity.SPECIFIC_FILTER) {
+        const { targetDynamicEntity } = modifier.modifiedEntityVariables;
+        if (targetDynamicEntity === DynamicEntity.SPECIFIC_FILTER) {
             return true;
         }
 
-        if (!modifier.modifiedEntityVariables.specifiedDynamicEntity) {
+        if (!modifier.modifiedEntityVariables.targetDynamicEntity) {
             return true;
         }
 

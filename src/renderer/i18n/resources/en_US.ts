@@ -13,6 +13,7 @@ export const en_US = {
                 increase: 'increase',
                 decrease: 'decrease',
                 language: 'Language',
+                or: 'or',
             },
             utils: {
                 date_format: 'MM/dd/yyyy',
@@ -88,8 +89,10 @@ export const en_US = {
                     add_condition_helper: 'Without conditions, the modifier will always be active',
                     remove_condition_label: 'Remove Conditions',
                     remove_condition_helper: 'By adding an condition, you will be able to specify in which situation the modifier will be applied',
-                    set_comparison_label: 'Compare To Another Entity Value'
+                    set_comparison_label: 'Compare To Another {{entity}}',
+                    comparison_modal_title: '',
                 },
+
                 entity: {
                     input_label_logic_operator: 'Logic Operator',
                     input_label_operator: 'Operator',
