@@ -102,7 +102,6 @@ export enum CharacterVariablesKey {
 }
 
 export const CharacterEntityVariables: Variables = {
-    id: { key: CharacterVariablesKey.ID, displayName: 'model.character.variables.id', type: VariableType.TEXT, read: true, edit: false },
     name: { key: CharacterVariablesKey.NAME, displayName: 'model.character.variables.name', type: VariableType.TEXT, read: true, edit: true },
     surname: { key: CharacterVariablesKey.SURNAME, displayName: 'model.character.variables.surname', type: VariableType.TEXT, read: true, edit: true },
     nickname: { key: CharacterVariablesKey.NICKNAME, displayName: 'model.character.variables.nickname', type: VariableType.TEXT, read: true, edit: true },
@@ -266,7 +265,7 @@ export const CharacterEntityVariables: Variables = {
 
 export class Character extends EntityBase {
     static get variables() {
-        return CharacterEntityVariables;
+        return {...super.variables, ...CharacterEntityVariables};
     }
 
     public name: string;

@@ -1,7 +1,7 @@
 import { VariableOperator } from 'renderer/shared/models/enums/VariableOperator';
 import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared/models/base/Character.model';
 import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
-import { Agency, AgencyVariablesKey } from 'renderer/shared/models/base/Agency.model';
+import { Agency } from 'renderer/shared/models/base/Agency.model';
 import { DEFAULT_ENTITY_FILTER, PLAYER_AGENCY } from 'renderer/shared/Constants';
 import { Actor, ActorVariablesKey } from 'renderer/shared/models/base/Actor.model';
 import { Relationship, RelationshipVariablesKey } from 'renderer/shared/models/base/Relationship.model';
@@ -10,6 +10,7 @@ import { DynamicEntity } from '../models/enums/DynamicEntity.enum';
 import { EntityType } from '../models/enums/Entities.enum';
 import { EntityFilterTree } from '../models/base/EntityFilterTree.model';
 import { EntityFilterOptions } from '../models/options/EntityFilterOptions.model';
+import { EntityBaseKeys } from '../models/base/Entity.model';
 
 export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEntity, options?: EntityFilterOptions): EntityFilterTree => {
     const dynamicEntityFilterTree: EntityFilterTree = new EntityFilterTree();
@@ -31,7 +32,7 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
             dynamicEntityFilterTree.root.entityFilters[0].externalEntityFilter = [
                 {
                     entityType: EntityType.AGENCY,
-                    variableKey: Agency.getEntityVariables()[AgencyVariablesKey.ID].key,
+                    variableKey: Agency.getEntityVariables()[EntityBaseKeys.ID].key,
                     operator: VariableOperator.EQUALS_TO,
                     value: PLAYER_AGENCY,
                 },
@@ -51,7 +52,7 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
             dynamicEntityFilterTree.root.entityFilters[0].externalEntityFilter = [
                 {
                     entityType: EntityType.AGENCY,
-                    variableKey: Agency.getEntityVariables()[AgencyVariablesKey.ID].key,
+                    variableKey: Agency.getEntityVariables()[EntityBaseKeys.ID].key,
                     operator: VariableOperator.EQUALS_TO,
                     value: PLAYER_AGENCY,
                 },
@@ -69,7 +70,7 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
             dynamicEntityFilterTree.root.entityFilters[0].externalEntityFilter = [
                 {
                     entityType: EntityType.AGENCY,
-                    variableKey: Agency.getEntityVariables()[AgencyVariablesKey.ID].key,
+                    variableKey: Agency.getEntityVariables()[EntityBaseKeys.ID].key,
                     operator: VariableOperator.EQUALS_TO,
                     value: PLAYER_AGENCY,
                 },
@@ -84,7 +85,7 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
                         return {
                             ...DEFAULT_ENTITY_FILTER,
                             entity: EntityType.ACTORS,
-                            variableKey: Actor.getEntityVariables()[ActorVariablesKey.ID].key,
+                            variableKey: Actor.getEntityVariables()[EntityBaseKeys.ID].key,
                             operator: VariableOperator.EQUALS_TO,
                             value: data.id,
                         };
@@ -107,7 +108,7 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
             dynamicEntityFilterTree.root.entityFilters.push({
                 ...DEFAULT_ENTITY_FILTER,
                 entityType: EntityType.CHARACTERS,
-                variableKey: Character.getEntityVariables()[CharacterVariablesKey.ID].key,
+                variableKey: Character.getEntityVariables()[EntityBaseKeys.ID].key,
                 operator: VariableOperator.EQUALS_TO,
                 value: DynamicEntity.SELF,
             });
@@ -119,12 +120,12 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
                 {
                     ...DEFAULT_ENTITY_FILTER,
                     entityType: EntityType.RELATIONSHIP,
-                    variableKey: Character.getEntityVariables()[CharacterVariablesKey.ID].key,
+                    variableKey: Character.getEntityVariables()[EntityBaseKeys.ID].key,
                     externalEntityFilter: [
                         {
                             entityType: EntityType.CHARACTERS,
                             operator: VariableOperator.EQUALS_TO,
-                            variableKey: Actor.getEntityVariables()[CharacterVariablesKey.ID].key,
+                            variableKey: Actor.getEntityVariables()[EntityBaseKeys.ID].key,
                             value: DynamicEntity.SELF,
                         },
                     ],
@@ -150,7 +151,7 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
                         {
                             entityType: EntityType.CHARACTERS,
                             operator: VariableOperator.EQUALS_TO,
-                            variableKey: Actor.getEntityVariables()[ActorVariablesKey.ID].key,
+                            variableKey: Actor.getEntityVariables()[EntityBaseKeys.ID].key,
                             value: DynamicEntity.SELF,
                         },
                     ],

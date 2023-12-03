@@ -90,9 +90,9 @@ export const en_US = {
                     remove_condition_label: 'Remove Conditions',
                     remove_condition_helper: 'By adding an condition, you will be able to specify in which situation the modifier will be applied',
                     set_comparison_label: 'Compare To Another {{entity}}',
-                    comparison_modal_title: '',
+                    unset_comparison_label: 'Use specific value',
+                    comparison_modal_title: 'Comparison Target',
                 },
-
                 entity: {
                     input_label_logic_operator: 'Logic Operator',
                     input_label_operator: 'Operator',
@@ -721,6 +721,9 @@ export const en_US = {
                 companies: 'Companies',
                 locations: 'Locations',
                 nations: 'Nations',
+                variables: {
+                    id: 'ID',
+                },
             },
             variable: {
                 operator: {

@@ -76,6 +76,7 @@ export function EffectEditor({ effect, index, onChange, options }: IProps) {
         const updatedEffect = CopyClassInstance(effect);
 
         updatedEffect.conditionTree = null;
+        updatedEffect.trigger = null;
         onChange(index, updatedEffect);
     };
 

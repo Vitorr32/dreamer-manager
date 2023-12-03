@@ -377,7 +377,7 @@ export const DreamerEntityVariables: Variables = {
 
 export class Dreamer extends Character {
     static get variables(): Variables {
-        return { ...CharacterEntityVariables, ...DreamerEntityVariables };
+        return { ...super.variables, ...DreamerEntityVariables };
     }
 
     // Family situation that can influence traits and traumas

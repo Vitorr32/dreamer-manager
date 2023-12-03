@@ -26,7 +26,7 @@ export function DescribeEVVList({ evvArray }: IProps) {
 
         if (entityFilter.externalEntityFilter.length !== 0) {
             const externalsEvvSummarizedArray = entityFilter.externalEntityFilter.map((externalEntityFilter) => {
-                const externalSummarizedObject = SummarizeEntityVariableValueObject(entityFilter);
+                const externalSummarizedObject = SummarizeEntityVariableValueObject(externalEntityFilter);
                 return SummarizeEntityVariableValueToStringLine(externalSummarizedObject.variable, externalEntityFilter.operator, externalSummarizedObject.value);
             });
 

@@ -12,7 +12,6 @@ import LoopIcon from '@mui/icons-material/Loop';
 import { useState } from 'react';
 import { VariableType } from 'renderer/shared/models/enums/VariableType';
 import { ResourcesSearch } from '../file/ResourcesSearch';
-import { EntityComparisonModal } from '../entity/EntityComparisonModal.component';
 
 interface IProps {
     variable: EntityVariable;

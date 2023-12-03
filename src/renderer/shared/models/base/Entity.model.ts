@@ -1,9 +1,24 @@
+import { VariableType } from '../enums/VariableType';
 import { Package } from '../files/Package.model';
 import { CustomVariables, Variables } from './Variable.model';
 
+export enum EntityBaseKeys {
+    ID = 'id'
+}
+
+export const EntityBaseVariables: Variables = {
+    [EntityBaseKeys.ID]: {
+        key: EntityBaseKeys.ID,
+        displayName: 'model.entity.variables.id',
+        type: VariableType.TEXT,
+        read: true,
+        edit: false,
+    },
+}
+
 export class EntityBase {
     static get variables() {
-        return {};
+        return EntityBaseVariables;
     }
 
     // Entity ID

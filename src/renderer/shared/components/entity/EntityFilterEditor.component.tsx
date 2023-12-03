@@ -8,8 +8,10 @@ import { CopyClassInstance } from 'renderer/shared/utils/General';
 import { GetEntityTypeOfDynamicEntity } from 'renderer/shared/utils/DynamicEntities';
 import { GetVariablesOfEntity } from 'renderer/shared/utils/EntityHelpers';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
+import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
 import { Box, Button, IconButton, Modal, Popover, Tooltip, Typography } from '@mui/material';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import EditIcon from '@mui/icons-material/Edit';
 import { EntitySelect } from './EntitySelect.component';
 import { VariableSelect } from '../variables/VariableSelect.component';
 import { VariableValueOperator } from '../variables/VariableValueOperator.component';
@@ -20,10 +22,13 @@ interface IProps {
     entityFilter: EntityVariableValue;
     onFilterChange: (entityFilter: EntityVariableValue) => void;
     entityFilterOptions?: EntityFilterOptions;
+    // If the component should use Editor options or use Filter potions when defining the EVV behavior
     isEditor?: boolean;
+    // If the Entity Filter Editor is inside a comparison modal.
+    isComparison?: boolean;
 }
 
-export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterOptions, isEditor = false }: IProps) {
+export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterOptions, isEditor = false, isComparison = false }: IProps) {
     const { t } = useTranslation();
 
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
@@ -65,8 +70,13 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
         onFilterChange(updatedFilter);
     };
 
-    const onExternalFilterChanged = (value: EntityVariableValue, index: number) => {
+    const onExternalFilterChanged = (value: EntityVariableValue, index: number, emptyExternalFilter = false) => {
         const updatedExternalFilters = CopyClassInstance(entityFilter.externalEntityFilter || []);
+
+        if (emptyExternalFilter) {
+            onFilterChanged('externalEntityFilter', []);
+            return;
+        }
 
         if (updatedExternalFilters.length === 0) {
             onFilterChanged('externalEntityFilter', [value]);
@@ -74,7 +84,7 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
         }
 
         updatedExternalFilters[index] = value;
-        onFilterChanged('externalEntityFilter', [value]);
+        onFilterChanged('externalEntityFilter', updatedExternalFilters);
     };
 
     const comparisonPopoverOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -98,11 +108,33 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
 
         return (
             <>
-                <Button onClick={comparisonPopoverOnClick}>{t(entityFilter.entityType)}</Button>
-                <Popover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={comparisonPopoverOnClose}>
+                <Button onClick={() => setComparisonModalState(true)} onMouseEnter={comparisonPopoverOnClick} onMouseLeave={comparisonPopoverOnClose}>
+                    {t(entityFilter.entityType)}
+                </Button>
+                <Popover
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    sx={{
+                        pointerEvents: 'none',
+                    }}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    disableRestoreFocus
+                    onClose={comparisonPopoverOnClose}
+                >
                     <DescribeEVVList evvArray={entityFilter.externalEntityFilter} />
-                    <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
                 </Popover>
+                <Tooltip title={t('interface.editor.condition.unset_comparison_label')}>
+                    <IconButton onClick={() => onExternalFilterChanged(null, 0, true)}>
+                        <EditIcon />
+                    </IconButton>
+                </Tooltip>
             </>
         );
     };
@@ -154,19 +186,37 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
             )}
 
             {/* COMPARATOR/EXTERNAL SELECTOR */}
-            {selectedVariable && !isEditor && (
+            {selectedVariable && !isEditor && !isComparison && (
                 <>
-                    <Typography sx={{ display: 'flex', alignItems: 'center' }}>{t('interface.commons.or')}</Typography>
+                    {entityFilter.externalEntityFilter.length === 0 && <Typography sx={{ display: 'flex', alignItems: 'center' }}>{t('interface.commons.or')}</Typography>}
                     {getComparisonTriggerJSX()}
-                    <Modal open={comparisonModalOpen} onClose={() => setComparisonModalState(false)}>
-                        <Box>
-                            {...entityFilter.externalEntityFilter.map((externalFilter, index) => {
+                    <Modal open={comparisonModalOpen} sx={{}} onClose={() => setComparisonModalState(false)}>
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: '95%',
+                                bgcolor: 'background.default',
+                                border: '2px solid #000',
+                                boxShadow: 24,
+                                p: 4,
+                                color: 'text.primary',
+                            }}
+                        >
+                            <Typography>{t('interface.editor.condition.comparison_modal_title')}</Typography>
+
+                            {...(entityFilter.externalEntityFilter && entityFilter.externalEntityFilter.length !== 0
+                                ? entityFilter.externalEntityFilter
+                                : [DEFAULT_ENTITY_FILTER]
+                            ).map((externalFilter, index) => {
                                 return (
                                     <EntityFilterEditor
-                                        key={`comparison_entity_filter_${uuidv4()}`}
                                         entityFilter={externalFilter}
                                         onFilterChange={(newFilter) => onExternalFilterChanged(newFilter, index)}
-                                        entityFilterOptions={entityFilterOptions}
+                                        entityFilterOptions={{ ...entityFilterOptions, isLookingForSpecificEntity: entityFilter.entityType }}
+                                        isComparison
                                     />
                                 );
                             })}

@@ -131,7 +131,7 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
                 <Typography> {t('interface.editor.entity.node_filters')}</Typography>
                 {filterNode.entityFilters.map((entityFilter, indexOfFilter) => {
                     return (
-                        <Box key={`entity_filter_${depth}_${parentIndex}${uuidv4()}`} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Box key={`entity_filter_${depth}_${parentIndex}_${indexOfFilter}`} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <EntityFilterEditor
                                 entityFilter={entityFilter}
                                 onFilterChange={(updatedFilter) => onNodeFilterChange({ ...DEFAULT_ENTITY_FILTER, ...updatedFilter }, indexOfFilter)}
