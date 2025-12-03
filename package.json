@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "homepage": "./",
-    "description": "An HTML5/Pixi.js game using Electron about management of Idols",
+    "description": "An HTML5/JS game using Electron about management of Idols",
     "main": "./src/main/main.ts",
     "scripts": {
         "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -217,7 +217,6 @@
         "history": "^5.2.0",
         "i18next": "^21.8.16",
         "lodash": "^4.17.21",
-        "pixi.js": "^6.1.3",
         "react": "^18.1.0",
         "react-color": "^2.19.3",
         "react-dom": "^18.1.0",

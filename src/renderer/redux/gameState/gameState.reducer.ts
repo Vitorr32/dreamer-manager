@@ -1,15 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { World } from 'renderer/shared/models/base/World.model';
+import { MIN_DATE } from 'renderer/shared/Constants';
 
 export interface GameState {
     // Determine if the game is currently running or not
     isActive: boolean;
-    world: World;
+    // The current game state date
+    date: number
 }
 
 const initialState: GameState = {
     isActive: false,
-    world: new World(),
+    date: MIN_DATE.getTime(),
 };
 
 export const gameSlice = createSlice({
