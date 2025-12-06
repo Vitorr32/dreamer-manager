@@ -1,4 +1,4 @@
-import { Box, FormHelperText, Typography } from '@mui/material';
+import { FormHelperText, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EntityFilterTree } from 'renderer/shared/models/base/EntityFilterTree.model';
 import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
@@ -66,21 +66,34 @@ export function ModifierEditor({ modifier, onChange, options }: IProps) {
     };
 
     return (
-        <>
-            <FormHelperText>{t('interface.editor.modifier.modifier_editor_helper_text')}</FormHelperText>
+        <Stack spacing={2}>
+            <Stack spacing={0.5}>
+                <Typography variant="subtitle2">
+                    {t('interface.editor.modifier.modifier_editor_title', { defaultValue: 'What does this modifier change?' })}
+                </Typography>
+                <FormHelperText>{t('interface.editor.modifier.modifier_editor_helper_text')}</FormHelperText>
+            </Stack>
+
             <EntityFilterEditor entityFilter={modifier.modifiedEntityVariables} onFilterChange={onEntityModifierChanged} entityFilterOptions={options} isEditor />
 
             {isTargetFilterNecessary() && (
-                <Box sx={{ mt: 2 }}>
-                    <Typography>{t('interface.editor.modifier.input_label_target_of_modifier')}</Typography>
+                <Paper variant="outlined" sx={{ p: 2 }}>
+                    <Stack spacing={1.5}>
+                        <Typography variant="subtitle2">{t('interface.editor.modifier.input_label_target_of_modifier')}</Typography>
+                        <FormHelperText>
+                            {t('interface.editor.modifier.target_helper_text', {
+                                defaultValue: 'Build a filter to describe which entities will receive this modifier.',
+                            })}
+                        </FormHelperText>
 
-                    <CompositeEntityFilter
-                        filterTree={modifier.targetEntityFilter || new EntityFilterTree()}
-                        onFilterTreeChange={onModifierTargetConditionTreeChanged}
-                        entityFilterOptions={{ ...options, isLookingForSpecificEntity: modifier.modifiedEntityVariables?.entityType }}
-                    />
-                </Box>
+                        <CompositeEntityFilter
+                            filterTree={modifier.targetEntityFilter || new EntityFilterTree()}
+                            onFilterTreeChange={onModifierTargetConditionTreeChanged}
+                            entityFilterOptions={{ ...options, isLookingForSpecificEntity: modifier.modifiedEntityVariables?.entityType }}
+                        />
+                    </Stack>
+                </Paper>
             )}
-        </>
+        </Stack>
     );
 }

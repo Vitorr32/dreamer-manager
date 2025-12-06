@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import { DynamicEntity } from 'renderer/shared/models/enums/DynamicEntity.enum';
 import { EntityVariableValue } from 'renderer/shared/models/interfaces/EntityVariableValue.interface';
@@ -9,7 +8,7 @@ import { GetEntityTypeOfDynamicEntity } from 'renderer/shared/utils/DynamicEntit
 import { GetVariablesOfEntity } from 'renderer/shared/utils/EntityHelpers';
 import { EntityFilterOptions } from 'renderer/shared/models/options/EntityFilterOptions.model';
 import { DEFAULT_ENTITY_FILTER } from 'renderer/shared/Constants';
-import { Box, Button, IconButton, Modal, Popover, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Divider, FormHelperText, IconButton, Modal, Paper, Popover, Stack, Tooltip, Typography } from '@mui/material';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import EditIcon from '@mui/icons-material/Edit';
 import { EntitySelect } from './EntitySelect.component';
@@ -34,6 +33,9 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
     const [selectedVariable, setSelectedVariable] = useState<EntityVariable>();
     const [comparisonModalOpen, setComparisonModalState] = useState<boolean>(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const externalFilters = entityFilter.externalEntityFilter || [];
+    const hasComparison = externalFilters.length > 0;
+    const paperPadding = isComparison ? 1.5 : 2;
 
     useEffect(() => {
         // Populate selected variable from data coming from props.
@@ -96,19 +98,25 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
     };
 
     const getComparisonTriggerJSX = () => {
-        if (entityFilter.externalEntityFilter.length === 0) {
+        if (!hasComparison) {
             return (
                 <Tooltip title={t('interface.editor.condition.set_comparison_label', { entity: t(entityFilter.entityType) })}>
-                    <IconButton onClick={() => setComparisonModalState(true)}>
-                        <ManageSearchIcon />
-                    </IconButton>
+                    <Button variant="outlined" startIcon={<ManageSearchIcon />} onClick={() => setComparisonModalState(true)}>
+                        {t('interface.editor.condition.button_compare_entity', { defaultValue: 'Compare with another entity' })}
+                    </Button>
                 </Tooltip>
             );
         }
 
         return (
-            <>
-                <Button onClick={() => setComparisonModalState(true)} onMouseEnter={comparisonPopoverOnClick} onMouseLeave={comparisonPopoverOnClose}>
+            <Stack direction="row" spacing={1} alignItems="center">
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => setComparisonModalState(true)}
+                    onMouseEnter={comparisonPopoverOnClick}
+                    onMouseLeave={comparisonPopoverOnClose}
+                >
                     {t(entityFilter.entityType)}
                 </Button>
                 <Popover
@@ -128,14 +136,14 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
                     disableRestoreFocus
                     onClose={comparisonPopoverOnClose}
                 >
-                    <DescribeEVVList evvArray={entityFilter.externalEntityFilter} />
+                    <DescribeEVVList evvArray={externalFilters} />
                 </Popover>
                 <Tooltip title={t('interface.editor.condition.unset_comparison_label')}>
                     <IconButton onClick={() => onExternalFilterChanged(null, 0, true)}>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
-            </>
+            </Stack>
         );
     };
 
@@ -146,84 +154,158 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
     });
 
     return (
-        <Box sx={{ display: 'flex', gap: '20px' }}>
-            {/* ENTITY SELECT */}
-            <EntitySelect
-                entity={entityFilter}
-                onEntityChange={(entityType) => onFilterChanged('entityType', entityType)}
-                disabled={!!entityFilterOptions?.isLookingForSpecificEntity}
-                entityFilterOptions={entityFilterOptions}
-            />
+        <>
+            <Paper
+                variant={isComparison ? 'outlined' : 'elevation'}
+                elevation={isComparison ? 0 : 1}
+                sx={{ p: paperPadding, width: '100%', flex: 1, minWidth: 0 }}
+            >
+                <Stack spacing={2}>
+                    <Box>
+                        <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: 'uppercase' }}>
+                            {t('interface.editor.condition.step_choose_entity', { defaultValue: 'Step 1 · Pick the entity' })}
+                        </Typography>
+                        <EntitySelect
+                            entity={entityFilter}
+                            onEntityChange={(entityType) => onFilterChanged('entityType', entityType)}
+                            disabled={!!entityFilterOptions?.isLookingForSpecificEntity}
+                            entityFilterOptions={entityFilterOptions}
+                        />
+                        {!entityFilterOptions?.isLookingForSpecificEntity && (
+                            <FormHelperText sx={{ mt: 0.5 }}>
+                                {t('interface.editor.condition.entity_helper_text', { defaultValue: 'Choose the entity type you want to inspect.' })}
+                            </FormHelperText>
+                        )}
+                    </Box>
 
-            {/* VARIABLE SELECT */}
-            {entityFilter.entityType && (
-                <VariableSelect
-                    entity={entityFilter.entityType}
-                    entityVariableKey={entityFilter.variableKey}
-                    onVariableChange={(variable) => onFilterChanged('variableKey', variable.key)}
-                    isEditor={isEditor}
-                />
-            )}
+                    {entityFilter.entityType && (
+                        <>
+                            <Divider textAlign="left">
+                                {t('interface.editor.condition.section_attribute', { defaultValue: 'Attribute & rule' })}
+                            </Divider>
+                            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} alignItems="stretch">
+                                <VariableSelect
+                                    entity={entityFilter.entityType}
+                                    entityVariableKey={entityFilter.variableKey}
+                                    onVariableChange={(variable) => onFilterChanged('variableKey', variable.key)}
+                                    isEditor={isEditor}
+                                />
 
-            {/* OPERATOR SELECT */}
-            {selectedVariable && (
-                <VariableValueOperator
-                    variable={selectedVariable}
-                    variableOperator={entityFilter.operator}
-                    onOperatorChange={(operator) => onFilterChanged('operator', operator)}
-                    isEditor={isEditor}
-                />
-            )}
-
-            {/* VARIABLE INPUT */}
-            {selectedVariable && entityFilter.externalEntityFilter.length === 0 && (
-                <VariableValueInput
-                    variable={selectedVariable}
-                    variableValue={entityFilter.value}
-                    onVariableValueChange={(value) => onFilterChanged('value', value)}
-                    isEditor={isEditor}
-                />
-            )}
-
-            {/* COMPARATOR/EXTERNAL SELECTOR */}
-            {selectedVariable && !isEditor && !isComparison && (
-                <>
-                    {entityFilter.externalEntityFilter.length === 0 && <Typography sx={{ display: 'flex', alignItems: 'center' }}>{t('interface.commons.or')}</Typography>}
-                    {getComparisonTriggerJSX()}
-                    <Modal open={comparisonModalOpen} sx={{}} onClose={() => setComparisonModalState(false)}>
-                        <Box
-                            sx={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                width: '95%',
-                                bgcolor: 'background.default',
-                                border: '2px solid #000',
-                                boxShadow: 24,
-                                p: 4,
-                                color: 'text.primary',
-                            }}
-                        >
-                            <Typography>{t('interface.editor.condition.comparison_modal_title')}</Typography>
-
-                            {...(entityFilter.externalEntityFilter && entityFilter.externalEntityFilter.length !== 0
-                                ? entityFilter.externalEntityFilter
-                                : [DEFAULT_ENTITY_FILTER]
-                            ).map((externalFilter, index) => {
-                                return (
-                                    <EntityFilterEditor
-                                        entityFilter={externalFilter}
-                                        onFilterChange={(newFilter) => onExternalFilterChanged(newFilter, index)}
-                                        entityFilterOptions={{ ...entityFilterOptions, isLookingForSpecificEntity: entityFilter.entityType }}
-                                        isComparison
+                                {selectedVariable && (
+                                    <VariableValueOperator
+                                        variable={selectedVariable}
+                                        variableOperator={entityFilter.operator}
+                                        onOperatorChange={(operator) => onFilterChanged('operator', operator)}
+                                        isEditor={isEditor}
                                     />
-                                );
-                            })}
-                        </Box>
-                    </Modal>
-                </>
+                                )}
+                            </Stack>
+                        </>
+                    )}
+
+                    {selectedVariable && (
+                        <Stack spacing={1.5}>
+                            <Box>
+                                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: 'uppercase' }}>
+                                    {t('interface.editor.condition.section_value', { defaultValue: 'Step 2 · Provide the comparison value' })}
+                                </Typography>
+                                {!hasComparison && (
+                                    <FormHelperText sx={{ mt: 0.5 }}>
+                                        {t('interface.editor.condition.value_helper_text', {
+                                            defaultValue: 'Set the value that will be evaluated. You can also compare against another entity.',
+                                        })}
+                                    </FormHelperText>
+                                )}
+                            </Box>
+
+                            {!hasComparison && (
+                                <VariableValueInput
+                                    variable={selectedVariable}
+                                    variableValue={entityFilter.value}
+                                    onVariableValueChange={(value) => onFilterChanged('value', value)}
+                                    isEditor={isEditor}
+                                />
+                            )}
+
+                            {hasComparison && (
+                                <Stack spacing={1}>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {t('interface.editor.condition.comparison_summary_title', {
+                                            defaultValue: 'Using another entity to supply the comparison value:',
+                                        })}
+                                    </Typography>
+                                    <Paper variant="outlined" sx={{ p: 1.5 }}>
+                                        <DescribeEVVList evvArray={externalFilters} />
+                                    </Paper>
+                                </Stack>
+                            )}
+
+                            {!isEditor && !isComparison && (
+                                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems="center" justifyContent="flex-start">
+                                    {!hasComparison && (
+                                        <>
+                                            <Divider flexItem />
+                                            <Typography variant="caption" color="text.secondary">
+                                                {t('interface.commons.or')}
+                                            </Typography>
+                                            <Divider flexItem />
+                                        </>
+                                    )}
+                                    {getComparisonTriggerJSX()}
+                                </Stack>
+                            )}
+                        </Stack>
+                    )}
+                </Stack>
+            </Paper>
+
+            {selectedVariable && !isEditor && !isComparison && (
+                <Modal open={comparisonModalOpen} onClose={() => setComparisonModalState(false)}>
+                    <Paper
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: { xs: '95%', md: 720 },
+                            maxHeight: '85vh',
+                            overflowY: 'auto',
+                            bgcolor: 'background.paper',
+                            p: 3,
+                        }}
+                    >
+                        <Stack spacing={2}>
+                            <Box>
+                                <Typography variant="h6">{t('interface.editor.condition.comparison_modal_title')}</Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {t('interface.editor.condition.comparison_modal_helper', {
+                                        defaultValue: 'Describe which entities will provide the value for this comparison.',
+                                    })}
+                                </Typography>
+                            </Box>
+
+                            {(externalFilters.length !== 0 ? externalFilters : [DEFAULT_ENTITY_FILTER]).map((externalFilter, index) => (
+                                <EntityFilterEditor
+                                    key={`comparison_filter_${index}`}
+                                    entityFilter={externalFilter}
+                                    onFilterChange={(newFilter) => onExternalFilterChanged(newFilter, index)}
+                                    entityFilterOptions={{ ...entityFilterOptions, isLookingForSpecificEntity: entityFilter.entityType }}
+                                    isComparison
+                                />
+                            ))}
+
+                            <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                                <Button onClick={() => onExternalFilterChanged(null, 0, true)}>
+                                    {t('interface.editor.condition.unset_comparison_label')}
+                                </Button>
+                                <Button variant="contained" onClick={() => setComparisonModalState(false)}>
+                                    {t('interface.commons.done', { defaultValue: 'Done' })}
+                                </Button>
+                            </Stack>
+                        </Stack>
+                    </Paper>
+                </Modal>
             )}
-        </Box>
+        </>
     );
 }
