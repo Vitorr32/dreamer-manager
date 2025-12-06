@@ -226,10 +226,6 @@
         "regenerator-runtime": "^0.13.9",
         "uuid": "^8.3.2"
     },
-    "devEngines": {
-        "node": ">=14.x",
-        "npm": ">=7.x"
-    },
     "browserslist": [],
     "prettier": {
         "printWidth": 175,
