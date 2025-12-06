@@ -7,8 +7,6 @@ import { MainScreen } from './Interface/MainMenu/page/MainScreen/MainScreen.comp
 import { TraitEditorContainer } from './Interface/MainMenu/sub-pages/TraitEditor/TraitEditorContainer.component';
 
 import '@fontsource/roboto';
-import './App.scss';
-import { EventEditor } from './Interface/MainMenu/sub-pages/EventEditor/EventEditor.component';
 import { CharacterEditorContainer } from './Interface/MainMenu/sub-pages/CharacterEditor/CharacterEditorContainer.component';
 import { StartUpPage } from './Interface/MainMenu/page/MainScreen/StartUpPage.component';
 import { BASE_GAME_PACKAGE_FILE, BASE_GAME_PACKAGE_ID, MODS_FOLDER } from './shared/Constants';
@@ -56,7 +54,6 @@ export default function App() {
                         <Route path="/menu" element={<MainScreen />} />
                         <Route path="/menu/edit" element={<EditorScreen />} />
                         <Route path="/menu/edit/trait/*" element={<TraitEditorContainer />} />
-                        <Route path="/menu/edit/event/*" element={<EventEditor />} />
                         <Route path="/menu/edit/character/*" element={<CharacterEditorContainer />} />
                     </Routes>
                 </MemoryRouter>

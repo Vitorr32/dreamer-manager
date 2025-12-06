@@ -1,5 +1,4 @@
 import { Button } from '@mui/material';
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 export function EditorScreen(_: any) {
@@ -7,9 +6,6 @@ export function EditorScreen(_: any) {
         <menu>
             <Link to="/menu/edit/trait">
                 <Button>Edit Traits</Button>
-            </Link>
-            <Link to="/menu/edit/event">
-                <Button>New Event</Button>
             </Link>
             <Link to="/menu/edit/character">
                 <Button>New Character</Button>
