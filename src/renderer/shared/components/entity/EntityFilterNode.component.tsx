@@ -29,18 +29,26 @@ export function EntityFilterNode({ filterNode, onFilterNodeChange, onRemoveSelf,
 
     // Verify if the there is a locked entity type, and then assign it's values to all the filter nodes
     useEffect(() => {
-        if (entityFilterOptions?.isLookingForSpecificEntity) {
-            const updatedFilterNode = CopyClassInstance(filterNode);
-
-            updatedFilterNode.entityFilters.forEach((filter, indexOfFilter) => {
-                if (filter.entityType !== entityFilterOptions.isLookingForSpecificEntity) {
-                    updatedFilterNode.entityFilters[indexOfFilter].entityType = entityFilterOptions.isLookingForSpecificEntity;
-                }
-            });
-
-            onFilterNodeChange(updatedFilterNode, index);
+        if (!entityFilterOptions?.isLookingForSpecificEntity) {
+            return;
         }
-    });
+
+        const lockedEntityType = entityFilterOptions.isLookingForSpecificEntity;
+        const needsUpdate = filterNode.entityFilters.some((filter) => filter.entityType !== lockedEntityType);
+
+        if (!needsUpdate) {
+            return;
+        }
+
+        const updatedFilterNode = CopyClassInstance(filterNode);
+
+        updatedFilterNode.entityFilters = updatedFilterNode.entityFilters.map((filter) => ({
+            ...filter,
+            entityType: lockedEntityType,
+        }));
+
+        onFilterNodeChange(updatedFilterNode, index);
+    }, [entityFilterOptions?.isLookingForSpecificEntity, filterNode, index, onFilterNodeChange]);
 
     const onLogicOperatorChange = (operator: LogicOperator): void => {
         const updatedFilterNode = CopyClassInstance(filterNode);

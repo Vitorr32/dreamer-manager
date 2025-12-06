@@ -16,8 +16,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Character, CharacterType, CharacterVariablesKey, Ethnicity, Gender } from 'renderer/shared/models/base/Character.model';
-import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { RootState } from 'renderer/redux/store';
 import { useAppSelector } from 'renderer/redux/hooks';
 import { Dreamer } from 'renderer/shared/models/base/Dreamer.model';
@@ -51,7 +50,6 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
             ...errorState,
         };
 
-        // Required Check
         [
             CharacterVariablesKey.ID,
             CharacterVariablesKey.TYPE,
@@ -167,24 +165,19 @@ export function CharacterBasicInfoEditor({ character, onChange, onNextStep }: IP
                 </FormHelperText>
             </FormControl>
 
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <FormControl required error={errorState?.[CharacterVariablesKey.BIRTHDAY]} sx={{ marginTop: '20px' }}>
-                    <DesktopDatePicker
-                        label={t('interface.editor.character.input_label_birthday')}
-                        mask="__/__/____"
-                        minDate={new Date(1560, 0, 0)}
-                        maxDate={new Date(1700, 12, 30)}
-                        onError={(reason: any) => setErrorState({ ...errorState, [CharacterVariablesKey.BIRTHDAY]: !!reason })}
-                        inputFormat={t('interface.utils.date_format')}
-                        value={character.birthday || new Date(1560, 0, 1)}
-                        onChange={(e: any) => onInputChange(CharacterVariablesKey.BIRTHDAY, e.toISOString())}
-                        renderInput={(params: any) => <TextField required {...params} />}
-                    />
-                    <FormHelperText>
-                        {errorState?.[CharacterVariablesKey.BIRTHDAY] ? t('interface.editor.commons.invalid_date') : t('interface.editor.character.input_helper_birthday')}
-                    </FormHelperText>
-                </FormControl>
-            </LocalizationProvider>
+            <FormControl required error={errorState?.[CharacterVariablesKey.BIRTHDAY]} sx={{ marginTop: '20px' }}>
+                <DesktopDatePicker
+                    label={t('interface.editor.character.input_label_birthday')}
+                    minDate={new Date(1560, 0, 0)}
+                    maxDate={new Date(1700, 12, 30)}
+                    onError={(reason: any) => setErrorState({ ...errorState, [CharacterVariablesKey.BIRTHDAY]: !!reason })}
+                    value={character.birthday || new Date(1560, 0, 1)}
+                    onChange={(e: any) => onInputChange(CharacterVariablesKey.BIRTHDAY, e.toISOString())}
+                />
+                <FormHelperText>
+                    {errorState?.[CharacterVariablesKey.BIRTHDAY] ? t('interface.editor.commons.invalid_date') : t('interface.editor.character.input_helper_birthday')}
+                </FormHelperText>
+            </FormControl>
 
             <FormControl required sx={{ marginTop: '20px' }}>
                 <InputLabel>{t('interface.editor.character.input_label_nationality')}</InputLabel>

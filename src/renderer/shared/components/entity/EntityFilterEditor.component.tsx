@@ -148,10 +148,16 @@ export function EntityFilterEditor({ entityFilter, onFilterChange, entityFilterO
     };
 
     useEffect(() => {
-        if (entityFilterOptions?.isLookingForSpecificEntity && entityFilter.entityType !== entityFilterOptions?.isLookingForSpecificEntity) {
-            onFilterChanged('entityType', entityFilterOptions.isLookingForSpecificEntity);
+        if (!entityFilterOptions?.isLookingForSpecificEntity) {
+            return;
         }
-    });
+
+        if (entityFilter.entityType === entityFilterOptions.isLookingForSpecificEntity) {
+            return;
+        }
+
+        onFilterChanged('entityType', entityFilterOptions.isLookingForSpecificEntity);
+    }, [entityFilterOptions?.isLookingForSpecificEntity, entityFilter.entityType]);
 
     return (
         <>

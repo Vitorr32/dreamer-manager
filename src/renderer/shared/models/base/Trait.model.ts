@@ -34,7 +34,7 @@ export class Trait extends EntityBase {
     constructor() {
         super();
 
-        this.id = `trait_${  uuidv4()}`;
+        this.id = `trait_${uuidv4()}`;
 
         this.iconPath = [ICONS_FOLDER, TRAIT_DATABASE_FOLDER, PLACEHOLDER_TRAIT_ICON];
         this.localization = {};

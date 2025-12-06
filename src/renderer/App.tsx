@@ -13,6 +13,8 @@ import { BASE_GAME_PACKAGE_FILE, BASE_GAME_PACKAGE_ID, MODS_FOLDER } from './sha
 import { GameStartDatabaseLoad } from './shared/scripts/DatabaseLoader.script';
 import { GetPackages } from './shared/scripts/PackagesLoader.script';
 import { databaseSetPackages } from './redux/database/database.reducer';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export default function App() {
     const theme = createTheme({
@@ -44,20 +46,22 @@ export default function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            {startingUp ? (
-                <StartUpPage />
-            ) : (
-                <MemoryRouter>
-                    <Routes>
-                        <Route index element={<Navigate to="/menu/edit/trait/edit/trait_0" />} />
-                        <Route path="/startup" element={<StartUpPage />} />
-                        <Route path="/menu" element={<MainScreen />} />
-                        <Route path="/menu/edit" element={<EditorScreen />} />
-                        <Route path="/menu/edit/trait/*" element={<TraitEditorContainer />} />
-                        <Route path="/menu/edit/character/*" element={<CharacterEditorContainer />} />
-                    </Routes>
-                </MemoryRouter>
-            )}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {startingUp ? (
+                    <StartUpPage />
+                ) : (
+                    <MemoryRouter>
+                        <Routes>
+                            <Route index element={<Navigate to="/menu/edit/trait/edit/trait_0" />} />
+                            <Route path="/startup" element={<StartUpPage />} />
+                            <Route path="/menu" element={<MainScreen />} />
+                            <Route path="/menu/edit" element={<EditorScreen />} />
+                            <Route path="/menu/edit/trait/*" element={<TraitEditorContainer />} />
+                            <Route path="/menu/edit/character/*" element={<CharacterEditorContainer />} />
+                        </Routes>
+                    </MemoryRouter>
+                )}
+            </LocalizationProvider>
         </ThemeProvider>
     );
 }

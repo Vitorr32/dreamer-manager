@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Autocomplete, Box, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip, useTheme } from '@mui/material';
+import { Autocomplete, Checkbox, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { EntityVariable } from 'renderer/shared/models/base/Variable.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
@@ -92,16 +90,12 @@ export function VariableValueInput({ variable, variableValue, onVariableValueCha
                                 onChange={(e) => onVariableValueChange(e.target.value)}
                             />
                         ) : (
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DesktopDatePicker
-                                    label={t('interface.editor.condition.time_datepicker_label')}
-                                    mask="__/__/____"
-                                    onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
-                                    value={new Date(variableValue || '01/01/0001')}
-                                    onChange={(e: any) => onVariableValueChange(e.toISOString())}
-                                    renderInput={(params: any) => <TextField {...params} sx={{ minWidth: '300px' }} />}
-                                />
-                            </LocalizationProvider>
+                            <DesktopDatePicker
+                                label={t('interface.editor.condition.time_datepicker_label')}
+                                onError={(reason: any) => console.error('*** VariableValueInput Error on Datepicker: ', reason)}
+                                value={new Date(variableValue || '01/01/0001')}
+                                onChange={(e: any) => onVariableValueChange(e.toISOString())}
+                            />
                         )}
                         <IconButton
                             onClick={() => {

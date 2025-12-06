@@ -30,7 +30,7 @@ export function TraitEditorContainer() {
                             <Link to="/menu/edit">
                                 <button>Return Menu</button>
                             </Link>
-                            <Link to={`new/${BASE_GAME_PACKAGE_ID}`}>
+                            <Link to={`new`}>
                                 <button>New Base Trait</button>
                             </Link>
                             <Button onClick={() => setStateOfEntityPickerModal(true)}>Edit Trait</Button>

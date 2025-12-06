@@ -1,6 +1,5 @@
 import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Period } from 'renderer/shared/models/enums/Period.enum';
@@ -41,20 +40,15 @@ export function EffectPeriodSelection({ effectPeriod, effectPeriodValue, effectS
             </FormControl>
 
             {effectPeriod === Period.SPECIFIC_DATE && (
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <FormControl required>
-                        <DesktopDatePicker
-                            label={t('interface.editor.effect.input_label_end_date')}
-                            mask="__/__/____"
-                            minDate={new Date(1560, 0, 0)}
-                            maxDate={new Date(1700, 12, 30)}
-                            inputFormat={t('interface.utils.date_format')}
-                            value={effectPeriodValue || new Date(1560, 0, 1)}
-                            onChange={(e: any) => onPeriodValueChange(e.toISOString())}
-                            renderInput={(params: any) => <TextField required {...params} />}
-                        />
-                    </FormControl>
-                </LocalizationProvider>
+                <FormControl required>
+                    <DesktopDatePicker
+                        label={t('interface.editor.effect.input_label_end_date')}
+                        minDate={new Date(1560, 0, 0)}
+                        maxDate={new Date(1700, 12, 30)}
+                        value={effectPeriodValue || new Date(1560, 0, 1)}
+                        onChange={(e: any) => onPeriodValueChange(e.toISOString())}
+                    />
+                </FormControl>
             )}
 
             {effectPeriod === Period.SPECIFIC_PERIOD && (
@@ -69,33 +63,25 @@ export function EffectPeriodSelection({ effectPeriod, effectPeriodValue, effectS
 
             {effectPeriod === Period.SPECIFIC_DATE_FROM_TO && fromToDates && (
                 <>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <FormControl required>
-                            <DesktopDatePicker
-                                label={t('interface.editor.effect.input_label_start_date')}
-                                mask="__/__/____"
-                                minDate={new Date(1560, 0, 0)}
-                                maxDate={fromToDates[1] ? new Date(fromToDates[1]) : new Date(1700, 12, 30)}
-                                inputFormat={t('interface.utils.date_format')}
-                                value={fromToDates[0] ? new Date(fromToDates[0]) : new Date(1560, 0, 1)}
-                                onChange={(e: any) => onPeriodValueChange([e.toISOString(), fromToDates[1]])}
-                                renderInput={(params: any) => <TextField required {...params} />}
-                            />
-                        </FormControl>
+                    <FormControl required>
+                        <DesktopDatePicker
+                            label={t('interface.editor.effect.input_label_start_date')}
+                            minDate={new Date(1560, 0, 0)}
+                            maxDate={fromToDates[1] ? new Date(fromToDates[1]) : new Date(1700, 12, 30)}
+                            value={fromToDates[0] ? new Date(fromToDates[0]) : new Date(1560, 0, 1)}
+                            onChange={(e: any) => onPeriodValueChange([e.toISOString(), fromToDates[1]])}
+                        />
+                    </FormControl>
 
-                        <FormControl required>
-                            <DesktopDatePicker
-                                label={t('interface.editor.effect.input_label_end_date')}
-                                mask="__/__/____"
-                                minDate={fromToDates[0] ? new Date(fromToDates[0]) : new Date(1560, 0, 0)}
-                                maxDate={new Date(1700, 12, 30)}
-                                inputFormat={t('interface.utils.date_format')}
-                                value={fromToDates[1] ? new Date(fromToDates[1]) : new Date(1700, 12, 30)}
-                                onChange={(e: any) => onPeriodValueChange([fromToDates[0], e.toISOString()])}
-                                renderInput={(params: any) => <TextField required {...params} />}
-                            />
-                        </FormControl>
-                    </LocalizationProvider>
+                    <FormControl required>
+                        <DesktopDatePicker
+                            label={t('interface.editor.effect.input_label_end_date')}
+                            minDate={fromToDates[0] ? new Date(fromToDates[0]) : new Date(1560, 0, 0)}
+                            maxDate={new Date(1700, 12, 30)}
+                            value={fromToDates[1] ? new Date(fromToDates[1]) : new Date(1700, 12, 30)}
+                            onChange={(e: any) => onPeriodValueChange([fromToDates[0], e.toISOString()])}
+                        />
+                    </FormControl>
                 </>
             )}
         </Box>

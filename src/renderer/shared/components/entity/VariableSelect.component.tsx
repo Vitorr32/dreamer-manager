@@ -16,6 +16,7 @@ export function VariableSelect({ entity, entityVariableKey, onVariableChange }: 
     const [entityVariables, setEntityVariables] = useState<Variables>();
 
     useEffect(() => {
+        console.log('Entity changed in VariableSelect:', entity);
         setEntityVariables(GetVariablesOfEntity(entity));
     }, [entity]);
 
