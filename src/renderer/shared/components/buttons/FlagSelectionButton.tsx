@@ -2,12 +2,10 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { Trait } from 'renderer/shared/models/base/Trait.model';
 import { useSelector } from 'react-redux';
 import { RootState } from 'renderer/redux/store';
-import { Flag } from 'renderer/shared/models/interfaces/Flag.interface';
-import { TraitPicker } from '../tools/TraitPicker';
 import { FlagsPicker } from '../tools/FlagsPicker';
+import { Flag } from 'renderer/shared/models/base/Flag.model';
 
 interface IProps {
     displayIDs: string[];

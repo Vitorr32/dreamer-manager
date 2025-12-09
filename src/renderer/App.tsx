@@ -14,7 +14,7 @@ import { GameStartDatabaseLoad } from './shared/scripts/DatabaseLoader.script';
 import { GetPackages } from './shared/scripts/PackagesLoader.script';
 import { databaseSetPackages } from './redux/database/database.reducer';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV2';
 
 export default function App() {
     const theme = createTheme({
@@ -46,7 +46,7 @@ export default function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
                 {startingUp ? (
                     <StartUpPage />
                 ) : (

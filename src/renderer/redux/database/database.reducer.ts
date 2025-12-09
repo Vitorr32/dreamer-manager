@@ -1,10 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import { Attribute } from 'renderer/shared/models/base/Attribute.model';
 import { Character } from 'renderer/shared/models/base/Character.model';
 import { Nation } from 'renderer/shared/models/base/Nation.model';
-import { PaperDoll } from 'renderer/shared/models/base/PaperDoll.model';
-import { PaperPiece } from 'renderer/shared/models/base/PaperPiece.model';
-import { VisualNovel } from 'renderer/shared/models/base/VisualNovel.model';
 import { EntityType } from 'renderer/shared/models/enums/Entities.enum';
 import { BASE_GAME_PACKAGE_ID } from 'renderer/shared/Constants';
 import { Package } from 'renderer/shared/models/files/Package.model';

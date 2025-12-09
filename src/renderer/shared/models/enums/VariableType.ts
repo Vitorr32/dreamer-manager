@@ -1,5 +1,6 @@
 export enum VariableType {
     TEXT,
+    LOCALIZED_TEXT,
     NUMBER,
     PERCENTAGE_OR_MULTIPLIER,
     ENUMERATOR,

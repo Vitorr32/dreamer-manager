@@ -26,6 +26,7 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
             case VariableType.EXTERNAL_KEY_LIST:
                 return isEditor ? [VariableOperator.INSERT_INTO_ARRAY, VariableOperator.REMOVE_FROM_ARRAY] : [VariableOperator.CONTAINS, VariableOperator.NOT_CONTAINS];
             case VariableType.TEXT:
+            case VariableType.LOCALIZED_TEXT:
                 return isEditor
                     ? [VariableOperator.CHANGE_TO]
                     : [VariableOperator.STARTS_WITH, VariableOperator.EQUALS_TO, VariableOperator.NOT_EQUALS_TO, VariableOperator.CONTAINS, VariableOperator.NOT_CONTAINS];
@@ -42,6 +43,7 @@ export function VariableValueOperator({ variable, variableOperator, onOperatorCh
                           VariableOperator.LESSER_THAN,
                           VariableOperator.EQUAL_OR_LESSER_THAN,
                       ];
+            
             default:
                 return [];
         }

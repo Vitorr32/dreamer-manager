@@ -1,3 +1,4 @@
+import { id } from 'date-fns/locale';
 import { EntityType } from '../enums/Entities.enum';
 import { VariableType } from '../enums/VariableType';
 import { EntityBase } from './Entity.model';
@@ -16,16 +17,23 @@ export enum RelationshipParameter {
 export enum RelationshipVariablesKey {
     ID = 'id',
     FAVOR = 'favor',
+    LOVE = 'love',
+    POWER = 'power',
+    ATTRACTION = 'attraction',
+    RESPECT = 'respect',
+    ORIGIN_CHARACTER = 'originCharacter',
+    TARGET_CHARACTER = 'targetCharacter',
 }
 
 export const RelationshipEntityVariables: Variables = {
-    favor: { key: 'favor', displayName: 'model.relationship.variable.favor', type: VariableType.NUMBER, read: true, edit: true },
-    love: { key: 'love', displayName: 'model.relationship.variable.love', type: VariableType.NUMBER, read: true, edit: true },
-    power: { key: 'power', displayName: 'model.relationship.variable.power', type: VariableType.NUMBER, read: true, edit: true },
-    attraction: { key: 'attraction', displayName: 'model.relationship.variable.attraction', type: VariableType.NUMBER, read: true, edit: true },
-    respect: { key: 'respect', displayName: 'model.relationship.variable.respect', type: VariableType.NUMBER, read: true, edit: true },
+    id: { key: RelationshipVariablesKey.ID, displayName: 'model.id', type: VariableType.TEXT, read: true, edit: false },
+    favor: { key: RelationshipVariablesKey.FAVOR, displayName: 'model.relationship.variable.favor', type: VariableType.NUMBER, read: true, edit: true },
+    love: { key: RelationshipVariablesKey.LOVE, displayName: 'model.relationship.variable.love', type: VariableType.NUMBER, read: true, edit: true },
+    power: { key: RelationshipVariablesKey.POWER, displayName: 'model.relationship.variable.power', type: VariableType.NUMBER, read: true, edit: true },
+    attraction: { key: RelationshipVariablesKey.ATTRACTION, displayName: 'model.relationship.variable.attraction', type: VariableType.NUMBER, read: true, edit: true },
+    respect: { key: RelationshipVariablesKey.RESPECT, displayName: 'model.relationship.variable.respect', type: VariableType.NUMBER, read: true, edit: true },
     originCharacter: {
-        key: 'originCharacter',
+        key: RelationshipVariablesKey.ORIGIN_CHARACTER,
         displayName: 'model.relationship.variables.originChar',
         type: VariableType.EXTERNAL_KEY,
         externalEntity: EntityType.CHARACTERS,
@@ -33,7 +41,7 @@ export const RelationshipEntityVariables: Variables = {
         edit: false,
     },
     targetCharacter: {
-        key: 'targetCharacter',
+        key: RelationshipVariablesKey.TARGET_CHARACTER,
         displayName: 'model.relationship.variables.targetChar',
         type: VariableType.EXTERNAL_KEY,
         externalEntity: EntityType.CHARACTERS,

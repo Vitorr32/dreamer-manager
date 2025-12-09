@@ -201,7 +201,6 @@
         "@mui/material": "^7.3.6",
         "@mui/x-date-pickers": "^8.21.0",
         "@reduxjs/toolkit": "^1.8.4",
-        "@tailwindcss/cli": "^4.1.17",
         "@visx/event": "^3.3.0",
         "@visx/group": "^3.3.0",
         "@visx/hierarchy": "^3.3.0",
@@ -224,7 +223,6 @@
         "react-redux": "^7.2.8",
         "react-router-dom": "^6.3.0",
         "regenerator-runtime": "^0.13.9",
-        "tailwindcss": "^4.1.17",
         "uuid": "^8.3.2"
     },
     "browserslist": [],

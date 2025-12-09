@@ -3,7 +3,6 @@ import { Character, CharacterType, CharacterVariablesKey } from 'renderer/shared
 import { LogicOperator } from 'renderer/shared/models/enums/LogicOperator.enum';
 import { Agency } from 'renderer/shared/models/base/Agency.model';
 import { DEFAULT_ENTITY_FILTER, PLAYER_AGENCY } from 'renderer/shared/Constants';
-import { Actor, ActorVariablesKey } from 'renderer/shared/models/base/Actor.model';
 import { Relationship, RelationshipVariablesKey } from 'renderer/shared/models/base/Relationship.model';
 import { Trigger } from '../models/enums/Trigger.enum';
 import { DynamicEntity } from '../models/enums/DynamicEntity.enum';
@@ -76,25 +75,6 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
                 },
             ];
             break;
-        case DynamicEntity.ALL_ACTORS:
-            dynamicEntityFilterTree.root.logicOperator = LogicOperator.OR;
-
-            if (options.specifiedEntities[EntityType.ACTORS]) {
-                dynamicEntityFilterTree.root.entityFilters = options.specifiedEntities[EntityType.ACTORS].map(
-                    ({ data }: { label: string; data: any; shortcut?: DynamicEntity }) => {
-                        return {
-                            ...DEFAULT_ENTITY_FILTER,
-                            entity: EntityType.ACTORS,
-                            variableKey: Actor.getEntityVariables()[EntityBaseKeys.ID].key,
-                            operator: VariableOperator.EQUALS_TO,
-                            value: data.id,
-                        };
-                    }
-                );
-            } else {
-                console.error('Tried to select all actors when no such entity was specified for this event.');
-            }
-            break;
         case DynamicEntity.PROTAGONIST:
             dynamicEntityFilterTree.root.entityFilters.push({
                 ...DEFAULT_ENTITY_FILTER,
@@ -125,7 +105,7 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
                         {
                             entityType: EntityType.CHARACTERS,
                             operator: VariableOperator.EQUALS_TO,
-                            variableKey: Actor.getEntityVariables()[EntityBaseKeys.ID].key,
+                            variableKey: Character.getEntityVariables()[EntityBaseKeys.ID].key,
                             value: DynamicEntity.SELF,
                         },
                     ],
@@ -146,12 +126,12 @@ export const getDynamicEntityFilterDataAsFilterTree = (dynamicEntity: DynamicEnt
                 {
                     ...DEFAULT_ENTITY_FILTER,
                     entityType: EntityType.RELATIONSHIP,
-                    variableKey: Actor.getEntityVariables()[ActorVariablesKey.CHARACTER_ID].key,
+                    variableKey: Character.getEntityVariables()[EntityBaseKeys.ID].key,
                     externalEntityFilter: [
                         {
                             entityType: EntityType.CHARACTERS,
                             operator: VariableOperator.EQUALS_TO,
-                            variableKey: Actor.getEntityVariables()[EntityBaseKeys.ID].key,
+                            variableKey: Character.getEntityVariables()[EntityBaseKeys.ID].key,
                             value: DynamicEntity.SELF,
                         },
                     ],
